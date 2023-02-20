@@ -19,6 +19,10 @@ public static class ConfigureServices
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddHttpContextAccessor();
+        
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         services.AddSwaggerGen(setupAction =>
         {
             setupAction.SwaggerDoc(
