@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,6 +34,14 @@ app.MapControllers();
 try
 {
     Log.Information("Starting Hoppy Hub");
+    
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
+    }
+    
     app.Run();
 }
 catch (Exception e)

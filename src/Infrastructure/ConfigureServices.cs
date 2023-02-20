@@ -27,6 +27,7 @@ public static class ConfigureServices
         
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<ApplicationDbContextInitialiser>();
 
         services.AddTransient<IDateTime, DateTimeService>();
         
