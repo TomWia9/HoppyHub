@@ -22,7 +22,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     /// <param name="options">The DbContextOptions></param>
     /// <param name="auditableEntitySaveChangesInterceptor">The AuditableEntitySaveChangesInterceptor</param>
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
-        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor) : base(options)
     {
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
