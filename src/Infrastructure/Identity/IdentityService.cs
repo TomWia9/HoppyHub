@@ -98,13 +98,13 @@ public class IdentityService : IIdentityService
     {
         var secret = _jwtSettings.Secret;
 
-        if (secret == null)
+        if (secret.IsNullOrEmpty())
         {
             return AuthenticationResult.Failure(new List<string>{ "Secret not found!" });
         }
         
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(secret);
+        var key = Encoding.ASCII.GetBytes(secret!);
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
