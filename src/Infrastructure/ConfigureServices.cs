@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
@@ -30,6 +31,9 @@ public static class ConfigureServices
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services.AddTransient<IDateTime, DateTimeService>();
+        
+        var jwtSettings = new JwtSettings();
+        configuration.Bind(nameof(JwtSettings), jwtSettings);
         
         return services;
     }
