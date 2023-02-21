@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using Api.Services;
+using Application.Common.Interfaces;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -14,8 +16,13 @@ public static class ConfigureServices
     /// <param name="services">The services</param>
     public static IServiceCollection AddApiServices(this IServiceCollection services)
     {
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
+        services.AddHttpContextAccessor();
+        
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+
         services.AddSwaggerGen(setupAction =>
         {
             setupAction.SwaggerDoc(
