@@ -15,12 +15,12 @@ namespace Infrastructure.UnitTests;
 public class ConfigureServicesTests
 {
     /// <summary>
-    ///     The services
+    ///     The services.
     /// </summary>
     private readonly IServiceCollection _services;
 
     /// <summary>
-    ///     Setups tests
+    ///     Setups tests.
     /// </summary>
     public ConfigureServicesTests()
     {
@@ -30,53 +30,57 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContext to the service collection
+    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContext to the service collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_AddsDbContext()
     {
         // Assert
-        Assert.Contains(_services, service => service.ServiceType == typeof(ApplicationDbContext));
+        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContext));
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the AuditableEntitySaveChangesInterceptor to the service collection
+    ///     Tests that the AddInfrastructureServices method adds the AuditableEntitySaveChangesInterceptor
+    ///     to the service collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_AddsAuditableEntitySaveChangesInterceptor()
     {
         // Assert
-        Assert.Contains(_services, service => service.ServiceType == typeof(AuditableEntitySaveChangesInterceptor));
+        _services.Should().Contain(x => x.ServiceType == typeof(AuditableEntitySaveChangesInterceptor));
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContext to the service collection
+    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContext to the service collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_AddsIApplicationDbContext()
     {
         // Assert
-        Assert.Contains(_services, service => service.ServiceType == typeof(IApplicationDbContext));
+        _services.Should().Contain(x => x.ServiceType == typeof(IApplicationDbContext));
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitialiser to the service collection
+    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitialiser
+    ///     to the service collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_AddsApplicationDbContextInitialiser()
     {
         // Assert
-        Assert.Contains(_services, service => service.ServiceType == typeof(ApplicationDbContextInitialiser));
+        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitialiser));
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the DateTimeService to the service collection as IDateTime
+    ///     Tests that the AddInfrastructureServices method adds the DateTimeService
+    ///     to the service collection as IDateTime.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_AddsDateTimeService()
     {
         // Assert
-        Assert.Contains(_services, service => service.ServiceType == typeof(IDateTime));
-        Assert.Contains(_services, service => service.ImplementationType == typeof(DateTimeService));
+        _services.Should().Contain(x => x.ServiceType == typeof(IDateTime) &&
+                                        x.ImplementationType == typeof(DateTimeService) &&
+                                        x.Lifetime == ServiceLifetime.Transient);
     }
 }

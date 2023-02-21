@@ -11,8 +11,14 @@ namespace Infrastructure.UnitTests.Services;
 [ExcludeFromCodeCoverage]
 public class DateTimeServiceTests
 {
+    /// <summary>
+    ///     DateTimeService mock.
+    /// </summary>
     private readonly Mock<IDateTime> _dateTimeService;
 
+    /// <summary>
+    ///     Setups DateTimeServiceTests.
+    /// </summary>
     public DateTimeServiceTests()
     {
         _dateTimeService = new Mock<IDateTime>();
@@ -32,6 +38,6 @@ public class DateTimeServiceTests
         var result = _dateTimeService.Object.Now;
 
         // Assert
-        Assert.Equal(expected, result);
+        result.Should().Be(expected);
     }
 }
