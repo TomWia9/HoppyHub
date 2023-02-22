@@ -28,7 +28,7 @@ public class ApplicationDbContextInitialiser
     private readonly UserManager<ApplicationUser> _userManager;
 
     /// <summary>
-    ///     Initializes ApplicationDbContextInitialiser
+    ///     Initializes ApplicationDbContextInitialiser.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="roleManager">The role manager</param>
@@ -42,7 +42,7 @@ public class ApplicationDbContextInitialiser
     }
 
     /// <summary>
-    ///     Initialises database asynchronously 
+    ///     Initialises database asynchronously.
     /// </summary>
     public async Task InitialiseAsync()
     {
@@ -61,7 +61,7 @@ public class ApplicationDbContextInitialiser
     }
 
     /// <summary>
-    ///     Seed database asynchronously
+    ///     Seed database asynchronously.
     /// </summary>
     public async Task SeedAsync()
     {

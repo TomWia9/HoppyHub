@@ -29,7 +29,7 @@ public class AuthenticationResult
     public bool Succeeded { get; set; }
 
     /// <summary>
-    ///     The errors
+    ///     The errors.
     /// </summary>
     public string[] Errors { get; set; }
 
