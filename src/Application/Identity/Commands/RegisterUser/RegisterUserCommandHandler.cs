@@ -5,16 +5,16 @@ using MediatR;
 namespace Application.Identity.Commands.RegisterUser;
 
 /// <summary>
-///     RegisterUser handler.
+///     RegisterUserCommand handler.
 /// </summary>
-public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, AuthenticationResult>
+public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationResult>
 {
     /// <summary>
     ///     The identity service.
     /// </summary>
     private readonly IIdentityService _identityService;
 
-    public RegisterUserHandler(IIdentityService identityService)
+    public RegisterUserCommandHandler(IIdentityService identityService)
     {
         _identityService = identityService;
     }
