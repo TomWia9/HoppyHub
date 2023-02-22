@@ -8,7 +8,7 @@ public class NotFoundException : Exception
     /// <summary>
     ///     Initializes NotFoundException.
     /// </summary>
-    public NotFoundException() : base()
+    public NotFoundException()
     {
     }
 

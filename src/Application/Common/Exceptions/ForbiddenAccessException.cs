@@ -8,5 +8,6 @@ public class ForbiddenAccessException : Exception
     /// <summary>
     ///     Initializes ForbiddenAccessException.
     /// </summary>
-    public ForbiddenAccessException() : base() {}
+    public ForbiddenAccessException()
+    {}
 }

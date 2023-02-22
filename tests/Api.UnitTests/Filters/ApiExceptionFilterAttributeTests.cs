@@ -3,7 +3,9 @@ using Application.Common.Exceptions;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Routing;
 
 namespace Api.UnitTests.Filters;
 
@@ -28,10 +30,11 @@ public class ApiExceptionFilterAttributeTests
     /// </summary>
     public ApiExceptionFilterAttributeTests()
     {
-        _exceptionContext = new ExceptionContext(
-            new ActionContext(new DefaultHttpContext(), new Microsoft.AspNetCore.Routing.RouteData(),
-                new Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor()),
-            new List<IFilterMetadata>());
+        var actionContext = new ActionContext(new DefaultHttpContext(),
+            new RouteData(),
+            new ActionDescriptor());
+
+        _exceptionContext = new ExceptionContext(new ActionContext(actionContext), new List<IFilterMetadata>());
 
         _filter = new ApiExceptionFilterAttribute();
     }
