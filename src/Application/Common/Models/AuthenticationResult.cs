@@ -11,7 +11,7 @@ public class AuthenticationResult
     /// <param name="succeeded">Indicates whether result succeeded</param>
     /// <param name="errors">The errors</param>
     /// <param name="token">The authentication token</param>
-    internal AuthenticationResult(bool succeeded, IEnumerable<string> errors, string? token)
+    public AuthenticationResult(bool succeeded, IEnumerable<string> errors, string? token)
     {
         Succeeded = succeeded;
         Errors = errors.ToArray();

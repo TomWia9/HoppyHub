@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Infrastructure.Services;
 using Moq;
 

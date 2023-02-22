@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Api.Services;
+﻿using Api.Services;
 using Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
