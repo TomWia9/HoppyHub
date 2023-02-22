@@ -19,8 +19,8 @@ public interface IIdentityService
     /// <summary>
     ///     Authenticates the user.
     /// </summary>
-    /// <param name="email"></param>
-    /// <param name="password"></param>
+    /// <param name="email">The email</param>
+    /// <param name="password">The password</param>
     /// <returns>An AuthenticationResult</returns>
     Task<AuthenticationResult> LoginAsync(string email, string password);
 }
