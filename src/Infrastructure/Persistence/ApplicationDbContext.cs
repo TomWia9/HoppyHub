@@ -1,23 +1,26 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using Infrastructure.Identity;
 using Infrastructure.Persistence.Interceptors;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
 /// <summary>
-///     ApplicationDbContext class
+///     ApplicationDbContext class.
 /// </summary>
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
 {
     /// <summary>
-    ///     The auditable entity save changes interceptor
+    ///     The auditable entity save changes interceptor.
     /// </summary>
     private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
     /// <summary>
-    ///     Initializes ApplicationDbContext
+    ///     Initializes ApplicationDbContext.
     /// </summary>
     /// <param name="options">The DbContextOptions></param>
     /// <param name="auditableEntitySaveChangesInterceptor">The AuditableEntitySaveChangesInterceptor</param>
@@ -26,25 +29,25 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
-    
+
     /// <summary>
-    ///     The beers
+    ///     The beers.
     /// </summary>
     public DbSet<Beer> Beers => Set<Beer>();
 
     /// <summary>
-    ///     OnModelCreating override
+    ///     OnModelCreating override.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        
+
         base.OnModelCreating(modelBuilder);
     }
 
     /// <summary>
-    ///     OnConfiguring override
+    ///     OnConfiguring override.
     /// </summary>
     /// <param name="optionsBuilder">The DbContextOptionsBuilder</param>
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -53,7 +56,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     }
 
     /// <summary>
-    ///     Saves changes asynchronously 
+    ///     Saves changes asynchronously.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token</param>
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

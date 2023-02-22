@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Application.Common.Interfaces;
+using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
@@ -37,6 +38,8 @@ public class ConfigureServicesTests
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContext));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
     /// <summary>
@@ -48,6 +51,8 @@ public class ConfigureServicesTests
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(AuditableEntitySaveChangesInterceptor));
+        _services.Should().Contain(s => s.ImplementationType == typeof(AuditableEntitySaveChangesInterceptor));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
     /// <summary>
@@ -58,6 +63,8 @@ public class ConfigureServicesTests
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IApplicationDbContext));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
     /// <summary>
@@ -69,6 +76,8 @@ public class ConfigureServicesTests
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitialiser));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContextInitialiser));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
     /// <summary>
@@ -79,8 +88,33 @@ public class ConfigureServicesTests
     public void AddInfrastructureServices_AddsDateTimeService()
     {
         // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IDateTime) &&
-                                        x.ImplementationType == typeof(DateTimeService) &&
-                                        x.Lifetime == ServiceLifetime.Transient);
+        _services.Should().Contain(x => x.ServiceType == typeof(IDateTime));
+        _services.Should().Contain(s => s.ImplementationType == typeof(DateTimeService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+    
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the IdentityService
+    ///     to the service collection as IIdentityService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_AddsIdentityService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IIdentityService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(IdentityService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+    
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the JwtSettings
+    ///     to the service collection as JwtSettings.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_AddsJwtSettings()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
+        _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Singleton);
     }
 }
