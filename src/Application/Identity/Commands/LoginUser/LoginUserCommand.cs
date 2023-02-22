@@ -6,7 +6,7 @@ namespace Application.Identity.Commands.LoginUser;
 /// <summary>
 ///     LoginUser command.
 /// </summary>
-public class LoginUserCommand : IRequest<AuthenticationResult>
+public record LoginUserCommand : IRequest<AuthenticationResult>
 {
     /// <summary>
     ///     The user email.
