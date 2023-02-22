@@ -14,11 +14,15 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     /// </summary>
     private readonly IIdentityService _identityService;
 
+    /// <summary>
+    ///     Initializes RegisterUserCommandHandler
+    /// </summary>
+    /// <param name="identityService">The identity service</param>
     public RegisterUserCommandHandler(IIdentityService identityService)
     {
         _identityService = identityService;
     }
-    
+
     /// <summary>
     ///     Handles user registration.
     /// </summary>

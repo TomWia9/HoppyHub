@@ -41,7 +41,7 @@ public class IdentityService : IIdentityService
     /// <param name="username">The username</param>
     /// <param name="password">The password</param>
     /// <returns>An AuthenticationResult</returns>
-    public async Task<AuthenticationResult> RegisterAsync(string email, string username, string password)
+    public async Task<AuthenticationResult> RegisterAsync(string? email, string? username, string? password)
     {
         var userExists = await _userManager.FindByEmailAsync(email);
 
@@ -72,7 +72,7 @@ public class IdentityService : IIdentityService
     /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns>An AuthenticationResult</returns>
-    public async Task<AuthenticationResult> LoginAsync(string email, string password)
+    public async Task<AuthenticationResult> LoginAsync(string? email, string? password)
     {
         var user = await _userManager.FindByEmailAsync(email);
 
