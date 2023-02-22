@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Api.Services;
 using Application.Common.Interfaces;
+using FluentValidation.AspNetCore;
+using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -20,7 +22,9 @@ public static class ConfigureServices
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();
-        
+        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+        services.AddFluentValidationRulesToSwagger();
+
         services.AddScoped<ICurrentUserService, CurrentUserService>();
 
         services.AddSwaggerGen(setupAction =>
