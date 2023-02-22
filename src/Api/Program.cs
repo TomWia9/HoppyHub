@@ -20,13 +20,17 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("swagger/HoppyHubSpecification/swagger.json", "Hoppy Hub");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseSerilogRequestLogging();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;

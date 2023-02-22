@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
