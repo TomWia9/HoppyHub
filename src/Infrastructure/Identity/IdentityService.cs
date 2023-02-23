@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
@@ -17,7 +18,7 @@ public class IdentityService : IIdentityService
     ///     The user manager.
     /// </summary>
     private readonly UserManager<ApplicationUser> _userManager;
-    
+
     /// <summary>
     ///     The json web token settings.
     /// </summary>
@@ -33,7 +34,7 @@ public class IdentityService : IIdentityService
         _userManager = userManager;
         _jwtSettings = jwtSettings;
     }
-    
+
     /// <summary>
     ///     Registers new user.
     /// </summary>
@@ -43,6 +44,12 @@ public class IdentityService : IIdentityService
     /// <returns>An AuthenticationResult</returns>
     public async Task<AuthenticationResult> RegisterAsync(string? email, string? username, string? password)
     {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(username) ||
+            string.IsNullOrWhiteSpace(password))
+        {
+            throw new ValidationException();
+        }
+
         var userExists = await _userManager.FindByEmailAsync(email);
 
         if (userExists != null)
@@ -74,6 +81,11 @@ public class IdentityService : IIdentityService
     /// <returns>An AuthenticationResult</returns>
     public async Task<AuthenticationResult> LoginAsync(string? email, string? password)
     {
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            throw new ValidationException();
+        }
+
         var user = await _userManager.FindByEmailAsync(email);
 
         if (user == null)
@@ -85,7 +97,7 @@ public class IdentityService : IIdentityService
         {
             return AuthenticationResult.Failure(new[] { "Password is incorrect" });
         }
-        
+
         return await GenerateAuthenticationResult(user);
     }
     
@@ -100,9 +112,9 @@ public class IdentityService : IIdentityService
 
         if (secret.IsNullOrEmpty())
         {
-            return AuthenticationResult.Failure(new List<string>{ "Secret not found!" });
+            return AuthenticationResult.Failure(new List<string> { "Secret not found!" });
         }
-        
+
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(secret!);
         var claims = new List<Claim>

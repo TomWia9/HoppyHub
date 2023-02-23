@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -120,6 +121,31 @@ public class IdentityServiceTests
     }
 
     /// <summary>
+    ///     Tests that RegisterAsync method throws ValidationException when email,
+    ///     username or password is null or whitespace.
+    /// </summary>
+    /// <param name="email">The email</param>
+    /// <param name="username">The username</param>
+    /// <param name="password">The password</param>
+    [Theory]
+    [InlineData(null, "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", null, "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", null)]
+    [InlineData("", "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", "", "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", "")]
+    [InlineData(" ", "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", " ", "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", " ")]
+    public async Task RegisterAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+        string username,
+        string password)
+    {
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _identityService.RegisterAsync(email, username, password));
+    }
+
+    /// <summary>
     ///     Tests that the LoginAsync method with valid credentials returns success.
     /// </summary>
     [Fact]
@@ -210,5 +236,24 @@ public class IdentityServiceTests
         result.Succeeded.Should().BeFalse();
         result.Token.Should().BeNullOrEmpty();
         result.Errors.Should().NotBeNullOrEmpty();
+    }
+
+    /// <summary>
+    ///     Tests that LoginAsync method throws ValidationException when email or password is null or whitespace.
+    /// </summary>
+    /// <param name="email">The email</param>
+    /// <param name="password">The password</param>
+    [Theory]
+    [InlineData(null, "P@ssw0rd")]
+    [InlineData("user@example.com", null)]
+    [InlineData("", "P@ssw0rd")]
+    [InlineData("user@example.com", "")]
+    [InlineData(" ", "P@ssw0rd")]
+    [InlineData("user@example.com", " ")]
+    public async Task LoginAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+        string password)
+    {
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _identityService.LoginAsync(email, password));
     }
 }
