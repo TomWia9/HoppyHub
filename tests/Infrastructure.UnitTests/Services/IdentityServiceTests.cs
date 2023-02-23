@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -120,6 +121,31 @@ public class IdentityServiceTests
     }
 
     /// <summary>
+    ///     Tests that RegisterAsync method throws ValidationException when email,
+    ///     username or password is null or whitespace.
+    /// </summary>
+    /// <param name="email">The email</param>
+    /// <param name="username">The username</param>
+    /// <param name="password">The password</param>
+    [Theory]
+    [InlineData(null, "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", null, "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", null)]
+    [InlineData("", "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", "", "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", "")]
+    [InlineData(" ", "user123", "P@ssw0rd")]
+    [InlineData("user@example.com", " ", "P@ssw0rd")]
+    [InlineData("user@example.com", "user123", " ")]
+    public async Task RegisterAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+        string username,
+        string password)
+    {
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _identityService.RegisterAsync(email, username, password));
+    }
+
+    /// <summary>
     ///     Tests that the LoginAsync method with valid credentials returns success.
     /// </summary>
     [Fact]
@@ -210,5 +236,160 @@ public class IdentityServiceTests
         result.Succeeded.Should().BeFalse();
         result.Token.Should().BeNullOrEmpty();
         result.Errors.Should().NotBeNullOrEmpty();
+    }
+
+    /// <summary>
+    ///     Tests that LoginAsync method throws ValidationException when email or password is null or whitespace.
+    /// </summary>
+    /// <param name="email">The email</param>
+    /// <param name="password">The password</param>
+    [Theory]
+    [InlineData(null, "P@ssw0rd")]
+    [InlineData("user@example.com", null)]
+    [InlineData("", "P@ssw0rd")]
+    [InlineData("user@example.com", "")]
+    [InlineData(" ", "P@ssw0rd")]
+    [InlineData("user@example.com", " ")]
+    public async Task LoginAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+        string password)
+    {
+        // Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(() => _identityService.LoginAsync(email, password));
+    }
+
+    /// <summary>
+    ///     Tests that IsInRoleAsync method should return true when user is in role.
+    /// </summary>
+    [Fact]
+    public async Task IsInRoleAsync_ShouldReturnTrue_WhenUserIsInRole()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new ApplicationUser { Id = userId };
+        var users = new List<ApplicationUser> { user };
+
+        _userManagerMock.Setup(m => m.Users).Returns(users.AsQueryable());
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.User)).ReturnsAsync(true);
+
+        // Act
+        var result = await _identityService.IsInRoleAsync(userId, Roles.User);
+
+        // Assert
+        result.Should().BeTrue();
+        _userManagerMock.Verify(m => m.Users, Times.Once);
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.User), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that IsInRoleAsync method should return false when user is not in role.
+    /// </summary>
+    [Fact]
+    public async Task IsInRoleAsync_ShouldReturnFalse_WhenUserIsNotInRole()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new ApplicationUser { Id = userId };
+        var users = new List<ApplicationUser> { user };
+
+        _userManagerMock.Setup(m => m.Users)
+            .Returns(users.AsQueryable());
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.User)).ReturnsAsync(false);
+
+        // Act
+        var result = await _identityService.IsInRoleAsync(userId, Roles.User);
+
+        // Assert
+        result.Should().BeFalse();
+        _userManagerMock.Verify(m => m.Users, Times.Once);
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.User), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that IsInPolicyAsync method should return true when user is in policy.
+    /// </summary>
+    [Fact]
+    public async Task IsInPolicyAsync_ShouldReturnTrue_WhenUserIsInPolicy()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new ApplicationUser { Id = userId };
+        var users = new List<ApplicationUser> { user };
+
+        _userManagerMock.Setup(m => m.Users).Returns(users.AsQueryable());
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.User)).ReturnsAsync(true);
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.Administrator)).ReturnsAsync(false);
+
+        // Act
+        var result = await _identityService.IsInPolicyAsync(userId, Policies.UserAccess);
+
+        // Assert
+        result.Should().BeTrue();
+        _userManagerMock.Verify(m => m.Users, Times.Once);
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.User), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that IsInPolicyAsync method should return false when user is not in policy.
+    /// </summary>
+    [Fact]
+    public async Task IsInPolicyAsync_ShouldReturnFalse_WhenUserIsNotInPolicy()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new ApplicationUser { Id = userId };
+        var users = new List<ApplicationUser> { user };
+
+        _userManagerMock.Setup(m => m.Users).Returns(users.AsQueryable());
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.User)).ReturnsAsync(false);
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.Administrator)).ReturnsAsync(false);
+
+        // Act
+        var result = await _identityService.IsInPolicyAsync(userId, Policies.UserAccess);
+
+        // Assert
+        result.Should().BeFalse();
+        _userManagerMock.Verify(m => m.Users, Times.Exactly(2));
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.User), Times.Once);
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.Administrator), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that IsInPolicyAsync method should return true when administrator is in policy.
+    /// </summary>
+    [Fact]
+    public async Task IsInPolicyAsync_ShouldReturnFalse_WhenAdministratorIsInPolicy()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var user = new ApplicationUser { Id = userId };
+        var users = new List<ApplicationUser> { user };
+
+        _userManagerMock.Setup(m => m.Users).Returns(users.AsQueryable());
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.User)).ReturnsAsync(true);
+        _userManagerMock.Setup(m => m.IsInRoleAsync(user, Roles.Administrator)).ReturnsAsync(true);
+
+        // Act
+        var result = await _identityService.IsInPolicyAsync(userId, Policies.AdministratorAccess);
+
+        // Assert
+        result.Should().BeTrue();
+        _userManagerMock.Verify(m => m.Users, Times.Once);
+        _userManagerMock.Verify(m => m.IsInRoleAsync(user, Roles.Administrator), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that IsInPolicyAsync method should return false when policy does not exists.
+    /// </summary>
+    [Fact]
+    public async Task IsInPolicyAsync_ShouldReturnFalse_WhenPolicyDoesNotExists()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+
+        // Act
+        var result = await _identityService.IsInPolicyAsync(userId, "nonExistentPolicy");
+
+        // Assert
+        result.Should().BeFalse();
     }
 }
