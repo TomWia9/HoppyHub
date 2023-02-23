@@ -23,4 +23,19 @@ public interface IIdentityService
     /// <param name="password">The password</param>
     /// <returns>An AuthenticationResult</returns>
     Task<AuthenticationResult> LoginAsync(string? email, string? password);
+
+    /// <summary>
+    ///     Indicates whether user is in role.
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <param name="role">The user role</param>
+    public Task<bool> IsInRoleAsync(Guid userId, string role);
+
+    /// <summary>
+    ///     Indicates whether user is in policy.
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    /// <param name="policy">The user policy</param>
+    public Task<bool> IsInPolicyAsync(Guid userId, string policy);
+
 }
