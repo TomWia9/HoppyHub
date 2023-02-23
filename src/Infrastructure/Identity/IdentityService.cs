@@ -100,35 +100,7 @@ public class IdentityService : IIdentityService
 
         return await GenerateAuthenticationResult(user);
     }
-
-    /// <summary>
-    ///     Indicates whether user is in role.
-    /// </summary>
-    /// <param name="userId">The user id</param>
-    /// <param name="role">The user role</param>
-    public async Task<bool> IsInRoleAsync(Guid userId, string role)
-    {
-        var user = _userManager.Users.SingleOrDefault(x => x.Id == userId);
-
-        return user != null && await _userManager.IsInRoleAsync(user, role);
-    }
-
-    /// <summary>
-    ///     Indicates whether user is in policy.
-    /// </summary>
-    /// <param name="userId">The user id</param>
-    /// <param name="policy">The user policy</param>
-    public async Task<bool> IsInPolicyAsync(Guid userId, string policy)
-    {
-        return policy switch
-        {
-            Policies.UserAccess => await IsInRoleAsync(userId, Roles.User) ||
-                                   await IsInRoleAsync(userId, Roles.Administrator),
-            Policies.AdministratorAccess => await IsInRoleAsync(userId, Roles.Administrator),
-            _ => false
-        };
-    }
-
+    
     /// <summary>
     ///     Generates authentication result.
     /// </summary>
