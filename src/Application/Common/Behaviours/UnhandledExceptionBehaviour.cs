@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.Common.Exceptions;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace Application.Common.Behaviours;
@@ -12,7 +13,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
     where TRequest : notnull
 {
     /// <summary>
-    ///     The logger
+    ///     The logger.
     /// </summary>
     private readonly ILogger<UnhandledExceptionBehaviour<TRequest, TResponse>> _logger;
 
@@ -40,12 +41,23 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         }
         catch (Exception ex)
         {
-            var requestName = typeof(TRequest).Name;
+            if (!_handledExceptions.Contains(ex.GetType()))
+            {
+                var requestName = typeof(TRequest).Name;
 
-            _logger.LogError(ex, "HoppyHub Request: Unhandled Exception for Request {Name} {@Request}",
-                requestName, request);
+                _logger.LogError(ex, "HoppyHub Request: Unhandled Exception for Request {Name} {@Request}",
+                    requestName, request);
+            }
 
             throw;
         }
     }
+
+    private readonly List<Type> _handledExceptions = new()
+    {
+        typeof(ValidationException),
+        typeof(NotFoundException),
+        typeof(UnauthorizedAccessException),
+        typeof(ForbiddenAccessException)
+    };
 }
