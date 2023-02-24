@@ -3,8 +3,9 @@
 namespace Application.UnitTests.Helpers;
 
 /// <summary>
-///     TestRequest class.
+///     TestRequest record.
 /// </summary>
-public class TestRequest : IRequest<TestResponse>
+[ExcludeFromCodeCoverage]
+public record TestRequest : IRequest<TestResponse>
 {
 }
