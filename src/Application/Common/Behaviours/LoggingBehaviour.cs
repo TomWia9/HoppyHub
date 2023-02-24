@@ -12,7 +12,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     /// <summary>
     ///     The logger.
     /// </summary>
-    private readonly ILogger<TRequest> _logger;
+    private readonly ILogger<LoggingBehaviour<TRequest>> _logger;
 
     /// <summary>
     ///     The current user service.
@@ -24,7 +24,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     /// </summary>
     /// <param name="logger">The logger</param>
     /// <param name="currentUserService">The current user service</param>
-    public LoggingBehaviour(ILogger<TRequest> logger, ICurrentUserService currentUserService)
+    public LoggingBehaviour(ILogger<LoggingBehaviour<TRequest>> logger, ICurrentUserService currentUserService)
     {
         _logger = logger;
         _currentUserService = currentUserService;
