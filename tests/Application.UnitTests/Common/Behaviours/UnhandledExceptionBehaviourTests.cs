@@ -22,7 +22,10 @@ public class UnhandledExceptionBehaviourTests
     /// </summary>
     private readonly UnhandledExceptionBehaviour<TestRequest, TestResponse> _unhandledExceptionBehaviour;
 
-    private readonly Mock<RequestHandlerDelegate<TestResponse>> _requestHandlerDelegate;
+    /// <summary>
+    ///     The request handler delegate mock.
+    /// </summary>
+    private readonly Mock<RequestHandlerDelegate<TestResponse>> _requestHandlerDelegateMock;
 
     /// <summary>
     ///     Setups UnhandledExceptionBehaviourTests.
@@ -30,7 +33,7 @@ public class UnhandledExceptionBehaviourTests
     public UnhandledExceptionBehaviourTests()
     {
         _loggerMock = new Mock<ILogger<UnhandledExceptionBehaviour<TestRequest, TestResponse>>>();
-        _requestHandlerDelegate = new Mock<RequestHandlerDelegate<TestResponse>>();
+        _requestHandlerDelegateMock = new Mock<RequestHandlerDelegate<TestResponse>>();
         _unhandledExceptionBehaviour = new UnhandledExceptionBehaviour<TestRequest, TestResponse>(_loggerMock.Object);
     }
 
@@ -44,10 +47,10 @@ public class UnhandledExceptionBehaviourTests
         var request = new TestRequest();
 
         // Act
-        await _unhandledExceptionBehaviour.Handle(request, _requestHandlerDelegate.Object, CancellationToken.None);
+        await _unhandledExceptionBehaviour.Handle(request, _requestHandlerDelegateMock.Object, CancellationToken.None);
 
         // Assert
-        _requestHandlerDelegate.Verify(next => next(), Times.Once);
+        _requestHandlerDelegateMock.Verify(next => next(), Times.Once);
     }
 
     /// <summary>

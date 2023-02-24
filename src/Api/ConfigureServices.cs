@@ -26,7 +26,7 @@ public static class ConfigureServices
         });
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();
-        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+        services.AddFluentValidationClientsideAdapters();
         services.AddFluentValidationRulesToSwagger();
 
         services.AddScoped<ICurrentUserService, CurrentUserService>();
