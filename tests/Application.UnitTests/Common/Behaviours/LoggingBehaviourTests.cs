@@ -15,7 +15,7 @@ public class LoggingBehaviourTests
     /// <summary>
     ///     The logger mock.
     /// </summary>
-    private readonly Mock<ILogger<TestRequest>> _loggerMock;
+    private readonly Mock<ILogger<LoggingBehaviour<TestRequest>>> _loggerMock;
 
     /// <summary>
     ///     The current user service mock.
@@ -32,7 +32,7 @@ public class LoggingBehaviourTests
     /// </summary>
     public LoggingBehaviourTests()
     {
-        _loggerMock = new Mock<ILogger<TestRequest>>();
+        _loggerMock = new Mock<ILogger<LoggingBehaviour<TestRequest>>>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _loggingBehaviour = new LoggingBehaviour<TestRequest>(_loggerMock.Object, _currentUserServiceMock.Object);
     }
