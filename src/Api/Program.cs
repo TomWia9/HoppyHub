@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Infrastructure;
+using Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,13 +20,16 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("swagger/HoppyHubSpecification/swagger.json", "Hoppy Hub");
+        c.RoutePrefix = string.Empty;
+    });
 }
 
 app.UseSerilogRequestLogging();
 
-app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -33,6 +37,14 @@ app.MapControllers();
 try
 {
     Log.Information("Starting Hoppy Hub");
+    
+    using (var scope = app.Services.CreateScope())
+    {
+        var initialiser = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitialiser>();
+        await initialiser.InitialiseAsync();
+        await initialiser.SeedAsync();
+    }
+    
     app.Run();
 }
 catch (Exception e)
