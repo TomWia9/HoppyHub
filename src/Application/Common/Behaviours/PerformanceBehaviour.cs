@@ -62,7 +62,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
             var userId = _currentUserService.UserId;
 
             _logger.LogWarning(
-                "HoppyHub Long Running Request: RequestName: {Name},  ElapsedMilliseconds: {ElapsedMilliseconds}," +
+                "HoppyHub Long Running Request: RequestName: {Name}, ElapsedMilliseconds: {ElapsedMilliseconds}," +
                 " UserId: {@UserId}, Request: {@Request}", requestName, elapsedMilliseconds, userId, request);
         }
 

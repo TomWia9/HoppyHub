@@ -3,6 +3,6 @@
 /// <summary>
 ///     TestResponse class.
 /// </summary>
-public abstract class TestResponse
+public class TestResponse
 {
 }
