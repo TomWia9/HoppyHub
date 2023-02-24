@@ -1,4 +1,4 @@
-﻿namespace Application.Helpers;
+﻿namespace Application.UnitTests.Helpers;
 
 /// <summary>
 ///     TestResponse class.
