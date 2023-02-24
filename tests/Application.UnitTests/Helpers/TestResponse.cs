@@ -3,6 +3,7 @@
 /// <summary>
 ///     TestResponse class.
 /// </summary>
-public class TestResponse
+[ExcludeFromCodeCoverage]
+public record TestResponse
 {
 }

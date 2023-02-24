@@ -30,7 +30,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
     ///     Handles UnhandledExceptionBehaviour.
     /// </summary>
     /// <param name="request">The request</param>
-    /// <param name="next">The next</param>
+    /// <param name="next">The request handler delegate</param>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
