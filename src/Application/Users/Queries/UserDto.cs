@@ -1,9 +1,9 @@
 ﻿namespace Application.Users.Queries;
 
 /// <summary>
-///     UserDto class.
+///     UserDto record.
 /// </summary>
-public class UserDto
+public record UserDto
 {
     /// <summary>
     ///     The user id.
