@@ -17,6 +17,7 @@ public static class ConfigureServices
     /// <param name="services">The services</param>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
         services.AddMediatR(cfg =>
