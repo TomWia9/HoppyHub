@@ -1,4 +1,5 @@
 ﻿using Application.Users.Queries;
+using Application.Users.Queries.GetUsers;
 
 namespace Application.Common.Interfaces;
 
@@ -12,4 +13,10 @@ public interface IUsersService
     /// </summary>
     /// <param name="userId">The user id</param>
     public Task<UserDto> GetUserAsync(Guid userId);
+    
+    /// <summary>
+    ///     Gets users.
+    /// </summary>
+    /// <param name="request">Get users query</param>
+    Task<IEnumerable<UserDto>> GetUsersAsync(GetUsersQuery request);
 }
