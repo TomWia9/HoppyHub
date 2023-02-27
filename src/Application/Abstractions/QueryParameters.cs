@@ -1,11 +1,11 @@
 ﻿using Application.Common.Enums;
 
-namespace Application.Common.QueryParameters;
+namespace Application.Abstractions;
 
 /// <summary>
 ///     QueryParameters class.
 /// </summary>
-public abstract class QueryParameters
+public abstract record QueryParameters
 {
     /// <summary>
     ///     The column by which to sort.

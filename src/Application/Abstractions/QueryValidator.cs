@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Application.Common.QueryParameters;
+namespace Application.Abstractions;
 
 /// <summary>
 ///     Abstract query validator for query parameters.
