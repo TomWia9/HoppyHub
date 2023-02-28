@@ -28,32 +28,32 @@ public class PaginatedList<T> : List<T>
     /// <summary>
     ///     The current page.
     /// </summary>
-    private int CurrentPage { get; }
+    public int CurrentPage { get; }
 
     /// <summary>
     ///     The total number of pages.
     /// </summary>
-    private int TotalPages { get; }
+    public int TotalPages { get; }
 
     /// <summary>
     ///     The page size.
     /// </summary>
-    private int PageSize { get; }
+    public int PageSize { get; }
 
     /// <summary>
     ///     The total count of items.
     /// </summary>
-    private int TotalCount { get; }
+    public int TotalCount { get; }
 
     /// <summary>
     ///     Indicates whether the list has a previous page.
     /// </summary>
-    private bool HasPrevious => CurrentPage > 1;
+    public bool HasPrevious => CurrentPage > 1;
 
     /// <summary>
     ///     Indicates whether the list has a next page.
     /// </summary>
-    private bool HasNext => CurrentPage < TotalPages;
+    public bool HasNext => CurrentPage < TotalPages;
 
     /// <summary>
     ///     Converts queryable to the paginated list.
