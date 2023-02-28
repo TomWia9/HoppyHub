@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Common.Abstractions;
 using FluentValidation;
 
 namespace Application.Users.Queries.GetUsers;

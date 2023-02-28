@@ -1,6 +1,6 @@
 ﻿using Application.Common.Enums;
 
-namespace Application.Abstractions;
+namespace Application.Common.Abstractions;
 
 /// <summary>
 ///     QueryParameters class.
