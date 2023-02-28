@@ -27,7 +27,7 @@ public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
 
         RuleFor(x => x.SortBy)
             .Must(value =>
-                string.IsNullOrEmpty(value) || _sortingColumns.Contains(value.ToLower()))
+                string.IsNullOrWhiteSpace(value) || _sortingColumns.Contains(value.ToLower()))
             .WithMessage($"SortBy must be in [{string.Join(", ", _sortingColumns)}]");
     }
 }

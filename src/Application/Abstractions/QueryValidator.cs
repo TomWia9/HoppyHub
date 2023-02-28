@@ -16,5 +16,6 @@ public abstract class QueryValidator<T> : AbstractValidator<T> where T : QueryPa
         RuleFor(x => x.PageSize).GreaterThanOrEqualTo(1);
         RuleFor(x => x.SearchQuery).MaximumLength(100);
         RuleFor(x => x.SortDirection).IsInEnum();
+        RuleFor(x => x.SortBy).MaximumLength(50);
     }
 }
