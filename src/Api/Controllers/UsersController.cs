@@ -1,5 +1,6 @@
 ﻿using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
+using Application.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -17,6 +18,17 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<UserDto>> GetUser(Guid id)
     {
         var result = await Mediator.Send(new GetUserQuery { UserId = id });
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    ///     Gets users.
+    /// </summary>
+    [HttpGet]
+    public async Task<ActionResult<UserDto>> GetUser([FromQuery] GetUsersQuery query)
+    {
+        var result = await Mediator.Send(query);
 
         return Ok(result);
     }

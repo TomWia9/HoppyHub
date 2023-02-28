@@ -59,9 +59,9 @@ public class UsersService : IUsersService
     {
         var usersCollection = _userManager.Users;
 
-        if (string.IsNullOrEmpty(request.Role))
+        if (!string.IsNullOrEmpty(request.Role))
         {
-            var usersInRole = await _userManager.GetUsersInRoleAsync(request.Role!);
+            var usersInRole = await _userManager.GetUsersInRoleAsync(request.Role);
             usersCollection = usersInRole.AsQueryable();
         }
 
@@ -73,7 +73,7 @@ public class UsersService : IUsersService
 
         var mappedUsers = new List<UserDto>();
 
-        foreach (var user in usersCollection)
+        foreach (var user in usersCollection.ToList())
         {
             mappedUsers.Add(await MapUser(user));
         }
@@ -116,8 +116,8 @@ public class UsersService : IUsersService
     {
         var sortingColumns = new Dictionary<string, Expression<Func<ApplicationUser, object>>>
         {
-            { nameof(ApplicationUser.Email).ToLower(), u => u.Email },
-            { nameof(ApplicationUser.UserName).ToLower(), u => u.UserName }
+            { nameof(ApplicationUser.Email).ToLower(), u => u.Email ?? string.Empty },
+            { nameof(ApplicationUser.UserName).ToLower(), u => u.UserName ?? string.Empty }
         };
 
         return string.IsNullOrEmpty(sortBy) ? sortingColumns.First().Value : sortingColumns[sortBy.ToLower()];
