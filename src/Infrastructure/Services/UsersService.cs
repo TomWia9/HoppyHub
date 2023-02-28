@@ -55,7 +55,7 @@ public class UsersService : IUsersService
     ///     Gets users.
     /// </summary>
     /// <param name="request">Get users query</param>
-    public async Task<IEnumerable<UserDto>> GetUsersAsync(GetUsersQuery request)
+    public async Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request)
     {
         var usersCollection = _userManager.Users;
 

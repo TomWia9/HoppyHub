@@ -1,4 +1,5 @@
-﻿using Application.Users.Queries;
+﻿using Application.Common.Models;
+using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 
 namespace Application.Common.Interfaces;
@@ -18,5 +19,5 @@ public interface IUsersService
     ///     Gets users.
     /// </summary>
     /// <param name="request">Get users query</param>
-    Task<IEnumerable<UserDto>> GetUsersAsync(GetUsersQuery request);
+    Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request);
 }
