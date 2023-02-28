@@ -29,7 +29,7 @@ public static class UsersFilteringHelper
     }
 
     /// <summary>
-    ///     Gets filtering and searching delegates for users
+    ///     Gets filtering and searching delegates for users.
     /// </summary>
     /// <param name="request">The GetUsersQuery</param>
     public static IEnumerable<Expression<Func<ApplicationUser, bool>>> GetDelegates(GetUsersQuery request)
