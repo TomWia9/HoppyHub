@@ -51,8 +51,6 @@ public class IdentityServiceTests
     public async Task RegisterAsync_WithNewUser_ShouldReturnSuccess()
     {
         // Arrange
-        _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-            .ReturnsAsync((ApplicationUser?)(null));
         _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
         _userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
@@ -70,28 +68,7 @@ public class IdentityServiceTests
         _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
         _userManagerMock.Verify(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), Roles.User), Times.Once);
     }
-
-    /// <summary>
-    ///     Tests that the RegisterAsync method returns failure when user with given email already exists.
-    /// </summary>
-    [Fact]
-    public async Task RegisterAsync_WithExistingUser_ShouldReturnFailure()
-    {
-        // Arrange
-        _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-            .ReturnsAsync(new ApplicationUser());
-
-        // Act
-        var result = await _identityService.RegisterAsync("test@test.com", "testuser", "password");
-
-        // Assert
-        result.Succeeded.Should().BeFalse();
-        result.Token.Should().BeNullOrEmpty();
-        result.Errors.Should().NotBeNullOrEmpty();
-        _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Never);
-        _userManagerMock.Verify(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), Roles.User), Times.Never);
-    }
-
+    
     /// <summary>
     ///     Tests that RegisterAsync method returns failure with correct error when creation status is failed.
     /// </summary>
@@ -104,8 +81,6 @@ public class IdentityServiceTests
             Code = "test",
             Description = "test"
         };
-        _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
-            .ReturnsAsync((ApplicationUser?)(null));
         _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Failed(identityError));
 

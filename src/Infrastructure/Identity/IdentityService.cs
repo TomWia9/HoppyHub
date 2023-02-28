@@ -50,13 +50,6 @@ public class IdentityService : IIdentityService
             throw new ValidationException();
         }
 
-        var userExists = await _userManager.FindByEmailAsync(email);
-
-        if (userExists != null)
-        {
-            return AuthenticationResult.Failure(new[] { "User with this email already exists" });
-        }
-
         var newUser = new ApplicationUser
         {
             Email = email,
