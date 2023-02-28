@@ -26,7 +26,7 @@ public class UsersController : ApiControllerBase
     ///     Gets users.
     /// </summary>
     [HttpGet]
-    public async Task<ActionResult<UserDto>> GetUser([FromQuery] GetUsersQuery query)
+    public async Task<ActionResult<UserDto>> GetUsers([FromQuery] GetUsersQuery query)
     {
         var result = await Mediator.Send(query);
         
