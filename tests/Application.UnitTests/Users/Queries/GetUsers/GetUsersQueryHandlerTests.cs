@@ -12,16 +12,28 @@ namespace Application.UnitTests.Users.Queries.GetUsers;
 [ExcludeFromCodeCoverage]
 public class GetUsersQueryHandlerTests
 {
+    /// <summary>
+    ///     The users service mock.
+    /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
 
+    /// <summary>
+    ///     The GetUsersQueryHandler mock.
+    /// </summary>
     private readonly GetUsersQueryHandler _getUsersQueryHandler;
 
+    /// <summary>
+    ///     Setups GetUsersQueryHandlerTests.
+    /// </summary>
     public GetUsersQueryHandlerTests()
     {
         _usersServiceMock = new Mock<IUsersService>();
         _getUsersQueryHandler = new GetUsersQueryHandler(_usersServiceMock.Object);
     }
 
+    /// <summary>
+    ///     Handle method should return paginated list of UserDto.
+    /// </summary>
     [Fact]
     public async Task Handle_ShouldReturnPaginatedListOfUserDto()
     {
