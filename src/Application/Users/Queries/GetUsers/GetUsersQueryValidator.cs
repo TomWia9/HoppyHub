@@ -8,7 +8,6 @@ namespace Application.Users.Queries.GetUsers;
 /// </summary>
 public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
 {
-    //TODO Extract this to enum
     /// <summary>
     ///     The columns allowed to sort by
     /// </summary>
