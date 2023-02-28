@@ -6,7 +6,7 @@ namespace Application.Users.Queries.GetUser;
 /// <summary>
 ///     GetUser handler
 /// </summary>
-public class GetUserHandler : IRequestHandler<GetUserQuery, UserDto>
+public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 {
     /// <summary>
     ///     The users service.
@@ -17,7 +17,7 @@ public class GetUserHandler : IRequestHandler<GetUserQuery, UserDto>
     ///     Initializes GetUserHandler
     /// </summary>
     /// <param name="usersService">The users service</param>
-    public GetUserHandler(IUsersService usersService)
+    public GetUserQueryHandler(IUsersService usersService)
     {
         _usersService = usersService;
     }
