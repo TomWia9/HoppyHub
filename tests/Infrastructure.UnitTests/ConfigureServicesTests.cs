@@ -3,8 +3,10 @@ using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.UnitTests;
 
@@ -91,7 +93,7 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(DateTimeService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
-    
+
     /// <summary>
     ///     Tests that the AddInfrastructureServices method adds the IdentityService
     ///     to the service collection as IIdentityService.
@@ -104,7 +106,20 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(IdentityService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
-    
+
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the UsersService
+    ///     to the service collection as IUsersService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_AddsUsersService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IUsersService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(UsersService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
     /// <summary>
     ///     Tests that the AddInfrastructureServices method adds the JwtSettings
     ///     to the service collection as JwtSettings.
@@ -115,5 +130,22 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
         _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Singleton);
+    }
+
+    /// <summary>
+    ///     Tests that AddInfrastructureServices method configures IdentityOptions with RequireUniqueEmail option.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ConfiguresIdentityOptionsWithRequireUniqueEmail()
+    {
+        // Arrange
+        var serviceProvider = _services.BuildServiceProvider();
+        var options = serviceProvider.GetRequiredService<IOptions<IdentityOptions>>();
+
+        // Act
+        var requireUniqueEmail = options.Value.User.RequireUniqueEmail;
+
+        // Assert
+        requireUniqueEmail.Should().BeTrue();
     }
 }
