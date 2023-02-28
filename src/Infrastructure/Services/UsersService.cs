@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
@@ -78,10 +79,7 @@ public class UsersService : IUsersService
             mappedUsers.Add(await MapUser(user));
         }
 
-        return new PaginatedList<UserDto>(mappedUsers,
-            mappedUsers.Count,
-            request.PageNumber,
-            request.PageSize);
+        return mappedUsers.ToPaginatedList(request.PageNumber, request.PageSize);
     }
 
     /// <summary>
