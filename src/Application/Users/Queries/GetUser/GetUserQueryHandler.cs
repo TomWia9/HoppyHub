@@ -4,7 +4,7 @@ using MediatR;
 namespace Application.Users.Queries.GetUser;
 
 /// <summary>
-///     GetUser handler
+///     GetUser handler.
 /// </summary>
 public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
 {
@@ -14,7 +14,7 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     private readonly IUsersService _usersService;
 
     /// <summary>
-    ///     Initializes GetUserHandler
+    ///     Initializes GetUserHandler.
     /// </summary>
     /// <param name="usersService">The users service</param>
     public GetUserQueryHandler(IUsersService usersService)
