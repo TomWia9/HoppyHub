@@ -9,9 +9,19 @@ namespace Application.UnitTests.Common.Mappings;
 [ExcludeFromCodeCoverage]
 public class MappingTests
 {
+    /// <summary>
+    ///     The configuration.
+    /// </summary>
     private readonly IConfigurationProvider _configuration;
+    
+    /// <summary>
+    ///     The mapper.
+    /// </summary>
     private readonly IMapper _mapper;
 
+    /// <summary>
+    ///     Setups MappingTests.
+    /// </summary>
     public MappingTests()
     {
         _configuration = new MapperConfiguration(config =>
@@ -20,6 +30,9 @@ public class MappingTests
         _mapper = _configuration.CreateMapper();
     }
 
+    /// <summary>
+    ///     Tests that configuration is valid.
+    /// </summary>
     [Fact]
     public void ShouldHaveValidConfiguration()
     {
