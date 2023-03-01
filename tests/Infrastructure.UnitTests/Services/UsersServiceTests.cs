@@ -3,6 +3,7 @@ using Application.Common.Enums;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
@@ -444,5 +445,92 @@ public class UsersServiceTests
 
         // Assert
         await action.Should().ThrowAsync<BadRequestException>().WithMessage("Could not change password!");
+    }
+
+    /// <summary>
+    ///     Tests that DeleteUserAsync method deletes user when user exists.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUserAsync_WhenUserExists_DeletesUser()
+    {
+        // Arrange
+        const string password = "correctPassword";
+        var userId = Guid.NewGuid();
+        var request = new DeleteUserCommand { UserId = userId, Password = password };
+        var user = new ApplicationUser { Id = userId };
+        _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.CheckPasswordAsync(user, password)).ReturnsAsync(true);
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
+
+        // Act
+        await _usersService.DeleteUserAsync(request);
+
+        // Assert
+        _userManagerMock.Verify(x => x.DeleteAsync(user), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that DeleteUserAsync method throws NotFoundException when user does not exists.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUserAsync_WhenUserDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var request = new DeleteUserCommand { UserId = userId };
+        _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(null as ApplicationUser);
+
+        // Act
+        Func<Task> act = async () => await _usersService.DeleteUserAsync(request);
+
+        // Assert
+        await act.Should().ThrowAsync<NotFoundException>()
+            .WithMessage($"Entity \"{nameof(ApplicationUser)}\" ({userId}) was not found.");
+    }
+
+    /// <summary>
+    ///     Tests that DeleteUserAsync method throws BadRequestException when provided password is incorrect
+    ///     and user is not Administrator.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUserAsync_WhenProvidedPasswordIsIncorrectAndUserIsNotAdmin_ThrowsBadRequestException()
+    {
+        // Arrange
+        const string password = "incorrectPassword";
+        var userId = Guid.NewGuid();
+        var request = new DeleteUserCommand { UserId = userId, Password = password };
+        var user = new ApplicationUser { Id = userId };
+        _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.CheckPasswordAsync(user, password)).ReturnsAsync(false);
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
+
+        // Act
+        Func<Task> act = async () => await _usersService.DeleteUserAsync(request);
+
+        // Assert
+        await act.Should().ThrowAsync<BadRequestException>()
+            .WithMessage("Provided password is incorrect");
+    }
+
+    /// <summary>
+    ///     Tests that DeleteUserAsync deletes user when provided password is incorrect but user is administrator.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUserAsync_WhenProvidedPasswordIsIncorrectButUserIsAdmin_DeletesUser()
+    {
+        // Arrange
+        const string password = "incorrectPassword";
+        var userId = Guid.NewGuid();
+        var request = new DeleteUserCommand { UserId = userId, Password = password };
+        var user = new ApplicationUser { Id = userId };
+        _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.CheckPasswordAsync(user, password)).ReturnsAsync(false);
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
+
+        // Act
+        await _usersService.DeleteUserAsync(request);
+
+        // Assert
+        _userManagerMock.Verify(x => x.DeleteAsync(user), Times.Once);
     }
 }
