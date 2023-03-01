@@ -24,6 +24,7 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
         RuleFor(x => x.NewPassword)
             .NotEmpty().When(x => !string.IsNullOrEmpty(x.CurrentPassword))
             .NotEqual(x => x.CurrentPassword).WithMessage("The new password must be different from the previous one.")
+            .When(x => !string.IsNullOrEmpty(x.CurrentPassword))
             .MaximumLength(256);
     }
 }

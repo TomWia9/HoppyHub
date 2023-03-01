@@ -114,7 +114,7 @@ public class IdentityService : IIdentityService
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? throw new InvalidOperationException()),
+            new(JwtRegisteredClaimNames.Email, user.Email ?? throw new InvalidOperationException())
         };
 
         var userRoles = await _userManager.GetRolesAsync(user);

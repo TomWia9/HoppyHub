@@ -43,7 +43,7 @@ public class CurrentUserService : ICurrentUserService
     /// </summary>
     private Guid? GetCurrentUserId()
     {
-        var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue("id");
+        var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
         return string.IsNullOrEmpty(userId) ? null : Guid.Parse(userId);
     }
 
