@@ -3,6 +3,7 @@ using Application.Common.Enums;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
@@ -200,5 +201,248 @@ public class UsersServiceTests
         // Assert
         result.Should().BeOfType<PaginatedList<UserDto>>();
         result.Should().HaveCount(0);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method throws NotFoundException when user not found.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserAsync_ThrowsNotFoundException_WhenUserNotFound_()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+        {
+            UserId = Guid.NewGuid(),
+            Username = "newUsername",
+            CurrentPassword = "oldPassword",
+            NewPassword = "newPassword"
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        // Act
+        var action = new Func<Task>(() => _usersService.UpdateUserAsync(request));
+
+        // Assert
+        await action.Should().ThrowAsync<NotFoundException>()
+            .WithMessage($"*{nameof(ApplicationUser)}*{request.UserId}*");
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method updates username when new username provided.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserAsync_UpdatesUsername_WhenNewUsernameProvided()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+        {
+            UserId = Guid.NewGuid(),
+            Username = "newUsername"
+        };
+
+        var user = new ApplicationUser
+        {
+            Id = request.UserId,
+            UserName = "oldUsername"
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+
+        _userManagerMock.Setup(x => x.UpdateAsync(user))
+            .ReturnsAsync(IdentityResult.Success);
+
+        // Act
+        await _usersService.UpdateUserAsync(request);
+
+        // Assert
+        user.UserName.Should().Be(request.Username);
+        _userManagerMock.Verify(x => x.UpdateAsync(user), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method throws BadRequestException when update user result is not succeeded.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserAsync_ThrowsBadRequestException_WhenUpdateUserResultIsNotSucceeded()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+        {
+            UserId = Guid.NewGuid(),
+            Username = "newUsername"
+        };
+
+        var user = new ApplicationUser
+        {
+            Id = request.UserId,
+            UserName = "oldUsername"
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.UpdateAsync(user))
+            .ReturnsAsync(IdentityResult.Failed());
+
+        // Act
+        var action = new Func<Task>(() => _usersService.UpdateUserAsync(request));
+
+        // Assert
+        await action.Should().ThrowAsync<BadRequestException>();
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method changes password when NewPassword is provided.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserAsync_ChangesPassword_WhenNewPasswordIsProvided()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+        {
+            UserId = Guid.NewGuid(),
+            CurrentPassword = "oldPassword",
+            NewPassword = "newPassword"
+        };
+
+        var user = new ApplicationUser
+        {
+            Id = request.UserId,
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
+
+        _userManagerMock.Setup(x => x.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword))
+            .ReturnsAsync(IdentityResult.Success);
+
+        // Act
+        await _usersService.UpdateUserAsync(request);
+
+        // Assert
+        _userManagerMock.Verify(x => x.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword),
+            Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method changes password when NewPassword is provided and user is administrator.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserAsync_ChangesPassword_WhenNewPasswordIsProvidedAndCurrentUserIsAdministrator()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+        {
+            UserId = Guid.NewGuid(),
+            NewPassword = "newPassword"
+        };
+
+        var user = new ApplicationUser
+        {
+            Id = request.UserId,
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock.Setup(x => x.RemovePasswordAsync(user))
+            .ReturnsAsync(IdentityResult.Success);
+        _userManagerMock.Setup(x => x.AddPasswordAsync(user, request.NewPassword))
+            .ReturnsAsync(IdentityResult.Success);
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
+
+        // Act
+        await _usersService.UpdateUserAsync(request);
+
+        // Assert
+        _userManagerMock.Verify(x => x.RemovePasswordAsync(user), Times.Once);
+        _userManagerMock.Verify(x => x.AddPasswordAsync(user, request.NewPassword), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method throws BadRequestException
+    ///     when current user is administrator and RemovePassword result is not succeeded.
+    /// </summary>
+    [Fact]
+    public async Task
+        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsAdministratorAndRemovePasswordResultIsNotSucceeded()
+    {
+        // Arrange
+        var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
+        var user = new ApplicationUser { Id = request.UserId };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock
+            .Setup(x => x.RemovePasswordAsync(user)).ReturnsAsync(IdentityResult.Failed(new IdentityError
+                { Description = "Could not remove password!" }));
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
+
+        // Act
+        var action = new Func<Task>(() => _usersService.UpdateUserAsync(request));
+
+        // Assert
+        await action.Should().ThrowAsync<BadRequestException>().WithMessage("Could not remove password!");
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method throws BadRequestException
+    ///     when current user is administrator and AddPassword result is not succeeded.
+    /// </summary>
+    [Fact]
+    public async Task
+        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsAdministratorAndAddPasswordResultIsNotSucceeded()
+    {
+        // Arrange
+        var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
+        var user = new ApplicationUser { Id = request.UserId };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock
+            .Setup(x => x.RemovePasswordAsync(user)).ReturnsAsync(IdentityResult.Success);
+        _userManagerMock
+            .Setup(x => x.AddPasswordAsync(user, request.NewPassword)).ReturnsAsync(IdentityResult.Failed(
+                new IdentityError
+                    { Description = "Could not add password!" }));
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
+
+        // Act
+        var action = new Func<Task>(() => _usersService.UpdateUserAsync(request));
+
+        // Assert
+        await action.Should().ThrowAsync<BadRequestException>().WithMessage("Could not add password!");
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserAsync method throws BadRequestException
+    ///     when current user is administrator and AddPassword result is not succeeded.
+    /// </summary>
+    [Fact]
+    public async Task
+        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsUserAndChangePasswordResultIsNotSucceeded()
+    {
+        // Arrange
+        var request = new UpdateUserCommand
+            { UserId = Guid.NewGuid(), CurrentPassword = "currentPassword", NewPassword = "newPassword" };
+        var user = new ApplicationUser { Id = request.UserId };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
+            .ReturnsAsync(user);
+        _userManagerMock
+            .Setup(x => x.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword)).ReturnsAsync(
+                IdentityResult.Failed(
+                    new IdentityError
+                        { Description = "Could not change password!" }));
+        _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
+
+        // Act
+        var action = new Func<Task>(() => _usersService.UpdateUserAsync(request));
+
+        // Assert
+        await action.Should().ThrowAsync<BadRequestException>().WithMessage("Could not change password!");
     }
 }
