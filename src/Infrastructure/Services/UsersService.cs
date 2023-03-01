@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Helpers;
@@ -26,14 +27,22 @@ public class UsersService : IUsersService
     private readonly IQueryService<ApplicationUser> _queryService;
 
     /// <summary>
+    ///     The current user service.
+    /// </summary>
+    private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
     ///     Initializes UsersService.
     /// </summary>
     /// <param name="userManager">The user manager</param>
     /// <param name="queryService">The query service</param>
-    public UsersService(UserManager<ApplicationUser> userManager, IQueryService<ApplicationUser> queryService)
+    /// <param name="currentUserService">The current user service</param>
+    public UsersService(UserManager<ApplicationUser> userManager, IQueryService<ApplicationUser> queryService,
+        ICurrentUserService currentUserService)
     {
         _userManager = userManager;
         _queryService = queryService;
+        _currentUserService = currentUserService;
     }
 
     /// <summary>
@@ -80,6 +89,63 @@ public class UsersService : IUsersService
         }
 
         return mappedUsers.ToPaginatedList(request.PageNumber, request.PageSize);
+    }
+
+    /// <summary>
+    ///     Updates user.
+    /// </summary>
+    /// <param name="request">Update user command</param>
+    public async Task UpdateUserAsync(UpdateUserCommand request)
+    {
+        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(ApplicationUser), request.UserId);
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Username))
+        {
+            user.UserName = request.Username;
+            var updateUserResult = await _userManager.UpdateAsync(user);
+            if (!updateUserResult.Succeeded)
+            {
+                throw new BadRequestException(string.Join(", ", updateUserResult.Errors.Select(x => x.Description)));
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            if (_currentUserService.AdministratorAccess)
+            {
+                var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+
+                if (!removePasswordResult.Succeeded)
+                    throw new BadRequestException(string.Join(", ",
+                        removePasswordResult.Errors.Select(x => x.Description)));
+
+                var addPasswordResult = await _userManager.AddPasswordAsync(user, request.NewPassword);
+
+                if (!addPasswordResult.Succeeded)
+                    throw new BadRequestException(string.Join(", ",
+                        addPasswordResult.Errors.Select(x => x.Description)));
+            }
+            else
+            {
+                //TODO probably can be removed since validator care about it.
+                if (string.IsNullOrWhiteSpace(request.CurrentPassword))
+                {
+                    throw new BadRequestException("Current password is required!");
+                }
+
+                var changePasswordResult =
+                    await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+
+                if (!changePasswordResult.Succeeded)
+                    throw new BadRequestException(string.Join(", ",
+                        changePasswordResult.Errors.Select(x => x.Description)));
+            }
+        }
     }
 
     /// <summary>
