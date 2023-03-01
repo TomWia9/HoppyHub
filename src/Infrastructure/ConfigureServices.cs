@@ -37,6 +37,7 @@ public static class ConfigureServices
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
+        services.AddTransient<IUsersService, UsersService>();
 
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
@@ -76,6 +77,11 @@ public static class ConfigureServices
 
             options.AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
+        });
+        
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
         });
 
         return services;

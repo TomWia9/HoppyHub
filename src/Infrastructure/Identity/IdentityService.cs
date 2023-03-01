@@ -50,13 +50,6 @@ public class IdentityService : IIdentityService
             throw new ValidationException();
         }
 
-        var userExists = await _userManager.FindByEmailAsync(email);
-
-        if (userExists != null)
-        {
-            return AuthenticationResult.Failure(new[] { "User with this email already exists" });
-        }
-
         var newUser = new ApplicationUser
         {
             Email = email,
@@ -121,7 +114,7 @@ public class IdentityService : IIdentityService
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? throw new InvalidOperationException()),
+            new(JwtRegisteredClaimNames.Email, user.Email ?? throw new InvalidOperationException())
         };
 
         var userRoles = await _userManager.GetRolesAsync(user);

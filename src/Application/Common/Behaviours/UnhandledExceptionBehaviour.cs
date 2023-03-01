@@ -58,6 +58,7 @@ public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavio
         typeof(ValidationException),
         typeof(NotFoundException),
         typeof(UnauthorizedAccessException),
-        typeof(ForbiddenAccessException)
+        typeof(ForbiddenAccessException),
+        typeof(BadRequestException)
     };
 }
