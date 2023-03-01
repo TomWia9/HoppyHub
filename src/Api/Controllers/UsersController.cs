@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
@@ -44,6 +45,23 @@ public class UsersController : ApiControllerBase
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
+    {
+        if (id != command.UserId)
+        {
+            return BadRequest();
+        }
+
+        await Mediator.Send(command);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Deletes user.
+    /// </summary>
+    [Authorize(Policy = Policies.UserAccess)]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteUser(Guid id, [FromBody] DeleteUserCommand command)
     {
         if (id != command.UserId)
         {
