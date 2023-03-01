@@ -1,6 +1,7 @@
 ﻿using Api.Controllers;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
@@ -96,6 +97,44 @@ public class UsersControllerTests : ControllerSetup<UsersController>
 
         // Act
         var result = await Controller.UpdateUser(userId, command);
+
+        // Assert
+        result.Should().BeOfType<BadRequestResult>();
+    }
+    
+    /// <summary>
+    ///     Tests that DeleteUser endpoint with valid data returns NoContent.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUser_WithValidData_ReturnsNoContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new DeleteUserCommand { UserId = userId, Password = "password" };
+
+        MediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await Controller.DeleteUser(userId, command);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        MediatorMock.Verify(m => m.Send(It.Is<DeleteUserCommand>(c => c.UserId == userId), default), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that DeleteUser endpoint with invalid data returns BadRequest.
+    /// </summary>
+    [Fact]
+    public async Task DeleteUser_WithInvalidData_ReturnsBadRequest()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new DeleteUserCommand() { UserId = Guid.NewGuid(), Password = "password" };
+
+        // Act
+        var result = await Controller.DeleteUser(userId, command);
 
         // Assert
         result.Should().BeOfType<BadRequestResult>();
