@@ -151,4 +151,25 @@ public class ApiExceptionFilterAttributeTests
 
         result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
     }
+    
+    /// <summary>
+    ///     Tests that OnException method with BadRequestException returns BadRequestObjectResult
+    ///     with problem details.
+    /// </summary>
+    [Fact]
+    public void OnException_WithBadRequestException_ShouldReturnBadRequestObjectResultWithProblemDetails()
+    {
+        // Arrange
+        _exceptionContext.Exception = new BadRequestException();
+
+        // Act
+        _filter.OnException(_exceptionContext);
+
+        // Assert
+        var result = _exceptionContext.Result.Should().BeOfType<BadRequestObjectResult>().Subject;
+        var details = result.Value.Should().BeOfType<ProblemDetails>().Subject;
+
+        result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+        details.Title.Should().Be("Server cannot process the request.");
+    }
 }

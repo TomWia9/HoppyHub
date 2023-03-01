@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 
@@ -20,4 +21,10 @@ public interface IUsersService
     /// </summary>
     /// <param name="request">Get users query</param>
     Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request);
+    
+    /// <summary>
+    ///     Updates user.
+    /// </summary>
+    /// <param name="request">Update user command</param>
+    Task UpdateUserAsync(UpdateUserCommand request);
 }

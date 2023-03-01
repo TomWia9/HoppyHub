@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Helpers;
@@ -26,14 +27,22 @@ public class UsersService : IUsersService
     private readonly IQueryService<ApplicationUser> _queryService;
 
     /// <summary>
+    ///     The current user service.
+    /// </summary>
+    private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
     ///     Initializes UsersService.
     /// </summary>
     /// <param name="userManager">The user manager</param>
     /// <param name="queryService">The query service</param>
-    public UsersService(UserManager<ApplicationUser> userManager, IQueryService<ApplicationUser> queryService)
+    /// <param name="currentUserService">The current user service</param>
+    public UsersService(UserManager<ApplicationUser> userManager, IQueryService<ApplicationUser> queryService,
+        ICurrentUserService currentUserService)
     {
         _userManager = userManager;
         _queryService = queryService;
+        _currentUserService = currentUserService;
     }
 
     /// <summary>
@@ -83,6 +92,36 @@ public class UsersService : IUsersService
     }
 
     /// <summary>
+    ///     Updates user.
+    /// </summary>
+    /// <param name="request">Update user command</param>
+    public async Task UpdateUserAsync(UpdateUserCommand request)
+    {
+        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(ApplicationUser), request.UserId);
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Username))
+        {
+            user.UserName = request.Username;
+            var updateUserResult = await _userManager.UpdateAsync(user);
+
+            if (!updateUserResult.Succeeded)
+            {
+                throw new BadRequestException(string.Join(", ", updateUserResult.Errors.Select(x => x.Description)));
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.NewPassword))
+        {
+            await ChangePassword(user, request.CurrentPassword!, request.NewPassword);
+        }
+    }
+
+    /// <summary>
     ///     Maps ApplicationUser into UserDto.
     /// </summary>
     /// <param name="user">The ApplicationUser</param>
@@ -97,5 +136,47 @@ public class UsersService : IUsersService
             Username = user.UserName,
             Role = userRole.FirstOrDefault()
         };
+    }
+
+    private async Task ChangePassword(ApplicationUser user, string currentPassword, string newPassword)
+    {
+        if (_currentUserService.AdministratorAccess)
+        {
+            var newPasswordErrors = new List<string>();
+            foreach (var validator in _userManager.PasswordValidators)
+            {
+                var validationResult = await validator.ValidateAsync(_userManager, user, newPassword);
+                if (!validationResult.Succeeded)
+                {
+                    newPasswordErrors.Add(string.Join(" ", validationResult.Errors.Select(x => x.Description)));
+                }
+            }
+
+            if (newPasswordErrors.Any())
+            {
+                throw new BadRequestException(string.Join(", ", newPasswordErrors.Select(x => x)));
+            }
+
+            var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+
+            if (!removePasswordResult.Succeeded)
+                throw new BadRequestException(string.Join(", ",
+                    removePasswordResult.Errors.Select(x => x.Description)));
+
+            var addPasswordResult = await _userManager.AddPasswordAsync(user, newPassword);
+
+            if (!addPasswordResult.Succeeded)
+                throw new BadRequestException(string.Join(", ",
+                    addPasswordResult.Errors.Select(x => x.Description)));
+        }
+        else
+        {
+            var changePasswordResult =
+                await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            if (!changePasswordResult.Succeeded)
+                throw new BadRequestException(string.Join(", ",
+                    changePasswordResult.Errors.Select(x => x.Description)));
+        }
     }
 }

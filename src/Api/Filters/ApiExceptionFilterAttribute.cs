@@ -25,6 +25,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(NotFoundException), HandleNotFoundException },
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
             { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
+            { typeof(BadRequestException), HandleBadRequestException },
         };
     }
 
@@ -136,6 +137,25 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             StatusCode = StatusCodes.Status403Forbidden
         };
 
+        context.ExceptionHandled = true;
+    }
+    
+    /// <summary>
+    ///     Handles bad request exception.
+    /// </summary>
+    /// <param name="context">The exception context</param>
+    private static void HandleBadRequestException(ExceptionContext context)
+    {
+        var exception = context.Exception as BadRequestException;
+
+        var details = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+            Title = "Server cannot process the request.",
+            Detail = exception?.Message
+        };
+        
+        context.Result = new BadRequestObjectResult(details);
         context.ExceptionHandled = true;
     }
 

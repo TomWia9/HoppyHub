@@ -9,16 +9,16 @@ namespace Application.Users.Queries.GetUsers;
 public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
 {
     /// <summary>
-    ///     The columns allowed to sort by
+    ///     The columns allowed to sort by.
     /// </summary>
     private readonly IEnumerable<string> _sortingColumns = new List<string>
     {
         "email",
-        "username",
+        "username"
     };
 
     /// <summary>
-    ///     Initializes GetUsersQueryValidator
+    ///     Initializes GetUsersQueryValidator.
     /// </summary>
     public GetUsersQueryValidator()
     {

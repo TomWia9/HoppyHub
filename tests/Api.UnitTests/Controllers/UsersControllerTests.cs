@@ -1,6 +1,7 @@
 ﻿using Api.Controllers;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
@@ -60,5 +61,43 @@ public class UsersControllerTests : ControllerSetup<UsersController>
             .Which.Value.Should().BeSameAs(paginatedList);
         Controller.Response.Headers.Should().ContainKey("X-Pagination");
         Controller.Response.Headers["X-Pagination"].Should().BeEquivalentTo(paginatedList.GetMetadata());
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUser endpoint with valid data returns NoContent.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUser_WithValidData_ReturnsNoContent()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new UpdateUserCommand { UserId = userId, Username = "newUsername" };
+
+        MediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await Controller.UpdateUser(userId, command);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        MediatorMock.Verify(m => m.Send(It.Is<UpdateUserCommand>(c => c.UserId == userId), default), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUser endpoint with invalid data returns BadRequest.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUser_WithInvalidData_ReturnsBadRequest()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new UpdateUserCommand { UserId = Guid.NewGuid(), Username = "newUsername" };
+
+        // Act
+        var result = await Controller.UpdateUser(userId, command);
+
+        // Assert
+        result.Should().BeOfType<BadRequestResult>();
     }
 }
