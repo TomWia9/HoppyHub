@@ -29,6 +29,11 @@ public class UsersServiceTests
     private readonly Mock<IQueryService<ApplicationUser>> _queryServiceMock;
 
     /// <summary>
+    ///     The current user service mock.
+    /// </summary>
+    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+
+    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
@@ -42,7 +47,9 @@ public class UsersServiceTests
         _userManagerMock = new Mock<UserManager<ApplicationUser>>(
             Mock.Of<IUserStore<ApplicationUser>>(),
             null, null, null, null, null, null, null, null);
-        _usersService = new UsersService(_userManagerMock.Object, _queryServiceMock.Object);
+        _currentUserServiceMock = new Mock<ICurrentUserService>();
+        _usersService = new UsersService(_userManagerMock.Object, _queryServiceMock.Object,
+            _currentUserServiceMock.Object);
     }
 
     /// <summary>
