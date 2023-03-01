@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
@@ -119,6 +120,25 @@ public class UsersService : IUsersService
         {
             await ChangePassword(user, request.CurrentPassword!, request.NewPassword);
         }
+    }
+
+    /// <summary>
+    ///     Deletes user.
+    /// </summary>
+    /// <param name="request">Delete user command</param>
+    public async Task DeleteUserAsync(DeleteUserCommand request)
+    {
+        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
+
+        if (user == null)
+        {
+            throw new NotFoundException(nameof(ApplicationUser), request.UserId);
+        }
+
+        if (!_currentUserService.AdministratorAccess && !await _userManager.CheckPasswordAsync(user, request.Password!))
+            throw new BadRequestException("Provided password is incorrect");
+
+        await _userManager.DeleteAsync(user);
     }
 
     /// <summary>

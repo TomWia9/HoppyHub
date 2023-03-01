@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
@@ -27,4 +28,10 @@ public interface IUsersService
     /// </summary>
     /// <param name="request">Update user command</param>
     Task UpdateUserAsync(UpdateUserCommand request);
+    
+    /// <summary>
+    ///     Deletes user.
+    /// </summary>
+    /// <param name="request">Delete user command</param>
+    Task DeleteUserAsync(DeleteUserCommand request);
 }
