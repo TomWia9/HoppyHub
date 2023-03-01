@@ -15,8 +15,7 @@ public class DeleteUserCommandValidator: AbstractValidator<DeleteUserCommand>
     public DeleteUserCommandValidator(ICurrentUserService currentUserService)
     {
         RuleFor(x => x.Password)
-            .NotEmpty().When(_ => !currentUserService.AdministratorAccess)
+            .NotEmpty().When(_ => !currentUserService.AdministratorAccess, ApplyConditionTo.CurrentValidator)
             .MaximumLength(256);
     }
-    
 }
