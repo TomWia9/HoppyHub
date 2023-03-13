@@ -30,17 +30,17 @@ public class Beer : BaseAuditableEntity
     /// <summary>
     ///     The extract in Specific Gravity units.
     /// </summary>
-    public double SpecificGravity { get; set; }
+    public double? SpecificGravity { get; set; }
 
     /// <summary>
     ///     The extract in Balling units.
     /// </summary>
-    public double Blg { get; set; }
+    public double? Blg { get; set; }
 
     /// <summary>
     ///     The extract in Plato units.
     /// </summary>
-    public double Plato { get; set; }
+    public double? Plato { get; set; }
 
     /// <summary>
     ///     The beer style.
@@ -50,7 +50,7 @@ public class Beer : BaseAuditableEntity
     /// <summary>
     ///     The International Bitterness Units
     /// </summary>
-    public int Ibu { get; set; }
+    public int? Ibu { get; set; }
 
     /// <summary>
     ///     The country of origin.
