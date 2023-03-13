@@ -1,12 +1,18 @@
-﻿using Domain.Common;
+﻿using Application.Common.Mappings;
+using Domain.Entities;
 
-namespace Domain.Entities;
+namespace Application.Beers;
 
 /// <summary>
-///     The beer entity class.
+///     The beer data transfer object.
 /// </summary>
-public class Beer : BaseAuditableEntity
+public record BeerDto : IMapFrom<Beer>
 {
+    /// <summary>
+    ///     The beer Id.
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     ///     The beer name.
     /// </summary>
@@ -56,5 +62,4 @@ public class Beer : BaseAuditableEntity
     ///     The country of origin.
     /// </summary>
     public string? Country { get; set; }
-
 }
