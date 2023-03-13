@@ -1,5 +1,6 @@
 ﻿using Application.Beers;
 using Application.Beers.Commands.CreateBeer;
+using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace Api.Controllers;
 public class BeersController : ApiControllerBase
 {
     /// <summary>
-    ///     Creates beer.
+    ///     Creates the beer.
     /// </summary>
     /// <param name="command">The CreateBeerCommand</param>
     /// <returns>An ActionResult of type BeerDto</returns>
@@ -27,7 +28,7 @@ public class BeersController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Updates beer.
+    ///     Updates the beer.
     /// </summary>
     /// <param name="id">The beer id</param>
     /// <param name="command">The UpdateBeerCommand</param>
@@ -40,12 +41,26 @@ public class BeersController : ApiControllerBase
         {
             return BadRequest();
         }
-        
+
         await Mediator.Send(command);
 
         return NoContent();
     }
+    
+    /// <summary>
+    ///     Deletes the beer.
+    /// </summary>
+    /// <param name="id">The beer id</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpDelete("{id:guid}")]
+    public async Task<ActionResult<BeerDto>> DeleteBeer(Guid id)
+    {
+        await Mediator.Send(new DeleteBeerCommand { Id = id });
 
+        return NoContent();
+    }
+    
     /// <summary>
     ///     Gets beer by id.
     /// </summary>
