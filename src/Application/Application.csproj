@@ -19,7 +19,6 @@
 
     <ItemGroup>
       <Folder Include="Beers\Commands\DeleteBeer" />
-      <Folder Include="Beers\Commands\UpdateBeer" />
     </ItemGroup>
 
 </Project>
