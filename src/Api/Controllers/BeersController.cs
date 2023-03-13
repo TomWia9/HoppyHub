@@ -1,5 +1,6 @@
 ﻿using Application.Beers;
 using Application.Beers.Commands.CreateBeer;
+using Application.Beers.Commands.UpdateBeer;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,31 @@ public class BeersController : ApiControllerBase
         return CreatedAtAction("GetBeer", new { id = result.Id }, result);
     }
 
+    /// <summary>
+    ///     Updates beer.
+    /// </summary>
+    /// <param name="id">The beer id</param>
+    /// <param name="command">The UpdateBeerCommand</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpPut("{id:guid}")]
+    public async Task<ActionResult<BeerDto>> UpdateBeer(Guid id, [FromBody] UpdateBeerCommand command)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest();
+        }
+        
+        await Mediator.Send(command);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Gets beer by id.
+    /// </summary>
+    /// <param name="id">The beer id</param>
+    /// <returns>An ActionResult of type BeerDto</returns>
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BeerDto>> GetBeer(Guid id)
     {
