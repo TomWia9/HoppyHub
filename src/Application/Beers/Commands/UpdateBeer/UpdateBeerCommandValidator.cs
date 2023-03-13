@@ -2,12 +2,12 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Beers.Commands.CreateBeer;
+namespace Application.Beers.Commands.UpdateBeer;
 
 /// <summary>
-///     CreateBeerCommand validator
+///     UpdateBeerCommand validator
 /// </summary>
-public class CreateBeerCommandValidator : AbstractValidator<CreateBeerCommand>
+public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
 {
     /// <summary>
     ///     The database context.
@@ -15,10 +15,10 @@ public class CreateBeerCommandValidator : AbstractValidator<CreateBeerCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     Initializes CreateBeerCommandValidator.
+    ///     Initializes UpdateBeerCommandValidator
     /// </summary>
     /// <param name="context">The database context</param>
-    public CreateBeerCommandValidator(IApplicationDbContext context)
+    public UpdateBeerCommandValidator(IApplicationDbContext context)
     {
         _context = context;
 
@@ -39,13 +39,13 @@ public class CreateBeerCommandValidator : AbstractValidator<CreateBeerCommand>
     /// <summary>
     ///     The custom rule indicating whether beer name is unique within brewery.
     /// </summary>
-    /// <param name="model">The CreateBeerCommand</param>
+    /// <param name="model">The UpdateBeerCommand</param>
     /// <param name="name">The beer name</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    private async Task<bool> BeUniqueNameWithinBrewery(CreateBeerCommand model, string name,
+    private async Task<bool> BeUniqueNameWithinBrewery(UpdateBeerCommand model, string name,
         CancellationToken cancellationToken)
     {
-        return await _context.Beers.Where(x => x.Brewery == model.Brewery)
+        return await _context.Beers.Where(x => x.Id != model.Id && x.Brewery == model.Brewery)
             .AllAsync(x => x.Name != name.Trim(), cancellationToken);
     }
 }
