@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Beers.Commands.UpdateBeer;
 
 /// <summary>
-///     UpdateBeerCommand validator
+///     UpdateBeerCommand validator.
 /// </summary>
 public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
 {
@@ -15,7 +15,7 @@ public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     Initializes UpdateBeerCommandValidator
+    ///     Initializes UpdateBeerCommandValidator.
     /// </summary>
     /// <param name="context">The database context</param>
     public UpdateBeerCommandValidator(IApplicationDbContext context)
