@@ -31,30 +31,5 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) || BeersFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
             .WithMessage($"SortBy must be in [{string.Join(", ", BeersFilteringHelper.SortingColumns.Keys)}]");
-
-        RuleFor(x => x)
-            .Must(HaveOnlyOneExtractField)
-            .WithMessage("Only one unit of extract can have value.");
-    }
-
-    /// <summary>
-    ///     Indicates whether model has only one extract field.
-    /// </summary>
-    /// <param name="model"></param>
-    /// <returns></returns>
-    private static bool HaveOnlyOneExtractField(GetBeersQuery model)
-    {
-        var extractFieldCount = 0;
-
-        if (model.MinSpecificGravity.HasValue || model.MaxSpecificGravity.HasValue)
-            extractFieldCount++;
-
-        if (model.MinBlg.HasValue || model.MaxBlg.HasValue)
-            extractFieldCount++;
-
-        if (model.MinPlato.HasValue || model.MaxPlato.HasValue)
-            extractFieldCount++;
-
-        return extractFieldCount <= 1;
     }
 }

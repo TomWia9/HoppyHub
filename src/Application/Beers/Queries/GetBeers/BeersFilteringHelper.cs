@@ -58,27 +58,12 @@ public static class BeersFilteringHelper
         if (!string.IsNullOrWhiteSpace(request.Country))
             delegates.Add(x => x.Country != null && string.Equals(x.Country.ToUpper(), request.Country.ToUpper()));
 
-        if (request.MinSpecificGravity != null || request.MaxSpecificGravity != null)
-        {
-            if (request.MinSpecificGravity != null)
-                delegates.Add(x => x.SpecificGravity >= request.MinSpecificGravity);
-            if (request.MaxSpecificGravity != null)
-                delegates.Add(x => x.SpecificGravity <= request.MaxSpecificGravity);
-        }
-        else if (request.MinBlg != null || request.MaxBlg != null)
-        {
-            if (request.MinBlg != null)
-                delegates.Add(x => x.Blg >= request.MinBlg);
-            if (request.MaxBlg != null)
-                delegates.Add(x => x.Blg <= request.MaxBlg);
-        }
-        else if (request.MinPlato != null || request.MaxPlato != null)
-        {
-            if (request.MinPlato != null)
-                delegates.Add(x => x.Plato >= request.MinPlato);
-            if (request.MaxPlato != null)
-                delegates.Add(x => x.Plato <= request.MaxPlato);
-        }
+        Expression<Func<Beer, bool>> extractDelegate =
+            x => (x.SpecificGravity >= request.MinSpecificGravity && x.SpecificGravity <= request.MaxSpecificGravity) ||
+                 (x.Blg >= request.MinBlg && x.Blg <= request.MaxBlg) ||
+                 (x.Plato >= request.MinPlato && x.Plato <= request.MaxPlato);
+
+        delegates.Add(extractDelegate);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
@@ -86,6 +71,7 @@ public static class BeersFilteringHelper
         }
 
         var searchQuery = request.SearchQuery.Trim().ToUpper();
+
         Expression<Func<Beer, bool>> searchDelegate =
             x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Brewery != null && x.Brewery.ToUpper().Contains(searchQuery)) ||
