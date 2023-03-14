@@ -63,26 +63,26 @@ public static class BeersFilteringHelper
 
         if (request.MinSpecificGravity != null || request.MaxSpecificGravity != null)
         {
-            if(request.MinSpecificGravity != null)
+            if (request.MinSpecificGravity != null)
                 delegates.Add(x => x.SpecificGravity >= request.MinSpecificGravity);
-            if(request.MaxSpecificGravity != null)
+            if (request.MaxSpecificGravity != null)
                 delegates.Add(x => x.SpecificGravity <= request.MaxSpecificGravity);
-        } 
+        }
         else if (request.MinBlg != null || request.MaxBlg != null)
         {
-            if(request.MinBlg != null)
+            if (request.MinBlg != null)
                 delegates.Add(x => x.Blg >= request.MinBlg);
-            if(request.MaxBlg != null)
+            if (request.MaxBlg != null)
                 delegates.Add(x => x.Blg <= request.MaxBlg);
         }
         else if (request.MinPlato != null || request.MaxPlato != null)
         {
-            if(request.MinPlato != null)
+            if (request.MinPlato != null)
                 delegates.Add(x => x.Plato >= request.MinPlato);
-            if(request.MaxPlato != null)
+            if (request.MaxPlato != null)
                 delegates.Add(x => x.Plato <= request.MaxPlato);
         }
-        
+
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
             return delegates;
@@ -90,10 +90,11 @@ public static class BeersFilteringHelper
 
         var searchQuery = request.SearchQuery.Trim().ToUpper();
         Expression<Func<Beer, bool>> searchDelegate =
-            x => x.Description != null && x.Country != null && x.Style != null && x.Brewery != null && x.Name != null &&
-                 (x.Name.ToUpper().Contains(searchQuery) || x.Brewery.ToUpper().Contains(searchQuery) ||
-                  x.Style.ToUpper().Contains(searchQuery) || x.Country.ToUpper().Contains(searchQuery) ||
-                  x.Description.ToUpper().Contains(searchQuery));
+            x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) || 
+                 (x.Brewery != null && x.Brewery.ToUpper().Contains(searchQuery)) ||
+                 (x.Style != null && x.Style.ToUpper().Contains(searchQuery)) || 
+                 (x.Country != null && x.Country.ToUpper().Contains(searchQuery)) ||
+                 (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 
