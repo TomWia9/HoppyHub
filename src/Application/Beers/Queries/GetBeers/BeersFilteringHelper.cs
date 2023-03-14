@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Extensions;
 using Domain.Entities;
 
 namespace Application.Beers.Queries.GetBeers;
@@ -70,11 +69,12 @@ public static class BeersFilteringHelper
             return delegates;
         }
 
-        var searchQuery = request.SearchQuery.Trim();
+        var searchQuery = request.SearchQuery.Trim().ToLower();
         Expression<Func<Beer, bool>> searchDelegate =
-            x => x.Name.ContainsCaseInsensitive(searchQuery) || x.Brewery.ContainsCaseInsensitive(searchQuery) ||
-                 x.Style.ContainsCaseInsensitive(searchQuery) || x.Country.ContainsCaseInsensitive(searchQuery) ||
-                 x.Description.ContainsCaseInsensitive(searchQuery);
+            x => x.Description != null && x.Country != null && x.Style != null && x.Brewery != null && x.Name != null &&
+                 (x.Name.ToLower().Contains(searchQuery) || x.Brewery.ToLower().Contains(searchQuery) ||
+                  x.Style.ToLower().Contains(searchQuery) || x.Country.ToLower().Contains(searchQuery) ||
+                  x.Description.ToLower().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 
