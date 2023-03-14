@@ -47,19 +47,16 @@ public static class BeersFilteringHelper
         };
 
         if (!string.IsNullOrWhiteSpace(request.Name))
-            delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
+            delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Brewery))
-            delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
+            delegates.Add(x => x.Brewery != null && string.Equals(x.Brewery.ToUpper(), request.Brewery.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Style))
-            delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
+            delegates.Add(x => x.Style != null && string.Equals(x.Style.ToUpper(), request.Style.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Country))
-            delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
-
-        if (!string.IsNullOrWhiteSpace(request.Name))
-            delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
+            delegates.Add(x => x.Country != null && string.Equals(x.Country.ToUpper(), request.Country.ToUpper()));
 
         if (request.MinSpecificGravity != null || request.MaxSpecificGravity != null)
         {
@@ -90,9 +87,9 @@ public static class BeersFilteringHelper
 
         var searchQuery = request.SearchQuery.Trim().ToUpper();
         Expression<Func<Beer, bool>> searchDelegate =
-            x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) || 
+            x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Brewery != null && x.Brewery.ToUpper().Contains(searchQuery)) ||
-                 (x.Style != null && x.Style.ToUpper().Contains(searchQuery)) || 
+                 (x.Style != null && x.Style.ToUpper().Contains(searchQuery)) ||
                  (x.Country != null && x.Country.ToUpper().Contains(searchQuery)) ||
                  (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
 
