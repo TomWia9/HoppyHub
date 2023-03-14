@@ -42,32 +42,32 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     /// <summary>
     ///     Minimum specific gravity units.
     /// </summary>
-    public double? MinSpecificGravity { get; init; } = 0;
+    public double? MinSpecificGravity { get; init; }
 
     /// <summary>
     ///     Maximum specific gravity units.
     /// </summary>
-    public double? MaxSpecificGravity { get; init; } = 1.2;
+    public double? MaxSpecificGravity { get; init; }
 
     /// <summary>
     ///     Minimum Balling units.
     /// </summary>
-    public double? MinBlg { get; init; } = 0;
+    public double? MinBlg { get; init; }
 
     /// <summary>
     ///     Maximum Balling units.
     /// </summary>
-    public double? MaxBlg { get; init; } = 100;
+    public double? MaxBlg { get; init; }
 
     /// <summary>
     ///     Minimum Plato units.
     /// </summary>
-    public double? MinPlato { get; init; } = 0;
+    public double? MinPlato { get; init; }
 
     /// <summary>
     ///     Maximum Plato units.
     /// </summary>
-    public double? MaxPlato { get; init; } = 100;
+    public double? MaxPlato { get; init; }
 
     /// <summary>
     ///     Minimum Ibu.
@@ -78,5 +78,4 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     ///     Maximum Ibu.
     /// </summary>
     public int? MaxIbu { get; init; } = 200;
-
 }

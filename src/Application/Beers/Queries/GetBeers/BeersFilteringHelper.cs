@@ -43,10 +43,7 @@ public static class BeersFilteringHelper
         var delegates = new List<Expression<Func<Beer, bool>>>
         {
             x => x.AlcoholByVolume >= request.MinAlcoholByVolume && x.AlcoholByVolume <= request.MaxAlcoholByVolume,
-            x => x.SpecificGravity >= request.MinSpecificGravity && x.SpecificGravity <= request.MaxSpecificGravity,
-            x => x.Blg >= request.MinBlg && x.Blg <= request.MaxBlg,
-            x => x.Plato >= request.MinPlato && x.Plato <= request.MaxPlato,
-            x => x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu,
+            x => x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu || x.Ibu == null
         };
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -64,6 +61,28 @@ public static class BeersFilteringHelper
         if (!string.IsNullOrWhiteSpace(request.Name))
             delegates.Add(x => string.Equals(x.Name, request.Name, StringComparison.OrdinalIgnoreCase));
 
+        if (request.MinSpecificGravity != null || request.MaxSpecificGravity != null)
+        {
+            if(request.MinSpecificGravity != null)
+                delegates.Add(x => x.SpecificGravity >= request.MinSpecificGravity);
+            if(request.MaxSpecificGravity != null)
+                delegates.Add(x => x.SpecificGravity <= request.MaxSpecificGravity);
+        } 
+        else if (request.MinBlg != null || request.MaxBlg != null)
+        {
+            if(request.MinBlg != null)
+                delegates.Add(x => x.Blg >= request.MinBlg);
+            if(request.MaxBlg != null)
+                delegates.Add(x => x.Blg <= request.MaxBlg);
+        }
+        else if (request.MinPlato != null || request.MaxPlato != null)
+        {
+            if(request.MinPlato != null)
+                delegates.Add(x => x.Plato >= request.MinPlato);
+            if(request.MaxPlato != null)
+                delegates.Add(x => x.Plato <= request.MaxPlato);
+        }
+        
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
             return delegates;
