@@ -1,12 +1,18 @@
-﻿using Domain.Common;
+﻿using Application.Common.Mappings;
+using Domain.Entities;
 
-namespace Domain.Entities;
+namespace Application.Beers;
 
 /// <summary>
-///     The beer entity class.
+///     The beer data transfer object.
 /// </summary>
-public class Beer : BaseAuditableEntity
+public record BeerDto : IMapFrom<Beer>
 {
+    /// <summary>
+    ///     The beer Id.
+    /// </summary>
+    public Guid Id { get; set; }
+    
     /// <summary>
     ///     The beer name.
     /// </summary>
@@ -18,15 +24,15 @@ public class Beer : BaseAuditableEntity
     public string? Brewery { get; set; }
     
     /// <summary>
-    ///     The beer style.
-    /// </summary>
-    public string? Style { get; set; }
-    
-    /// <summary>
     ///     The alcohol by volume.
     /// </summary>
     public double AlcoholByVolume { get; set; }
-
+    
+    /// <summary>
+    ///     The beer description.
+    /// </summary>
+    public string? Description { get; set; }
+    
     /// <summary>
     ///     The extract in Specific Gravity units.
     /// </summary>
@@ -43,6 +49,11 @@ public class Beer : BaseAuditableEntity
     public double? Plato { get; set; }
 
     /// <summary>
+    ///     The beer style.
+    /// </summary>
+    public string? Style { get; set; }
+
+    /// <summary>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }
@@ -51,9 +62,4 @@ public class Beer : BaseAuditableEntity
     ///     The country of origin.
     /// </summary>
     public string? Country { get; set; }
-    
-    /// <summary>
-    ///     The beer description.
-    /// </summary>
-    public string? Description { get; set; }
 }

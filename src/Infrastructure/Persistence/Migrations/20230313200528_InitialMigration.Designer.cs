@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230221124846_AddAuthorization")]
-    partial class AddAuthorization
+    [Migration("20230313200528_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,22 +29,73 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnOrder(0);
+
+                    b.Property<double>("AlcoholByVolume")
+                        .HasColumnType("float")
+                        .HasColumnOrder(4);
+
+                    b.Property<double?>("Blg")
+                        .HasColumnType("float")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("Brewery")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(9);
 
                     b.Property<DateTime>("Created")
+                        .HasMaxLength(50)
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("CreatedBy")
+                        .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)")
+                        .HasColumnOrder(10);
+
+                    b.Property<int?>("Ibu")
+                        .HasColumnType("int")
+                        .HasColumnOrder(8);
+
                     b.Property<DateTime?>("LastModified")
+                        .HasMaxLength(50)
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("LastModifiedBy")
+                        .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)")
+                        .HasColumnOrder(1);
+
+                    b.Property<double?>("Plato")
+                        .HasColumnType("float")
+                        .HasColumnOrder(7);
+
+                    b.Property<double?>("SpecificGravity")
+                        .HasColumnType("float")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("Style")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnOrder(3);
 
                     b.HasKey("Id");
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class AddAuthorization : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,6 +48,31 @@ namespace Infrastructure.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Beers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Brewery = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Style = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AlcoholByVolume = table.Column<double>(type: "float", nullable: false),
+                    SpecificGravity = table.Column<double>(type: "float", nullable: true),
+                    Blg = table.Column<double>(type: "float", nullable: true),
+                    Plato = table.Column<double>(type: "float", nullable: true),
+                    Ibu = table.Column<int>(type: "int", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: true),
+                    LastModified = table.Column<DateTime>(type: "datetime2", maxLength: 50, nullable: true),
+                    LastModifiedBy = table.Column<Guid>(type: "uniqueidentifier", maxLength: 40, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Beers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -213,6 +238,9 @@ namespace Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Beers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

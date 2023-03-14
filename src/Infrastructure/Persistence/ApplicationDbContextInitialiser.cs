@@ -146,13 +146,22 @@ public class ApplicationDbContextInitialiser
             {
                 new()
                 {
-                    Id = new Guid(),
-                    Name = "Hazy morning"
+                    Name = "Hazy Morning",
+                    AlcoholByVolume = 4.4,
+                    Blg = 12,
+                    Brewery = "Pinta",
+                    Country = "Poland",
+                    Style = "APA"
                 },
                 new()
                 {
-                    Id = new Guid(),
-                    Name = "PanIPAni"
+                    Name = "Pan IPAni",
+                    AlcoholByVolume = 6,
+                    Blg = 16.5,
+                    Brewery = "Trzech Kumpli",
+                    Country = "Poland",
+                    Ibu = 45,
+                    Style = "IPA"
                 }
             };
 
