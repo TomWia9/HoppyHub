@@ -58,13 +58,6 @@ public static class BeersFilteringHelper
         if (!string.IsNullOrWhiteSpace(request.Country))
             delegates.Add(x => x.Country != null && string.Equals(x.Country.ToUpper(), request.Country.ToUpper()));
 
-        Expression<Func<Beer, bool>> extractDelegate =
-            x => (x.SpecificGravity >= request.MinSpecificGravity && x.SpecificGravity <= request.MaxSpecificGravity) ||
-                 (x.Blg >= request.MinBlg && x.Blg <= request.MaxBlg) ||
-                 (x.Plato >= request.MinPlato && x.Plato <= request.MaxPlato);
-
-        delegates.Add(extractDelegate);
-
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
             return delegates;
