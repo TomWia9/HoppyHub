@@ -53,7 +53,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             Country = request.Country
         };
 
-        _context.Beers.Add(entity);
+        await _context.Beers.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
         var beerDto = _mapper.Map<BeerDto>(entity);
