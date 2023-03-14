@@ -29,7 +29,7 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
         RuleFor(x => x.MaxIbu).InclusiveBetween(0, 200);
         RuleFor(x => x.SortBy)
             .Must(value =>
-                string.IsNullOrWhiteSpace(value) || BeersFilteringHelper.SortingColumns.ContainsKey(value.ToLower()))
+                string.IsNullOrWhiteSpace(value) || BeersFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
             .WithMessage($"SortBy must be in [{string.Join(", ", BeersFilteringHelper.SortingColumns)}]");
 
         RuleFor(x => x)

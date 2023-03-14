@@ -13,15 +13,15 @@ public static class BeersFilteringHelper
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Beer, object>>> SortingColumns = new()
     {
-        { nameof(Beer.Name).ToLower(), x => x.Name ?? string.Empty },
-        { nameof(Beer.Brewery).ToLower(), x => x.Brewery ?? string.Empty },
-        { nameof(Beer.Style).ToLower(), x => x.Style ?? string.Empty },
-        { nameof(Beer.Country).ToLower(), x => x.Country ?? string.Empty },
-        { nameof(Beer.AlcoholByVolume).ToLower(), x => x.AlcoholByVolume },
-        { nameof(Beer.SpecificGravity).ToLower(), x => x.SpecificGravity ?? 0 },
-        { nameof(Beer.Blg).ToLower(), x => x.Blg ?? 0 },
-        { nameof(Beer.Plato).ToLower(), x => x.Plato ?? 0 },
-        { nameof(Beer.Ibu).ToLower(), x => x.Ibu ?? 0 }
+        { nameof(Beer.Name).ToUpper(), x => x.Name ?? string.Empty },
+        { nameof(Beer.Brewery).ToUpper(), x => x.Brewery ?? string.Empty },
+        { nameof(Beer.Style).ToUpper(), x => x.Style ?? string.Empty },
+        { nameof(Beer.Country).ToUpper(), x => x.Country ?? string.Empty },
+        { nameof(Beer.AlcoholByVolume).ToUpper(), x => x.AlcoholByVolume },
+        { nameof(Beer.SpecificGravity).ToUpper(), x => x.SpecificGravity ?? 0 },
+        { nameof(Beer.Blg).ToUpper(), x => x.Blg ?? 0 },
+        { nameof(Beer.Plato).ToUpper(), x => x.Plato ?? 0 },
+        { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 }
     };
 
     /// <summary>
@@ -31,7 +31,7 @@ public static class BeersFilteringHelper
     /// <returns>The sorting expression</returns>
     public static Expression<Func<Beer, object>> GetSortingColumn(string? sortBy)
     {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToLower()];
+        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
     }
 
     /// <summary>
@@ -88,12 +88,12 @@ public static class BeersFilteringHelper
             return delegates;
         }
 
-        var searchQuery = request.SearchQuery.Trim().ToLower();
+        var searchQuery = request.SearchQuery.Trim().ToUpper();
         Expression<Func<Beer, bool>> searchDelegate =
             x => x.Description != null && x.Country != null && x.Style != null && x.Brewery != null && x.Name != null &&
-                 (x.Name.ToLower().Contains(searchQuery) || x.Brewery.ToLower().Contains(searchQuery) ||
-                  x.Style.ToLower().Contains(searchQuery) || x.Country.ToLower().Contains(searchQuery) ||
-                  x.Description.ToLower().Contains(searchQuery));
+                 (x.Name.ToUpper().Contains(searchQuery) || x.Brewery.ToUpper().Contains(searchQuery) ||
+                  x.Style.ToUpper().Contains(searchQuery) || x.Country.ToUpper().Contains(searchQuery) ||
+                  x.Description.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 
