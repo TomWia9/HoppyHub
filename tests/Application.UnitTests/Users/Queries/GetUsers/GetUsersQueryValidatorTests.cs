@@ -77,7 +77,7 @@ public class GetUsersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [email, username]");
+            .WithErrorMessage("SortBy must be in [EMAIL, USERNAME]");
     }
 
     /// <summary>
