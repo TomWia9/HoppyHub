@@ -42,7 +42,6 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.Brewery = request.Brewery;
         entity.AlcoholByVolume = request.AlcoholByVolume;
         entity.Description = request.Description;
-        entity.SpecificGravity = request.SpecificGravity;
         entity.Blg = request.Blg;
         entity.Plato = request.Plato;
         entity.Style = request.Style;

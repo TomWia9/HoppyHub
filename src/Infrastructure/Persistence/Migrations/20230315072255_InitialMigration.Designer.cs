@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230313200528_InitialMigration")]
+    [Migration("20230315072255_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -29,28 +29,23 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnOrder(0);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("AlcoholByVolume")
-                        .HasColumnType("float")
-                        .HasColumnOrder(4);
+                        .HasColumnType("float");
 
                     b.Property<double?>("Blg")
-                        .HasColumnType("float")
-                        .HasColumnOrder(6);
+                        .HasColumnType("float");
 
                     b.Property<string>("Brewery")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnOrder(2);
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Country")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(9);
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Created")
                         .HasMaxLength(50)
@@ -62,12 +57,10 @@ namespace Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)")
-                        .HasColumnOrder(10);
+                        .HasColumnType("nvarchar(3000)");
 
                     b.Property<int?>("Ibu")
-                        .HasColumnType("int")
-                        .HasColumnOrder(8);
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("LastModified")
                         .HasMaxLength(50)
@@ -80,22 +73,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
-                        .HasColumnOrder(1);
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<double?>("Plato")
-                        .HasColumnType("float")
-                        .HasColumnOrder(7);
-
-                    b.Property<double?>("SpecificGravity")
-                        .HasColumnType("float")
-                        .HasColumnOrder(5);
+                        .HasColumnType("float");
 
                     b.Property<string>("Style")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnOrder(3);
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 

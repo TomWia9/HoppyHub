@@ -169,46 +169,6 @@ public class UpdateBeerCommandValidatorTests
     }
     
     /// <summary>
-    ///     Tests that validation should not have error for SpecificGravity when SpecificGravity is valid.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenSpecificGravityIsValid()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            SpecificGravity = 1.015
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.SpecificGravity);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for SpecificGravity when SpecificGravity is out of range.
-    /// </summary>
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(1.3)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenSpecificGravityIsOutOfRange(double specificGravity)
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            SpecificGravity = specificGravity
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.SpecificGravity);
-    }
-    
-    /// <summary>
     ///     Tests that validation should not have error for Blg when Blg is valid.
     /// </summary>
     [Fact]

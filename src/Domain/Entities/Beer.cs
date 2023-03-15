@@ -28,11 +28,6 @@ public class Beer : BaseAuditableEntity
     public double AlcoholByVolume { get; set; }
 
     /// <summary>
-    ///     The extract in Specific Gravity units.
-    /// </summary>
-    public double? SpecificGravity { get; set; }
-
-    /// <summary>
     ///     The extract in Balling units.
     /// </summary>
     public double? Blg { get; set; }

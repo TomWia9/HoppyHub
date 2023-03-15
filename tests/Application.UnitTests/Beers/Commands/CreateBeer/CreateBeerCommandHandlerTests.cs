@@ -52,7 +52,6 @@ public class CreateBeerCommandHandlerTests
             Brewery = "Test brewery",
             AlcoholByVolume = 5.0,
             Description = "Test description",
-            SpecificGravity = 1.05,
             Blg = 12.0,
             Plato = 10.0,
             Style = "Test style",
@@ -67,7 +66,6 @@ public class CreateBeerCommandHandlerTests
                 Brewery = source.Brewery,
                 AlcoholByVolume = source.AlcoholByVolume,
                 Description = source.Description,
-                SpecificGravity = source.SpecificGravity,
                 Blg = source.Blg,
                 Plato = source.Plato,
                 Style = source.Style,
@@ -84,7 +82,6 @@ public class CreateBeerCommandHandlerTests
         result.Brewery.Should().Be(request.Brewery);
         result.AlcoholByVolume.Should().Be(request.AlcoholByVolume);
         result.Description.Should().Be(request.Description);
-        result.SpecificGravity.Should().Be(request.SpecificGravity);
         result.Blg.Should().Be(request.Blg);
         result.Plato.Should().Be(request.Plato);
         result.Style.Should().Be(request.Style);

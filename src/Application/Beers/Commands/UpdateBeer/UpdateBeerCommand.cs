@@ -33,11 +33,6 @@ public record UpdateBeerCommand : IRequest
     public string? Description { get; init; }
 
     /// <summary>
-    ///     The extract in Specific Gravity units.
-    /// </summary>
-    public double? SpecificGravity { get; init; }
-
-    /// <summary>
     ///     The extract in Balling units.
     /// </summary>
     public double? Blg { get; init; }
