@@ -2,6 +2,7 @@
 using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
+using Application.Beers.Queries.GetBeer;
 using Application.Beers.Queries.GetBeers;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -36,8 +37,9 @@ public class BeersController : ApiControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BeerDto>> GetBeer(Guid id)
     {
-        // TODO Add implementation
-        throw new NotImplementedException();
+        var result = await Mediator.Send(new GetBeerQuery { Id = id });
+
+        return Ok(result);
     }
 
     /// <summary>
