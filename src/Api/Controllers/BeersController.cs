@@ -2,6 +2,8 @@
 using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
+using Application.Beers.Queries.GetBeer;
+using Application.Beers.Queries.GetBeers;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +15,33 @@ namespace Api.Controllers;
 /// </summary>
 public class BeersController : ApiControllerBase
 {
+    /// <summary>
+    ///     Gets beers.
+    /// </summary>
+    /// <returns>An ActionResult of type PaginatedList of BeerDto</returns>
+    [HttpGet]
+    public async Task<ActionResult<BeerDto>> GetBeers([FromQuery] GetBeersQuery query)
+    {
+        var result = await Mediator.Send(query);
+
+        Response.Headers.Add("X-Pagination", result.GetMetadata());
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    ///     Gets beer by id.
+    /// </summary>
+    /// <param name="id">The beer id</param>
+    /// <returns>An ActionResult of type BeerDto</returns>
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<BeerDto>> GetBeer(Guid id)
+    {
+        var result = await Mediator.Send(new GetBeerQuery { Id = id });
+
+        return Ok(result);
+    }
+
     /// <summary>
     ///     Creates the beer.
     /// </summary>
@@ -46,7 +75,7 @@ public class BeersController : ApiControllerBase
 
         return NoContent();
     }
-    
+
     /// <summary>
     ///     Deletes the beer.
     /// </summary>
@@ -59,17 +88,5 @@ public class BeersController : ApiControllerBase
         await Mediator.Send(new DeleteBeerCommand { Id = id });
 
         return NoContent();
-    }
-    
-    /// <summary>
-    ///     Gets beer by id.
-    /// </summary>
-    /// <param name="id">The beer id</param>
-    /// <returns>An ActionResult of type BeerDto</returns>
-    [HttpGet("{id:guid}")]
-    public async Task<ActionResult<BeerDto>> GetBeer(Guid id)
-    {
-        // TODO Add implementation
-        throw new NotImplementedException();
     }
 }

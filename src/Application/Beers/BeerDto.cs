@@ -32,11 +32,6 @@ public record BeerDto : IMapFrom<Beer>
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
-    
-    /// <summary>
-    ///     The extract in Specific Gravity units.
-    /// </summary>
-    public double? SpecificGravity { get; set; }
 
     /// <summary>
     ///     The extract in Balling units.

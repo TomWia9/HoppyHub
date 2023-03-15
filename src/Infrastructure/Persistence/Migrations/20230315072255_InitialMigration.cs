@@ -59,7 +59,6 @@ namespace Infrastructure.Persistence.Migrations
                     Brewery = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Style = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     AlcoholByVolume = table.Column<double>(type: "float", nullable: false),
-                    SpecificGravity = table.Column<double>(type: "float", nullable: true),
                     Blg = table.Column<double>(type: "float", nullable: true),
                     Plato = table.Column<double>(type: "float", nullable: true),
                     Ibu = table.Column<int>(type: "int", nullable: true),

@@ -29,6 +29,6 @@ public class GetUserQueryHandler : IRequestHandler<GetUserQuery, UserDto>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<UserDto> Handle(GetUserQuery request, CancellationToken cancellationToken)
     {
-        return await _usersService.GetUserAsync(request.UserId);
+        return await _usersService.GetUserAsync(request.Id);
     }
 }

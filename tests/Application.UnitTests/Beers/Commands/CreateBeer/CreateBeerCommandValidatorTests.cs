@@ -2,8 +2,8 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation.TestHelper;
+using MockQueryable.Moq;
 using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
@@ -28,8 +28,9 @@ public class CreateBeerCommandValidatorTests
     /// </summary>
     public CreateBeerCommandValidatorTests()
     {
+        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
         _contextMock = new Mock<IApplicationDbContext>();
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(new List<Beer>());
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _validator = new CreateBeerCommandValidator(_contextMock.Object);
     }
     
@@ -166,46 +167,6 @@ public class CreateBeerCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
-    }
-    
-    /// <summary>
-    ///     Tests that validation should not have error for SpecificGravity when SpecificGravity is valid.
-    /// </summary>
-    [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenSpecificGravityIsValid()
-    {
-        // Arrange
-        var command = new CreateBeerCommand
-        {
-            SpecificGravity = 1.015
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.SpecificGravity);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for SpecificGravity when SpecificGravity is out of range.
-    /// </summary>
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(1.3)]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenSpecificGravityIsOutOfRange(double specificGravity)
-    {
-        // Arrange
-        var command = new CreateBeerCommand
-        {
-            SpecificGravity = specificGravity
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.SpecificGravity);
     }
     
     /// <summary>
@@ -521,8 +482,10 @@ public class CreateBeerCommandValidatorTests
                 Name = "Test Beer"
             }
         };
+        
+        var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(beers);
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
 
         // Act
         var result = await _validator.TestValidateAsync(command);

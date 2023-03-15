@@ -3,8 +3,8 @@ using Application.Beers.Commands.CreateBeer;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using MockQueryable.Moq;
 using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
@@ -52,14 +52,15 @@ public class CreateBeerCommandHandlerTests
             Brewery = "Test brewery",
             AlcoholByVolume = 5.0,
             Description = "Test description",
-            SpecificGravity = 1.05,
             Blg = 12.0,
             Plato = 10.0,
             Style = "Test style",
             Ibu = 25,
             Country = "Test country"
         };
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(new List<Beer>());
+        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _mapperMock.Setup(m => m.Map<BeerDto>(It.IsAny<Beer>()))
             .Returns((Beer source) => new BeerDto
             {
@@ -67,7 +68,6 @@ public class CreateBeerCommandHandlerTests
                 Brewery = source.Brewery,
                 AlcoholByVolume = source.AlcoholByVolume,
                 Description = source.Description,
-                SpecificGravity = source.SpecificGravity,
                 Blg = source.Blg,
                 Plato = source.Plato,
                 Style = source.Style,
@@ -84,7 +84,6 @@ public class CreateBeerCommandHandlerTests
         result.Brewery.Should().Be(request.Brewery);
         result.AlcoholByVolume.Should().Be(request.AlcoholByVolume);
         result.Description.Should().Be(request.Description);
-        result.SpecificGravity.Should().Be(request.SpecificGravity);
         result.Blg.Should().Be(request.Blg);
         result.Plato.Should().Be(request.Plato);
         result.Style.Should().Be(request.Style);

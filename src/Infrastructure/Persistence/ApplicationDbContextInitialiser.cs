@@ -3,6 +3,7 @@ using Domain.Entities;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Serilog;
 
 namespace Infrastructure.Persistence;
@@ -68,11 +69,11 @@ public class ApplicationDbContextInitialiser
         try
         {
             Log.Logger.Information("Seeding database started");
-            
+
             await SeedRolesAsync();
             await SeedUsersAsync();
             await SeedBeersAsync();
-            
+
             Log.Logger.Information("Seeding database completed");
         }
         catch (Exception e)
@@ -142,31 +143,40 @@ public class ApplicationDbContextInitialiser
         {
             Log.Logger.Information("Seeding beers...");
 
-            var beers = new List<Beer>
-            {
-                new()
-                {
-                    Name = "Hazy Morning",
-                    AlcoholByVolume = 4.4,
-                    Blg = 12,
-                    Brewery = "Pinta",
-                    Country = "Poland",
-                    Style = "APA"
-                },
-                new()
-                {
-                    Name = "Pan IPAni",
-                    AlcoholByVolume = 6,
-                    Blg = 16.5,
-                    Brewery = "Trzech Kumpli",
-                    Country = "Poland",
-                    Ibu = 45,
-                    Style = "IPA"
-                }
-            };
+            const string fileName = "Beers.json";
 
-            await _context.AddRangeAsync(beers);
-            await _context.SaveChangesAsync();
+            await SeedDatabaseFromJson<Beer>(fileName);
+        }
+    }
+
+    private async Task SeedDatabaseFromJson<T>(string fileName) where T : class
+    {
+        var jsonFilePath = "../Infrastructure/Persistence/Data/" + fileName;
+
+        if (!File.Exists(jsonFilePath))
+        {
+            throw new FileNotFoundException($"File not found at {jsonFilePath}");
+        }
+
+        try
+        {
+            var json = await File.ReadAllTextAsync(jsonFilePath);
+            var entities = JsonConvert.DeserializeObject<List<T>>(json);
+
+            if (entities != null && entities.Any())
+            {
+                await _context.AddRangeAsync(entities);
+                await _context.SaveChangesAsync();
+                Log.Logger.Information("{Type} data seeded", typeof(T).Name);
+            }
+            else
+            {
+                Log.Logger.Warning("{Type} data file empty", typeof(T).Name);
+            }
+        }
+        catch (JsonSerializationException ex)
+        {
+            throw new Exception("Invalid JSON file format", ex);
         }
     }
 }

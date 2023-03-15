@@ -2,8 +2,8 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation.TestHelper;
+using MockQueryable.Moq;
 using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Application.UnitTests.Beers.Commands.UpdateBeer;
 
@@ -28,11 +28,12 @@ public class UpdateBeerCommandValidatorTests
     /// </summary>
     public UpdateBeerCommandValidatorTests()
     {
+        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
         _contextMock = new Mock<IApplicationDbContext>();
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(new List<Beer>());
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _validator = new UpdateBeerCommandValidator(_contextMock.Object);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Brewery when Brewery is valid.
     /// </summary>
@@ -51,7 +52,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Brewery when Brewery is empty.
     /// </summary>
@@ -70,7 +71,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
     /// </summary>
@@ -89,7 +90,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for AlcoholByVolume when AlcoholByVolume is valid.
     /// </summary>
@@ -115,7 +116,8 @@ public class UpdateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenAlcoholByVolumeIsOutOfRange(double alcoholByVolume)
+    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenAlcoholByVolumeIsOutOfRange(
+        double alcoholByVolume)
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -129,7 +131,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.AlcoholByVolume);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Brewery when Brewery is valid.
     /// </summary>
@@ -167,47 +169,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
-    
-    /// <summary>
-    ///     Tests that validation should not have error for SpecificGravity when SpecificGravity is valid.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenSpecificGravityIsValid()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            SpecificGravity = 1.015
-        };
 
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.SpecificGravity);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for SpecificGravity when SpecificGravity is out of range.
-    /// </summary>
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(1.3)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenSpecificGravityIsOutOfRange(double specificGravity)
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            SpecificGravity = specificGravity
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.SpecificGravity);
-    }
-    
     /// <summary>
     ///     Tests that validation should not have error for Blg when Blg is valid.
     /// </summary>
@@ -247,7 +209,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Blg);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Plato when Plato is valid.
     /// </summary>
@@ -287,7 +249,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Plato);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Style when Style is valid.
     /// </summary>
@@ -306,7 +268,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Style when Style is empty.
     /// </summary>
@@ -325,7 +287,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Style when Style exceeds maximum length.
     /// </summary>
@@ -344,7 +306,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Ibu when Ibu is valid.
     /// </summary>
@@ -384,7 +346,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Ibu);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Country when Country is valid.
     /// </summary>
@@ -403,7 +365,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Country);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Country when Country is empty.
     /// </summary>
@@ -422,7 +384,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Country);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Country when Country exceeds maximum length.
     /// </summary>
@@ -461,7 +423,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name is empty.
     /// </summary>
@@ -480,7 +442,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name exceeds maximum length.
     /// </summary>
@@ -499,7 +461,7 @@ public class UpdateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name is not unique within brewery.
     /// </summary>
@@ -524,7 +486,9 @@ public class UpdateBeerCommandValidatorTests
             }
         };
 
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(beers);
+        var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
 
         // Act
         var result = await _validator.TestValidateAsync(command);
