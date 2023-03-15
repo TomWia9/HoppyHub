@@ -2,8 +2,8 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation.TestHelper;
+using MockQueryable.Moq;
 using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
@@ -28,8 +28,9 @@ public class CreateBeerCommandValidatorTests
     /// </summary>
     public CreateBeerCommandValidatorTests()
     {
+        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
         _contextMock = new Mock<IApplicationDbContext>();
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(new List<Beer>());
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _validator = new CreateBeerCommandValidator(_contextMock.Object);
     }
     
@@ -481,8 +482,10 @@ public class CreateBeerCommandValidatorTests
                 Name = "Test Beer"
             }
         };
+        
+        var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(beers);
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
 
         // Act
         var result = await _validator.TestValidateAsync(command);

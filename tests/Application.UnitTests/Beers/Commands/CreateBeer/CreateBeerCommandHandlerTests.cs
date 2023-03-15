@@ -3,8 +3,8 @@ using Application.Beers.Commands.CreateBeer;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
+using MockQueryable.Moq;
 using Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
@@ -58,7 +58,9 @@ public class CreateBeerCommandHandlerTests
             Ibu = 25,
             Country = "Test country"
         };
-        _contextMock.Setup(x => x.Beers).ReturnsDbSet(new List<Beer>());
+        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _mapperMock.Setup(m => m.Map<BeerDto>(It.IsAny<Beer>()))
             .Returns((Beer source) => new BeerDto
             {
