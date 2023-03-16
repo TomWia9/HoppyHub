@@ -41,7 +41,7 @@ public class LoggingBehaviorTests
     ///     Tests that Process method should log request with request name and user id.
     /// </summary>
     [Fact]
-    public async Task Process_ShouldLogRequest_WithRequestNameAndUserId()
+    public async Task Process_ShouldLogRequestWithRequestNameAndUserId()
     {
         // Arrange
         const string requestName = nameof(TestRequest);

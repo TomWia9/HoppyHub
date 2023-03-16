@@ -41,7 +41,7 @@ public class UnhandledExceptionBehaviorTests
     ///     Tests that Handle method calls next when no exception is thrown.
     /// </summary>
     [Fact]
-    public async Task Handle_WhenNoExceptionIsThrown_ShouldCallNext()
+    public async Task Handle_ShouldCallNext_WhenNoExceptionIsThrown()
     {
         // Arrange
         var request = new TestRequest();
@@ -57,7 +57,7 @@ public class UnhandledExceptionBehaviorTests
     ///     Tests that Handle logs and throw exception when unhandled Exception is thrown.
     /// </summary>
     [Fact]
-    public void Handle_WhenUnhandledExceptionIsThrown_ShouldLogAndThrow()
+    public void Handle_ShouldLogAndThrow_WhenUnhandledExceptionIsThrown()
     {
         // Arrange
         var request = new TestRequest();

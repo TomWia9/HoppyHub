@@ -12,7 +12,7 @@ public class PaginatedListTests
     ///     Tests that Create method returns correct paginated list.
     /// </summary>
     [Fact]
-    public void Create_ReturnsPaginatedList()
+    public void Create_ShouldReturnPaginatedList()
     {
         // Arrange
         var list = Enumerable.Range(1, 10).ToList();
@@ -36,7 +36,7 @@ public class PaginatedListTests
     ///     Tests that GetMetadata method returns Json metadata.
     /// </summary>
     [Fact]
-    public void GetMetadata_ReturnsJsonMetadata()
+    public void GetMetadata_ShouldReturnJsonMetadata()
     {
         var source = Enumerable.Range(1, 10).ToList();
 

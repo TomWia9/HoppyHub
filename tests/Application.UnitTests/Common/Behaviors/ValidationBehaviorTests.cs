@@ -43,7 +43,7 @@ public class ValidationBehaviorTests
     ///     Tests that Handle method with no validators returns next.
     /// </summary>
     [Fact]
-    public async Task Handle_WithNoValidators_ReturnsNext()
+    public async Task Handle_ShouldReturnNext_WhenNoValidators()
     {
         // Arrange
         var request = new TestRequest();
@@ -61,7 +61,7 @@ public class ValidationBehaviorTests
     ///     Tests that Handle method with validators when validator pass returns next.
     /// </summary>
     [Fact]
-    public async Task Handle_ValidatorsPass_ReturnsNext()
+    public async Task Handle_ShouldReturnNext_WhenValidatorsPass()
     {
         // Arrange
         _validatorMock.Setup(x =>
@@ -83,10 +83,10 @@ public class ValidationBehaviorTests
     }
 
     /// <summary>
-    ///     Tests that Handle method with validators when validator fail throws ValidationException
+    ///     Tests that Handle method with validators when validator fail throws ValidationException.
     /// </summary>
     [Fact]
-    public async Task Handle_ValidatorsFail_ThrowsValidationException()
+    public async Task Handle_ShouldThrowValidationException_WhenValidatorsFail()
     {
         // Arrange
         _validatorMock.Setup(x =>
