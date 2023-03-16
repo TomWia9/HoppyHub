@@ -55,10 +55,10 @@ public class UsersServiceTests
     }
 
     /// <summary>
-    ///     Tests that GetUserAsync method return UserDto when UserId is valid.
+    ///     Tests that GetUserAsync method return UserDto when Id is valid.
     /// </summary>
     [Fact]
-    public async Task GetUserAsync_WithValidUserId_ReturnsUserDto()
+    public async Task GetUserAsync_ShouldReturnUserDto_WhenIdIsValid()
     {
         // Arrange
         var user = new ApplicationUser
@@ -86,10 +86,10 @@ public class UsersServiceTests
     }
 
     /// <summary>
-    ///     Tests that GetUSerAsync method throws NotFound exception when UserId is invalid.
+    ///     Tests that GetUSerAsync method throws NotFound exception when Id is invalid.
     /// </summary>
     [Fact]
-    public async Task GetUserAsync_WithInvalidUserId_ThrowsNotFoundException()
+    public async Task GetUserAsync_ShouldThrowNotFoundException_WhenIdIsInvalid()
     {
         // Arrange
         _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
@@ -104,7 +104,7 @@ public class UsersServiceTests
     ///     Tests that GetUsersAsync method returns all users when request does not contain any query parameters.
     /// </summary>
     [Fact]
-    public async Task GetUsersAsync_WithoutQueryParameters_ReturnsAllUsers()
+    public async Task GetUsersAsync_ShouldReturnAllUsers_WhenRequestDoesNotContainAnyQueryParameters()
     {
         // Arrange
         var query = new GetUsersQuery();
@@ -140,7 +140,7 @@ public class UsersServiceTests
     ///     Tests that GetUsersAsync method returns correct paginated list of UserDto when query parameters specified.
     /// </summary>
     [Fact]
-    public async Task GetUsersAsync_ReturnsCorrectPaginatedListOfUserDto_WhenQueryParametersSpecified()
+    public async Task GetUsersAsync_ShouldReturnCorrectPaginatedListOfUserDto_WhenQueryParametersSpecified()
     {
         // Arrange
         var query = new GetUsersQuery
@@ -182,7 +182,7 @@ public class UsersServiceTests
     ///     Tests that GetUsersAsync method returns empty list when users not found.
     /// </summary>
     [Fact]
-    public async Task GetUsersAsync_ReturnsEmptyPaginatedList_WhenUsersNotFound()
+    public async Task GetUsersAsync_ShouldReturnEmptyPaginatedList_WhenUsersNotFound()
     {
         // Arrange
         var query = new GetUsersQuery { Role = "Admin", PageNumber = 1, PageSize = 10 };
@@ -208,7 +208,7 @@ public class UsersServiceTests
     ///     Tests that UpdateUserAsync method throws NotFoundException when user not found.
     /// </summary>
     [Fact]
-    public async Task UpdateUserAsync_ThrowsNotFoundException_WhenUserNotFound_()
+    public async Task UpdateUserAsync_ShouldThrowNotFoundException_WhenUserNotFound()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -234,7 +234,7 @@ public class UsersServiceTests
     ///     Tests that UpdateUserAsync method updates username when new username provided.
     /// </summary>
     [Fact]
-    public async Task UpdateUserAsync_UpdatesUsername_WhenNewUsernameProvided()
+    public async Task UpdateUserAsync_ShouldUpdateUsername_WhenNewUsernameProvided()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -267,7 +267,7 @@ public class UsersServiceTests
     ///     Tests that UpdateUserAsync method throws BadRequestException when update user result is not succeeded.
     /// </summary>
     [Fact]
-    public async Task UpdateUserAsync_ThrowsBadRequestException_WhenUpdateUserResultIsNotSucceeded()
+    public async Task UpdateUserAsync_ShouldThrowBadRequestException_WhenUpdateUserResultIsNotSucceeded()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -298,7 +298,7 @@ public class UsersServiceTests
     ///     Tests that UpdateUserAsync method changes password when NewPassword is provided.
     /// </summary>
     [Fact]
-    public async Task UpdateUserAsync_ChangesPassword_WhenNewPasswordIsProvided()
+    public async Task UpdateUserAsync_ShouldChangePassword_WhenNewPasswordIsProvided()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -333,7 +333,7 @@ public class UsersServiceTests
     ///     Tests that UpdateUserAsync method changes password when NewPassword is provided and user is administrator.
     /// </summary>
     [Fact]
-    public async Task UpdateUserAsync_ChangesPassword_WhenNewPasswordIsProvidedAndCurrentUserIsAdministrator()
+    public async Task UpdateUserAsync_ShouldChangePassword_WhenNewPasswordIsProvidedAndCurrentUserIsAdministrator()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -369,7 +369,7 @@ public class UsersServiceTests
     /// </summary>
     [Fact]
     public async Task
-        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsAdministratorAndRemovePasswordResultIsNotSucceeded()
+        UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsAdministratorAndRemovePasswordResultIsNotSucceeded()
     {
         // Arrange
         var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
@@ -395,7 +395,7 @@ public class UsersServiceTests
     /// </summary>
     [Fact]
     public async Task
-        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsAdministratorAndAddPasswordResultIsNotSucceeded()
+        UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsAdministratorAndAddPasswordResultIsNotSucceeded()
     {
         // Arrange
         var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
@@ -424,7 +424,7 @@ public class UsersServiceTests
     /// </summary>
     [Fact]
     public async Task
-        UpdateUserAsync_ThrowsBadRequestException_WhenCurrentUserIsUserAndChangePasswordResultIsNotSucceeded()
+        UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsUserAndChangePasswordResultIsNotSucceeded()
     {
         // Arrange
         var request = new UpdateUserCommand
@@ -451,7 +451,7 @@ public class UsersServiceTests
     ///     Tests that DeleteUserAsync method deletes user when user exists.
     /// </summary>
     [Fact]
-    public async Task DeleteUserAsync_WhenUserExists_DeletesUser()
+    public async Task DeleteUserAsync_ShouldDeleteUser_WhenUserExists()
     {
         // Arrange
         const string password = "correctPassword";
@@ -473,7 +473,7 @@ public class UsersServiceTests
     ///     Tests that DeleteUserAsync method throws NotFoundException when user does not exists.
     /// </summary>
     [Fact]
-    public async Task DeleteUserAsync_WhenUserDoesNotExist_ThrowsNotFoundException()
+    public async Task DeleteUserAsync_ShouldThrowNotFoundException_WhenUserDoesNotExist()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -493,7 +493,7 @@ public class UsersServiceTests
     ///     and user is not Administrator.
     /// </summary>
     [Fact]
-    public async Task DeleteUserAsync_WhenProvidedPasswordIsIncorrectAndUserIsNotAdmin_ThrowsBadRequestException()
+    public async Task DeleteUserAsync_ShouldThrowBadRequestException_WhenProvidedPasswordIsIncorrectAndUserIsNotAdmin()
     {
         // Arrange
         const string password = "incorrectPassword";
@@ -516,7 +516,7 @@ public class UsersServiceTests
     ///     Tests that DeleteUserAsync deletes user when provided password is incorrect but user is administrator.
     /// </summary>
     [Fact]
-    public async Task DeleteUserAsync_WhenProvidedPasswordIsIncorrectButUserIsAdmin_DeletesUser()
+    public async Task DeleteUserAsync_ShouldDeleteUser_WhenProvidedPasswordIsIncorrectButUserIsAdmin()
     {
         // Arrange
         const string password = "incorrectPassword";

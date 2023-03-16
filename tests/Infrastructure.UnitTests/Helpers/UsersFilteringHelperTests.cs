@@ -13,7 +13,7 @@ public class UsersFilteringHelperTests
     ///     Tests that GetSortingColumn method when SortBy is null returns first sorting column.
     /// </summary>
     [Fact]
-    public void GetSortingColumn_WhenSortByIsNull_ReturnsFirstSortingColumn()
+    public void GetSortingColumn_ShouldReturnFirstSortingColumn_WhenSortByIsNull()
     {
         // Arrange
         var expectedSortingColumn = UsersFilteringHelper.SortingColumns.First().Value;
@@ -29,7 +29,7 @@ public class UsersFilteringHelperTests
     ///     Tests that GetSortingColumn method when SortBy is valid returns sorting column.
     /// </summary>
     [Fact]
-    public void GetSortingColumn_WhenSortByIsValid_ReturnsSortingColumn()
+    public void GetSortingColumn_ShouldReturnSortingColumn_WhenSortByIsValid()
     {
         // Arrange
         const string sortBy = "username";
@@ -48,7 +48,7 @@ public class UsersFilteringHelperTests
     [Theory]
     [InlineData(null)]
     [InlineData(" ")]
-    public void GetDelegates_WhenSearchQueryIsNullOrWhiteSpace_ReturnsEmptyList(string? searchQuery)
+    public void GetDelegates_ShouldReturnEmptyList_WhenSearchQueryIsNullOrWhiteSpace(string? searchQuery)
     {
         // Arrange
         var query = new GetUsersQuery { SearchQuery = searchQuery };
@@ -64,7 +64,7 @@ public class UsersFilteringHelperTests
     ///     Tests that GetDelegates method when searchQuery is valid returns not empty list.
     /// </summary>
     [Fact]
-    public void GetDelegates_WhenSearchQueryIsValid_ReturnsSearchDelegate()
+    public void GetDelegates_ShouldReturnSearchDelegateWhenSearchQueryIsValid()
     {
         // Arrange
         var query = new GetUsersQuery { SearchQuery = "test" };
