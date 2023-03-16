@@ -28,6 +28,9 @@ public class CurrentUserServiceTests
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
 
+    /// <summary>
+    ///     Setups CurrentUserServiceTests.
+    /// </summary>
     public CurrentUserServiceTests()
     {
         _claimsPrincipalMock = new Mock<ClaimsPrincipal>();
@@ -45,7 +48,7 @@ public class CurrentUserServiceTests
     ///     is not null and contains an "NameIdentifier" claim.
     /// </summary>
     [Fact]
-    public void UserId_ReturnsCorrectValue_WhenHttpContextIsNotNull()
+    public void UserId_ShouldReturnCorrectValue_WhenHttpContextIsNotNull()
     {
         //arrange
         var userId = Guid.NewGuid().ToString();
@@ -69,7 +72,7 @@ public class CurrentUserServiceTests
     ///     Tests that the UserId property returns null when the HttpContext is null.
     /// </summary>
     [Fact]
-    public void UserId_ReturnsNull_WhenHttpContextIsNull()
+    public void UserId_ShouldReturnNull_WhenHttpContextIsNull()
     {
         // Arrange
         _httpContextAccessorMock.Setup(x => x.HttpContext).Returns((HttpContext?)null);
@@ -85,7 +88,7 @@ public class CurrentUserServiceTests
     ///     Tests that the UserId property returns null when the "NameIdentifier" claim is missing from the HttpContext.
     /// </summary>
     [Fact]
-    public void UserId_ReturnsNull_WhenNameIdentifierClaimIsMissing()
+    public void UserId_ShouldReturn_WhenNameIdentifierClaimIsMissing()
     {
         // Arrange
         var httpContext = new DefaultHttpContext();
