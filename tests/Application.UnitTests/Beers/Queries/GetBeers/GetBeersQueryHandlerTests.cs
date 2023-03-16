@@ -51,7 +51,7 @@ public class GetBeersQueryHandlerTests
     ///     Tests that Handle method returns PaginatedList of BeerDto.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldReturnPaginatedListBeerDto()
+    public async Task Handle_ShouldReturnPaginatedListOfBeerDto()
     {
         // Arrange
         var request = new GetBeersQuery { PageNumber = 1, PageSize = 10 };
