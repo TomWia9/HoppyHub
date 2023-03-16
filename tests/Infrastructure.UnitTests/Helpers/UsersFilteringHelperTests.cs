@@ -33,7 +33,7 @@ public class UsersFilteringHelperTests
     {
         // Arrange
         const string sortBy = "username";
-        var expectedSortingColumn = UsersFilteringHelper.SortingColumns[sortBy.ToLower()];
+        var expectedSortingColumn = UsersFilteringHelper.SortingColumns[sortBy.ToUpper()];
 
         // Act
         var sortingColumn = UsersFilteringHelper.GetSortingColumn(sortBy);
