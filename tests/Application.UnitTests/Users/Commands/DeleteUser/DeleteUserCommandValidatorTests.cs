@@ -29,12 +29,12 @@ public class DeleteUserCommandValidatorTests
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _validator = new DeleteUserCommandValidator(_currentUserServiceMock.Object);
     }
-    
+
     /// <summary>
-    ///     Tests that validation should not have error for password when password is valid.
+    ///     Tests that validation should not have error for Password when Password is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveError_WhenPasswordIsValid()
+    public void DeleteUserCommand_ShouldNotHaveErrorForPassword_WhenPasswordIsValid()
     {
         // Arrange
         var command = new DeleteUserCommand
@@ -52,10 +52,10 @@ public class DeleteUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for password when password is empty and user is not administrator.
+    ///     Tests that validation should have error for Password when Password is empty and user is not administrator.
     /// </summary>
     [Fact]
-    public void ShouldHaveError_WhenPasswordIsEmptyAndUserIsNotAdministrator()
+    public void DeleteUserCommand_ShouldHaveErrorForPassword_WhenPasswordIsEmptyAndUserIsNotAdministrator()
     {
         // Arrange
         var command = new DeleteUserCommand
@@ -71,12 +71,12 @@ public class DeleteUserCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Password);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for password when password exceeds maximum length.
     /// </summary>
     [Fact]
-    public void ShouldHaveError_WhenPasswordExceedsMaximumLength()
+    public void DeleteUserCommand_ShouldHaveErrorForPassword_WhenPasswordExceedsMaximumLength()
     {
         // Arrange
         var command = new DeleteUserCommand
