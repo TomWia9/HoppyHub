@@ -1,4 +1,4 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
 using Application.UnitTests.Helpers;
 using FluentValidation;
 using FluentValidation.Results;
@@ -6,13 +6,13 @@ using MediatR;
 using Moq;
 using ValidationException = Application.Common.Exceptions.ValidationException;
 
-namespace Application.UnitTests.Common.Behaviours;
+namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="ValidationBehaviour{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="ValidationBehavior{TRequest,TResponse}"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class ValidationBehaviourTests
+public class ValidationBehaviorTests
 {
     /// <summary>
     ///     The validator mock.
@@ -30,9 +30,9 @@ public class ValidationBehaviourTests
     private IEnumerable<IValidator<TestRequest>> _validators;
 
     /// <summary>
-    ///     Setups ValidationBehaviourTests.
+    ///     Setups ValidationBehaviorTests.
     /// </summary>
-    public ValidationBehaviourTests()
+    public ValidationBehaviorTests()
     {
         _validatorMock = new Mock<IValidator<TestRequest>>();
         _requestHandlerDelegateMock = new Mock<RequestHandlerDelegate<TestResponse>>();
@@ -48,10 +48,10 @@ public class ValidationBehaviourTests
         // Arrange
         var request = new TestRequest();
         var cancellationToken = new CancellationToken();
-        var validationBehaviour = new ValidationBehaviour<TestRequest, TestResponse>(_validators);
+        var validationBehavior = new ValidationBehavior<TestRequest, TestResponse>(_validators);
 
         // Act
-        await validationBehaviour.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
+        await validationBehavior.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
 
         // Assert
         _requestHandlerDelegateMock.Verify(next => next(), Times.Once);
@@ -68,12 +68,12 @@ public class ValidationBehaviourTests
                 x.ValidateAsync(It.IsAny<ValidationContext<TestRequest>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult());
         _validators = new List<IValidator<TestRequest>> { _validatorMock.Object };
-        var validationBehaviour = new ValidationBehaviour<TestRequest, TestResponse>(_validators);
+        var validationBehavior = new ValidationBehavior<TestRequest, TestResponse>(_validators);
         var request = new TestRequest();
         var cancellationToken = new CancellationToken();
 
         // Act
-        await validationBehaviour.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
+        await validationBehavior.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
 
         // Assert
         _requestHandlerDelegateMock.Verify(next => next(), Times.Once);
@@ -96,13 +96,13 @@ public class ValidationBehaviourTests
                 new("TestProperty", "Test Error message")
             }));
         _validators = new List<IValidator<TestRequest>> { _validatorMock.Object };
-        var validationBehaviour = new ValidationBehaviour<TestRequest, TestResponse>(_validators);
+        var validationBehavior = new ValidationBehavior<TestRequest, TestResponse>(_validators);
         var request = new TestRequest();
         var cancellationToken = new CancellationToken();
 
         // Act
         Func<Task> action = async () =>
-            await validationBehaviour.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
+            await validationBehavior.Handle(request, _requestHandlerDelegateMock.Object, cancellationToken);
 
         // Assert
         await action.Should().ThrowAsync<ValidationException>();

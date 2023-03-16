@@ -2,17 +2,17 @@
 using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 /// <summary>
-///     LoggingBehaviour class.
+///     LoggingBehavior class.
 /// </summary>
-public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
+public class LoggingBehavior<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
     /// <summary>
     ///     The logger.
     /// </summary>
-    private readonly ILogger<LoggingBehaviour<TRequest>> _logger;
+    private readonly ILogger<LoggingBehavior<TRequest>> _logger;
 
     /// <summary>
     ///     The current user service.
@@ -20,18 +20,18 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     Initializes LoggingBehaviour.
+    ///     Initializes LoggingBehavior.
     /// </summary>
     /// <param name="logger">The logger</param>
     /// <param name="currentUserService">The current user service</param>
-    public LoggingBehaviour(ILogger<LoggingBehaviour<TRequest>> logger, ICurrentUserService currentUserService)
+    public LoggingBehavior(ILogger<LoggingBehavior<TRequest>> logger, ICurrentUserService currentUserService)
     {
         _logger = logger;
         _currentUserService = currentUserService;
     }
 
     /// <summary>
-    ///     Processes LoggingBehaviour.
+    ///     Processes LoggingBehavior.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>

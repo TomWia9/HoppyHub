@@ -1,26 +1,26 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
 using Application.UnitTests.Helpers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Application.UnitTests.Common.Behaviours;
+namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="UnhandledExceptionBehaviour{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="UnhandledExceptionBehavior{TRequest,TResponse}"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class UnhandledExceptionBehaviourTests
+public class UnhandledExceptionBehaviorTests
 {
     /// <summary>
     ///     The logger mock.
     /// </summary>
-    private readonly Mock<ILogger<UnhandledExceptionBehaviour<TestRequest, TestResponse>>> _loggerMock;
+    private readonly Mock<ILogger<UnhandledExceptionBehavior<TestRequest, TestResponse>>> _loggerMock;
 
     /// <summary>
-    ///     The performance behaviour.
+    ///     The performance behavior.
     /// </summary>
-    private readonly UnhandledExceptionBehaviour<TestRequest, TestResponse> _unhandledExceptionBehaviour;
+    private readonly UnhandledExceptionBehavior<TestRequest, TestResponse> _unhandledExceptionBehavior;
 
     /// <summary>
     ///     The request handler delegate mock.
@@ -28,13 +28,13 @@ public class UnhandledExceptionBehaviourTests
     private readonly Mock<RequestHandlerDelegate<TestResponse>> _requestHandlerDelegateMock;
 
     /// <summary>
-    ///     Setups UnhandledExceptionBehaviourTests.
+    ///     Setups UnhandledExceptionBehaviorTests.
     /// </summary>
-    public UnhandledExceptionBehaviourTests()
+    public UnhandledExceptionBehaviorTests()
     {
-        _loggerMock = new Mock<ILogger<UnhandledExceptionBehaviour<TestRequest, TestResponse>>>();
+        _loggerMock = new Mock<ILogger<UnhandledExceptionBehavior<TestRequest, TestResponse>>>();
         _requestHandlerDelegateMock = new Mock<RequestHandlerDelegate<TestResponse>>();
-        _unhandledExceptionBehaviour = new UnhandledExceptionBehaviour<TestRequest, TestResponse>(_loggerMock.Object);
+        _unhandledExceptionBehavior = new UnhandledExceptionBehavior<TestRequest, TestResponse>(_loggerMock.Object);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class UnhandledExceptionBehaviourTests
         var request = new TestRequest();
 
         // Act
-        await _unhandledExceptionBehaviour.Handle(request, _requestHandlerDelegateMock.Object, CancellationToken.None);
+        await _unhandledExceptionBehavior.Handle(request, _requestHandlerDelegateMock.Object, CancellationToken.None);
 
         // Assert
         _requestHandlerDelegateMock.Verify(next => next(), Times.Once);
@@ -64,7 +64,7 @@ public class UnhandledExceptionBehaviourTests
         var expectedException = new TestException();
 
         // Act
-        Func<Task<TestResponse>> action = async () => await _unhandledExceptionBehaviour.Handle(request,
+        Func<Task<TestResponse>> action = async () => await _unhandledExceptionBehavior.Handle(request,
             () => throw expectedException, CancellationToken.None);
 
         // Assert

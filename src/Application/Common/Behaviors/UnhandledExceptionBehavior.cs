@@ -2,32 +2,32 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 /// <summary>
-///     UnhandledExceptionBehaviour class.
+///     UnhandledExceptionBehavior class.
 /// </summary>
 /// <typeparam name="TRequest">The request</typeparam>
 /// <typeparam name="TResponse">The response</typeparam>
-public class UnhandledExceptionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
     /// <summary>
     ///     The logger.
     /// </summary>
-    private readonly ILogger<UnhandledExceptionBehaviour<TRequest, TResponse>> _logger;
+    private readonly ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>
-    ///     Initializes UnhandledExceptionBehaviour.
+    ///     Initializes UnhandledExceptionBehavior.
     /// </summary>
     /// <param name="logger">The logger</param>
-    public UnhandledExceptionBehaviour(ILogger<UnhandledExceptionBehaviour<TRequest, TResponse>> logger)
+    public UnhandledExceptionBehavior(ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger)
     {
         _logger = logger;
     }
 
     /// <summary>
-    ///     Handles UnhandledExceptionBehaviour.
+    ///     Handles UnhandledExceptionBehavior.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="next">The request handler delegate</param>
