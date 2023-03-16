@@ -43,8 +43,8 @@ public static class UsersFilteringHelper
 
         var searchQuery = request.SearchQuery.Trim().ToUpper();
         Expression<Func<ApplicationUser, bool>> searchDelegate =
-            x => x.UserName != null && x.Email != null && (x.Email.ToUpper().Contains(searchQuery) ||
-                                                           x.UserName.ToUpper().Contains(searchQuery));
+            x => (x.Email != null && x.Email.ToUpper().Contains(searchQuery)) ||
+                 (x.UserName != null && x.UserName.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 
