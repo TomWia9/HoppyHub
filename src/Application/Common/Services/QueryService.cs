@@ -15,10 +15,7 @@ public class QueryService<T> : IQueryService<T> where T : class
     {
         foreach (var @delegate in delegates)
         {
-            if (@delegate != null)
-            {
-                collection = collection.Where(@delegate);
-            }
+            collection = collection.Where(@delegate);
         }
 
         return collection;
@@ -31,7 +28,8 @@ public class QueryService<T> : IQueryService<T> where T : class
     /// <param name="sortingDelegate">The sorting delegate</param>
     /// <param name="sortDirection">The sorting direction</param>
     /// <returns>Sorted collection of type IQueryable</returns>
-    public IQueryable<T> Sort(IQueryable<T> collection, Expression<Func<T, object>> sortingDelegate, SortDirection sortDirection)
+    public IQueryable<T> Sort(IQueryable<T> collection, Expression<Func<T, object>> sortingDelegate,
+        SortDirection sortDirection)
     {
         collection = sortDirection == SortDirection.Asc
             ? collection.OrderBy(sortingDelegate)

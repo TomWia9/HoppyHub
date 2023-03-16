@@ -9,9 +9,9 @@ using Serilog;
 namespace Infrastructure.Persistence;
 
 /// <summary>
-///     ApplicationDbContextInitialiser class.
+///     ApplicationDbContextInitializer class.
 /// </summary>
-public class ApplicationDbContextInitialiser
+public class ApplicationDbContextInitializer
 {
     /// <summary>
     ///     The database context.
@@ -29,12 +29,12 @@ public class ApplicationDbContextInitialiser
     private readonly UserManager<ApplicationUser> _userManager;
 
     /// <summary>
-    ///     Initializes ApplicationDbContextInitialiser.
+    ///     Initializes ApplicationDbContextInitializer.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="roleManager">The role manager</param>
     /// <param name="userManager">The user manager</param>
-    public ApplicationDbContextInitialiser(ApplicationDbContext context, RoleManager<IdentityRole<Guid>> roleManager,
+    public ApplicationDbContextInitializer(ApplicationDbContext context, RoleManager<IdentityRole<Guid>> roleManager,
         UserManager<ApplicationUser> userManager)
     {
         _context = context;
@@ -43,9 +43,9 @@ public class ApplicationDbContextInitialiser
     }
 
     /// <summary>
-    ///     Initialises database asynchronously.
+    ///     Initializes database asynchronously.
     /// </summary>
-    public async Task InitialiseAsync()
+    public async Task InitializeAsync()
     {
         try
         {
@@ -56,7 +56,7 @@ public class ApplicationDbContextInitialiser
         }
         catch (Exception e)
         {
-            Log.Logger.Error("An error occurred while initialising the database. {E}", e.Message);
+            Log.Logger.Error("An error occurred while initializing the database. {E}", e.Message);
             throw;
         }
     }

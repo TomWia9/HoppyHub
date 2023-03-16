@@ -26,7 +26,7 @@ public class GetUsersQueryValidatorTests
     ///     Tests that validation should have error for role when role exceeds maximum length.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationError_WhenRoleExceedsMaximumLength()
+    public void GetUsersQuery_ShouldHaveValidationErrorForRole_WhenRoleExceedsMaximumLength()
     {
         // Arrange
         var query = new GetUsersQuery
@@ -45,12 +45,12 @@ public class GetUsersQueryValidatorTests
     ///     Tests that validation should not have error for role when role is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveValidationError_WhenRoleIsWithinMaximumLength()
+    public void GetUsersQuery_ShouldNotHaveValidationErrorForRole_WhenRoleIsValid()
     {
         // Arrange
         var query = new GetUsersQuery
         {
-            Role = new string('x', 15)
+            Role = "User"
         };
 
         // Act
@@ -64,7 +64,7 @@ public class GetUsersQueryValidatorTests
     ///     Tests that validation should have error for SortBy when SortBy is not allowed column.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationError_WhenSortByIsNotAllowedColumn()
+    public void GetUsersQuery_ShouldHaveValidationErrorForSortBy_WhenSortByIsNotAllowedColumn()
     {
         // Arrange
         var query = new GetUsersQuery
@@ -89,7 +89,7 @@ public class GetUsersQueryValidatorTests
     [InlineData("username")]
     [InlineData("")]
     [InlineData(null)]
-    public void ShouldNotHaveValidationError_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetUsersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
     {
         // Arrange
         var query = new GetUsersQuery

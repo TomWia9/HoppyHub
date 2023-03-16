@@ -18,7 +18,7 @@ public class ConfigureServicesTests
     private readonly IServiceCollection _services;
 
     /// <summary>
-    ///     Setups tests.
+    ///     Setups ConfigureServicesTests.
     /// </summary>
     public ConfigureServicesTests()
     {
@@ -53,7 +53,7 @@ public class ConfigureServicesTests
     ///     to the service collection as IQueryService.
     /// </summary>
     [Fact]
-    public void AddApplicationServices_AddsQueryService()
+    public void AddApplicationServices_ShouldAddQueryService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IQueryService<>));

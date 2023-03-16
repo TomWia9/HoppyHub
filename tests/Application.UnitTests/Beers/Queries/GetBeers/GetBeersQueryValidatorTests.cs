@@ -45,7 +45,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for Name when Name exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
+    public void GetBeersQuery_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -54,7 +54,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
@@ -83,7 +83,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
+    public void GetBeersQuery_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -92,7 +92,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Brewery);
@@ -121,7 +121,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for Style when Style exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
+    public void GetBeersQuery_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -130,7 +130,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
@@ -159,7 +159,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for Country when Country exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
+    public void GetBeersQuery_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -168,7 +168,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Country);
@@ -199,7 +199,7 @@ public class GetBeersQueryValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForMinAlcoholByVolume_WhenMinAlcoholByVolumeIsOutOfRange(
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinAlcoholByVolume_WhenMinAlcoholByVolumeIsOutOfRange(
         double minAlcoholByVolume)
     {
         // Arrange
@@ -209,7 +209,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MinAlcoholByVolume);
@@ -219,7 +219,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MinAlcoholByVolume when MinAlcoholByVolume is greater than MaxAlcoholByVolume.
     /// </summary>
     [Fact]
-    public async Task
+    public void
         GetBeersQuery_ShouldHaveValidationErrorForMinAlcoholByVolume_WhenMinAlcoholByVolumeIsGreaterThanMaxAlcoholByVolume()
     {
         // Arrange
@@ -230,7 +230,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MinAlcoholByVolume)
@@ -262,7 +262,7 @@ public class GetBeersQueryValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForMaxAlcoholByVolume_WhenMaxAlcoholByVolumeIsOutOfRange(
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxAlcoholByVolume_WhenMaxAlcoholByVolumeIsOutOfRange(
         double maxAlcoholByVolume)
     {
         // Arrange
@@ -272,7 +272,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MaxAlcoholByVolume);
@@ -282,7 +282,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MaxAlcoholByVolume when MaxAlcoholByVolume is less than MinAlcoholByVolume.
     /// </summary>
     [Fact]
-    public async Task
+    public void
         GetBeersQuery_ShouldHaveValidationErrorForMaxAlcoholByVolume_WhenMaxAlcoholByVolumeIsLessThanMinAlcoholByVolume()
     {
         // Arrange
@@ -293,7 +293,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MaxAlcoholByVolume)
@@ -325,7 +325,7 @@ public class GetBeersQueryValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(201)]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForMinIbu_WhenMinIbuIsOutOfRange(
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinIbu_WhenMinIbuIsOutOfRange(
         int minIbu)
     {
         // Arrange
@@ -335,7 +335,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MinIbu);
@@ -345,8 +345,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MinIbu when MinIbu is greater than MaxIbu.
     /// </summary>
     [Fact]
-    public async Task
-        GetBeersQuery_ShouldHaveValidationErrorForMinIbu_WhenMinIbuIsGreaterThanMaxIbu()
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinIbu_WhenMinIbuIsGreaterThanMaxIbu()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -356,7 +355,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MinIbu)
@@ -388,7 +387,7 @@ public class GetBeersQueryValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(201)]
-    public async Task GetBeersQuery_ShouldHaveValidationErrorForMaxIbu_WhenMaxIbuIsOutOfRange(
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxIbu_WhenMaxIbuIsOutOfRange(
         int maxIbu)
     {
         // Arrange
@@ -398,7 +397,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MaxIbu);
@@ -408,8 +407,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MaxIbu when MaxIbu is less than MinIbu.
     /// </summary>
     [Fact]
-    public async Task
-        GetBeersQuery_ShouldHaveValidationErrorForMaxIbu_WhenMaxIbuIsLessThanMinIbu()
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxIbu_WhenMaxIbuIsLessThanMinIbu()
     {
         // Arrange
         var query = new GetBeersQuery
@@ -419,7 +417,7 @@ public class GetBeersQueryValidatorTests
         };
 
         // Act
-        var result = await _validator.TestValidateAsync(query);
+        var result = _validator.TestValidate(query);
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MaxIbu)

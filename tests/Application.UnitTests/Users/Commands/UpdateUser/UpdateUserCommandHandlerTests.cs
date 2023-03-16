@@ -15,12 +15,12 @@ public class UpdateUserCommandHandlerTests
     ///     The current user service mock.
     /// </summary>
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
-    
+
     /// <summary>
     ///     The users service mock.
     /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
-    
+
     /// <summary>
     ///     The handler.
     /// </summary>
@@ -35,13 +35,13 @@ public class UpdateUserCommandHandlerTests
         _usersServiceMock = new Mock<IUsersService>();
         _handler = new UpdateUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method throws forbidden access exception when user is not administrator
     ///     and trying to update another user.
     /// </summary>
     [Fact]
-    public async Task Handle_WhenUserIsNotAdminAndTryingToUpdateAnotherUser_ThrowsForbiddenAccessException()
+    public async Task Handle_ShouldThrowForbiddenAccessException_WhenUserIsNotAdminAndTryingToUpdateAnotherUser()
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
@@ -59,13 +59,13 @@ public class UpdateUserCommandHandlerTests
         await action.Should().ThrowAsync<ForbiddenAccessException>();
         _usersServiceMock.Verify(x => x.UpdateUserAsync(It.IsAny<UpdateUserCommand>()), Times.Never);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method calls UpdateUserAsync when user is administrator
     ///     and trying to update another user.
     /// </summary>
     [Fact]
-    public async Task Handle_WhenUserIsAdminAndTryingToUpdateAnotherUser_CallsUpdateUserAsync()
+    public async Task Handle_ShouldCallUpdateUserAsync_WhenUserIsAdminAndTryingToUpdateAnotherUser()
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
@@ -88,7 +88,7 @@ public class UpdateUserCommandHandlerTests
     ///     to update self.
     /// </summary>
     [Fact]
-    public async Task Handle_WhenUserIsTryingToUpdateSelf_CallsUpdateUserAsync()
+    public async Task Handle_ShouldCallUpdateUserAsync_WhenUserIsTryingToUpdateSelf()
     {
         // Arrange
         var currentUserId = Guid.NewGuid();

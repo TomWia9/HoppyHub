@@ -2,12 +2,12 @@
 using MediatR;
 using ValidationException = Application.Common.Exceptions.ValidationException;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 /// <summary>
-///     ValidationBehaviour class.
+///     ValidationBehavior class.
 /// </summary>
-public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
     /// <summary>
@@ -16,16 +16,16 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
     /// <summary>
-    ///     Initializes ValidationBehaviour.
+    ///     Initializes ValidationBehavior.
     /// </summary>
     /// <param name="validators">The validators</param>
-    public ValidationBehaviour(IEnumerable<IValidator<TRequest>> validators)
+    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
 
     /// <summary>
-    ///     Handles ValidationBehaviour.
+    ///     Handles ValidationBehavior.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="next">The request handler delegate</param>

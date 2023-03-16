@@ -3,12 +3,12 @@ using Application.Common.Interfaces;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Common.Behaviours;
+namespace Application.Common.Behaviors;
 
 /// <summary>
-///     PerformanceBehaviour class.
+///     PerformanceBehavior class.
 /// </summary>
-public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
+public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     /// <summary>
     ///     The timer.
@@ -18,7 +18,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     /// <summary>
     ///     The logger.
     /// </summary>
-    private readonly ILogger<PerformanceBehaviour<TRequest, TResponse>> _logger;
+    private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>
     ///     The current user service.
@@ -27,11 +27,11 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
 
     /// <summary>
-    ///     Initializes PerformanceBehaviour.
+    ///     Initializes PerformanceBehavior.
     /// </summary>
     /// <param name="logger">The logger</param>
     /// <param name="currentUserService">The current user service</param>
-    public PerformanceBehaviour(ILogger<PerformanceBehaviour<TRequest, TResponse>> logger,
+    public PerformanceBehavior(ILogger<PerformanceBehavior<TRequest, TResponse>> logger,
         ICurrentUserService currentUserService)
     {
         _timer = new Stopwatch();
@@ -40,7 +40,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
     }
 
     /// <summary>
-    ///     Handles PerformanceBehaviour.
+    ///     Handles PerformanceBehavior.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="next">The request handler delegate</param>

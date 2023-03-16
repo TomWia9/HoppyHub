@@ -44,7 +44,8 @@ public class ApiExceptionFilterAttributeTests
     ///     with validation problem details.
     /// </summary>
     [Fact]
-    public void OnException_WithValidationException_ShouldReturnBadRequestObjectResultWithValidationProblemDetails()
+    public void
+        OnException_ShouldReturnBadRequestObjectResultWithValidationProblemDetails_WhenValidationExceptionOccurs()
     {
         // Arrange
         var validationFailures = new List<ValidationFailure>
@@ -74,7 +75,7 @@ public class ApiExceptionFilterAttributeTests
     ///     with problem details.
     /// </summary>
     [Fact]
-    public void OnException_WithNotFoundException_ShouldReturnNotFoundObjectResultWithProblemDetails()
+    public void OnException_ShouldReturnNotFoundObjectResultWithProblemDetails_WhenNotFoundExceptionOccurs()
     {
         // Arrange
         _exceptionContext.Exception = new NotFoundException("Resource not found");
@@ -96,7 +97,7 @@ public class ApiExceptionFilterAttributeTests
     ///     with problem details.
     /// </summary>
     [Fact]
-    public void OnException_WithUnauthorizedAccessException_ShouldReturnObjectResultWithProblemDetails()
+    public void OnException_ShouldReturnObjectResultWithProblemDetails_WhenUnauthorizedAccessExceptionOccurs()
     {
         // Arrange
         _exceptionContext.Exception = new UnauthorizedAccessException("Unauthorized");
@@ -117,7 +118,7 @@ public class ApiExceptionFilterAttributeTests
     ///     with problem details.
     /// </summary>
     [Fact]
-    public void OnException_WithForbiddenAccessException_ShouldReturnObjectResultWithProblemDetails()
+    public void OnException_ShouldReturnObjectResultWithProblemDetails_WhenForbiddenAccessExceptionOccurs()
     {
         // Arrange
         _exceptionContext.Exception = new ForbiddenAccessException();
@@ -137,7 +138,7 @@ public class ApiExceptionFilterAttributeTests
     ///     Tests that OnException method with invalid ModelState returns BadRequestObjectResult.
     /// </summary>
     [Fact]
-    public void OnException_WithInvalidModelState_ShouldReturnObjectResultWithProblemDetails()
+    public void OnException_ShouldReturnObjectResultWithProblemDetails_WhenModelStateIsInvalid()
     {
         // Arrange
         _exceptionContext.Exception = new Exception();
@@ -151,13 +152,13 @@ public class ApiExceptionFilterAttributeTests
 
         result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
     }
-    
+
     /// <summary>
     ///     Tests that OnException method with BadRequestException returns BadRequestObjectResult
     ///     with problem details.
     /// </summary>
     [Fact]
-    public void OnException_WithBadRequestException_ShouldReturnBadRequestObjectResultWithProblemDetails()
+    public void OnException_ShouldReturnBadRequestObjectResultWithProblemDetails_WhenBadRequestExceptionOccurs()
     {
         // Arrange
         _exceptionContext.Exception = new BadRequestException();

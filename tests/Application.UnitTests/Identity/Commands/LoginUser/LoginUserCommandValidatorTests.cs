@@ -23,10 +23,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for empty email.
+    ///     Tests that validation should have error for Email when email is empty.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmptyEmail()
+    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsEmpty()
     {
         // Arrange
         var command = new LoginUserCommand
@@ -43,10 +43,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for invalid email.
+    ///     Tests that validation should have error for Email when Email is invalid.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForInvalidEmailFormat()
+    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsInvalid()
     {
         // Arrange
         var command = new LoginUserCommand
@@ -63,10 +63,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for email exceeding maximum length.
+    ///     Tests that validation should have error for Email when Email length is greater than maximum.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmailExceedingMaxLength()
+    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailLengthIsGreaterThanMaximum()
     {
         // Arrange
         var email = string.Join("", Enumerable.Repeat("a", 257));
@@ -84,10 +84,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for email when email is valid.
+    ///     Tests that validation should not have error for Email when Email is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveErrorWhenEmailIsValid()
+    public void LoginUserCommand_ShouldNotHaveErrorForEmail_WhenEmailIsValid()
     {
         // Arrange
         var command = new LoginUserCommand { Email = "test@example.com" };
@@ -100,10 +100,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for empty password.
+    ///     Tests that validation should have error for Password when Password is empty.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmptyPassword()
+    public void LoginUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordIsEmpty()
     {
         // Arrange
         var command = new LoginUserCommand()
@@ -120,10 +120,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for password exceeding maximum length.
+    ///     Tests that validation should have error for Password when Password length is greater than maximum.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForPasswordExceedingMaxLength()
+    public void LoginUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordLengthIsGreaterThanMaximum()
     {
         // Arrange
         var password = string.Join("", Enumerable.Repeat("a", 257));
@@ -141,10 +141,10 @@ public class LoginUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for password when password is valid.
+    ///     Tests that validation should not have error for Password when Password is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveErrorWhenPasswordIsValid()
+    public void LoginUserCommand_ShouldNotHaveValidationErrorForPassword_WhenPasswordIsValid()
     {
         // Arrange
         var command = new LoginUserCommand() { Password = "password" };

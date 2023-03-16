@@ -1,21 +1,21 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.UnitTests.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Application.UnitTests.Common.Behaviours;
+namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="LoggingBehaviour{TRequest}"/> class.
+///     Unit tests for the <see cref="LoggingBehavior{TRequest}"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class LoggingBehaviourTests
+public class LoggingBehaviorTests
 {
     /// <summary>
     ///     The logger mock.
     /// </summary>
-    private readonly Mock<ILogger<LoggingBehaviour<TestRequest>>> _loggerMock;
+    private readonly Mock<ILogger<LoggingBehavior<TestRequest>>> _loggerMock;
 
     /// <summary>
     ///     The current user service mock.
@@ -23,25 +23,25 @@ public class LoggingBehaviourTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The logging behaviour.
+    ///     The logging behavior.
     /// </summary>
-    private readonly LoggingBehaviour<TestRequest> _loggingBehaviour;
+    private readonly LoggingBehavior<TestRequest> _loggingBehavior;
 
     /// <summary>
-    ///     Setups LoggingBehaviourTests.
+    ///     Setups LoggingBehaviorTests.
     /// </summary>
-    public LoggingBehaviourTests()
+    public LoggingBehaviorTests()
     {
-        _loggerMock = new Mock<ILogger<LoggingBehaviour<TestRequest>>>();
+        _loggerMock = new Mock<ILogger<LoggingBehavior<TestRequest>>>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
-        _loggingBehaviour = new LoggingBehaviour<TestRequest>(_loggerMock.Object, _currentUserServiceMock.Object);
+        _loggingBehavior = new LoggingBehavior<TestRequest>(_loggerMock.Object, _currentUserServiceMock.Object);
     }
 
     /// <summary>
     ///     Tests that Process method should log request with request name and user id.
     /// </summary>
     [Fact]
-    public async Task Process_ShouldLogRequest_WithRequestNameAndUserId()
+    public async Task Process_ShouldLogRequestWithRequestNameAndUserId()
     {
         // Arrange
         const string requestName = nameof(TestRequest);
@@ -54,7 +54,7 @@ public class LoggingBehaviourTests
             $"HoppyHub request: RequestName: {requestName}, UserId: {userId}, Request: {request}";
 
         // Act
-        await _loggingBehaviour.Process(request, CancellationToken.None);
+        await _loggingBehavior.Process(request, CancellationToken.None);
 
         // Assert
         _loggerMock.Verify(

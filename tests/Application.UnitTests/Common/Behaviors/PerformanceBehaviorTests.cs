@@ -1,37 +1,37 @@
-﻿using Application.Common.Behaviours;
+﻿using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.UnitTests.Helpers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Application.UnitTests.Common.Behaviours;
+namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="PerformanceBehaviour{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="PerformanceBehavior{TRequest,TResponse}"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class PerformanceBehaviourTests
+public class PerformanceBehaviorTests
 {
     /// <summary>
     ///     The logger mock.
     /// </summary>
-    private readonly Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>> _loggerMock;
+    private readonly Mock<ILogger<PerformanceBehavior<TestRequest, TestResponse>>> _loggerMock;
 
     /// <summary>
-    ///     The performance behaviour.
+    ///     The performance behavior.
     /// </summary>
-    private readonly PerformanceBehaviour<TestRequest, TestResponse> _performanceBehaviour;
+    private readonly PerformanceBehavior<TestRequest, TestResponse> _performanceBehavior;
 
     /// <summary>
-    ///     Setups PerformanceBehaviourTests.
+    ///     Setups PerformanceBehaviorTests.
     /// </summary>
-    public PerformanceBehaviourTests()
+    public PerformanceBehaviorTests()
     {
-        _loggerMock = new Mock<ILogger<PerformanceBehaviour<TestRequest, TestResponse>>>();
+        _loggerMock = new Mock<ILogger<PerformanceBehavior<TestRequest, TestResponse>>>();
         Mock<ICurrentUserService> currentUserServiceMock = new();
-        _performanceBehaviour =
-            new PerformanceBehaviour<TestRequest, TestResponse>(_loggerMock.Object, currentUserServiceMock.Object);
+        _performanceBehavior =
+            new PerformanceBehavior<TestRequest, TestResponse>(_loggerMock.Object, currentUserServiceMock.Object);
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class PerformanceBehaviourTests
         var next = new TestRequestHandler(elapsedMilliseconds);
 
         // Act
-        await _performanceBehaviour.Handle(request, () => next.Handle(request, cancellationToken),
+        await _performanceBehavior.Handle(request, () => next.Handle(request, cancellationToken),
             cancellationToken);
 
         // Assert
@@ -74,7 +74,7 @@ public class PerformanceBehaviourTests
         var next = new TestRequestHandler(elapsedMilliseconds);
 
         // Act
-        await _performanceBehaviour.Handle(request, () => next.Handle(request, cancellationToken),
+        await _performanceBehavior.Handle(request, () => next.Handle(request, cancellationToken),
             cancellationToken);
 
         // Assert

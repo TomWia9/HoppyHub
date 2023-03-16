@@ -23,10 +23,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for empty email.
+    ///     Tests that validation should have error for Email when Email is Empty.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmptyEmail()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsEmpty()
     {
         // Arrange
         var command = new RegisterUserCommand
@@ -44,10 +44,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for invalid email.
+    ///     Tests that validation should have error for Email when Email is invalid.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForInvalidEmailFormat()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsInvalid()
     {
         // Arrange
         var command = new RegisterUserCommand
@@ -65,10 +65,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for email exceeding maximum length.
+    ///     Tests that validation should have error for Email when Email length is greater than maximum.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmailExceedingMaxLength()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailLengthIsGreaterThanMaximum()
     {
         // Arrange
         var email = string.Join("", Enumerable.Repeat("a", 257));
@@ -85,12 +85,12 @@ public class RegisterUserCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Email);
     }
-    
+
     /// <summary>
-    ///     Tests that validation should not have error for email when email is valid.
+    ///     Tests that validation should not have error for Email when Email is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveErrorWhenEmailIsValid()
+    public void RegisterUserCommand_ShouldNotHaveValidationErrorForEmail_WhenEmailIsValid()
     {
         // Arrange
         var command = new RegisterUserCommand { Email = "test@example.com" };
@@ -103,10 +103,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for empty username.
+    ///     Tests that validation should have error for Username when Username is empty.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmptyUsername()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameIsEmpty()
     {
         // Arrange
         var command = new RegisterUserCommand
@@ -124,10 +124,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for username exceeding maximum length.
+    ///     Tests that validation should have error for Username when Username length is greater than maximum.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForUsernameExceedingMaxLength()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsGreaterThanMaximum()
     {
         // Arrange
         var username = string.Join("", Enumerable.Repeat("a", 257));
@@ -144,12 +144,12 @@ public class RegisterUserCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Username);
     }
-    
+
     /// <summary>
-    ///     Tests that validation should not have error for username when username is valid.
+    ///     Tests that validation should not have error for Username when Username is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveErrorWhenUsernameIsValid()
+    public void RegisterUserCommand_ShouldNotHaveValidationErrorForUsername_WhenUsernameIsValid()
     {
         // Arrange
         var command = new RegisterUserCommand { Username = "username" };
@@ -162,10 +162,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for empty password.
+    ///     Tests that validation should have error for Password when Password is empty.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForEmptyPassword()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordIsEmpty()
     {
         // Arrange
         var command = new RegisterUserCommand
@@ -183,10 +183,10 @@ public class RegisterUserCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for password exceeding maximum length.
+    ///     Tests that validation should have error for Password when Password length is greater than maximum.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidationErrorForPasswordExceedingMaxLength()
+    public void RegisterUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordLengthIsGreaterThanMaximum()
     {
         // Arrange
         var password = string.Join("", Enumerable.Repeat("a", 257));
@@ -203,12 +203,12 @@ public class RegisterUserCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Password);
     }
-    
+
     /// <summary>
-    ///     Tests that validation should not have error for password when password is valid.
+    ///     Tests that validation should not have error for Password when Password is valid.
     /// </summary>
     [Fact]
-    public void ShouldNotHaveErrorWhenPasswordIsValid()
+    public void RegisterUserCommand_ShouldNotHaveValidationErrorForPassword_WhenPasswordIsValid()
     {
         // Arrange
         var command = new RegisterUserCommand { Password = "password" };

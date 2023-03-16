@@ -38,7 +38,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Brewery when Brewery is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenBreweryIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForBrewery_WhenBreweryIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -57,7 +57,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Brewery when Brewery is empty.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenBreweryIsEmpty()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryIsEmpty()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -76,7 +76,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenBreweryExceedsMaximumLength()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -95,7 +95,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for AlcoholByVolume when AlcoholByVolume is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenAlcoholByVolumeIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForAlcoholByVolume_WhenAlcoholByVolumeIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -116,7 +116,7 @@ public class UpdateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenAlcoholByVolumeIsOutOfRange(
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForAlcoholByVolume_WhenAlcoholByVolumeIsOutOfRange(
         double alcoholByVolume)
     {
         // Arrange
@@ -133,10 +133,10 @@ public class UpdateBeerCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Brewery when Brewery is valid.
+    ///     Tests that validation should not have error for Description when Description is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenDescriptionIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForDescription_WhenDescriptionIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -155,7 +155,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Description when Description exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenDescriptionExceedsMaximumLength()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionExceedsMaximumLength()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -174,7 +174,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Blg when Blg is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenBlgIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForBlg_WhenBlgIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -195,7 +195,7 @@ public class UpdateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenBlgIsOutOfRange(double blg)
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBlg_WhenBlgIsOutOfRange(double blg)
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -214,7 +214,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Plato when Plato is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenPlatoIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForPlato_WhenPlatoIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -235,7 +235,7 @@ public class UpdateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenPlatoIsOutOfRange(double plato)
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForPlato_WhenPlatoIsOutOfRange(double plato)
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -254,7 +254,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Style when Style is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenStyleIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForStyle_WhenStyleIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -273,7 +273,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Style when Style is empty.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenStyleIsEmpty()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleIsEmpty()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -292,7 +292,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Style when Style exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenStyleExceedsMaximumLength()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -311,7 +311,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Ibu when Ibu is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenIbuIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForIbu_WhenIbuIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -332,7 +332,7 @@ public class UpdateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(201)]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenIbuIsOutOfRange(int ibu)
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForIbu_WhenIbuIsOutOfRange(int ibu)
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -351,7 +351,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Country when Country is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenCountryIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForCountry_WhenCountryIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -370,7 +370,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Country when Country is empty.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenCountryIsEmpty()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryIsEmpty()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -389,7 +389,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Country when Country exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenCountryExceedsMaximumLength()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -408,7 +408,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Name when Name is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationError_WhenNameIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForName_WhenNameIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -428,7 +428,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Name when Name is empty.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenNameIsEmpty()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForName_WhenNameIsEmpty()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -447,7 +447,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Name when Name exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenNameExceedsMaximumLength()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
     {
         // Arrange
         var command = new UpdateBeerCommand
@@ -466,7 +466,7 @@ public class UpdateBeerCommandValidatorTests
     ///     Tests that validation should have error for Name when Name is not unique within brewery.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationError_WhenNameIsNotUniqueWithinBrewery()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForName_WhenNameIsNotUniqueWithinBrewery()
     {
         // Arrange
         var command = new UpdateBeerCommand()
