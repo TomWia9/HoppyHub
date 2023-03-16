@@ -69,15 +69,15 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitialiser
+    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitializer
     ///     to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsApplicationDbContextInitialiser()
+    public void AddInfrastructureServices_AddsApplicationDbContextInitializer()
     {
         // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitialiser));
-        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContextInitialiser));
+        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitializer));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContextInitializer));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
