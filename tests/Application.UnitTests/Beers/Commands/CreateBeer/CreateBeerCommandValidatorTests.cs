@@ -33,12 +33,12 @@ public class CreateBeerCommandValidatorTests
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _validator = new CreateBeerCommandValidator(_contextMock.Object);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Brewery when Brewery is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenBreweryIsValid()
+    public async Task CreateBeerCommand_HaveValidationErrorForBrewery_WhenBreweryIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -52,12 +52,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Brewery when Brewery is empty.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenBreweryIsEmpty()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryIsEmpty()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -71,12 +71,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenBreweryExceedsMaximumLength()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -90,12 +90,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Brewery);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for AlcoholByVolume when AlcoholByVolume is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenAlcoholByVolumeIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForAlcoholByVolume_WhenAlcoholByVolumeIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -116,7 +116,8 @@ public class CreateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenAlcoholByVolumeIsOutOfRange(double alcoholByVolume)
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForAlcoholByVolume_WhenAlcoholByVolumeIsOutOfRange(
+        double alcoholByVolume)
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -130,12 +131,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.AlcoholByVolume);
     }
-    
+
     /// <summary>
-    ///     Tests that validation should not have error for Brewery when Brewery is valid.
+    ///     Tests that validation should not have error for Description when Description is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenDescriptionIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForDescription_WhenDescriptionIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -154,7 +155,7 @@ public class CreateBeerCommandValidatorTests
     ///     Tests that validation should have error for Description when Description exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenDescriptionExceedsMaximumLength()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionExceedsMaximumLength()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -168,12 +169,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Blg when Blg is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenBlgIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForBlg_WhenBlgIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -194,7 +195,7 @@ public class CreateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenBlgIsOutOfRange(double blg)
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForBlg_WhenBlgIsOutOfRange(double blg)
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -208,12 +209,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Blg);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Plato when Plato is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenPlatoIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForPlato_WhenPlatoIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -234,7 +235,7 @@ public class CreateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(101)]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenPlatoIsOutOfRange(double plato)
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForPlato_WhenPlatoIsOutOfRange(double plato)
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -248,12 +249,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Plato);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Style when Style is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenStyleIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForStyle_WhenStyleIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -267,12 +268,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Style when Style is empty.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenStyleIsEmpty()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleIsEmpty()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -286,12 +287,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Style when Style exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenStyleExceedsMaximumLength()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -305,12 +306,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Ibu when Ibu is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenIbuIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForIbu_WhenIbuIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -331,7 +332,7 @@ public class CreateBeerCommandValidatorTests
     [Theory]
     [InlineData(-1)]
     [InlineData(201)]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenIbuIsOutOfRange(int ibu)
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForIbu_WhenIbuIsOutOfRange(int ibu)
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -345,12 +346,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Ibu);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Country when Country is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenCountryIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForCountry_WhenCountryIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -364,12 +365,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Country);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Country when Country is empty.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenCountryIsEmpty()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryIsEmpty()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -383,12 +384,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Country);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Country when Country exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenCountryExceedsMaximumLength()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -407,7 +408,7 @@ public class CreateBeerCommandValidatorTests
     ///     Tests that validation should not have error for Name when Name is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationError_WhenNameIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForName_WhenNameIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -422,12 +423,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name is empty.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenNameIsEmpty()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForName_WhenNameIsEmpty()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -441,12 +442,12 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name exceeds maximum length.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenNameExceedsMaximumLength()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -465,7 +466,7 @@ public class CreateBeerCommandValidatorTests
     ///     Tests that validation should have error for Name when Name is not unique within brewery.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationError_WhenNameIsNotUniqueWithinBrewery()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForName_WhenNameIsNotUniqueWithinBrewery()
     {
         // Arrange
         var command = new CreateBeerCommand
@@ -482,7 +483,7 @@ public class CreateBeerCommandValidatorTests
                 Name = "Test Beer"
             }
         };
-        
+
         var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
