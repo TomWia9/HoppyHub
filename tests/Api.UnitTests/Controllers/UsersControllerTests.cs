@@ -21,7 +21,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     ///     Tests that GetUser endpoint returns UserDto when id is valid.
     /// </summary>
     [Fact]
-    public async Task GetUser_WithValidId_ReturnsUserDto()
+    public async Task GetUser_ShouldReturnUserDto_WhenIdIsValid()
     {
         // Arrange
         var id = Guid.NewGuid();
@@ -41,7 +41,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     ///     Tests that GetUsers endpoint returns paginated list of UserDto.
     /// </summary>
     [Fact]
-    public async Task GetUsers_WithQuery_ReturnsPaginatedListOfUserDto()
+    public async Task GetUsers_ShouldReturnPaginatedListOfUserDto()
     {
         // Arrange
         var users = new List<UserDto>
@@ -65,10 +65,10 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     }
 
     /// <summary>
-    ///     Tests that UpdateUser endpoint with valid data returns NoContent.
+    ///     Tests that UpdateUser endpoint returns NoContent when Id is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateUser_WithValidData_ReturnsNoContent()
+    public async Task UpdateUser_ShouldReturnNoContent_WhenIdIsValid()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -86,10 +86,10 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     }
 
     /// <summary>
-    ///     Tests that UpdateUser endpoint with invalid data returns BadRequest.
+    ///     Tests that UpdateUser endpoint returns BadRequest when Id is invalid.
     /// </summary>
     [Fact]
-    public async Task UpdateUser_WithInvalidData_ReturnsBadRequest()
+    public async Task UpdateUser_ShouldReturnBadRequestWhenIdIsInvalid()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -101,7 +101,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
         // Assert
         result.Should().BeOfType<BadRequestResult>();
     }
-    
+
     /// <summary>
     ///     Tests that DeleteUser endpoint returns NoContent.
     /// </summary>

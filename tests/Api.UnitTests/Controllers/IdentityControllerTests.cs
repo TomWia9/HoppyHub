@@ -17,7 +17,7 @@ public class IdentityControllerTests : ControllerSetup<IdentityController>
     ///     Tests that Register method returns Ok when result succeeds.
     /// </summary>
     [Fact]
-    public async Task Register_Returns_Ok_When_Result_Succeeds()
+    public async Task Register_ShouldReturnOk_WhenResultSucceeds()
     {
         // Arrange
         var request = new RegisterUserCommand();
@@ -36,7 +36,7 @@ public class IdentityControllerTests : ControllerSetup<IdentityController>
     ///     Tests that Register method returns BadRequest when result fails.
     /// </summary>
     [Fact]
-    public async Task Register_Returns_BadRequest_When_Result_Fails()
+    public async Task Register_ShouldReturnBadRequest_WhenResultFails()
     {
         // Arrange
         var request = new RegisterUserCommand();
@@ -55,7 +55,7 @@ public class IdentityControllerTests : ControllerSetup<IdentityController>
     ///     Tests that Login method returns Ok when result succeeds.
     /// </summary>
     [Fact]
-    public async Task Login_Returns_Ok_When_Result_Succeeds()
+    public async Task Login_ShouldReturnOk_WhenResultSucceeds()
     {
         // Arrange
         var request = new LoginUserCommand();
@@ -74,7 +74,7 @@ public class IdentityControllerTests : ControllerSetup<IdentityController>
     ///     Tests that Login method returns BadRequest when result fails.
     /// </summary>
     [Fact]
-    public async Task Login_Returns_BadRequest_When_Result_Fails()
+    public async Task Login_ShouldReturnBadRequest_WhenResultFails()
     {
         // Arrange
         var request = new LoginUserCommand();

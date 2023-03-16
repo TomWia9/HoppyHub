@@ -68,7 +68,7 @@ public class BeersControllerTests : ControllerSetup<BeersController>
     ///     Tests that CreateBeer method returns CreatedAtAction.
     /// </summary>
     [Fact]
-    public async Task CreateBeer_ShouldReturn_CreatedAtAction()
+    public async Task CreateBeer_ShouldReturnCreatedAtAction()
     {
         // Arrange
         var command = new CreateBeerCommand();
