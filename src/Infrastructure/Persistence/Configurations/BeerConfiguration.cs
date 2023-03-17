@@ -18,7 +18,6 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         base.Configure(builder);
 
         builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
-        builder.Property(x => x.Brewery).IsRequired();
         builder.Property(x => x.Style).IsRequired().HasMaxLength(50);
         builder.Property(x => x.AlcoholByVolume).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(3000);
