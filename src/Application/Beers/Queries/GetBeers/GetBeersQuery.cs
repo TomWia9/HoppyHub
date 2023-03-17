@@ -25,11 +25,6 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public string? Style { get; init; }
 
     /// <summary>
-    ///     The country of origin.
-    /// </summary>
-    public string? Country { get; init; }
-
-    /// <summary>
     ///     Minimum alcohol by volume.
     /// </summary>
     public double? MinAlcoholByVolume { get; init; } = 0;

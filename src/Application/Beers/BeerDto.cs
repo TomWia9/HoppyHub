@@ -21,7 +21,7 @@ public record BeerDto : IMapFrom<Beer>
     /// <summary>
     ///     The brewery.
     /// </summary>
-    public string? Brewery { get; set; }
+    public Brewery? Brewery { get; set; } //TODO change to BreweryDto
     
     /// <summary>
     ///     The alcohol by volume.
@@ -52,9 +52,4 @@ public record BeerDto : IMapFrom<Beer>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }
-
-    /// <summary>
-    ///     The country of origin.
-    /// </summary>
-    public string? Country { get; set; }
 }

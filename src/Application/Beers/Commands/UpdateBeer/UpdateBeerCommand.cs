@@ -18,9 +18,9 @@ public record UpdateBeerCommand : IRequest
     public string? Name { get; init; }
 
     /// <summary>
-    ///     The brewery.
+    ///     The brewery id.
     /// </summary>
-    public string? Brewery { get; init; }
+    public Guid BreweryId { get; init; }
 
     /// <summary>
     ///     The alcohol by volume.
@@ -51,9 +51,4 @@ public record UpdateBeerCommand : IRequest
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; init; }
-
-    /// <summary>
-    ///     The country of origin.
-    /// </summary>
-    public string? Country { get; init; }
 }

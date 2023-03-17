@@ -11,12 +11,7 @@ public class Beer : BaseAuditableEntity
     ///     The beer name.
     /// </summary>
     public string? Name { get; set; }
-    
-    /// <summary>
-    ///     The brewery.
-    /// </summary>
-    public string? Brewery { get; set; }
-    
+
     /// <summary>
     ///     The beer style.
     /// </summary>
@@ -43,12 +38,17 @@ public class Beer : BaseAuditableEntity
     public int? Ibu { get; set; }
 
     /// <summary>
-    ///     The country of origin.
-    /// </summary>
-    public string? Country { get; set; }
-    
-    /// <summary>
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
+    
+    /// <summary>
+    ///     The brewery id.
+    /// </summary>
+    public Guid BreweryId { get; set; }
+    
+    /// <summary>
+    ///     The brewery.
+    /// </summary>
+    public Brewery? Brewery { get; set; }
 }

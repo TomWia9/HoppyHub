@@ -39,14 +39,13 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         }
 
         entity.Name = request.Name;
-        entity.Brewery = request.Brewery;
+        entity.BreweryId = request.BreweryId;
         entity.AlcoholByVolume = request.AlcoholByVolume;
         entity.Description = request.Description;
         entity.Blg = request.Blg;
         entity.Plato = request.Plato;
         entity.Style = request.Style;
         entity.Ibu = request.Ibu;
-        entity.Country = request.Country;
 
         await _context.SaveChangesAsync(cancellationToken);
     }

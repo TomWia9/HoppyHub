@@ -57,7 +57,6 @@ public class BeersFilteringHelperTests
             Name = "IPA",
             Brewery = "Brewery",
             Style = "Ale",
-            Country = "USA",
             SearchQuery = "IPA",
         };
 
@@ -65,7 +64,7 @@ public class BeersFilteringHelperTests
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(7, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -84,13 +83,12 @@ public class BeersFilteringHelperTests
             Name = "IPA",
             Brewery = "Brewery",
             Style = "Ale",
-            Country = "USA",
         };
 
         // Act
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
     }
 }

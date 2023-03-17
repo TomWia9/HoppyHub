@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230317081526_AddedBreweriesAndAddressesTables")]
+    partial class AddedBreweriesAndAddressesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,8 +84,15 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<double?>("Blg")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("BreweryId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Brewery")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Created")
                         .HasMaxLength(50)
@@ -121,8 +131,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BreweryId");
 
                     b.ToTable("Beers");
                 });
@@ -379,17 +387,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Brewery");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Beer", b =>
-                {
-                    b.HasOne("Domain.Entities.Brewery", "Brewery")
-                        .WithMany("Beers")
-                        .HasForeignKey("BreweryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brewery");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -444,8 +441,6 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Brewery", b =>
                 {
                     b.Navigation("Address");
-
-                    b.Navigation("Beers");
                 });
 #pragma warning restore 612, 618
         }

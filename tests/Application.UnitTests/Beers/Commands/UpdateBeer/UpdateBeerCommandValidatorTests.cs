@@ -35,60 +35,41 @@ public class UpdateBeerCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Brewery when Brewery is valid.
+    ///     Tests that validation should not have error for BreweryId when BreweryId is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForBrewery_WhenBreweryIsValid()
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForBreweryId_WhenBreweryIdIsValid()
     {
         // Arrange
         var command = new UpdateBeerCommand
         {
-            Brewery = "Test Brewery"
+            BreweryId = Guid.NewGuid()
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Brewery);
+        result.ShouldNotHaveValidationErrorFor(x => x.BreweryId);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for Brewery when Brewery is empty.
+    ///     Tests that validation should have error for BreweryId when BreweryId is empty.
     /// </summary>
     [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryIsEmpty()
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBreweryId_WhenBreweryIdIsEmpty()
     {
         // Arrange
         var command = new UpdateBeerCommand
         {
-            Brewery = ""
+            BreweryId = Guid.Empty //not sure this will work
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Brewery);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            Brewery = new string('x', 201)
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Brewery);
+        result.ShouldHaveValidationErrorFor(x => x.BreweryId);
     }
 
     /// <summary>
@@ -348,63 +329,6 @@ public class UpdateBeerCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Country when Country is valid.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForCountry_WhenCountryIsValid()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            Country = "Poland"
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Country);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Country when Country is empty.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryIsEmpty()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            Country = ""
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Country);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Country when Country exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
-    {
-        // Arrange
-        var command = new UpdateBeerCommand
-        {
-            Country = new string('x', 51)
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Country);
-    }
-
-    /// <summary>
     ///     Tests that validation should not have error for Name when Name is valid.
     /// </summary>
     [Fact]
@@ -413,7 +337,7 @@ public class UpdateBeerCommandValidatorTests
         // Arrange
         var command = new UpdateBeerCommand
         {
-            Brewery = "Test Brewery",
+            BreweryId = Guid.NewGuid(),
             Name = "Test Beer"
         };
 
@@ -469,10 +393,11 @@ public class UpdateBeerCommandValidatorTests
     public async Task UpdateBeerCommand_ShouldHaveValidationErrorForName_WhenNameIsNotUniqueWithinBrewery()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
         var command = new UpdateBeerCommand()
         {
             Id = Guid.NewGuid(),
-            Brewery = "Test Brewery",
+            BreweryId = breweryId,
             Name = "Test Beer"
         };
 
@@ -481,7 +406,7 @@ public class UpdateBeerCommandValidatorTests
             new()
             {
                 Id = Guid.NewGuid(),
-                Brewery = "Test Brewery",
+                BreweryId = breweryId,
                 Name = "Test Beer"
             }
         };
