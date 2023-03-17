@@ -72,7 +72,7 @@ public class ApplicationDbContextInitializer
 
             await SeedRolesAsync();
             await SeedUsersAsync();
-            await SeedBeersAsync();
+            await SeedBreweriesAsync();
 
             Log.Logger.Information("Seeding database completed");
         }
@@ -137,15 +137,15 @@ public class ApplicationDbContextInitializer
     /// <summary>
     ///     Seeds beers asynchronously.
     /// </summary>
-    private async Task SeedBeersAsync()
+    private async Task SeedBreweriesAsync()
     {
         if (!await _context.Beers.AnyAsync())
         {
-            Log.Logger.Information("Seeding beers...");
+            Log.Logger.Information("Seeding breweries and beers...");
 
-            const string fileName = "Beers.json";
+            const string fileName = "Breweries.json";
 
-            await SeedDatabaseFromJson<Beer>(fileName);
+            await SeedDatabaseFromJson<Brewery>(fileName);
         }
     }
 
