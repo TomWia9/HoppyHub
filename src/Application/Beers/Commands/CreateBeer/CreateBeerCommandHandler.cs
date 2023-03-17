@@ -42,14 +42,13 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
         var entity = new Beer
         {
             Name = request.Name,
-            Brewery = request.Brewery,
+            BreweryId = request.BreweryId,
             AlcoholByVolume = request.AlcoholByVolume,
             Description = request.Description,
             Blg = request.Blg,
             Plato = request.Plato,
             Style = request.Style,
-            Ibu = request.Ibu,
-            Country = request.Country
+            Ibu = request.Ibu
         };
 
         await _context.Beers.AddAsync(entity, cancellationToken);

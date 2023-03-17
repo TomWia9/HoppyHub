@@ -14,9 +14,8 @@ public static class BeersFilteringHelper
     public static readonly Dictionary<string, Expression<Func<Beer, object>>> SortingColumns = new()
     {
         { nameof(Beer.Name).ToUpper(), x => x.Name ?? string.Empty },
-        { nameof(Beer.Brewery).ToUpper(), x => x.Brewery ?? string.Empty },
+        { nameof(Beer.Brewery).ToUpper(), x => x.Brewery!.Name ?? string.Empty },
         { nameof(Beer.Style).ToUpper(), x => x.Style ?? string.Empty },
-        { nameof(Beer.Country).ToUpper(), x => x.Country ?? string.Empty },
         { nameof(Beer.AlcoholByVolume).ToUpper(), x => x.AlcoholByVolume },
         { nameof(Beer.Blg).ToUpper(), x => x.Blg ?? 0 },
         { nameof(Beer.Plato).ToUpper(), x => x.Plato ?? 0 },
@@ -49,13 +48,10 @@ public static class BeersFilteringHelper
             delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Brewery))
-            delegates.Add(x => x.Brewery != null && string.Equals(x.Brewery.ToUpper(), request.Brewery.ToUpper()));
+            delegates.Add(x => x.Brewery != null && x.Brewery.Name != null && string.Equals(x.Brewery.Name.ToUpper(), request.Brewery.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Style))
             delegates.Add(x => x.Style != null && string.Equals(x.Style.ToUpper(), request.Style.ToUpper()));
-
-        if (!string.IsNullOrWhiteSpace(request.Country))
-            delegates.Add(x => x.Country != null && string.Equals(x.Country.ToUpper(), request.Country.ToUpper()));
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
@@ -66,9 +62,8 @@ public static class BeersFilteringHelper
 
         Expression<Func<Beer, bool>> searchDelegate =
             x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.Brewery != null && x.Brewery.ToUpper().Contains(searchQuery)) ||
+                 (x.Brewery != null && x.Brewery.Name != null && x.Brewery.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Style != null && x.Style.ToUpper().Contains(searchQuery)) ||
-                 (x.Country != null && x.Country.ToUpper().Contains(searchQuery)) ||
                  (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);

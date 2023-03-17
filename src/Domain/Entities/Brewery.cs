@@ -31,4 +31,9 @@ public class Brewery : BaseAuditableEntity
     ///     The brewery address.
     /// </summary>
     public Address? Address { get; set; }
+
+    /// <summary>
+    ///     The beers.
+    /// </summary>
+    public ICollection<Beer> Beers { get; set; } = new List<Beer>();
 }

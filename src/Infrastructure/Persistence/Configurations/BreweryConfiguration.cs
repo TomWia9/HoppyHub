@@ -24,5 +24,9 @@ public class BreweryConfiguration : BaseConfiguration<Brewery>
         builder.HasOne(b => b.Address)
             .WithOne(a => a.Brewery)
             .HasForeignKey<Address>(a => a.BreweryId);
+
+        builder.HasMany(b => b.Beers)
+            .WithOne(x => x.Brewery)
+            .IsRequired();
     }
 }

@@ -49,14 +49,13 @@ public class CreateBeerCommandHandlerTests
         var request = new CreateBeerCommand
         {
             Name = "Test beer",
-            Brewery = "Test brewery",
+            BreweryId = Guid.NewGuid(),
             AlcoholByVolume = 5.0,
             Description = "Test description",
             Blg = 12.0,
             Plato = 10.0,
             Style = "Test style",
-            Ibu = 25,
-            Country = "Test country"
+            Ibu = 25
         };
         var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
 
@@ -72,7 +71,6 @@ public class CreateBeerCommandHandlerTests
                 Plato = source.Plato,
                 Style = source.Style,
                 Ibu = source.Ibu,
-                Country = source.Country
             });
 
         // Act
@@ -80,15 +78,14 @@ public class CreateBeerCommandHandlerTests
 
         // Assert
         result.Should().NotBeNull();
+        result.Should().BeOfType<BeerDto>();
         result.Name.Should().Be(request.Name);
-        result.Brewery.Should().Be(request.Brewery);
         result.AlcoholByVolume.Should().Be(request.AlcoholByVolume);
         result.Description.Should().Be(request.Description);
         result.Blg.Should().Be(request.Blg);
         result.Plato.Should().Be(request.Plato);
         result.Style.Should().Be(request.Style);
         result.Ibu.Should().Be(request.Ibu);
-        result.Country.Should().Be(request.Country);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }

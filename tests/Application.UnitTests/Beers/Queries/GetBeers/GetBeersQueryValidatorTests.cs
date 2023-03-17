@@ -135,45 +135,7 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-
-    /// <summary>
-    ///     Tests that validation should not have error for Country when Country is valid.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForCountry_WhenCountryIsValid()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Country = "Test Country"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Country);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Country when Country exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Country = new string('x', 201)
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Country);
-    }
-
+    
     /// <summary>
     ///     Tests that validation should not have error for MinAlcoholByVolume when MinAlcoholByVolume is valid.
     /// </summary>
@@ -431,7 +393,6 @@ public class GetBeersQueryValidatorTests
     [InlineData("name")]
     [InlineData("brewery")]
     [InlineData("style")]
-    [InlineData("COUNTRY")]
     [InlineData("ALCOHOLBYVOLUME")]
     [InlineData("blg")]
     [InlineData("plato")]
@@ -470,6 +431,6 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [NAME, BREWERY, STYLE, COUNTRY, ALCOHOLBYVOLUME, BLG, PLATO, IBU]");
+            .WithErrorMessage("SortBy must be in [NAME, BREWERY, STYLE, ALCOHOLBYVOLUME, BLG, PLATO, IBU]");
     }
 }
