@@ -21,7 +21,7 @@ public record BeerDto : IMapFrom<Beer>
     /// <summary>
     ///     The brewery.
     /// </summary>
-    public Brewery? Brewery { get; set; }
+    public Brewery? Brewery { get; set; } //TODO change to BreweryDto
     
     /// <summary>
     ///     The alcohol by volume.
