@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Beers.Queries.GetBeer;
 
@@ -39,7 +40,8 @@ public class GetBeerQueryHandler : IRequestHandler<GetBeerQuery, BeerDto>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerDto> Handle(GetBeerQuery request, CancellationToken cancellationToken)
     {
-        var beer = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+        var beer = await _context.Beers.Include(x => x.Brewery)
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (beer == null)
         {

@@ -71,16 +71,15 @@ public class GetBeersQueryHandlerTests
         }), 1, 10);
 
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
-        var beersQueryableMock = beers.AsQueryable().BuildMock();
 
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
         _queryServiceMock.Setup(qs =>
                 qs.Filter(It.IsAny<IQueryable<Beer>>(), It.IsAny<IEnumerable<Expression<Func<Beer, bool>>>>()))
-            .Returns(beersQueryableMock);
+            .Returns(beersDbSetMock.Object);
         _queryServiceMock.Setup(qs =>
                 qs.Sort(It.IsAny<IQueryable<Beer>>(), It.IsAny<Expression<Func<Beer, object>>>(),
                     It.IsAny<SortDirection>()))
-            .Returns(beersQueryableMock);
+            .Returns(beersDbSetMock.Object);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

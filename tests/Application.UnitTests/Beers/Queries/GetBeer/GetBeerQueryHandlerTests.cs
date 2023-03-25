@@ -4,6 +4,7 @@ using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
+using MockQueryable.Moq;
 using Moq;
 
 namespace Application.UnitTests.Beers.Queries.GetBeer;
@@ -45,8 +46,10 @@ public class GetBeerQueryHandlerTests
         // Arrange
         var beerId = Guid.NewGuid();
         var beer = new Beer { Id = beerId, Name = "Test Beer" };
-        _contextMock.Setup(c => c.Beers.FindAsync(new object?[] { beerId }, CancellationToken.None))
-            .ReturnsAsync(beer);
+        var beers = new List<Beer> { beer };
+        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
+        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
+
         var query = new GetBeerQuery { Id = beerId };
 
         // Act
@@ -65,8 +68,9 @@ public class GetBeerQueryHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenIdIsInvalid()
     {
         // Arrange
-        _contextMock.Setup(c => c.Beers.FindAsync(new object?[] { Guid.NewGuid() }, CancellationToken.None))
-            .ReturnsAsync((Beer?)null);
+        var beers = Enumerable.Empty<Beer>();
+        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
+        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
         var query = new GetBeerQuery { Id = Guid.NewGuid() };
 
         // Act & Assert
