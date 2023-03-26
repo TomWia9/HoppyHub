@@ -16,9 +16,9 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public string? Name { get; init; }
 
     /// <summary>
-    ///     The brewery.
+    ///     The brewery id.
     /// </summary>
-    public string? Brewery { get; init; }
+    public Guid? BreweryId { get; init; }
 
     /// <summary>
     ///     The beer style.
