@@ -15,7 +15,7 @@ public class GetBeersQueryValidatorTests
     private readonly GetBeersQueryValidator _validator;
 
     /// <summary>
-    ///     Setups CreateBeerCommandValidatorTests.
+    ///     Setups GetBeersQueryValidatorTests.
     /// </summary>
     public GetBeersQueryValidatorTests()
     {
