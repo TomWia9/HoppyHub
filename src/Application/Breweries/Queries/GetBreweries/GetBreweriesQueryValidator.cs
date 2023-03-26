@@ -1,5 +1,4 @@
-﻿using Application.Beers.Queries.GetBeers;
-using Application.Common.Abstractions;
+﻿using Application.Common.Abstractions;
 using Application.Common.Interfaces;
 using FluentValidation;
 
@@ -29,6 +28,6 @@ public class GetBreweriesQueryValidator : QueryValidator<GetBreweriesQuery>
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) ||
                 BreweriesFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
-            .WithMessage($"SortBy must be in [{string.Join(", ", BeersFilteringHelper.SortingColumns.Keys)}]");
+            .WithMessage($"SortBy must be in [{string.Join(", ", BreweriesFilteringHelper.SortingColumns.Keys)}]");
     }
 }
