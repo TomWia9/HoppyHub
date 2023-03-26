@@ -12,7 +12,7 @@ public class BreweriesController : ApiControllerBase
     /// </summary>
     /// <returns>An ActionResult of type PaginatedList of BreweryDto</returns>
     [HttpGet]
-    public async Task<ActionResult<BreweryDto>> GetBeers([FromQuery] GetBreweriesQuery query)
+    public async Task<ActionResult<BreweryDto>> GetBreweries([FromQuery] GetBreweriesQuery query)
     {
         var result = await Mediator.Send(query);
 
@@ -20,14 +20,14 @@ public class BreweriesController : ApiControllerBase
 
         return Ok(result);
     }
-    
+
     /// <summary>
     ///     Gets brewery by id.
     /// </summary>
     /// <param name="id">The brewery id</param>
     /// <returns>An ActionResult of type BreweryDto</returns>
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<BreweryDto>> GetBeer(Guid id)
+    public async Task<ActionResult<BreweryDto>> GetBrewery(Guid id)
     {
         var result = await Mediator.Send(new GetBreweryQuery { Id = id });
 
