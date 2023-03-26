@@ -61,44 +61,6 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Brewery when Brewery is valid.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForBrewery_WhenBreweryIsValid()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Brewery = "Test Brewery"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Brewery);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Brewery when Brewery exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForBrewery_WhenBreweryExceedsMaximumLength()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Brewery = new string('x', 201)
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Brewery);
-    }
-
-    /// <summary>
     ///     Tests that validation should not have error for Style when Style is valid.
     /// </summary>
     [Fact]
