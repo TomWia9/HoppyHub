@@ -29,4 +29,9 @@
       <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Breweries\Commands" />
+      <Folder Include="Breweries\Queries\GetBrewery" />
+    </ItemGroup>
+
 </Project>
