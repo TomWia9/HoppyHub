@@ -19,13 +19,16 @@ public class GetBreweriesQueryValidator : QueryValidator<GetBreweriesQuery>
         RuleFor(x => x.Country).MaximumLength(50);
         RuleFor(x => x.State).MaximumLength(50);
         RuleFor(x => x.City).MaximumLength(50);
-        RuleFor(x => x.MinFoundationYear).InclusiveBetween(0, dateTime.Now.Year).LessThanOrEqualTo(x => x.MaxFoundationYear)
+        RuleFor(x => x.MinFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
+            .LessThanOrEqualTo(x => x.MaxFoundationYear)
             .WithMessage("Min value must be less than or equal to Max value");
-        RuleFor(x => x.MaxFoundationYear).InclusiveBetween(0, dateTime.Now.Year).GreaterThanOrEqualTo(x => x.MinFoundationYear)
+        RuleFor(x => x.MaxFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
+            .GreaterThanOrEqualTo(x => x.MinFoundationYear)
             .WithMessage("Max value must be greater than or equal to Min value");
         RuleFor(x => x.SortBy)
             .Must(value =>
-                string.IsNullOrWhiteSpace(value) || BreweriesFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
+                string.IsNullOrWhiteSpace(value) ||
+                BreweriesFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
             .WithMessage($"SortBy must be in [{string.Join(", ", BeersFilteringHelper.SortingColumns.Keys)}]");
     }
 }
