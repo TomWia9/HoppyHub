@@ -1,8 +1,8 @@
-﻿using Application.Breweries;
+﻿using Application.Breweries.Dtos;
 using Application.Common.Mappings;
 using Domain.Entities;
 
-namespace Application.Beers;
+namespace Application.Beers.Dtos;
 
 /// <summary>
 ///     The beer data transfer object.

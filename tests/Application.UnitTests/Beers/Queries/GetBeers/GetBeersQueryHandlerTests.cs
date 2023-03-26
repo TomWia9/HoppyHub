@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Application.Beers;
+using Application.Beers.Dtos;
 using Application.Beers.Queries.GetBeers;
 using Application.Common.Enums;
 using Application.Common.Interfaces;

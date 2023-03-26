@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Beers.Dtos;
+using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;

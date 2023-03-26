@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Beers.Dtos;
+using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
 using AutoMapper;

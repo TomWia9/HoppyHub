@@ -1,6 +1,6 @@
-﻿using Application.Beers;
-using Application.Beers.Commands.CreateBeer;
-using Application.Breweries;
+﻿using Application.Beers.Commands.CreateBeer;
+using Application.Beers.Dtos;
+using Application.Breweries.Dtos;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;

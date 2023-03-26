@@ -1,4 +1,5 @@
-﻿using Application.Common.Abstractions;
+﻿using Application.Beers.Dtos;
+using Application.Common.Abstractions;
 using Application.Common.Models;
 using MediatR;
 

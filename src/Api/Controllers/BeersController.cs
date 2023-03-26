@@ -1,7 +1,7 @@
-﻿using Application.Beers;
-using Application.Beers.Commands.CreateBeer;
+﻿using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
+using Application.Beers.Dtos;
 using Application.Beers.Queries.GetBeer;
 using Application.Beers.Queries.GetBeers;
 using Application.Common.Models;

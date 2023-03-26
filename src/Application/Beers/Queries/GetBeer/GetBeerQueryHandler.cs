@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Beers.Dtos;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;

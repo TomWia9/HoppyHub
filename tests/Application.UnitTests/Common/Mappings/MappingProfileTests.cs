@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
-using Application.Beers;
-using Application.Breweries;
+using Application.Beers.Dtos;
+using Application.Breweries.Dtos;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;

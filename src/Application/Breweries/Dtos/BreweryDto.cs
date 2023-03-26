@@ -1,7 +1,7 @@
 ﻿using Application.Common.Mappings;
 using Domain.Entities;
 
-namespace Application.Breweries;
+namespace Application.Breweries.Dtos;
 
 /// <summary>
 ///     The brewery data transfer object.
