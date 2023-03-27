@@ -1,4 +1,4 @@
-﻿using Application.Beers.Queries.GetBeer;
+﻿using Application.Breweries.Queries.GetBrewery;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
@@ -7,13 +7,13 @@ using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
 
-namespace Application.UnitTests.Beers.Queries.GetBeer;
+namespace Application.UnitTests.Breweries.Queries.GetBrewery;
 
 /// <summary>
-///     Tests for the <see cref="GetBeerQueryHandler"/> class.
+///     Tests for the <see cref="GetBreweryQueryHandler"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class GetBeerQueryHandlerTests
+public class GetBreweryQueryHandlerTests
 {
     /// <summary>
     ///     The database context mock.
@@ -23,42 +23,42 @@ public class GetBeerQueryHandlerTests
     /// <summary>
     ///     The handler.
     /// </summary>
-    private readonly GetBeerQueryHandler _handler;
+    private readonly GetBreweryQueryHandler _handler;
 
     /// <summary>
-    ///     Setups GetBeerQueryHandlerTests.
+    ///     Setups GetBreweryQueryHandlerTests.
     /// </summary>
-    public GetBeerQueryHandlerTests()
+    public GetBreweryQueryHandlerTests()
     {
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
 
         _contextMock = new Mock<IApplicationDbContext>();
-        _handler = new GetBeerQueryHandler(_contextMock.Object, mapper);
+        _handler = new GetBreweryQueryHandler(_contextMock.Object, mapper);
     }
 
     /// <summary>
-    ///     Tests that Handle method returns BeerDto when Id is valid.
+    ///     Tests that Handle method returns BreweryDto when Id is valid.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldReturnBeerDto_WhenIdIsValid()
+    public async Task Handle_ShouldReturnBreweryDto_WhenIdIsValid()
     {
         // Arrange
-        var beerId = Guid.NewGuid();
-        var beer = new Beer { Id = beerId, Name = "Test Beer" };
-        var beers = new List<Beer> { beer };
-        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
+        var breweryId = Guid.NewGuid();
+        var brewery = new Brewery { Id = breweryId, Name = "Test brewery" };
+        var breweries = new List<Brewery> { brewery };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
 
-        var query = new GetBeerQuery { Id = beerId };
+        var query = new GetBreweryQuery() { Id = breweryId };
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
         // Assert
         result.Should().NotBeNull();
-        result.Id.Should().Be(beer.Id);
-        result.Name.Should().Be(beer.Name);
+        result.Id.Should().Be(brewery.Id);
+        result.Name.Should().Be(brewery.Name);
     }
 
     /// <summary>
@@ -68,10 +68,10 @@ public class GetBeerQueryHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenIdIsInvalid()
     {
         // Arrange
-        var beers = Enumerable.Empty<Beer>();
-        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
-        var query = new GetBeerQuery { Id = Guid.NewGuid() };
+        var breweries = Enumerable.Empty<Brewery>();
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        var query = new GetBreweryQuery { Id = Guid.NewGuid() };
 
         // Act & Assert
         await _handler.Invoking(x => x.Handle(query, CancellationToken.None))
