@@ -3,12 +3,12 @@ using Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Breweries.Commands.CreateBrewery;
+namespace Application.Breweries.Commands.UpdateBrewery;
 
 /// <summary>
-///     CreateBreweryCommand validator
+///     UpdateBreweryCommand validator.
 /// </summary>
-public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryCommand>
+public class UpdateBreweryCommandValidator : AbstractValidator<UpdateBreweryCommand>
 {
     /// <summary>
     ///     The database context.
@@ -20,7 +20,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="dateTime">The date time service</param>
-    public CreateBreweryCommandValidator(IApplicationDbContext context, IDateTime dateTime)
+    public UpdateBreweryCommandValidator(IApplicationDbContext context, IDateTime dateTime)
     {
         _context = context;
 
@@ -41,13 +41,14 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     /// <summary>
     ///     The custom rule indicating whether brewery name is unique.
     /// </summary>
-    /// <param name="model">The CreateBreweryCommand</param>
+    /// <param name="model">The UpdateBreweryCommand</param>
     /// <param name="name">The brewery name</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    private async Task<bool> BeUniqueName(CreateBreweryCommand model, string name,
+    private async Task<bool> BeUniqueName(UpdateBreweryCommand model, string name,
         CancellationToken cancellationToken)
     {
-        return await _context.Breweries.AllAsync(x => x.Name != name.Trim(), cancellationToken);
+        return await _context.Breweries.Where(x => x.Id != model.Id)
+            .AllAsync(x => x.Name != name.Trim(), cancellationToken);
     }
 
     /// <summary>
