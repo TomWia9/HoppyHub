@@ -1,4 +1,5 @@
 ﻿using Application.Breweries.Commands.CreateBrewery;
+using Application.Breweries.Commands.DeleteBrewery;
 using Application.Breweries.Commands.UpdateBrewery;
 using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
@@ -68,6 +69,20 @@ public class BreweriesController : ApiControllerBase
         }
 
         await Mediator.Send(command);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Deletes the brewery.
+    /// </summary>
+    /// <param name="id">The brewery id</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteBrewery(Guid id)
+    {
+        await Mediator.Send(new DeleteBreweryCommand { Id = id });
 
         return NoContent();
     }
