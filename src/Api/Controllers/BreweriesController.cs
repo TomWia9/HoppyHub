@@ -1,4 +1,5 @@
 ﻿using Application.Breweries.Commands.CreateBrewery;
+using Application.Breweries.Commands.UpdateBrewery;
 using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Breweries.Queries.GetBrewery;
@@ -36,7 +37,7 @@ public class BreweriesController : ApiControllerBase
 
         return Ok(result);
     }
-    
+
     /// <summary>
     ///     Creates the brewery.
     /// </summary>
@@ -49,5 +50,25 @@ public class BreweriesController : ApiControllerBase
         var result = await Mediator.Send(command);
 
         return CreatedAtAction("GetBrewery", new { id = result.Id }, result);
+    }
+
+    /// <summary>
+    ///     Updates the brewery.
+    /// </summary>
+    /// <param name="id">The brewery id</param>
+    /// <param name="command">The UpdateBreweryCommand</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> UpdateBrewery(Guid id, [FromBody] UpdateBreweryCommand command)
+    {
+        if (id != command.Id)
+        {
+            return BadRequest();
+        }
+
+        await Mediator.Send(command);
+
+        return NoContent();
     }
 }
