@@ -1,7 +1,8 @@
-﻿using Application.Common.Mappings;
+﻿using Application.Breweries.Dtos;
+using Application.Common.Mappings;
 using Domain.Entities;
 
-namespace Application.Beers;
+namespace Application.Beers.Dtos;
 
 /// <summary>
 ///     The beer data transfer object.
@@ -21,7 +22,7 @@ public record BeerDto : IMapFrom<Beer>
     /// <summary>
     ///     The brewery.
     /// </summary>
-    public Brewery? Brewery { get; set; } //TODO change to BreweryDto
+    public BreweryDto? Brewery { get; set; } 
     
     /// <summary>
     ///     The alcohol by volume.

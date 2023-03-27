@@ -1,13 +1,13 @@
-﻿using Application.Beers.Queries.GetBeers;
+﻿using Application.Breweries.Queries.GetBreweries;
 using Domain.Entities;
 
-namespace Application.UnitTests.Beers.Queries.GetBeers;
+namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 
 /// <summary>
-///     Tests for the <see cref="BeersFilteringHelper"/> class.
+///     Tests for the <see cref="BreweriesFilteringHelper"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class BeersFilteringHelperTests
+public class BreweriesFilteringHelperTests
 {
     /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
@@ -19,10 +19,10 @@ public class BeersFilteringHelperTests
         string? sortBy = null;
 
         // Act
-        var result = BeersFilteringHelper.GetSortingColumn(sortBy);
+        var result = BreweriesFilteringHelper.GetSortingColumn(sortBy);
 
         // Assert
-        result.Should().Be(BeersFilteringHelper.SortingColumns.First().Value);
+        result.Should().Be(BreweriesFilteringHelper.SortingColumns.First().Value);
     }
 
     /// <summary>
@@ -32,13 +32,13 @@ public class BeersFilteringHelperTests
     public void GetSortingColumn_ShouldReturnCorrectColumn_WhenSortByIsProvided()
     {
         // Arrange
-        const string sortBy = nameof(Beer.Name);
+        const string sortBy = nameof(Brewery.FoundationYear);
 
         // Act
-        var result = BeersFilteringHelper.GetSortingColumn(sortBy);
+        var result = BreweriesFilteringHelper.GetSortingColumn(sortBy);
 
         // Assert
-        result.Should().Be(BeersFilteringHelper.SortingColumns[sortBy.ToUpper()]);
+        result.Should().Be(BreweriesFilteringHelper.SortingColumns[sortBy.ToUpper()]);
     }
 
     /// <summary>
@@ -48,20 +48,19 @@ public class BeersFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegates()
     {
         // Arrange
-        var request = new GetBeersQuery
+        var request = new GetBreweriesQuery()
         {
-            MinAlcoholByVolume = 5,
-            MaxAlcoholByVolume = 10,
-            MinIbu = 20,
-            MaxIbu = 50,
-            Name = "IPA",
-            BreweryId = Guid.NewGuid(),
-            Style = "Ale",
-            SearchQuery = "IPA",
+            Name = "Pinta",
+            Country = "Poland",
+            State = "Śląskie",
+            City = "Wieprz",
+            MinFoundationYear = 2000,
+            MaxFoundationYear = 2023,
+            SearchQuery = "IPA"
         };
 
         // Act
-        var result = BeersFilteringHelper.GetDelegates(request);
+        var result = BreweriesFilteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(6, "Min and Max are merged into single delegate");
@@ -74,19 +73,18 @@ public class BeersFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegatesWithoutSearchQuery()
     {
         // Arrange
-        var request = new GetBeersQuery
+        var request = new GetBreweriesQuery()
         {
-            MinAlcoholByVolume = 5,
-            MaxAlcoholByVolume = 10,
-            MinIbu = 20,
-            MaxIbu = 50,
-            Name = "IPA",
-            BreweryId = Guid.NewGuid(),
-            Style = "Ale",
+            Name = "Pinta",
+            Country = "Poland",
+            State = "Śląskie",
+            City = "Wieprz",
+            MinFoundationYear = 2000,
+            MaxFoundationYear = 2023
         };
 
         // Act
-        var result = BeersFilteringHelper.GetDelegates(request);
+        var result = BreweriesFilteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(5, "Min and Max are merged into single delegate");

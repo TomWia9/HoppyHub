@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+﻿using Application.Beers.Dtos;
 using MediatR;
 
 namespace Application.Beers.Commands.CreateBeer;

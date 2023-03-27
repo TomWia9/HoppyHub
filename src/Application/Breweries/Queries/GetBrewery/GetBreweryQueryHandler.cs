@@ -1,4 +1,4 @@
-﻿using Application.Beers.Dtos;
+﻿using Application.Breweries.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
@@ -6,12 +6,12 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Beers.Queries.GetBeer;
+namespace Application.Breweries.Queries.GetBrewery;
 
 /// <summary>
-///     GetBeerQuery handler.
+///     GetBreweryQuery handler.
 /// </summary>
-public class GetBeerQueryHandler : IRequestHandler<GetBeerQuery, BeerDto>
+public class GetBreweryQueryHandler : IRequestHandler<GetBreweryQuery, BreweryDto>
 {
     /// <summary>
     ///     The database context.
@@ -24,31 +24,29 @@ public class GetBeerQueryHandler : IRequestHandler<GetBeerQuery, BeerDto>
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     Initializes GetBeerQueryHandler.
+    ///     Initializes GetBreweryQueryHandler.
     /// </summary>
-    /// <param name="context">The database context</param>
-    /// <param name="mapper">The mapper</param>
-    public GetBeerQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetBreweryQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
     }
 
     /// <summary>
-    ///     Handles GetBeerQuery.
+    ///     Handles GetBreweryQuery.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task<BeerDto> Handle(GetBeerQuery request, CancellationToken cancellationToken)
+    public async Task<BreweryDto> Handle(GetBreweryQuery request, CancellationToken cancellationToken)
     {
-        var beer = await _context.Beers.Include(x => x.Brewery)
+        var brewery = await _context.Breweries.Include(x => x.Address)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
-        if (beer == null)
+        if (brewery == null)
         {
-            throw new NotFoundException(nameof(Beer), request.Id);
+            throw new NotFoundException(nameof(Brewery), request.Id);
         }
 
-        return _mapper.Map<BeerDto>(beer);
+        return _mapper.Map<BreweryDto>(brewery);
     }
 }

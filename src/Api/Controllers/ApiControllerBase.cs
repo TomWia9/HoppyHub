@@ -5,7 +5,7 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ApiControllerBase : ControllerBase
+public abstract class ApiControllerBase : ControllerBase
 {
     private ISender? _mediator;
 

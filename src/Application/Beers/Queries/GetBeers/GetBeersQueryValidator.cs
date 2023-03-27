@@ -14,7 +14,6 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
     public GetBeersQueryValidator()
     {
         RuleFor(x => x.Name).MaximumLength(200);
-        RuleFor(x => x.Brewery).MaximumLength(200);
         RuleFor(x => x.Style).MaximumLength(50);
         RuleFor(x => x.MinAlcoholByVolume).InclusiveBetween(0, 100).LessThanOrEqualTo(x => x.MaxAlcoholByVolume)
             .WithMessage("Min value must be less than or equal to Max value");

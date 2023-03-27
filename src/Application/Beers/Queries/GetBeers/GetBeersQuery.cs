@@ -1,4 +1,5 @@
-﻿using Application.Common.Abstractions;
+﻿using Application.Beers.Dtos;
+using Application.Common.Abstractions;
 using Application.Common.Models;
 using MediatR;
 
@@ -15,9 +16,9 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public string? Name { get; init; }
 
     /// <summary>
-    ///     The brewery.
+    ///     The brewery id.
     /// </summary>
-    public string? Brewery { get; init; }
+    public Guid? BreweryId { get; init; }
 
     /// <summary>
     ///     The beer style.

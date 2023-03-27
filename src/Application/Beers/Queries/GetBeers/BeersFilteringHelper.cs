@@ -47,11 +47,11 @@ public static class BeersFilteringHelper
         if (!string.IsNullOrWhiteSpace(request.Name))
             delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
-        if (!string.IsNullOrWhiteSpace(request.Brewery))
-            delegates.Add(x => x.Brewery != null && x.Brewery.Name != null && string.Equals(x.Brewery.Name.ToUpper(), request.Brewery.ToUpper()));
-
         if (!string.IsNullOrWhiteSpace(request.Style))
             delegates.Add(x => x.Style != null && string.Equals(x.Style.ToUpper(), request.Style.ToUpper()));
+
+        if (request.BreweryId != null)
+            delegates.Add(x => x.Brewery != null && x.Brewery.Id == request.BreweryId);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {

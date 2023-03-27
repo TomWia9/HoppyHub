@@ -1,5 +1,6 @@
-﻿using Application.Beers;
-using Application.Beers.Commands.CreateBeer;
+﻿using Application.Beers.Commands.CreateBeer;
+using Application.Beers.Dtos;
+using Application.Breweries.Dtos;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -46,10 +47,11 @@ public class CreateBeerCommandHandlerTests
     public async Task Handle_ShouldCreateBeerAndReturnCorrectBeerDto()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
         var request = new CreateBeerCommand
         {
             Name = "Test beer",
-            BreweryId = Guid.NewGuid(),
+            BreweryId = breweryId,
             AlcoholByVolume = 5.0,
             Description = "Test description",
             Blg = 12.0,
@@ -57,6 +59,7 @@ public class CreateBeerCommandHandlerTests
             Style = "Test style",
             Ibu = 25
         };
+        var breweryDto = new BreweryDto { Id = breweryId };
         var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
@@ -64,7 +67,7 @@ public class CreateBeerCommandHandlerTests
             .Returns((Beer source) => new BeerDto
             {
                 Name = source.Name,
-                Brewery = source.Brewery,
+                Brewery = breweryDto,
                 AlcoholByVolume = source.AlcoholByVolume,
                 Description = source.Description,
                 Blg = source.Blg,
@@ -86,6 +89,7 @@ public class CreateBeerCommandHandlerTests
         result.Plato.Should().Be(request.Plato);
         result.Style.Should().Be(request.Style);
         result.Ibu.Should().Be(request.Ibu);
+        result.Brewery.Should().Be(breweryDto);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
