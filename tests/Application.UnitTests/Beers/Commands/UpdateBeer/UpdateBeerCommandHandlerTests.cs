@@ -2,6 +2,7 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using MockQueryable.Moq;
 using Moq;
 
 namespace Application.UnitTests.Beers.Commands.UpdateBeer;
@@ -38,12 +39,16 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldUpdateBeer_WhenBeerExists()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
+        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerId = Guid.NewGuid();
         var existingBeer = new Beer { Id = beerId, Name = "Old Name" };
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingBeer);
 
-        var command = new UpdateBeerCommand { Id = beerId, Name = "New Name" };
+        var command = new UpdateBeerCommand { Id = beerId, Name = "New Name", BreweryId = breweryId };
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
@@ -59,12 +64,39 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBeerDoesNotExist()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
+        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.Beers.FindAsync(new object[] { 1 }, CancellationToken.None))
             .ReturnsAsync((Beer?)null);
 
-        var command = new UpdateBeerCommand { Id = Guid.NewGuid(), Name = "New Name" };
+        var command = new UpdateBeerCommand { Id = Guid.NewGuid(), Name = "New Name", BreweryId = breweryId };
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
+    }
+    
+    /// <summary>
+    ///     Tests that Handle method throws NotFoundException when brewery does not exists.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldThrowNotFoundException_WhenBreweryDoesNotExists()
+    {
+        // Arrange
+        var command = new UpdateBeerCommand
+        {
+            Name = "Test Beer",
+            BreweryId = Guid.NewGuid()
+        };
+        var breweries = Enumerable.Empty<Brewery>();
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<NotFoundException>();
     }
 }

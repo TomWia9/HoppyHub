@@ -1,8 +1,10 @@
 ﻿using Application.Beers.Dtos;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Beers.Commands.CreateBeer;
 
@@ -40,6 +42,11 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <returns></returns>
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
+        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
+        {
+            throw new NotFoundException(nameof(Brewery), request.BreweryId);
+        }
+        
         var entity = new Beer
         {
             Name = request.Name,

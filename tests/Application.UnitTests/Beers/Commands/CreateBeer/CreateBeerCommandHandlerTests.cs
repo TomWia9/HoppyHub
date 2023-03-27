@@ -1,6 +1,7 @@
 ﻿using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Dtos;
 using Application.Breweries.Dtos;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
@@ -60,9 +61,13 @@ public class CreateBeerCommandHandlerTests
             Ibu = 25
         };
         var breweryDto = new BreweryDto { Id = breweryId };
-        var beerDbSetMock = new List<Beer>().AsQueryable().BuildMockDbSet();
+        var beers = Enumerable.Empty<Beer>();
+        var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
+        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _mapperMock.Setup(m => m.Map<BeerDto>(It.IsAny<Beer>()))
             .Returns((Beer source) => new BeerDto
             {
@@ -92,5 +97,33 @@ public class CreateBeerCommandHandlerTests
         result.Brewery.Should().Be(breweryDto);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method throws NotFoundException when brewery does not exists.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldThrowNotFoundException_WhenBreweryDoesNotExists()
+    {
+        // Arrange
+        var command = new CreateBeerCommand
+        {
+            Name = "Test Beer",
+            BreweryId = Guid.NewGuid(),
+            AlcoholByVolume = 5.0,
+            Description = "A test beer",
+            Blg = 12.0,
+            Plato = 3.5,
+            Style = "Test Style",
+            Ibu = 30
+        };
+        var breweries = Enumerable.Empty<Brewery>();
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<NotFoundException>();
     }
 }
