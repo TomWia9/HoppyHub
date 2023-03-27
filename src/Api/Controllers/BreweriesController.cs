@@ -1,6 +1,9 @@
-﻿using Application.Breweries.Dtos;
+﻿using Application.Breweries.Commands.CreateBrewery;
+using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Breweries.Queries.GetBrewery;
+using Application.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -32,5 +35,19 @@ public class BreweriesController : ApiControllerBase
         var result = await Mediator.Send(new GetBreweryQuery { Id = id });
 
         return Ok(result);
+    }
+    
+    /// <summary>
+    ///     Creates the brewery.
+    /// </summary>
+    /// <param name="command">The CreateBreweryCommand</param>
+    /// <returns>An ActionResult of type BreweryDto</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpPost]
+    public async Task<ActionResult<BreweryDto>> CreateBrewery([FromBody] CreateBreweryCommand command)
+    {
+        var result = await Mediator.Send(command);
+
+        return CreatedAtAction("GetBrewery", new { id = result.Id }, result);
     }
 }
