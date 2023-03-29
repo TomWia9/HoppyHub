@@ -40,7 +40,7 @@ public class UpdateBreweryCommandHandlerTests
     {
         // Arrange
         var breweryId = Guid.NewGuid();
-        var existingBrewery = new Brewery { Id = breweryId, Name = "Old Name" };
+        var existingBrewery = new Brewery { Id = breweryId, Name = "Old Name", Address = new Address() };
         var breweries = new List<Brewery> { existingBrewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Breweries)
