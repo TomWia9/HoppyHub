@@ -48,11 +48,11 @@ public class CreateBreweryCommandHandler : IRequestHandler<CreateBreweryCommand,
             Address = new Address
             {
                 Street = request.Street,
-                Number = request.Street,
-                PostCode = request.Street,
-                City = request.Street,
-                State = request.Street,
-                Country = request.Street
+                Number = request.Number,
+                PostCode = request.PostCode,
+                City = request.City,
+                State = request.State,
+                Country = request.Country
             }
         };
 

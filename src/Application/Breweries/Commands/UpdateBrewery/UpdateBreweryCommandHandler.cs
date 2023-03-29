@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Breweries.Commands.UpdateBrewery;
 
@@ -32,7 +33,8 @@ public class UpdateBreweryCommandHandler : IRequestHandler<UpdateBreweryCommand>
     public async Task Handle(UpdateBreweryCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Breweries.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Breweries.Include(x => x.Address)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (entity == null)
         {
