@@ -64,7 +64,7 @@ public class BeersController : ApiControllerBase
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.AdministratorAccess)]
     [HttpPut("{id:guid}")]
-    public async Task<ActionResult<BeerDto>> UpdateBeer(Guid id, [FromBody] UpdateBeerCommand command)
+    public async Task<IActionResult> UpdateBeer(Guid id, [FromBody] UpdateBeerCommand command)
     {
         if (id != command.Id)
         {
@@ -83,7 +83,7 @@ public class BeersController : ApiControllerBase
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.AdministratorAccess)]
     [HttpDelete("{id:guid}")]
-    public async Task<ActionResult<BeerDto>> DeleteBeer(Guid id)
+    public async Task<IActionResult> DeleteBeer(Guid id)
     {
         await Mediator.Send(new DeleteBeerCommand { Id = id });
 

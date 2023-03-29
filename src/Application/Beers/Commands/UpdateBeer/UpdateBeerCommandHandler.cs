@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Beers.Commands.UpdateBeer;
 
@@ -31,6 +32,11 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(UpdateBeerCommand request, CancellationToken cancellationToken)
     {
+        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
+        {
+            throw new NotFoundException(nameof(Brewery), request.BreweryId);
+        }
+
         var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (entity == null)

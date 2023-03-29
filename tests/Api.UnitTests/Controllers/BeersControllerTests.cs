@@ -103,7 +103,7 @@ public class BeersControllerTests : ControllerSetup<BeersController>
         var response = await Controller.UpdateBeer(id, command);
 
         // Assert
-        response.Result.Should().BeOfType<NoContentResult>();
+        response.Should().BeOfType<NoContentResult>();
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class BeersControllerTests : ControllerSetup<BeersController>
         var response = await Controller.UpdateBeer(id, command);
 
         // Assert
-        response.Result.Should().BeOfType<BadRequestResult>();
+        response.Should().BeOfType<BadRequestResult>();
     }
 
     /// <summary>
@@ -138,6 +138,6 @@ public class BeersControllerTests : ControllerSetup<BeersController>
         var response = await Controller.DeleteBeer(id);
 
         // Assert
-        response.Result.Should().BeOfType<NoContentResult>();
+        response.Should().BeOfType<NoContentResult>();
     }
 }

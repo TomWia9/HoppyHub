@@ -38,7 +38,7 @@ public class CreateBeerCommandValidatorTests
     ///     Tests that validation should not have error for BreweryId when BreweryId is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_HaveValidationErrorForBreweryId_WhenBreweryIdIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForBreweryId_WhenBreweryIdIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
