@@ -3,6 +3,7 @@ using Application.Beers.Dtos;
 using Application.Breweries.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
@@ -22,11 +23,6 @@ public class CreateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The mapper mock.
-    /// </summary>
-    private readonly Mock<IMapper> _mapperMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateBeerCommandHandler _handler;
@@ -37,8 +33,9 @@ public class CreateBeerCommandHandlerTests
     public CreateBeerCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _mapperMock = new Mock<IMapper>();
-        _handler = new CreateBeerCommandHandler(_contextMock.Object, _mapperMock.Object);
+        var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
+        var mapper = configurationProvider.CreateMapper();
+        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper);
     }
 
     /// <summary>
@@ -68,18 +65,6 @@ public class CreateBeerCommandHandlerTests
 
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
-        _mapperMock.Setup(m => m.Map<BeerDto>(It.IsAny<Beer>()))
-            .Returns((Beer source) => new BeerDto
-            {
-                Name = source.Name,
-                Brewery = breweryDto,
-                AlcoholByVolume = source.AlcoholByVolume,
-                Description = source.Description,
-                Blg = source.Blg,
-                Plato = source.Plato,
-                Style = source.Style,
-                Ibu = source.Ibu,
-            });
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
