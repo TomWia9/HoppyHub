@@ -31,7 +31,6 @@
 
     <ItemGroup>
       <Folder Include="Breweries\Commands\DeleteBrewery" />
-      <Folder Include="Breweries\Commands\UpdateBrewery" />
     </ItemGroup>
 
 </Project>

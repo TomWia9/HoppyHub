@@ -62,6 +62,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
         // Poland format (2 digits, dash, 3 digits)
         const string polandPattern = @"^\d{2}-\d{3}$";
 
-        return !string.IsNullOrEmpty(postCode) && (Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern));
+        return !string.IsNullOrEmpty(postCode) &&
+               (Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern));
     }
 }
