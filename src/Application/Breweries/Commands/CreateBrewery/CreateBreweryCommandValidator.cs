@@ -28,7 +28,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
         RuleFor(x => x.FoundationYear).NotEmpty().InclusiveBetween(0, dateTime.Now.Year);
         RuleFor(x => x.Street).NotEmpty().MaximumLength(200);
         RuleFor(x => x.Number).NotEmpty().MaximumLength(10);
-        RuleFor(x => x.PostCode).NotEmpty().Must(BeAValidPostalCode!)
+        RuleFor(x => x.PostCode).NotEmpty().Must(BeAValidPostalCode)
             .WithMessage("Invalid postal code.");
         RuleFor(x => x.City).NotEmpty().MaximumLength(50);
         RuleFor(x => x.State).NotEmpty().MaximumLength(50);
@@ -54,7 +54,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     ///     The custom rule indicating whether postcode is valid.
     /// </summary>
     /// <param name="postCode">The post code</param>
-    private static bool BeAValidPostalCode(string postCode)
+    private static bool BeAValidPostalCode(string? postCode)
     {
         // USA format (5 digits followed by an optional dash and 4 more digits)
         const string usaPattern = @"^\d{5}(?:[-\s]\d{4})?$";
@@ -62,6 +62,6 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
         // Poland format (2 digits, dash, 3 digits)
         const string polandPattern = @"^\d{2}-\d{3}$";
 
-        return Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern);
+        return !string.IsNullOrEmpty(postCode) && (Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern));
     }
 }
