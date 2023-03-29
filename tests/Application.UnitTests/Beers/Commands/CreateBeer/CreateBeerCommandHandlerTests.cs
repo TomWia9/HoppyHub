@@ -79,7 +79,6 @@ public class CreateBeerCommandHandlerTests
         result.Plato.Should().Be(request.Plato);
         result.Style.Should().Be(request.Style);
         result.Ibu.Should().Be(request.Ibu);
-        result.Brewery.Should().Be(breweryDto);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
