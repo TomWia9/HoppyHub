@@ -22,30 +22,153 @@ namespace Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BreweryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("PostCode")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BreweryId")
+                        .IsUnique();
+
+                    b.ToTable("Addresses");
+                });
+
             modelBuilder.Entity("Domain.Entities.Beer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<double>("AlcoholByVolume")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Blg")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("BreweryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("Created")
+                        .HasMaxLength(50)
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("CreatedBy")
+                        .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int?>("Ibu")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("LastModified")
+                        .HasMaxLength(50)
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("LastModifiedBy")
+                        .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<double?>("Plato")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Style")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BreweryId");
+
                     b.ToTable("Beers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Brewery", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasMaxLength(50)
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(5000)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FoundationYear")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasMaxLength(50)
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("LastModifiedBy")
+                        .HasMaxLength(40)
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("WebsiteUrl")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Breweries");
                 });
 
             modelBuilder.Entity("Infrastructure.Identity.ApplicationUser", b =>
@@ -245,6 +368,28 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Address", b =>
+                {
+                    b.HasOne("Domain.Entities.Brewery", "Brewery")
+                        .WithOne("Address")
+                        .HasForeignKey("Domain.Entities.Address", "BreweryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brewery");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Beer", b =>
+                {
+                    b.HasOne("Domain.Entities.Brewery", "Brewery")
+                        .WithMany("Beers")
+                        .HasForeignKey("BreweryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brewery");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -294,6 +439,13 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Brewery", b =>
+                {
+                    b.Navigation("Address");
+
+                    b.Navigation("Beers");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,9 @@
-﻿using Application.Common.Mappings;
+﻿using System.Runtime.Serialization;
+using Application.Beers.Dtos;
+using Application.Breweries.Dtos;
+using Application.Common.Mappings;
 using AutoMapper;
+using Domain.Entities;
 
 namespace Application.UnitTests.Common.Mappings;
 
@@ -13,7 +17,7 @@ public class MappingTests
     ///     The configuration.
     /// </summary>
     private readonly IConfigurationProvider _configuration;
-    
+
     /// <summary>
     ///     The mapper.
     /// </summary>
@@ -34,27 +38,38 @@ public class MappingTests
     ///     Tests that configuration is valid.
     /// </summary>
     [Fact]
-    public void ShouldHaveValidConfiguration()
+    public void Mapper_Should_HaveValidConfiguration()
     {
         _configuration.AssertConfigurationIsValid();
     }
 
-    //TODO Add when entities will be added
-    // [Theory]
-    // [InlineData(typeof(Beer), typeof(BeerDto))]
-    // public void ShouldSupportMappingFromSourceToDestination(Type source, Type destination)
-    // {
-    //     var instance = GetInstanceOf(source);
-    //
-    //     _mapper.Map(instance, source, destination);
-    // }
+    /// <summary>
+    ///     Tests that mapping supports mapping from source to destination.
+    /// </summary>
+    /// <param name="source">The source</param>
+    /// <param name="destination">The destination</param>
+    [Theory]
+    [InlineData(typeof(Beer), typeof(BeerDto))]
+    [InlineData(typeof(Brewery), typeof(BreweryDto))]
+    [InlineData(typeof(Address), typeof(AddressDto))]
+    public void Mapping_Should_SupportMappingFromSourceToDestination(Type source, Type destination)
+    {
+        // Arrange
+        var instance = GetInstanceOf(source);
 
-    // private object GetInstanceOf(Type type)
-    // {
-    //     if (type.GetConstructor(Type.EmptyTypes) != null)
-    //         return Activator.CreateInstance(type)!;
-    //
-    //     // Type without parameterless constructor
-    //     return FormatterServices.GetUninitializedObject(type);
-    // }
+        // Act
+        var dto = _mapper.Map(instance, source, destination);
+
+        // Assert
+        dto.Should().BeOfType(destination);
+    }
+
+    private static object GetInstanceOf(Type type)
+    {
+        if (type.GetConstructor(Type.EmptyTypes) != null)
+            return Activator.CreateInstance(type)!;
+
+        // Type without parameterless constructor
+        return FormatterServices.GetUninitializedObject(type);
+    }
 }

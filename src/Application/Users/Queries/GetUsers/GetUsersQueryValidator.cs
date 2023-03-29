@@ -13,8 +13,8 @@ public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
     /// </summary>
     private readonly IEnumerable<string> _sortingColumns = new List<string>
     {
-        "email",
-        "username"
+        "EMAIL",
+        "USERNAME"
     };
 
     /// <summary>
@@ -27,7 +27,7 @@ public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
 
         RuleFor(x => x.SortBy)
             .Must(value =>
-                string.IsNullOrWhiteSpace(value) || _sortingColumns.Contains(value.ToLower()))
+                string.IsNullOrWhiteSpace(value) || _sortingColumns.Contains(value.ToUpper()))
             .WithMessage($"SortBy must be in [{string.Join(", ", _sortingColumns)}]");
     }
 }

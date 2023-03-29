@@ -21,7 +21,7 @@ public class UsersController : ApiControllerBase
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<UserDto>> GetUser(Guid id)
     {
-        var result = await Mediator.Send(new GetUserQuery { UserId = id });
+        var result = await Mediator.Send(new GetUserQuery { Id = id });
 
         return Ok(result);
     }
@@ -61,14 +61,9 @@ public class UsersController : ApiControllerBase
     /// </summary>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteUser(Guid id, [FromBody] DeleteUserCommand command)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
-        if (id != command.UserId)
-        {
-            return BadRequest();
-        }
-
-        await Mediator.Send(command);
+        await Mediator.Send(new DeleteUserCommand { UserId = id });
 
         return NoContent();
     }

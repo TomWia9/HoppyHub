@@ -22,7 +22,7 @@ public class ConfigureServicesTests
     private readonly IServiceCollection _services;
 
     /// <summary>
-    ///     Setups tests.
+    ///     Setups ConfigureServicesTests.
     /// </summary>
     public ConfigureServicesTests()
     {
@@ -35,7 +35,7 @@ public class ConfigureServicesTests
     ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContext to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsDbContext()
+    public void AddInfrastructureServices_Should_AddDbContext()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContext));
@@ -48,7 +48,7 @@ public class ConfigureServicesTests
     ///     to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsAuditableEntitySaveChangesInterceptor()
+    public void AddInfrastructureServices_ShouldAddAuditableEntitySaveChangesInterceptor()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(AuditableEntitySaveChangesInterceptor));
@@ -60,7 +60,7 @@ public class ConfigureServicesTests
     ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContext to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsIApplicationDbContext()
+    public void AddInfrastructureServices_ShouldAddIApplicationDbContext()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IApplicationDbContext));
@@ -69,15 +69,15 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitialiser
+    ///     Tests that the AddInfrastructureServices method adds the ApplicationDbContextInitializer
     ///     to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsApplicationDbContextInitialiser()
+    public void AddInfrastructureServices_ShouldAddApplicationDbContextInitializer()
     {
         // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitialiser));
-        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContextInitialiser));
+        _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContextInitializer));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContextInitializer));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
 
@@ -86,7 +86,7 @@ public class ConfigureServicesTests
     ///     to the service collection as IDateTime.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsDateTimeService()
+    public void AddInfrastructureServices_ShouldAddDateTimeService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IDateTime));
@@ -99,7 +99,7 @@ public class ConfigureServicesTests
     ///     to the service collection as IIdentityService.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsIdentityService()
+    public void AddInfrastructureServices_ShouldAddIdentityService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IIdentityService));
@@ -112,7 +112,7 @@ public class ConfigureServicesTests
     ///     to the service collection as IUsersService.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsUsersService()
+    public void AddInfrastructureServices_ShouldAddUsersService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IUsersService));
@@ -125,7 +125,7 @@ public class ConfigureServicesTests
     ///     to the service collection as JwtSettings.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_AddsJwtSettings()
+    public void AddInfrastructureServices_ShouldAddJwtSettings()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
@@ -136,7 +136,7 @@ public class ConfigureServicesTests
     ///     Tests that AddInfrastructureServices method configures IdentityOptions with RequireUniqueEmail option.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_ConfiguresIdentityOptionsWithRequireUniqueEmail()
+    public void AddInfrastructureServices_ShouldConfigureIdentityOptionsWithRequireUniqueEmail()
     {
         // Arrange
         var serviceProvider = _services.BuildServiceProvider();

@@ -27,7 +27,7 @@ public class DateTimeServiceTests
     ///     Tests that the Now property returns the current date time.
     /// </summary>
     [Fact]
-    public void Now_ReturnsCurrentDateTime()
+    public void Now_ShouldReturnCurrentDateTime()
     {
         // Arrange
         var expected = DateTime.Now;

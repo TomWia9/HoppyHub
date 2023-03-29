@@ -40,7 +40,7 @@ public class DeleteUserCommandHandlerTests
     ///     Tests that Handle method calls DeleteUserAsync method when request is valid.
     /// </summary>
     [Fact]
-    public async Task Handle_WithValidRequest_ShouldCallDeleteUserAsync()
+    public async Task Handle_ShouldCallDeleteUserAsync_WhenRequestIsValid()
     {
         // Arrange
         var request = new DeleteUserCommand
@@ -61,7 +61,7 @@ public class DeleteUserCommandHandlerTests
     ///     Tests that Handle method throws ForbiddenAccessException when request is invalid.
     /// </summary>
     [Fact]
-    public async Task Handle_WithInvalidRequest_ShouldThrowForbiddenAccessException()
+    public async Task Handle_ShouldThrowForbiddenAccessException_RequestIsInvalid()
     {
         // Arrange
         var request = new DeleteUserCommand

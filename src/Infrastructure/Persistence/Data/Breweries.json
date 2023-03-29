@@ -1,0 +1,243 @@
+﻿[
+  {
+    "id": "86a2fa1d-db65-4c54-9b48-392355bac70e",
+    "name": "Pinta",
+    "description": "Polski browar rzemieślniczy",
+    "foundationyear": 2011,
+    "websiteurl": "https://www.browarpinta.pl/",
+    "address": {
+      "street": "ul. Słowiańska",
+      "number": "29",
+      "postcode": "62-080",
+      "city": "Tarnowo Podgórne",
+      "state": "Wielkopolskie",
+      "country": "Polska"
+    },
+    "beers": [
+      {
+        "name": "Atak Chmielu",
+        "style": "India Pale Ale",
+        "alcoholbyvolume": 6.5,
+        "blg": 16.5,
+        "plato": 6.8,
+        "ibu": 75,
+        "description": "Klasyczne, mocno chmielone IPA o owocowo-kwiatowym aromacie"
+      },
+      {
+        "name": "Imperial Stout",
+        "style": "Imperial Stout",
+        "alcoholbyvolume": 10.5,
+        "blg": 24,
+        "plato": 10.1,
+        "ibu": 90,
+        "description": "Ciężka i intensywna kawa z czekoladą i delikatnym akcentem wanilii i dębu"
+      },
+      {
+        "name": "Niebanalny Blond",
+        "style": "Blonde Ale",
+        "alcoholbyvolume": 5.5,
+        "blg": 12,
+        "plato": 5,
+        "ibu": 25,
+        "description": "Lekka, łatwa w odbiorze, a zarazem pełna i smaczna jasna góra"
+      },
+      {
+        "Name": "Pact with the Devil",
+        "Style": "Imperial Stout",
+        "AlcoholByVolume": 12,
+        "Blg": 29,
+        "Plato": 11.9,
+        "Ibu": 90,
+        "Description": "Imperialny stout z dodatkiem kakao, kawy i chilli."
+      },
+      {
+        "Name": "Black Hope",
+        "Style": "Black IPA",
+        "AlcoholByVolume": 6.8,
+        "Blg": 16,
+        "Plato": 6.5,
+        "Ibu": 65,
+        "Description": "Ciemna IPA z intensywnym chmielowym charakterem i wyraźnymi nutami kawowymi i czekoladowymi."
+      }
+    ]
+  },
+  {
+    "id": "d16aa95b-8e09-4d2e-ae86-731633ecd8a4",
+    "name": "Browar Artezan",
+    "description": "Browar rzemieślniczy z Wrocławia",
+    "foundationYear": 2010,
+    "websiteUrl": "https://www.artezan.pl/",
+    "address": {
+      "street": "Borowska",
+      "number": "37",
+      "postCode": "50-558",
+      "city": "Wrocław",
+      "state": "Dolnośląskie",
+      "country": "Polska"
+    },
+    "beers": [
+      {
+        "name": "Kwiat Wiśni",
+        "style": "Fruit Beer",
+        "alcoholByVolume": 5.5,
+        "blg": 13,
+        "plato": 5.3,
+        "ibu": 20,
+        "description": "Piwo owocowe na bazie lekkiego, jasnego lagera, w którym smak wiśni przeplata się z delikatną goryczką chmielu"
+      },
+      {
+        "name": "Imperator Bałtycki",
+        "style": "Baltic Porter",
+        "alcoholByVolume": 9,
+        "blg": 26,
+        "plato": 10.8,
+        "ibu": 32,
+        "description": "Klasyczny, ciemny i treściwy porter bałtycki, w którym wyczuwalne są nuty karmelu, czekolady i kawy"
+      },
+      {
+        "name": "Stout Barrel Aged",
+        "style": "Barrel Aged Stout",
+        "alcoholByVolume": 10,
+        "blg": 28,
+        "plato": 11.2,
+        "ibu": 60,
+        "description": "Ciemne, pełne piwo z nutami czekolady, kawy i wanilii, które uzyskało dodatkową głębię smaku dzięki leżakowaniu w dębowych beczkach po whisky"
+      },
+      {
+        "name": "Ipa Simcoe & Mosaic",
+        "style": "American IPA",
+        "alcoholByVolume": 6.5,
+        "blg": 16,
+        "plato": 6.4,
+        "ibu": 60,
+        "description": "Chmielona amerykańska IPA z wyraźnymi nutami cytrusów i tropikalnych owoców, głównie dzięki użyciu chmielu Simcoe i Mosaic"
+      },
+      {
+        "name": "Kapitan Żbik",
+        "style": "IPA",
+        "alcoholByVolume": 6.3,
+        "blg": 16.5,
+        "plato": 6.6,
+        "ibu": 65,
+        "description": "Wyrazista i orzeźwiająca IPA z aromatem cytrusowym i tropikalnym"
+      }
+    ]
+  },
+  {
+    "id": "b5a5e5e8-5e5d-4f32-8a3e-7f0d35f5b5e1",
+    "name": "Browar Nepomucen",
+    "description": "Polski browar rzemieślniczy z Nowego Tomyśla, specjalizujący się w warzeniu piw w stylu American IPA i sour.",
+    "foundationYear": 2014,
+    "websiteUrl": "https://nepomucen.pl/",
+    "address": {
+      "street": "ul. Spółdzielców",
+      "number": "4",
+      "postCode": "64-300",
+      "city": "Nowy Tomyśl",
+      "state": "Wielkopolska",
+      "country": "Polska"
+    },
+    "beers": [
+      {
+        "name": "Juicy Lucy",
+        "style": "New England IPA",
+        "alcoholByVolume": 6.5,
+        "ibu": 40,
+        "blg": 14,
+        "plato": 14,
+        "description": "Piwo w stylu New England IPA, warzone z użyciem chmieli Simcoe, Citra i Mosaic, o wyrazistym smaku i aromacie cytrusów i tropikalnych owoców."
+      },
+      {
+        "name": "Sour Blackberry",
+        "style": "Sour Ale",
+        "alcoholByVolume": 5.5,
+        "ibu": 10,
+        "blg": 12,
+        "plato": 12,
+        "description": "Piwo w stylu Sour Ale, w którym kwaśność z owoców borówki czarnej ładnie balansuje z lekką słodyczą i nutami chmielowymi."
+      },
+      {
+        "name": "Easy Rider",
+        "style": "Session IPA",
+        "alcoholByVolume": 4.5,
+        "ibu": 30,
+        "blg": 9,
+        "plato": 9,
+        "description": "Lekkie i pijalne piwo w stylu Session IPA, warzone z użyciem chmieli Amarillo i Simcoe, o wyrazistych aromatach cytrusów i iglaków."
+      },
+      {
+        "name": "Dark Side of the Moon",
+        "style": "Black IPA",
+        "alcoholByVolume": 7.0,
+        "ibu": 60,
+        "blg": 16.5,
+        "plato": 16.5,
+        "description": "Ciemne piwo w stylu Black IPA, w którym karmel i paloność ze słodów czekoladowych i kawowych przeplatają się z nutami cytrusowymi i iglakowymi z chmieli Cascade i Chinook."
+      }
+    ]
+  },
+  {
+    "id": "95184b0d-7b87-4b2f-b7f4-912f1fa7a4a8",
+    "name": "Trzech Kumpli",
+    "description": "Browar rzemieślniczy z Poznania, który powstał z przyjaźni trzech kumpli",
+    "foundationYear": 2013,
+    "websiteUrl": "https://trzechkumpli.pl/",
+    "address": {
+      "street": "ul. Grochowe Łąki",
+      "number": "9",
+      "postCode": "61-655",
+      "city": "Poznań",
+      "state": "Wielkopolskie",
+      "country": "Polska"
+    },
+    "beers": [
+      {
+        "name": "Chmielowy Koniec Świata",
+        "style": "American Pale Ale",
+        "alcoholByVolume": 5.6,
+        "blg": 12,
+        "plato": 4.8,
+        "ibu": 45,
+        "description": "Aromatyczne i orzeźwiające piwo o cytrusowym charakterze, z wyraźnym chmielowym zacięciem."
+      },
+      {
+        "name": "Koniec Świata Sour",
+        "style": "Sour Ale",
+        "alcoholByVolume": 4.5,
+        "blg": 10,
+        "plato": 4,
+        "ibu": 10,
+        "description": "Lekkie i orzeźwiające piwo o kwaśnym smaku, idealne na upalne dni."
+      },
+      {
+        "name": "Mocna Banda",
+        "style": "Imperial Stout",
+        "alcoholByVolume": 11,
+        "blg": 27,
+        "plato": 11.4,
+        "ibu": 70,
+        "description": "Potężne piwo o ciemnej barwie i gęstej konsystencji, z nutami czekolady, kawy i suszonych owoców."
+      },
+      {
+        "name": "Trzech Kumpli APA",
+        "style": "American Pale Ale",
+        "alcoholByVolume": 5.3,
+        "blg": 12,
+        "plato": 4.8,
+        "ibu": 40,
+        "description": "Aromatyczne i owocowe piwo, w którym dominują nuty cytrusów i tropikalnych owoców, z przyjemną goryczką na finiszu."
+      },
+      {
+        "name": "Baltazar",
+        "style": "Baltic Porter",
+        "alcoholByVolume": 8.5,
+        "blg": 23,
+        "plato": 9.6,
+        "ibu": 35,
+        "description": "Piwo o mocnym charakterze, o ciemnej barwie i kremowej pianie, z nutami kawy, czekolady i toffi."
+      }
+    ]
+  }
+]
+
+

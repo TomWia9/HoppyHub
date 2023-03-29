@@ -17,7 +17,7 @@ public class ConfigureServicesTests
     private readonly IServiceCollection _services;
 
     /// <summary>
-    ///     Setups tests.
+    ///     Setups ConfigureServicesTests.
     /// </summary>
     public ConfigureServicesTests()
     {
@@ -29,7 +29,7 @@ public class ConfigureServicesTests
     ///     Tests that the AddApiServices method registers the CurrentUserService as a scoped service.
     /// </summary>
     [Fact]
-    public void AddApiServices_Should_Register_CurrentUserService()
+    public void AddApiServices_ShouldRegisterCurrentUserService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(ICurrentUserService) &&
@@ -41,7 +41,7 @@ public class ConfigureServicesTests
     ///     Tests that the AddApiServices method registers the HttpContextAccessor as a singleton service.
     /// </summary>
     [Fact]
-    public void AddApiServices_Should_Register_HttpContextAccessor()
+    public void AddApiServices_ShouldRegisterHttpContextAccessor()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IHttpContextAccessor) &&

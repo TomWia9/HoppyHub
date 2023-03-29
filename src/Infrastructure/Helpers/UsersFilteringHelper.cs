@@ -14,8 +14,8 @@ public static class UsersFilteringHelper
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<ApplicationUser, object>>> SortingColumns = new()
     {
-        { nameof(ApplicationUser.Email).ToLower(), u => u.Email ?? string.Empty },
-        { nameof(ApplicationUser.UserName).ToLower(), u => u.UserName ?? string.Empty }
+        { nameof(ApplicationUser.Email).ToUpper(), u => u.Email ?? string.Empty },
+        { nameof(ApplicationUser.UserName).ToUpper(), u => u.UserName ?? string.Empty }
     };
 
     /// <summary>
@@ -25,7 +25,7 @@ public static class UsersFilteringHelper
     /// <returns>The sorting expression</returns>
     public static Expression<Func<ApplicationUser, object>> GetSortingColumn(string? sortBy)
     {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToLower()];
+        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
     }
 
     /// <summary>
@@ -41,10 +41,10 @@ public static class UsersFilteringHelper
             return delegates;
         }
 
-        var searchQuery = request.SearchQuery.Trim().ToLower();
+        var searchQuery = request.SearchQuery.Trim().ToUpper();
         Expression<Func<ApplicationUser, bool>> searchDelegate =
-            x => x.UserName != null && x.Email != null && (x.Email.ToLower().Contains(searchQuery) ||
-                                                           x.UserName.ToLower().Contains(searchQuery));
+            x => (x.Email != null && x.Email.ToUpper().Contains(searchQuery)) ||
+                 (x.UserName != null && x.UserName.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 

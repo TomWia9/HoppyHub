@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using Application.Common.Behaviours;
+using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
 using FluentValidation;
@@ -25,9 +25,9 @@ public static class ConfigureServices
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
+            cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
         
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));

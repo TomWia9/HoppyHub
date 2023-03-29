@@ -48,7 +48,7 @@ public class IdentityServiceTests
     ///      Tests that the RegisterAsync method returns success when new user is created.
     /// </summary>
     [Fact]
-    public async Task RegisterAsync_WithNewUser_ShouldReturnSuccess()
+    public async Task RegisterAsync_ShouldReturnSuccess_WhenNewUserIsCreated()
     {
         // Arrange
         _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()))
@@ -73,7 +73,7 @@ public class IdentityServiceTests
     ///     Tests that RegisterAsync method returns failure with correct error when creation status is failed.
     /// </summary>
     [Fact]
-    public async Task RegisterAsync_WithFailureCreationStatus_ShouldReturnFailureWithCorrectError()
+    public async Task RegisterAsync_ShouldReturnFailureWithCorrectError_WhenCreationStatusIsFailed()
     {
         // Arrange
         var identityError = new IdentityError()
@@ -112,7 +112,7 @@ public class IdentityServiceTests
     [InlineData(" ", "user123", "P@ssw0rd")]
     [InlineData("user@example.com", " ", "P@ssw0rd")]
     [InlineData("user@example.com", "user123", " ")]
-    public async Task RegisterAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+    public async Task RegisterAsync_ShouldThrowValidationException_WhenCalledWithInvalidInput(string email,
         string username,
         string password)
     {
@@ -124,7 +124,7 @@ public class IdentityServiceTests
     ///     Tests that the LoginAsync method with valid credentials returns success.
     /// </summary>
     [Fact]
-    public async Task LoginAsync_WithValidCredentials_ShouldReturnSuccess()
+    public async Task LoginAsync_ShouldReturnSuccess_WhenGivenValidCredentials()
     {
         // Arrange
         var user = new ApplicationUser { Email = "test@test.com" };
@@ -148,7 +148,7 @@ public class IdentityServiceTests
     ///     Tests that LoginAsync method returns failure when the email is invalid.
     /// </summary>
     [Fact]
-    public async Task LoginAsync_WithInvalidEmail_ShouldReturnFailure()
+    public async Task LoginAsync_ShouldReturnFailure_WhenEmailIsInvalid()
     {
         // Arrange
         _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
@@ -167,7 +167,7 @@ public class IdentityServiceTests
     ///     Tests that the LoginAsync method returns failure when the password is invalid.
     /// </summary>
     [Fact]
-    public async Task LoginAsync_WithInvalidPassword_ShouldReturnFailure()
+    public async Task LoginAsync_ShouldReturnFailure_WhenPasswordIsInvalid()
     {
         // Arrange
         var user = new ApplicationUser { Email = "test@test.com" };
@@ -189,7 +189,7 @@ public class IdentityServiceTests
     ///     Tests that LoginAsync method returns failure when JWT secret not exists.
     /// </summary>
     [Fact]
-    public async Task LoginAsync_WithNoSecretInJwtSettings_ShouldReturnFailure()
+    public async Task LoginAsync_ShouldReturnFailure_WhenNoSecretInJwtSettings()
     {
         // Arrange
         var user = new ApplicationUser { Email = "test@test.com" };
@@ -225,7 +225,7 @@ public class IdentityServiceTests
     [InlineData("user@example.com", "")]
     [InlineData(" ", "P@ssw0rd")]
     [InlineData("user@example.com", " ")]
-    public async Task LoginAsync_WhenCalledWithInvalidInput_ShouldThrowValidationException(string email,
+    public async Task LoginAsync_ShouldThrowValidationException_WhenCalledWithInvalidInput(string email,
         string password)
     {
         // Act & Assert
