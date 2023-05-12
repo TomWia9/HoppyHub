@@ -12,16 +12,26 @@ public interface IApplicationDbContext
     ///     The beers.
     /// </summary>
     DbSet<Beer> Beers { get; }
-    
+
     /// <summary>
     ///     The breweries.
     /// </summary>
     DbSet<Brewery> Breweries { get; }
-    
+
     /// <summary>
     ///     The addresses.
     /// </summary>
     DbSet<Address> Addresses { get; }
+
+    /// <summary>
+    ///     The primary beer styles.
+    /// </summary>
+    DbSet<PrimaryBeerStyle> PrimaryBeerStyles { get; }
+
+    /// <summary>
+    ///     The beer styles.
+    /// </summary>
+    DbSet<BeerStyle> BeerStyles { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
