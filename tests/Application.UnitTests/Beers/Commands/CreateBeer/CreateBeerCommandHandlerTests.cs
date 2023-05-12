@@ -138,7 +138,7 @@ public class CreateBeerCommandHandlerTests
         };
         var beerStyles = Enumerable.Empty<BeerStyle>();
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-
+        //TODO verify that this work without breweries mock, it actually can work but exception will be thrown because of breweries, just add "WithMessage" here and above
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
 
         // Act & Assert
