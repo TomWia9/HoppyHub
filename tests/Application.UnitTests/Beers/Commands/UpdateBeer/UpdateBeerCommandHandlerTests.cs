@@ -99,7 +99,7 @@ public class UpdateBeerCommandHandlerTests
         var command = new UpdateBeerCommand
         {
             Name = "Test Beer",
-            BreweryId = Guid.NewGuid()
+            BreweryId = breweryId
         };
         var breweries = Enumerable.Empty<Brewery>();
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
