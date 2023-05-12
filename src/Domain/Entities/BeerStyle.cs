@@ -31,4 +31,9 @@ public class BeerStyle : BaseAuditableEntity
     ///     The primary beer style.
     /// </summary>
     public PrimaryBeerStyle? PrimaryBeerStyle { get; set; }
+    
+    /// <summary>
+    ///     The beers.
+    /// </summary>
+    public ICollection<Beer> Beers { get; set; } = new List<Beer>();
 }

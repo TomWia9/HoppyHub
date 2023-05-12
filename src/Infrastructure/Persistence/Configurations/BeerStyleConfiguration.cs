@@ -19,5 +19,9 @@ public class BeerStyleConfiguration : BaseConfiguration<BeerStyle>
         builder.Property(x => x.Name).IsRequired().HasMaxLength(100);
         builder.Property(x => x.Description).IsRequired().HasMaxLength(1000);
         builder.Property(x => x.CountryOfOrigin).IsRequired().HasMaxLength(50);
+        
+        builder.HasMany(x => x.Beers)
+            .WithOne(x => x.BeerStyle)
+            .IsRequired();
     }
 }
