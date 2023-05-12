@@ -20,7 +20,7 @@ public record BeerStyleDto : IMapFrom<BeerStyle>
     public string? Description { get; set; }
 
     /// <summary>
-    ///     The country of style origin.
+    ///     The country of beer style origin.
     /// </summary>
     public string? CountryOfOrigin { get; set; }
     
