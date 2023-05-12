@@ -72,7 +72,8 @@ public class ApplicationDbContextInitializer
 
             await SeedRolesAsync();
             await SeedUsersAsync();
-            await SeedBreweriesAsync();
+            //TODO Update file with data when more entities will be added
+            //await SeedBreweriesAsync();
 
             Log.Logger.Information("Seeding database completed");
         }
