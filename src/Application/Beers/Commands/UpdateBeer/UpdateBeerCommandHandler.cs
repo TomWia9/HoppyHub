@@ -50,7 +50,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.Description = request.Description;
         entity.Blg = request.Blg;
         entity.Plato = request.Plato;
-        entity.Style = request.Style;
+        entity.BeerStyleId = request.BeerStyleId;
         entity.Ibu = request.Ibu;
 
         await _context.SaveChangesAsync(cancellationToken);

@@ -39,9 +39,9 @@ public record CreateBeerCommand : IRequest<BeerDto>
     public double? Plato { get; init; }
 
     /// <summary>
-    ///     The beer style.
+    ///     The beer style id.
     /// </summary>
-    public string? Style { get; init; }
+    public Guid BeerStyleId { get; init; }
 
     /// <summary>
     ///     The International Bitterness Units.
