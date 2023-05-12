@@ -3,17 +3,17 @@
 namespace Domain.Entities;
 
 /// <summary>
-///     The secondary beer style entity.
+///     The beer style entity.
 /// </summary>
-public class SecondaryBeerStyle : BaseAuditableEntity
+public class BeerStyle : BaseAuditableEntity
 {
     /// <summary>
-    ///     The secondary beer style name.
+    ///     The beer style name.
     /// </summary>
     public string? Name { get; set; }
 
     /// <summary>
-    ///     The secondary beer style description.
+    ///     The beer style description.
     /// </summary>
     public string? Description { get; set; }
 

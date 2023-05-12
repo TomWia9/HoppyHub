@@ -18,7 +18,7 @@ public class PrimaryBeerStyle : BaseAuditableEntity
     public string? Description { get; set; }
 
     /// <summary>
-    ///     The secondary beer styles.
+    ///     The beer styles.
     /// </summary>
-    public ICollection<SecondaryBeerStyle> SecondaryBeerStyles { get; set; } = new List<SecondaryBeerStyle>();
+    public ICollection<BeerStyle> BeerStyles { get; set; } = new List<BeerStyle>();
 }

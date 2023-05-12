@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Infrastructure.Persistence.Configurations;
 
 /// <summary>
-///     The secondary beer style entity configuration.
+///     The beer style entity configuration.
 /// </summary>
-public class SecondaryBeerStyleConfiguration : BaseConfiguration<SecondaryBeerStyle>
+public class BeerStyleConfiguration : BaseConfiguration<BeerStyle>
 {
     /// <summary>
-    ///     Configures the secondary beer style entity.
+    ///     Configures the beer style entity.
     /// </summary>
     /// <param name="builder">The builder</param>
-    public override void Configure(EntityTypeBuilder<SecondaryBeerStyle> builder)
+    public override void Configure(EntityTypeBuilder<BeerStyle> builder)
     {
         base.Configure(builder);
         
