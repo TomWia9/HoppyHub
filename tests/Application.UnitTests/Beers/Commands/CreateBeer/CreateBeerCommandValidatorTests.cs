@@ -62,7 +62,7 @@ public class CreateBeerCommandValidatorTests
         // Arrange
         var command = new CreateBeerCommand
         {
-            BreweryId = Guid.Empty //not sure this will work
+            BreweryId = Guid.Empty
         };
 
         // Act
@@ -232,60 +232,41 @@ public class CreateBeerCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Style when Style is valid.
+    ///     Tests that validation should not have error for BeerStyleId when BeerStyleId is valid.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForStyle_WhenStyleIsValid()
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForBeerStyleId_WhenBeerStyleIdIsValid()
     {
         // Arrange
         var command = new CreateBeerCommand
         {
-            Style = "Test style"
+            BeerStyleId = Guid.NewGuid()
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Style);
+        result.ShouldNotHaveValidationErrorFor(x => x.BeerStyleId);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for Style when Style is empty.
+    ///     Tests that validation should have error for BeerStyleId when BeerStyleId is empty.
     /// </summary>
     [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleIsEmpty()
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForBeerStyleId_WhenBeerStyleIdIsEmpty()
     {
         // Arrange
         var command = new CreateBeerCommand
         {
-            Style = ""
+            BeerStyleId = Guid.Empty
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Style);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Style when Style exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public async Task CreateBeerCommand_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
-    {
-        // Arrange
-        var command = new CreateBeerCommand
-        {
-            Style = new string('x', 51)
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Style);
+        result.ShouldHaveValidationErrorFor(x => x.BeerStyleId);
     }
 
     /// <summary>
