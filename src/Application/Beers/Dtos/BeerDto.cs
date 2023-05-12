@@ -1,4 +1,5 @@
-﻿using Application.Breweries.Dtos;
+﻿using Application.BeerStyles.Dtos;
+using Application.Breweries.Dtos;
 using Application.Common.Mappings;
 using Domain.Entities;
 
@@ -47,7 +48,7 @@ public record BeerDto : IMapFrom<Beer>
     /// <summary>
     ///     The beer style.
     /// </summary>
-    public string? Style { get; set; }
+    public BeerStyleDto? BeerStyle { get; set; } 
 
     /// <summary>
     ///     The International Bitterness Units.

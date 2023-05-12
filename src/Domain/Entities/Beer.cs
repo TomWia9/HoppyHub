@@ -13,9 +13,14 @@ public class Beer : BaseAuditableEntity
     public string? Name { get; set; }
 
     /// <summary>
+    ///     The beer style id.
+    /// </summary>
+    public Guid BeerStyleId { get; set; }
+    
+    /// <summary>
     ///     The beer style.
     /// </summary>
-    public string? Style { get; set; }
+    public BeerStyle? BeerStyle { get; set; }
     
     /// <summary>
     ///     The alcohol by volume.

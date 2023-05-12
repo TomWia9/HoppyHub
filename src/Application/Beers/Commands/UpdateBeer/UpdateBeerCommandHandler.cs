@@ -36,6 +36,11 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
+        
+        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
+        {
+            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
+        }
 
         var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
@@ -50,7 +55,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.Description = request.Description;
         entity.Blg = request.Blg;
         entity.Plato = request.Plato;
-        entity.Style = request.Style;
+        entity.BeerStyleId = request.BeerStyleId;
         entity.Ibu = request.Ibu;
 
         await _context.SaveChangesAsync(cancellationToken);

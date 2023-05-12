@@ -34,7 +34,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     ///     The beers.
     /// </summary>
     public DbSet<Beer> Beers => Set<Beer>();
-    
+
     /// <summary>
     ///     The breweries.
     /// </summary>
@@ -44,6 +44,16 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     ///     The addresses.
     /// </summary>
     public DbSet<Address> Addresses => Set<Address>();
+
+    /// <summary>
+    ///     The primary beer styles.
+    /// </summary>
+    public DbSet<PrimaryBeerStyle> PrimaryBeerStyles => Set<PrimaryBeerStyle>();
+
+    /// <summary>
+    ///     The beer styles.
+    /// </summary>
+    public DbSet<BeerStyle> BeerStyles => Set<BeerStyle>();
 
     /// <summary>
     ///     OnModelCreating override.

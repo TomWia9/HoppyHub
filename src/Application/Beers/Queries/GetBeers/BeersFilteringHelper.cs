@@ -15,7 +15,7 @@ public static class BeersFilteringHelper
     {
         { nameof(Beer.Name).ToUpper(), x => x.Name ?? string.Empty },
         { nameof(Beer.Brewery).ToUpper(), x => x.Brewery!.Name ?? string.Empty },
-        { nameof(Beer.Style).ToUpper(), x => x.Style ?? string.Empty },
+        { nameof(Beer.BeerStyle).ToUpper(), x => x.BeerStyle!.Name ?? string.Empty },
         { nameof(Beer.AlcoholByVolume).ToUpper(), x => x.AlcoholByVolume },
         { nameof(Beer.Blg).ToUpper(), x => x.Blg ?? 0 },
         { nameof(Beer.Plato).ToUpper(), x => x.Plato ?? 0 },
@@ -48,7 +48,7 @@ public static class BeersFilteringHelper
             delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
         if (!string.IsNullOrWhiteSpace(request.Style))
-            delegates.Add(x => x.Style != null && string.Equals(x.Style.ToUpper(), request.Style.ToUpper()));
+            delegates.Add(x => x.BeerStyle != null && string.Equals(x.BeerStyle.Name!.ToUpper(), request.Style.ToUpper()));
 
         if (request.BreweryId != null)
             delegates.Add(x => x.Brewery != null && x.Brewery.Id == request.BreweryId);
@@ -63,7 +63,7 @@ public static class BeersFilteringHelper
         Expression<Func<Beer, bool>> searchDelegate =
             x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Brewery != null && x.Brewery.Name != null && x.Brewery.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.Style != null && x.Style.ToUpper().Contains(searchQuery)) ||
+                 (x.BeerStyle != null && x.BeerStyle.Name!.ToUpper().Contains(searchQuery)) ||
                  (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);

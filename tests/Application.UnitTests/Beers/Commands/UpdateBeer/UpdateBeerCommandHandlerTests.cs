@@ -40,15 +40,21 @@ public class UpdateBeerCommandHandlerTests
     {
         // Arrange
         var breweryId = Guid.NewGuid();
+        var beerStyleId = Guid.NewGuid();
         var breweries = new List<Brewery> { new() { Id = breweryId } };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
+        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
         var beerId = Guid.NewGuid();
         var existingBeer = new Beer { Id = beerId, Name = "Old Name" };
+
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingBeer);
 
-        var command = new UpdateBeerCommand { Id = beerId, Name = "New Name", BreweryId = breweryId };
+        var command = new UpdateBeerCommand
+            { Id = beerId, Name = "New Name", BreweryId = breweryId, BeerStyleId = beerStyleId };
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
@@ -65,10 +71,14 @@ public class UpdateBeerCommandHandlerTests
     {
         // Arrange
         var breweryId = Guid.NewGuid();
+        var beerStyleId = Guid.NewGuid();
         var breweries = new List<Brewery> { new() { Id = breweryId } };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
+        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
         _contextMock.Setup(x => x.Beers.FindAsync(new object[] { 1 }, CancellationToken.None))
             .ReturnsAsync((Beer?)null);
 
@@ -77,7 +87,7 @@ public class UpdateBeerCommandHandlerTests
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
     }
-    
+
     /// <summary>
     ///     Tests that Handle method throws NotFoundException when brewery does not exists.
     /// </summary>
@@ -85,18 +95,51 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBreweryDoesNotExists()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
         var command = new UpdateBeerCommand
         {
             Name = "Test Beer",
-            BreweryId = Guid.NewGuid()
+            BreweryId = breweryId
         };
         var breweries = Enumerable.Empty<Brewery>();
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
 
+        var expectedMessage = $"Entity \"{nameof(Brewery)}\" ({breweryId}) was not found.";
+
         // Act & Assert
         await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
-            .Should().ThrowAsync<NotFoundException>();
+            .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method throws NotFoundException when beer style does not exists.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldThrowNotFoundException_WhenBeerStyleDoesNotExists()
+    {
+        // Arrange
+        var breweryId = Guid.NewGuid();
+        var beerStyleId = Guid.NewGuid();
+        var command = new UpdateBeerCommand
+        {
+            Name = "Test Beer",
+            BreweryId = breweryId,
+            BeerStyleId = beerStyleId
+        };
+        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        var beerStyles = Enumerable.Empty<BeerStyle>();
+        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+
+        var expectedMessage = $"Entity \"{nameof(BeerStyle)}\" ({beerStyleId}) was not found.";
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
     }
 }
