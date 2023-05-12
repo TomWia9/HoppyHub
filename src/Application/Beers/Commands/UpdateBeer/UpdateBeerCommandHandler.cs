@@ -37,7 +37,6 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
         
-        //TODO Add unit test
         if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
         {
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);

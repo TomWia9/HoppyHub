@@ -95,6 +95,7 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBreweryDoesNotExists()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
         var command = new UpdateBeerCommand
         {
             Name = "Test Beer",
@@ -105,11 +106,13 @@ public class UpdateBeerCommandHandlerTests
 
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
 
+        var expectedMessage = $"Entity \"{nameof(Brewery)}\" ({breweryId}) was not found.";
+
         // Act & Assert
         await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
-            .Should().ThrowAsync<NotFoundException>();
+            .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method throws NotFoundException when beer style does not exists.
     /// </summary>
@@ -117,20 +120,26 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBeerStyleDoesNotExists()
     {
         // Arrange
+        var breweryId = Guid.NewGuid();
+        var beerStyleId = Guid.NewGuid();
         var command = new UpdateBeerCommand
         {
             Name = "Test Beer",
-            BeerStyleId = Guid.NewGuid()
+            BreweryId = breweryId,
+            BeerStyleId = beerStyleId
         };
+        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerStyles = Enumerable.Empty<BeerStyle>();
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
 
+        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
-        
-        //TODO verify that this work without breweries mock, it actually can work but exception will be thrown because of breweries, just add "WithMessage" here and above
+
+        var expectedMessage = $"Entity \"{nameof(BeerStyle)}\" ({beerStyleId}) was not found.";
 
         // Act & Assert
         await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
-            .Should().ThrowAsync<NotFoundException>();
+            .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
     }
 }
