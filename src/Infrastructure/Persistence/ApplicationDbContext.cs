@@ -56,6 +56,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<BeerStyle> BeerStyles => Set<BeerStyle>();
 
     /// <summary>
+    ///     The beer opinions.
+    /// </summary>
+    public DbSet<Opinion> Opinions => Set<Opinion>();
+
+    /// <summary>
     ///     OnModelCreating override.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder</param>
