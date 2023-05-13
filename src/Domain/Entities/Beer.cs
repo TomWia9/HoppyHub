@@ -61,4 +61,9 @@ public class Beer : BaseAuditableEntity
     ///     The beer opinions.
     /// </summary>
     public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
+    
+    /// <summary>
+    ///     The favorites.
+    /// </summary>
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 }
