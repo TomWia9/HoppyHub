@@ -21,6 +21,5 @@ public class FavoriteConfiguration : BaseConfiguration<Favorite>
         builder.Property(x => x.Created).IsRequired();
         builder.Property(x => x.LastModifiedBy).IsRequired();
         builder.Property(x => x.LastModified).IsRequired();
-        //TODO verify that hasMaxLength stay as it is in BaseConfiguration
     }
 }
