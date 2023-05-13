@@ -32,6 +32,11 @@ public interface IApplicationDbContext
     ///     The beer styles.
     /// </summary>
     DbSet<BeerStyle> BeerStyles { get; }
+    
+    /// <summary>
+    ///     The beer opinions.
+    /// </summary>
+    DbSet<Opinion> Opinions { get; }
 
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
