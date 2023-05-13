@@ -21,5 +21,9 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.Property(x => x.AlcoholByVolume).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(3000);
         builder.Property(x => x.BreweryId).IsRequired();
+        
+        builder.HasMany(x => x.Opinions)
+            .WithOne(x => x.Beer)
+            .IsRequired();
     }
 }

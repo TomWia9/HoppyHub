@@ -21,11 +21,11 @@ public class BreweryConfiguration : BaseConfiguration<Brewery>
         builder.Property(x => x.FoundationYear).IsRequired();
         builder.Property(x => x.WebsiteUrl).HasMaxLength(200);
 
-        builder.HasOne(b => b.Address)
+        builder.HasOne(x => x.Address)
             .WithOne(a => a.Brewery)
             .HasForeignKey<Address>(a => a.BreweryId);
 
-        builder.HasMany(b => b.Beers)
+        builder.HasMany(x => x.Beers)
             .WithOne(x => x.Brewery)
             .IsRequired();
     }
