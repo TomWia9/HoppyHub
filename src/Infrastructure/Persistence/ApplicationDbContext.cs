@@ -61,6 +61,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Opinion> Opinions => Set<Opinion>();
 
     /// <summary>
+    ///     The favorites.
+    /// </summary>
+    public DbSet<Favorite> Favorites => Set<Favorite>();
+
+    /// <summary>
     ///     OnModelCreating override.
     /// </summary>
     /// <param name="modelBuilder">The ModelBuilder</param>

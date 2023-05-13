@@ -25,5 +25,9 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.Beer)
             .IsRequired();
+        
+        builder.HasMany(x => x.Favorites)
+            .WithOne(x => x.Beer)
+            .IsRequired();
     }
 }

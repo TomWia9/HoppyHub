@@ -4,20 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace Infrastructure.Persistence.Configurations;
 
 /// <summary>
-///     The opinion entity configuration.
+///     The favorite entity configuration.
 /// </summary>
-public class OpinionConfiguration : BaseConfiguration<Opinion>
+public class FavoriteConfiguration : BaseConfiguration<Favorite>
 {
     /// <summary>
-    ///     Configures the opinion entity.
+    ///     Configures the favorite entity.
     /// </summary>
     /// <param name="builder">The builder</param>
-    public override void Configure(EntityTypeBuilder<Opinion> builder)
+    public override void Configure(EntityTypeBuilder<Favorite> builder)
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Rate).IsRequired();
-        builder.Property(x => x.Comment).HasMaxLength(1000);
+        builder.Property(x => x.BeerId).IsRequired();
         builder.Property(x => x.CreatedBy).IsRequired();
         builder.Property(x => x.Created).IsRequired();
         builder.Property(x => x.LastModifiedBy).IsRequired();
