@@ -27,6 +27,11 @@ public record CreateBeerCommand : IRequest<BeerDto>
     ///     The beer description.
     /// </summary>
     public string? Description { get; init; }
+    
+    /// <summary>
+    ///     The beer composition.
+    /// </summary>
+    public string? Composition { get; init; }
 
     /// <summary>
     ///     The extract in Balling units.

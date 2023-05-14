@@ -58,6 +58,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             BreweryId = request.BreweryId,
             AlcoholByVolume = request.AlcoholByVolume,
             Description = request.Description,
+            Composition = request.Composition,
             Blg = request.Blg,
             Plato = request.Plato,
             BeerStyleId = request.BeerStyleId,
