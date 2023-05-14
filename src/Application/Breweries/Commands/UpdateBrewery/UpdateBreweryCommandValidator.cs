@@ -26,6 +26,8 @@ public class UpdateBreweryCommandValidator : AbstractValidator<UpdateBreweryComm
 
         RuleFor(x => x.Description).NotEmpty().MaximumLength(5000);
         RuleFor(x => x.FoundationYear).NotEmpty().InclusiveBetween(0, dateTime.Now.Year);
+        RuleFor(x => x.WebsiteUrl).MaximumLength(200).Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
+            .WithMessage("Invalid URL.");
         RuleFor(x => x.Street).NotEmpty().MaximumLength(200);
         RuleFor(x => x.Number).NotEmpty().MaximumLength(10);
         RuleFor(x => x.PostCode).NotEmpty().Must(BeAValidPostalCode)

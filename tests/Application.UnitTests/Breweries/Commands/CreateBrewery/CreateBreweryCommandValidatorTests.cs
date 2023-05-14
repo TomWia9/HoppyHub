@@ -135,6 +135,63 @@ public class CreateBreweryCommandValidatorTests
     }
 
     /// <summary>
+    ///     Tests that validation should not have error for WebsiteUrl when WebsiteUrl is valid.
+    /// </summary>
+    [Fact]
+    public async Task CreateBreweryCommand_ShouldNotHaveValidationErrorForWebsiteUrl_WhenWebsiteUrlIsValid()
+    {
+        // Arrange
+        var command = new CreateBreweryCommand
+        {
+            WebsiteUrl = "https://www.test.com"
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.WebsiteUrl);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for WebsiteUrl when WebsiteUrl exceeds maximum length.
+    /// </summary>
+    [Fact]
+    public async Task CreateBreweryCommand_ShouldHaveValidationErrorForWebsiteUrl_WhenWebsiteUrlExceedsMaximumLength()
+    {
+        // Arrange
+        var command = new CreateBreweryCommand
+        {
+            WebsiteUrl = new string('x', 201)
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.WebsiteUrl);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for WebsiteUrl when WebsiteUrl is invalid.
+    /// </summary>
+    [Fact]
+    public async Task CreateBreweryCommand_ShouldHaveValidationErrorForWebsiteUrl_WhenWebsiteUrlIsInvalid()
+    {
+        // Arrange
+        var command = new CreateBreweryCommand
+        {
+            WebsiteUrl = "test/com"
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.WebsiteUrl);
+    }
+
+    /// <summary>
     ///     Tests that validation should not have error for Street when Street is valid.
     /// </summary>
     [Fact]

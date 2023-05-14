@@ -70,6 +70,7 @@ public class UpdateBeerCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBeerDoesNotExist()
     {
         // Arrange
+        var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var beerStyleId = Guid.NewGuid();
         var breweries = new List<Brewery> { new() { Id = breweryId } };
@@ -82,10 +83,14 @@ public class UpdateBeerCommandHandlerTests
         _contextMock.Setup(x => x.Beers.FindAsync(new object[] { 1 }, CancellationToken.None))
             .ReturnsAsync((Beer?)null);
 
-        var command = new UpdateBeerCommand { Id = Guid.NewGuid(), Name = "New Name", BreweryId = breweryId };
+        var command = new UpdateBeerCommand
+            { Id = beerId, Name = "New Name", BreweryId = breweryId, BeerStyleId = beerStyleId };
+
+        var expectedMessage = $"Entity \"{nameof(Beer)}\" ({beerId}) was not found.";
 
         // Act & Assert
-        await Assert.ThrowsAsync<NotFoundException>(() => _handler.Handle(command, CancellationToken.None));
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
     }
 
     /// <summary>

@@ -34,6 +34,11 @@ public record BeerDto : IMapFrom<Beer>
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
+    
+    /// <summary>
+    ///     The beer composition.
+    /// </summary>
+    public string? Composition { get; set; }
 
     /// <summary>
     ///     The extract in Balling units.

@@ -25,6 +25,7 @@ public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
         RuleFor(x => x.BreweryId).NotEmpty();
         RuleFor(x => x.AlcoholByVolume).NotNull().InclusiveBetween(0, 100);
         RuleFor(x => x.Description).MaximumLength(3000);
+        RuleFor(x => x.Composition).MaximumLength(300);
         RuleFor(x => x.Blg).InclusiveBetween(0, 100);
         RuleFor(x => x.Plato).InclusiveBetween(0, 100);
         RuleFor(x => x.BeerStyleId).NotEmpty();

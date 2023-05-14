@@ -150,6 +150,44 @@ public class CreateBeerCommandValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
     }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for Composition when Composition is valid.
+    /// </summary>
+    [Fact]
+    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForComposition_WhenCompositionIsValid()
+    {
+        // Arrange
+        var command = new CreateBeerCommand
+        {
+            Composition = "Test composition"
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.Composition);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for Composition when Composition exceeds maximum length.
+    /// </summary>
+    [Fact]
+    public async Task CreateBeerCommand_ShouldHaveValidationErrorForComposition_WhenCompositionExceedsMaximumLength()
+    {
+        // Arrange
+        var command = new CreateBeerCommand
+        {
+            Composition = new string('x', 301)
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Composition);
+    }
 
     /// <summary>
     ///     Tests that validation should not have error for Blg when Blg is valid.

@@ -62,7 +62,7 @@ public class UpdateBeerCommandValidatorTests
         // Arrange
         var command = new UpdateBeerCommand
         {
-            BreweryId = Guid.Empty //not sure this will work
+            BreweryId = Guid.Empty
         };
 
         // Act
@@ -149,6 +149,44 @@ public class UpdateBeerCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Description);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for Composition when Composition is valid.
+    /// </summary>
+    [Fact]
+    public async Task UpdateBeerCommand_ShouldNotHaveValidationErrorForComposition_WhenCompositionIsValid()
+    {
+        // Arrange
+        var command = new UpdateBeerCommand
+        {
+            Composition = "Test composition"
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.Composition);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for Composition when Composition exceeds maximum length.
+    /// </summary>
+    [Fact]
+    public async Task UpdateBeerCommand_ShouldHaveValidationErrorForComposition_WhenCompositionExceedsMaximumLength()
+    {
+        // Arrange
+        var command = new UpdateBeerCommand
+        {
+            Composition = new string('x', 3001)
+        };
+
+        // Act
+        var result = await _validator.TestValidateAsync(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Composition);
     }
 
     /// <summary>
