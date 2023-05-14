@@ -16,12 +16,12 @@ public class Beer : BaseAuditableEntity
     ///     The beer style id.
     /// </summary>
     public Guid BeerStyleId { get; set; }
-    
+
     /// <summary>
     ///     The beer style.
     /// </summary>
     public BeerStyle? BeerStyle { get; set; }
-    
+
     /// <summary>
     ///     The alcohol by volume.
     /// </summary>
@@ -46,22 +46,27 @@ public class Beer : BaseAuditableEntity
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
-    
+
+    /// <summary>
+    ///     The beer composition.
+    /// </summary>
+    public string? Composition { get; set; }
+
     /// <summary>
     ///     The brewery id.
     /// </summary>
     public Guid BreweryId { get; set; }
-    
+
     /// <summary>
     ///     The brewery.
     /// </summary>
     public Brewery? Brewery { get; set; }
-    
+
     /// <summary>
     ///     The beer opinions.
     /// </summary>
     public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
-    
+
     /// <summary>
     ///     The favorites.
     /// </summary>
