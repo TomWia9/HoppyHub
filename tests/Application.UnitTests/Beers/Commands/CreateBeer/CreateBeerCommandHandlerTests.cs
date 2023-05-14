@@ -1,7 +1,5 @@
 ﻿using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Dtos;
-using Application.BeerStyles.Dtos;
-using Application.Breweries.Dtos;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
@@ -54,6 +52,7 @@ public class CreateBeerCommandHandlerTests
             BreweryId = breweryId,
             AlcoholByVolume = 5.0,
             Description = "Test description",
+            Composition = "Test composition",
             Blg = 12.0,
             Plato = 10.0,
             BeerStyleId = beerStyleId,
@@ -79,6 +78,7 @@ public class CreateBeerCommandHandlerTests
         result.Name.Should().Be(request.Name);
         result.AlcoholByVolume.Should().Be(request.AlcoholByVolume);
         result.Description.Should().Be(request.Description);
+        result.Composition.Should().Be(request.Composition);
         result.Blg.Should().Be(request.Blg);
         result.Plato.Should().Be(request.Plato);
         result.Ibu.Should().Be(request.Ibu);
@@ -100,6 +100,7 @@ public class CreateBeerCommandHandlerTests
             BreweryId = breweryId,
             AlcoholByVolume = 5.0,
             Description = "A test beer",
+            Composition = "Test composition",
             Blg = 12.0,
             Plato = 3.5,
             BeerStyleId = Guid.NewGuid(),
@@ -132,6 +133,7 @@ public class CreateBeerCommandHandlerTests
             BreweryId = breweryId,
             AlcoholByVolume = 5.0,
             Description = "A test beer",
+            Composition = "Test composition",
             Blg = 12.0,
             Plato = 3.5,
             BeerStyleId = beerStyleId,

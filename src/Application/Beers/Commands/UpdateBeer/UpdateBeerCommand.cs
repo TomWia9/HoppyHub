@@ -35,7 +35,7 @@ public record UpdateBeerCommand : IRequest
     /// <summary>
     ///     The beer composition.
     /// </summary>
-    public string? Composition { get; set; }
+    public string? Composition { get; init; }
 
     /// <summary>
     ///     The extract in Balling units.
