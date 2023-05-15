@@ -76,7 +76,7 @@ public class ApplicationDbContextInitializer
             //await SeedPrimaryBeerStylesAsync();
             //await SeedBeerStylesAsync();
             //await SeedBeersAsync();
-            
+
             Log.Logger.Information("Seeding database completed");
         }
         catch (Exception e)
@@ -142,16 +142,14 @@ public class ApplicationDbContextInitializer
     /// </summary>
     private async Task SeedBreweriesAsync()
     {
-        if (!await _context.Beers.AnyAsync())
+        if (!await _context.Breweries.AnyAsync())
         {
-            Log.Logger.Information("Seeding breweries...");
+            const string tableName = nameof(_context.Breweries);
 
-            const string fileName = "Breweries.sql";
-
-            await SeedDatabaseFromSql(fileName);
+            await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds primary beer styles asynchronously.
     /// </summary>
@@ -159,29 +157,25 @@ public class ApplicationDbContextInitializer
     {
         if (!await _context.PrimaryBeerStyles.AnyAsync())
         {
-            Log.Logger.Information("Seeding primary beer styles...");
+            const string tableName = nameof(_context.PrimaryBeerStyles);
 
-            const string fileName = "PrimaryBeerStyles.sql";
-
-            await SeedDatabaseFromSql(fileName);
+            await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds beer styles asynchronously.
     /// </summary>
     private async Task SeedBeerStylesAsync()
     {
-        if (!await _context.Beers.AnyAsync())
+        if (!await _context.BeerStyles.AnyAsync())
         {
-            Log.Logger.Information("Seeding beer styles...");
+            const string tableName = nameof(_context.BeerStyles);
 
-            const string fileName = "BeerStyles.sql";
-
-            await SeedDatabaseFromSql(fileName);
+            await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds beers asynchronously.
     /// </summary>
@@ -189,17 +183,17 @@ public class ApplicationDbContextInitializer
     {
         if (!await _context.Beers.AnyAsync())
         {
-            Log.Logger.Information("Seeding beers...");
+            const string tableName = nameof(_context.Beers);
 
-            const string fileName = "Beers.sql";
-
-            await SeedDatabaseFromSql(fileName);
+            await SeedDatabaseFromSql(tableName);
         }
     }
 
-    private async Task SeedDatabaseFromSql(string fileName)
+    private async Task SeedDatabaseFromSql(string tableName)
     {
-        var sqlFilePath = "../Infrastructure/Persistence/Data/" + fileName;
+        Log.Logger.Information("Seeding {TableName}...", tableName);
+
+        var sqlFilePath = "../Infrastructure/Persistence/Data/" + tableName + ".sql";
 
         if (!File.Exists(sqlFilePath))
         {
@@ -210,9 +204,15 @@ public class ApplicationDbContextInitializer
         {
             var sqlScript = await File.ReadAllTextAsync(sqlFilePath);
             var result = await _context.Database.ExecuteSqlRawAsync(sqlScript);
-            var logMessage = result != 0 ? "Data successfully seeded" : "Data seeding failed";
-            
-            Log.Logger.Information(logMessage);
+
+            if (result > 0)
+            {
+                Log.Logger.Information("{TableName} successfully seeded", tableName);
+            }
+            else
+            {
+                Log.Error("Seeding {TableName} failed", tableName);
+            }
         }
         catch (JsonSerializationException ex)
         {
