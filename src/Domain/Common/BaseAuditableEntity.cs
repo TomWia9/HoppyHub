@@ -13,7 +13,7 @@ public abstract class BaseAuditableEntity
     /// <summary>
     ///     The date of creation
     /// </summary>
-    public DateTime Created { get; set; }
+    public DateTime? Created { get; set; }
     
     /// <summary>
     ///    The id of the creator
