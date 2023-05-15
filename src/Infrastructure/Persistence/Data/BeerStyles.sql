@@ -38,7 +38,6 @@ INSERT INTO BeerStyles VALUES
 INSERT INTO BeerStyles VALUES
 ('00f6aa3d-4d04-438d-a77a-7d198f3f3b6f', 'Belgian Witbier', 'A Belgian wheat beer style brewed with coriander and orange peel.', 'Belgium', @WitbierPrimaryStyleId, null, null, null, null),
 ('c9f40191-5241-4c31-80f5-40845d1e7e8d', 'American Wheat', 'An American version of the witbier style that often incorporates American hops.', 'United States', @WitbierPrimaryStyleId, null, null, null, null),
-('3dcbb6d7-7fa7-45a3-9376-7b9b1f8b6d8e', 'Berliner Weisse', 'A German sour wheat beer style often served with a flavored syrup.', 'Germany', @WitbierPrimaryStyleId, null, null, null, null),
 ('16d799cf-05e9-4069-b7e1-3b1415f8c2b9', 'Gose', 'A German sour wheat beer style brewed with coriander and salt.', 'Germany', @WitbierPrimaryStyleId, null, null, null, null),
 ('201cc54b-5e99-4756-af29-4b2c2335a9f3', 'White IPA', 'An IPA and witbier hybrid style that incorporates the hop flavor of an IPA with the spice and citrus of a witbier.', 'United States', @WitbierPrimaryStyleId, null, null, null, null)
 
@@ -71,14 +70,12 @@ INSERT INTO BeerStyles VALUES
 ('c69b5b71-5d05-4c5e-a79e-f49c3ab87c62', 'Flanders Red Ale', 'A Belgian ale style that is typically aged for extended periods of time, resulting in a complex, sour flavor with notes of fruit and oak.', 'Belgium', @SourAlePrimaryStyleId, null, null, null, null),
 ('13f46e45-cacb-4d4a-9e48-c1d8c3ad8202', 'Gueuze', 'A traditional Belgian ale style that is made by blending young and old lambic beers, resulting in a tart, sour flavor.', 'Belgium', @SourAlePrimaryStyleId, null, null, null, null),
 ('0cbb0e5a-58d1-4ee1-a3e5-0674aaf88975', 'Berliner Weisse', 'A German wheat beer style that is light and refreshing, with a tart, sour flavor and a low alcohol content.', 'Germany', @SourAlePrimaryStyleId, null, null, null, null),
-('902f4082-4223-44b1-9e37-bf7d3d9d29e4', 'American Wild Ale', 'An American ale style that is fermented with wild yeast and bacteria, resulting in a sour, funky flavor.', 'United States', @SourAlePrimaryStyleId, null, null, null, null),
-('db8a8d2f-22ce-43d7-a8b9-c82f53e040aa', 'Gose', 'A German wheat beer style that is brewed with salt and coriander, resulting in a tart, salty flavor.', 'Germany', @SourAlePrimaryStyleId, null, null, null, null)
+('902f4082-4223-44b1-9e37-bf7d3d9d29e4', 'American Wild Ale', 'An American ale style that is fermented with wild yeast and bacteria, resulting in a sour, funky flavor.', 'United States', @SourAlePrimaryStyleId, null, null, null, null);
 
 -- Brown Ale Styles
 INSERT INTO BeerStyles VALUES
 ('b30034aa-0d0d-4e6e-b6f6-18db7944d3f6', 'English Brown Ale', 'A malty English ale style that is typically medium-bodied with a low to moderate hop flavor and a nutty, caramel finish.', 'United Kingdom', @BrownAlePrimaryStyleId, null, null, null, null),
 ('6b4e0e9f-ee9c-4d09-bd3b-58489d1425ea', 'American Brown Ale', 'An American ale style that is similar to the English Brown Ale, but with a more pronounced hop flavor and a slightly higher alcohol content.', 'United States', @BrownAlePrimaryStyleId, null, null, null, null),
-('6c7faaa6-01cf-48ec-b6cc-1f3e6d5d20f5', 'Belgian Dubbel', 'A Belgian ale style that is dark and malty, with a complex flavor profile that includes notes of caramel, dark fruit, and spices.', 'Belgium', @BrownAlePrimaryStyleId, null, null, null, null),
 ('4619a1ec-290f-4872-a087-5be8c133eb43', 'Mild Ale', 'A low-alcohol English ale style that is typically dark and malty, with a low hop flavor and a slightly sweet finish.', 'United Kingdom', @BrownAlePrimaryStyleId, null, null, null, null),
 ('b82eab99-1f08-46d7-bbfd-dc2ca8d868d3', 'Northern English Brown Ale', 'A malty English ale style that is similar to the standard English Brown Ale, but with a drier finish and a slightly more pronounced hop flavor.', 'United Kingdom', @BrownAlePrimaryStyleId, null, null, null, null)
 
