@@ -73,7 +73,7 @@ public class ApplicationDbContextInitializer
             await SeedRolesAsync();
             await SeedUsersAsync();
             await SeedBreweriesAsync();
-            //await SeedPrimaryBeerStylesAsync();
+            await SeedPrimaryBeerStylesAsync();
             //await SeedBeerStylesAsync();
             //await SeedBeersAsync();
 
