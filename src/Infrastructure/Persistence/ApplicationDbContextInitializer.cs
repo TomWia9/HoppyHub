@@ -72,9 +72,11 @@ public class ApplicationDbContextInitializer
 
             await SeedRolesAsync();
             await SeedUsersAsync();
-            //TODO Update file with data when more entities will be added
-            //await SeedBreweriesAsync();
-
+            await SeedBreweriesAsync();
+            //await SeedPrimaryBeerStylesAsync();
+            //await SeedBeerStylesAsync();
+            //await SeedBeersAsync();
+            
             Log.Logger.Information("Seeding database completed");
         }
         catch (Exception e)
@@ -136,48 +138,85 @@ public class ApplicationDbContextInitializer
     }
 
     /// <summary>
-    ///     Seeds beers asynchronously.
+    ///     Seeds breweries asynchronously.
     /// </summary>
     private async Task SeedBreweriesAsync()
     {
         if (!await _context.Beers.AnyAsync())
         {
-            Log.Logger.Information("Seeding breweries and beers...");
+            Log.Logger.Information("Seeding breweries...");
 
-            const string fileName = "Breweries.json";
+            const string fileName = "Breweries.sql";
 
-            await SeedDatabaseFromJson<Brewery>(fileName);
+            await SeedDatabaseFromSql(fileName);
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds primary beer styles asynchronously.
+    /// </summary>
+    private async Task SeedPrimaryBeerStylesAsync()
+    {
+        if (!await _context.PrimaryBeerStyles.AnyAsync())
+        {
+            Log.Logger.Information("Seeding primary beer styles...");
+
+            const string fileName = "PrimaryBeerStyles.sql";
+
+            await SeedDatabaseFromSql(fileName);
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds beer styles asynchronously.
+    /// </summary>
+    private async Task SeedBeerStylesAsync()
+    {
+        if (!await _context.Beers.AnyAsync())
+        {
+            Log.Logger.Information("Seeding beer styles...");
+
+            const string fileName = "BeerStyles.sql";
+
+            await SeedDatabaseFromSql(fileName);
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds beers asynchronously.
+    /// </summary>
+    private async Task SeedBeersAsync()
+    {
+        if (!await _context.Beers.AnyAsync())
+        {
+            Log.Logger.Information("Seeding beers...");
+
+            const string fileName = "Beers.sql";
+
+            await SeedDatabaseFromSql(fileName);
         }
     }
 
-    private async Task SeedDatabaseFromJson<T>(string fileName) where T : class
+    private async Task SeedDatabaseFromSql(string fileName)
     {
-        var jsonFilePath = "../Infrastructure/Persistence/Data/" + fileName;
+        var sqlFilePath = "../Infrastructure/Persistence/Data/" + fileName;
 
-        if (!File.Exists(jsonFilePath))
+        if (!File.Exists(sqlFilePath))
         {
-            throw new FileNotFoundException($"File not found at {jsonFilePath}");
+            throw new FileNotFoundException($"File not found at {sqlFilePath}");
         }
 
         try
         {
-            var json = await File.ReadAllTextAsync(jsonFilePath);
-            var entities = JsonConvert.DeserializeObject<List<T>>(json);
-
-            if (entities != null && entities.Any())
-            {
-                await _context.AddRangeAsync(entities);
-                await _context.SaveChangesAsync();
-                Log.Logger.Information("{Type} data seeded", typeof(T).Name);
-            }
-            else
-            {
-                Log.Logger.Warning("{Type} data file empty", typeof(T).Name);
-            }
+            var sqlScript = await File.ReadAllTextAsync(sqlFilePath);
+            var result = await _context.Database.ExecuteSqlRawAsync(sqlScript);
+            var logMessage = result != 0 ? "Data successfully seeded" : "Data seeding failed";
+            
+            Log.Logger.Information(logMessage);
         }
         catch (JsonSerializationException ex)
         {
-            throw new Exception("Invalid JSON file format", ex);
+            throw new Exception("Invalid sql file", ex);
         }
     }
 }
