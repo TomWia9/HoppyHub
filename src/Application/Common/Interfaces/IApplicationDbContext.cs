@@ -24,11 +24,6 @@ public interface IApplicationDbContext
     DbSet<Address> Addresses { get; }
 
     /// <summary>
-    ///     The primary beer styles.
-    /// </summary>
-    DbSet<PrimaryBeerStyle> PrimaryBeerStyles { get; }
-
-    /// <summary>
     ///     The beer styles.
     /// </summary>
     DbSet<BeerStyle> BeerStyles { get; }
