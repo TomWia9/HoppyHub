@@ -1,5 +1,5 @@
-﻿using Application.Common.Models;
-using Domain.Entities;
+﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence;
 /// <summary>
 ///     ApplicationDbContextInitializer class.
 /// </summary>
-public class ApplicationDbContextInitializer
+public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
 {
     /// <summary>
     ///     The database context.
