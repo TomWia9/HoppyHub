@@ -36,6 +36,16 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public double? MaxAlcoholByVolume { get; init; } = 100;
 
     /// <summary>
+    ///     Minimum blg extract.
+    /// </summary>
+    public double? MinExtract { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum blg extract.
+    /// </summary>
+    public double? MaxExtract { get; init; } = 100;
+
+    /// <summary>
     ///     Minimum Ibu.
     /// </summary>
     public int? MinIbu { get; init; } = 0;

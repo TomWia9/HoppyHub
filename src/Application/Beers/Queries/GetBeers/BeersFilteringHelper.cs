@@ -40,6 +40,7 @@ public static class BeersFilteringHelper
         var delegates = new List<Expression<Func<Beer, bool>>>
         {
             x => x.AlcoholByVolume >= request.MinAlcoholByVolume && x.AlcoholByVolume <= request.MaxAlcoholByVolume,
+            x => x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract,
             x => x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu || x.Ibu == null
         };
 
