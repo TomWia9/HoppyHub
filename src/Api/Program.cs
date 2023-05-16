@@ -1,7 +1,7 @@
 using Api;
 using Application;
+using Application.Common.Interfaces;
 using Infrastructure;
-using Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -40,7 +40,7 @@ try
     
     using (var scope = app.Services.CreateScope())
     {
-        var initializer = scope.ServiceProvider.GetRequiredService<ApplicationDbContextInitializer>();
+        var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
         await initializer.InitializeAsync();
         await initializer.SeedAsync();
     }
