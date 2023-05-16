@@ -230,46 +230,6 @@ public class CreateBeerCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Plato when Plato is valid.
-    /// </summary>
-    [Fact]
-    public async Task CreateBeerCommand_ShouldNotHaveValidationErrorForPlato_WhenPlatoIsValid()
-    {
-        // Arrange
-        var command = new CreateBeerCommand
-        {
-            Plato = 20
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Plato);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Plato when Plato is out of range.
-    /// </summary>
-    [Theory]
-    [InlineData(-1)]
-    [InlineData(101)]
-    public async Task CreateBeerCommand_ShouldHaveValidationErrorForPlato_WhenPlatoIsOutOfRange(double plato)
-    {
-        // Arrange
-        var command = new CreateBeerCommand
-        {
-            Plato = plato
-        };
-
-        // Act
-        var result = await _validator.TestValidateAsync(command);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Plato);
-    }
-
-    /// <summary>
     ///     Tests that validation should not have error for BeerStyleId when BeerStyleId is valid.
     /// </summary>
     [Fact]

@@ -357,7 +357,6 @@ public class GetBeersQueryValidatorTests
     [InlineData("beerstyle")]
     [InlineData("ALCOHOLBYVOLUME")]
     [InlineData("blg")]
-    [InlineData("plato")]
     [InlineData("ibu")]
     [InlineData("")]
     [InlineData(null)]
@@ -393,6 +392,6 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, PLATO, IBU]");
+            .WithErrorMessage("SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU]");
     }
 }

@@ -54,7 +54,6 @@ public class CreateBeerCommandHandlerTests
             Description = "Test description",
             Composition = "Test composition",
             Blg = 12.0,
-            Plato = 10.0,
             BeerStyleId = beerStyleId,
             Ibu = 25
         };
@@ -80,7 +79,6 @@ public class CreateBeerCommandHandlerTests
         result.Description.Should().Be(request.Description);
         result.Composition.Should().Be(request.Composition);
         result.Blg.Should().Be(request.Blg);
-        result.Plato.Should().Be(request.Plato);
         result.Ibu.Should().Be(request.Ibu);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
@@ -102,7 +100,6 @@ public class CreateBeerCommandHandlerTests
             Description = "A test beer",
             Composition = "Test composition",
             Blg = 12.0,
-            Plato = 3.5,
             BeerStyleId = Guid.NewGuid(),
             Ibu = 30
         };
@@ -135,7 +132,6 @@ public class CreateBeerCommandHandlerTests
             Description = "A test beer",
             Composition = "Test composition",
             Blg = 12.0,
-            Plato = 3.5,
             BeerStyleId = beerStyleId,
             Ibu = 30
         };
