@@ -1,5 +1,4 @@
 ﻿using Application.Common.Mappings;
-using Application.PrimaryBeerStyles.Dtos;
 using Domain.Entities;
 
 namespace Application.BeerStyles.Dtos;
@@ -23,9 +22,4 @@ public record BeerStyleDto : IMapFrom<BeerStyle>
     ///     The country of beer style origin.
     /// </summary>
     public string? CountryOfOrigin { get; set; }
-    
-    /// <summary>
-    ///     The primary beer style.
-    /// </summary>
-    public PrimaryBeerStyleDto? PrimaryBeerStyle { get; set; }
 }

@@ -3,7 +3,6 @@ using Application.Beers.Dtos;
 using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
 using Application.Common.Mappings;
-using Application.PrimaryBeerStyles.Dtos;
 using AutoMapper;
 using Domain.Entities;
 
@@ -54,7 +53,6 @@ public class MappingTests
     [InlineData(typeof(Beer), typeof(BeerDto))]
     [InlineData(typeof(Brewery), typeof(BreweryDto))]
     [InlineData(typeof(Address), typeof(AddressDto))]
-    [InlineData(typeof(PrimaryBeerStyle), typeof(PrimaryBeerStyleDto))]
     [InlineData(typeof(BeerStyle), typeof(BeerStyleDto))]
     public void Mapping_Should_SupportMappingFromSourceToDestination(Type source, Type destination)
     {

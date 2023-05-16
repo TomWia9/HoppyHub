@@ -21,17 +21,7 @@ public class BeerStyle : BaseAuditableEntity
     ///     The country of beer style origin.
     /// </summary>
     public string? CountryOfOrigin { get; set; }
-    
-    /// <summary>
-    ///     The primary beer style id.
-    /// </summary>
-    public Guid PrimaryBeerStyleId { get; set; }
-    
-    /// <summary>
-    ///     The primary beer style.
-    /// </summary>
-    public PrimaryBeerStyle? PrimaryBeerStyle { get; set; }
-    
+
     /// <summary>
     ///     The beers.
     /// </summary>

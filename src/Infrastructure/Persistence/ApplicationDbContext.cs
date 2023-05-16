@@ -46,11 +46,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Address> Addresses => Set<Address>();
 
     /// <summary>
-    ///     The primary beer styles.
-    /// </summary>
-    public DbSet<PrimaryBeerStyle> PrimaryBeerStyles => Set<PrimaryBeerStyle>();
-
-    /// <summary>
     ///     The beer styles.
     /// </summary>
     public DbSet<BeerStyle> BeerStyles => Set<BeerStyle>();

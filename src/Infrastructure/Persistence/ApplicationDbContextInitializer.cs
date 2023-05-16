@@ -73,7 +73,6 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedRolesAsync();
             await SeedUsersAsync();
             await SeedBreweriesAsync();
-            await SeedPrimaryBeerStylesAsync();
             await SeedBeerStylesAsync();
             await SeedBeersAsync();
 
@@ -145,19 +144,6 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
         if (!await _context.Breweries.AnyAsync())
         {
             const string tableName = nameof(_context.Breweries);
-
-            await SeedDatabaseFromSql(tableName);
-        }
-    }
-
-    /// <summary>
-    ///     Seeds primary beer styles asynchronously.
-    /// </summary>
-    private async Task SeedPrimaryBeerStylesAsync()
-    {
-        if (!await _context.PrimaryBeerStyles.AnyAsync())
-        {
-            const string tableName = nameof(_context.PrimaryBeerStyles);
 
             await SeedDatabaseFromSql(tableName);
         }
