@@ -55,7 +55,6 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.Description = request.Description;
         entity.Composition = request.Composition;
         entity.Blg = request.Blg;
-        entity.Plato = request.Plato;
         entity.BeerStyleId = request.BeerStyleId;
         entity.Ibu = request.Ibu;
 

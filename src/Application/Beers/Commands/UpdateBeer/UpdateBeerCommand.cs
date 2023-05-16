@@ -43,11 +43,6 @@ public record UpdateBeerCommand : IRequest
     public double? Blg { get; init; }
 
     /// <summary>
-    ///     The extract in Plato units.
-    /// </summary>
-    public double? Plato { get; init; }
-
-    /// <summary>
     ///     The beer style id.
     /// </summary>
     public Guid BeerStyleId { get; init; }

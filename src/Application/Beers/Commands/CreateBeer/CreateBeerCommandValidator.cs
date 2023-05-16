@@ -27,7 +27,6 @@ public class CreateBeerCommandValidator : AbstractValidator<CreateBeerCommand>
         RuleFor(x => x.Description).MaximumLength(3000);
         RuleFor(x => x.Composition).MaximumLength(300);
         RuleFor(x => x.Blg).InclusiveBetween(0, 100);
-        RuleFor(x => x.Plato).InclusiveBetween(0, 100);
         RuleFor(x => x.BeerStyleId).NotEmpty();
         RuleFor(x => x.Ibu).InclusiveBetween(0, 200);
         RuleFor(x => x.Name).NotEmpty().MaximumLength(200)

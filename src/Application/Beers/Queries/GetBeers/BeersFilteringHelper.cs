@@ -18,7 +18,6 @@ public static class BeersFilteringHelper
         { nameof(Beer.BeerStyle).ToUpper(), x => x.BeerStyle!.Name ?? string.Empty },
         { nameof(Beer.AlcoholByVolume).ToUpper(), x => x.AlcoholByVolume },
         { nameof(Beer.Blg).ToUpper(), x => x.Blg ?? 0 },
-        { nameof(Beer.Plato).ToUpper(), x => x.Plato ?? 0 },
         { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 }
     };
 
