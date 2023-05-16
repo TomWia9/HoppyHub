@@ -52,6 +52,8 @@ public class BeersFilteringHelperTests
         {
             MinAlcoholByVolume = 5,
             MaxAlcoholByVolume = 10,
+            MinExtract = 10,
+            MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
             Name = "IPA",
@@ -64,7 +66,7 @@ public class BeersFilteringHelperTests
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(7, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -78,6 +80,8 @@ public class BeersFilteringHelperTests
         {
             MinAlcoholByVolume = 5,
             MaxAlcoholByVolume = 10,
+            MinExtract = 10,
+            MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
             Name = "IPA",
@@ -89,6 +93,6 @@ public class BeersFilteringHelperTests
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
     }
 }

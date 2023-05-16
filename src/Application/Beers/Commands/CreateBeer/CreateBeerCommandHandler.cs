@@ -60,7 +60,6 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             Description = request.Description,
             Composition = request.Composition,
             Blg = request.Blg,
-            Plato = request.Plato,
             BeerStyleId = request.BeerStyleId,
             Ibu = request.Ibu
         };

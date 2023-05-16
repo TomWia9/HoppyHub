@@ -33,11 +33,6 @@ public class Beer : BaseAuditableEntity
     public double? Blg { get; set; }
 
     /// <summary>
-    ///     The extract in Plato units.
-    /// </summary>
-    public double? Plato { get; set; }
-
-    /// <summary>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }

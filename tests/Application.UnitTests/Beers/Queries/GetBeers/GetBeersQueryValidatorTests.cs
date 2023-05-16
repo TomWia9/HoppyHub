@@ -97,7 +97,7 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Style);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for MinAlcoholByVolume when MinAlcoholByVolume is valid.
     /// </summary>
@@ -221,6 +221,132 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.MaxAlcoholByVolume)
+            .WithErrorMessage("Max value must be greater than or equal to Min value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MinExtract when MinExtract is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMinExtract_WhenMinExtractIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinExtract = 10
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MinExtract);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinExtract when MinExtract is out of range.
+    /// </summary>
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(101)]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinExtract_WhenMinExtractIsOutOfRange(
+        double minExtract)
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinExtract = minExtract
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinExtract);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinExtract when MinExtract is greater than MaxExtract.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMinExtract_WhenMinExtractIsGreaterThanMaxExtract()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinExtract = 4,
+            MaxExtract = 3
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinExtract)
+            .WithErrorMessage("Min value must be less than or equal to Max value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MaxExtract when MaxExtract is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMaxExtract_WhenMaxExtractIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxExtract = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MaxExtract);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxExtract when MaxExtract is out of range.
+    /// </summary>
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(101)]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxExtract_WhenMaxExtractIsOutOfRange(
+        double maxExtract)
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxExtract = maxExtract
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxExtract);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxExtract when MaxExtract is less than MinExtract.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMaxExtract_WhenMaxExtractIsLessThanMinExtract()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinExtract = 4,
+            MaxExtract = 3
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxExtract)
             .WithErrorMessage("Max value must be greater than or equal to Min value");
     }
 
@@ -357,7 +483,6 @@ public class GetBeersQueryValidatorTests
     [InlineData("beerstyle")]
     [InlineData("ALCOHOLBYVOLUME")]
     [InlineData("blg")]
-    [InlineData("plato")]
     [InlineData("ibu")]
     [InlineData("")]
     [InlineData(null)]
@@ -393,6 +518,6 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, PLATO, IBU]");
+            .WithErrorMessage("SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU]");
     }
 }
