@@ -19,6 +19,10 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
             .WithMessage("Min value must be less than or equal to Max value");
         RuleFor(x => x.MaxAlcoholByVolume).InclusiveBetween(0, 100).GreaterThanOrEqualTo(x => x.MinAlcoholByVolume)
             .WithMessage("Max value must be greater than or equal to Min value");
+        RuleFor(x => x.MinExtract).InclusiveBetween(0, 100).LessThanOrEqualTo(x => x.MaxExtract)
+            .WithMessage("Min value must be less than or equal to Max value");
+        RuleFor(x => x.MaxExtract).InclusiveBetween(0, 100).GreaterThanOrEqualTo(x => x.MinExtract)
+            .WithMessage("Max value must be greater than or equal to Min value");
         RuleFor(x => x.MinIbu).InclusiveBetween(0, 200).LessThanOrEqualTo(x => x.MaxIbu)
             .WithMessage("Min value must be less than or equal to Max value");
         RuleFor(x => x.MaxIbu).InclusiveBetween(0, 200).GreaterThanOrEqualTo(x => x.MinIbu)
