@@ -21,9 +21,9 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public Guid? BreweryId { get; init; }
 
     /// <summary>
-    ///     The beer style.
+    ///     The beer style id.
     /// </summary>
-    public string? Style { get; init; }
+    public Guid? BeerStyleId { get; init; }
 
     /// <summary>
     ///     Minimum alcohol by volume.

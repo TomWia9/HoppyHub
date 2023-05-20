@@ -58,8 +58,8 @@ public class BeersFilteringHelperTests
             MaxIbu = 50,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
-            Style = "Ale",
-            SearchQuery = "IPA",
+            BeerStyleId = Guid.NewGuid(),
+            SearchQuery = "IPA"
         };
 
         // Act
@@ -86,7 +86,7 @@ public class BeersFilteringHelperTests
             MaxIbu = 50,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
-            Style = "Ale",
+            BeerStyleId = Guid.NewGuid()
         };
 
         // Act

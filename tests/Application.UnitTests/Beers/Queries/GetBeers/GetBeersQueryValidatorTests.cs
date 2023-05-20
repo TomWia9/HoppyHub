@@ -59,45 +59,7 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
-
-    /// <summary>
-    ///     Tests that validation should not have error for Style when Style is valid.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForStyle_WhenStyleIsValid()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Style = "Test Style"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Style);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for Style when Style exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForStyle_WhenStyleExceedsMaximumLength()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            Style = new string('x', 201)
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Style);
-    }
-
+    
     /// <summary>
     ///     Tests that validation should not have error for MinAlcoholByVolume when MinAlcoholByVolume is valid.
     /// </summary>
