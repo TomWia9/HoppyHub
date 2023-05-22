@@ -6,7 +6,7 @@ namespace Application.Beers.Queries.GetBeer;
 /// <summary>
 ///     GetBeer query.
 /// </summary>
-public class GetBeerQuery : IRequest<BeerDto>
+public record GetBeerQuery : IRequest<BeerDto>
 {
     /// <summary>
     ///     The beer id.
