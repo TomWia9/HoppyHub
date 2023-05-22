@@ -14,5 +14,9 @@ public class GetBeerStylesQueryValidator : QueryValidator<GetBeerStylesQuery>
     public GetBeerStylesQueryValidator()
     {
         RuleFor(x => x.CountryOfOrigin).MaximumLength(50);
+        RuleFor(x => x.SortBy)
+            .Must(value =>
+                string.IsNullOrWhiteSpace(value) || BeerStylesFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
+            .WithMessage($"SortBy must be in [{string.Join(", ", BeerStylesFilteringHelper.SortingColumns.Keys)}]");
     }
 }
