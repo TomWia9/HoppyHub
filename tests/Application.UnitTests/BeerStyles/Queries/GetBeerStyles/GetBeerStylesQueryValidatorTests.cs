@@ -26,7 +26,7 @@ public class GetBeerStylesQueryValidatorTests
     ///     Tests that validation should not have error for CountryOfOrigin when CountryOfOrigin is valid.
     /// </summary>
     [Fact]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginIsValid()
+    public void GetBeerStylesQuery_ShouldNotHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginIsValid()
     {
         // Arrange
         var query = new GetBeerStylesQuery
@@ -45,7 +45,7 @@ public class GetBeerStylesQueryValidatorTests
     ///     Tests that validation should have error for CountryOfOrigin when CountryOfOrigin exceeds maximum length.
     /// </summary>
     [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginExceedsMaximumLength()
+    public void GetBeerStylesQuery_ShouldHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginExceedsMaximumLength()
     {
         // Arrange
         var query = new GetBeerStylesQuery
@@ -68,7 +68,7 @@ public class GetBeerStylesQueryValidatorTests
     [InlineData("countryOfOrigin")]
     [InlineData("")]
     [InlineData(null)]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetBeerStylesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
     {
         // Arrange
         var query = new GetBeerStylesQuery
@@ -87,7 +87,7 @@ public class GetBeerStylesQueryValidatorTests
     ///     Tests that validation should have error for SortBy when SortBy is not allowed column.
     /// </summary>
     [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForSortBy_WhenSortByIsNotAllowedColumn()
+    public void GetBeerStylesQuery_ShouldHaveValidationErrorForSortBy_WhenSortByIsNotAllowedColumn()
     {
         // Arrange
         var query = new GetBeerStylesQuery
