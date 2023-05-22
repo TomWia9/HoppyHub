@@ -29,4 +29,8 @@
       <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BeerStyles\Queries\GetBeerSyle\" />
+    </ItemGroup>
+
 </Project>
