@@ -19,7 +19,6 @@
 
     <ItemGroup>
       <Folder Include="BeerStyles\Commands\DeleteBeerStyle\" />
-      <Folder Include="BeerStyles\Commands\UpdateBeerStyle\" />
     </ItemGroup>
 
 </Project>
