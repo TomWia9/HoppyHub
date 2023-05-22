@@ -1,4 +1,7 @@
 ﻿using Api.Controllers;
+using Application.BeerStyles.Commands.CreateBeerStyle;
+using Application.BeerStyles.Commands.DeleteBeerStyle;
+using Application.BeerStyles.Commands.UpdateBeerStyle;
 using Application.BeerStyles.Dtos;
 using Application.BeerStyles.Queries.GetBeerStyle;
 using Application.BeerStyles.Queries.GetBeerStyles;
@@ -60,5 +63,82 @@ public class BeerStylesControllerTests : ControllerSetup<BeerStylesController>
         // Assert
         response.Result.Should().BeOfType<OkObjectResult>()
             .Which.Value.Should().BeSameAs(expectedResult);
+    }
+
+    /// <summary>
+    ///     Tests that CreateBeerStyle method returns CreatedAtAction.
+    /// </summary>
+    [Fact]
+    public async Task CreateBeerStyle_ShouldReturnCreatedAtAction()
+    {
+        // Arrange
+        var command = new CreateBeerStyleCommand();
+        var expectedResult = new BeerStyleDto { Id = Guid.NewGuid() };
+        MediatorMock.Setup(m => m.Send(command, CancellationToken.None)).ReturnsAsync(expectedResult);
+
+        // Act
+        var response = await Controller.CreateBeerStyle(command);
+
+        // Assert
+        response.Result.Should().BeOfType<CreatedAtActionResult>();
+        var createdAtActionResult = (CreatedAtActionResult)response.Result!;
+
+        createdAtActionResult.ActionName.Should().Be("GetBeerStyle");
+        createdAtActionResult.RouteValues.Should().NotBeNull();
+        createdAtActionResult.RouteValues!["id"].Should().Be(expectedResult.Id);
+        createdAtActionResult.Value.Should().Be(expectedResult);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateBeerStyle method returns NoContent when Id is valid.
+    /// </summary>
+    [Fact]
+    public async Task UpdateBeerStyle_ShouldReturnNoContent_WhenIdIsValid()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var command = new UpdateBeerStyleCommand { Id = id };
+        MediatorMock.Setup(m => m.Send(command, CancellationToken.None)).Returns(Task.CompletedTask);
+
+        // Act
+        var response = await Controller.UpdateBeerStyle(id, command);
+
+        // Assert
+        response.Should().BeOfType<NoContentResult>();
+    }
+
+    /// <summary>
+    ///     Tests that UpdateBeerStyle method returns BadRequest when id is invalid.
+    /// </summary>
+    [Fact]
+    public async Task UpdateBeerStyle_ShouldReturnBadRequest_WhenIdIsInvalid()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var command = new UpdateBeerStyleCommand { Id = Guid.NewGuid() };
+
+        // Act
+        var response = await Controller.UpdateBeerStyle(id, command);
+
+        // Assert
+        response.Should().BeOfType<BadRequestResult>();
+    }
+
+    /// <summary>
+    ///     Tests that DeleteBeerStyle method returns NoContent.
+    /// </summary>
+    [Fact]
+    public async Task DeleteBeerStyle_ShouldReturnNoContent()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        MediatorMock.Setup(m => m.Send(It.IsAny<DeleteBeerStyleCommand>(), CancellationToken.None))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var response = await Controller.DeleteBeerStyle(id);
+
+        // Assert
+        response.Should().BeOfType<NoContentResult>();
     }
 }

@@ -40,7 +40,7 @@ public class CreateBreweryCommandHandlerTests
     ///     Tests that Handle method creates brewery and returns correct dto.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCreateBreweryAndReturnCorrectBeerDto()
+    public async Task Handle_ShouldCreateBreweryAndReturnCorrectBreweryDto()
     {
         // Arrange
         var request = new CreateBreweryCommand
