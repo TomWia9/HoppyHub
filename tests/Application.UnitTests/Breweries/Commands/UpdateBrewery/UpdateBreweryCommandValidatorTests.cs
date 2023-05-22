@@ -28,7 +28,7 @@ public class UpdateBreweryCommandValidatorTests
     /// </summary>
     public UpdateBreweryCommandValidatorTests()
     {
-        var breweriesDbSetMock = new List<Brewery>().AsQueryable().BuildMockDbSet();
+        var breweriesDbSetMock = Enumerable.Empty<Brewery>().AsQueryable().BuildMockDbSet();
         _contextMock = new Mock<IApplicationDbContext>();
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         Mock<IDateTime> dateTimeMock = new();
