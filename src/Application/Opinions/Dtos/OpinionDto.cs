@@ -36,7 +36,7 @@ public record OpinionDto : IMapFrom<Opinion>
     /// <summary>
     ///     The username.
     /// </summary>
-    public string? Username { get; init; }
+    public string? Username { get; set; }
 
     /// <summary>
     ///     Date of creation.
@@ -46,5 +46,5 @@ public record OpinionDto : IMapFrom<Opinion>
     /// <summary>
     ///     Date of modification.
     /// </summary>
-    public DateTime? Modified { get; init; }
+    public DateTime? LastModified { get; init; }
 }
