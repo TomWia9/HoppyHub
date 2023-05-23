@@ -1,4 +1,6 @@
 ﻿using Domain.Entities;
+using Infrastructure.Converters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
@@ -21,12 +23,14 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.Property(x => x.AlcoholByVolume).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(3000);
         builder.Property(x => x.Composition).HasMaxLength(300);
+        builder.Property(x => x.ReleaseDate).HasConversion<DateOnlyConverter>()
+            .HasColumnType("date");
         builder.Property(x => x.BreweryId).IsRequired();
-        
+
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.Beer)
             .IsRequired();
-        
+
         builder.HasMany(x => x.Favorites)
             .WithOne(x => x.Beer)
             .IsRequired();

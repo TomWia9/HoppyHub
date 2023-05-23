@@ -54,7 +54,12 @@ public class UpdateBeerCommandHandlerTests
             .ReturnsAsync(existingBeer);
 
         var command = new UpdateBeerCommand
-            { Id = beerId, Name = "New Name", BreweryId = breweryId, BeerStyleId = beerStyleId };
+        {
+            Id = beerId, Name = "New Name",
+            BreweryId = breweryId,
+            BeerStyleId = beerStyleId,
+            ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
+        };
 
         // Act
         await _handler.Handle(command, CancellationToken.None);

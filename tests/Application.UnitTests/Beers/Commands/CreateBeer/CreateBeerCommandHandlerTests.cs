@@ -55,7 +55,8 @@ public class CreateBeerCommandHandlerTests
             Composition = "Test composition",
             Blg = 12.0,
             BeerStyleId = beerStyleId,
-            Ibu = 25
+            Ibu = 25,
+            ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
         };
         var beers = Enumerable.Empty<Beer>();
         var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
@@ -80,6 +81,7 @@ public class CreateBeerCommandHandlerTests
         result.Composition.Should().Be(request.Composition);
         result.Blg.Should().Be(request.Blg);
         result.Ibu.Should().Be(request.Ibu);
+        result.ReleaseDate.Should().Be(request.ReleaseDate);
 
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
@@ -101,7 +103,8 @@ public class CreateBeerCommandHandlerTests
             Composition = "Test composition",
             Blg = 12.0,
             BeerStyleId = Guid.NewGuid(),
-            Ibu = 30
+            Ibu = 30,
+            ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
         };
         var breweries = Enumerable.Empty<Brewery>();
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
@@ -133,7 +136,8 @@ public class CreateBeerCommandHandlerTests
             Composition = "Test composition",
             Blg = 12.0,
             BeerStyleId = beerStyleId,
-            Ibu = 30
+            Ibu = 30,
+            ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
         };
         var breweries = new List<Brewery> { new() { Id = breweryId } };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();

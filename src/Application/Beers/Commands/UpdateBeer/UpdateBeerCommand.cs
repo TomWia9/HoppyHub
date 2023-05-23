@@ -51,4 +51,9 @@ public record UpdateBeerCommand : IRequest
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; init; }
+    
+    /// <summary>
+    ///     The beer release date.
+    /// </summary>
+    public DateOnly? ReleaseDate { get; init; }
 }
