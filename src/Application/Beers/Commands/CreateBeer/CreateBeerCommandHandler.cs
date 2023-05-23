@@ -61,7 +61,8 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             Composition = request.Composition,
             Blg = request.Blg,
             BeerStyleId = request.BeerStyleId,
-            Ibu = request.Ibu
+            Ibu = request.Ibu,
+            ReleaseDate = request.ReleaseDate
         };
 
         await _context.Beers.AddAsync(entity, cancellationToken);

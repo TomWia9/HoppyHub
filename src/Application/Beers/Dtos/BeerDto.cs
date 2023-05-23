@@ -54,4 +54,9 @@ public record BeerDto : IMapFrom<Beer>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }
+    
+    /// <summary>
+    ///     The beer release date.
+    /// </summary>
+    public DateOnly? ReleaseDate { get; set; }
 }

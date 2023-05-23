@@ -57,6 +57,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.Blg = request.Blg;
         entity.BeerStyleId = request.BeerStyleId;
         entity.Ibu = request.Ibu;
+        entity.ReleaseDate = request.ReleaseDate;
 
         await _context.SaveChangesAsync(cancellationToken);
     }
