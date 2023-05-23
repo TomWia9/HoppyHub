@@ -23,10 +23,10 @@ public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<Opinion
     /// <summary>
     ///     Beer id.
     /// </summary>
-    public Guid? BeerId { get; set; }
+    public Guid? BeerId { get; init; }
     
     /// <summary>
     ///     User id.
     /// </summary>
-    public Guid? UserId { get; set; }
+    public Guid? UserId { get; init; }
 }
