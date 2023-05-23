@@ -56,6 +56,8 @@ public class BeersFilteringHelperTests
             MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
+            MinReleaseDate = DateOnly.MinValue,
+            MaxReleaseDate = DateOnly.MaxValue,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
             BeerStyleId = Guid.NewGuid(),
@@ -66,7 +68,7 @@ public class BeersFilteringHelperTests
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(7, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(8, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -84,6 +86,8 @@ public class BeersFilteringHelperTests
             MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
+            MinReleaseDate = DateOnly.MinValue,
+            MaxReleaseDate = DateOnly.MaxValue,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
             BeerStyleId = Guid.NewGuid()
@@ -93,6 +97,6 @@ public class BeersFilteringHelperTests
         var result = BeersFilteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(7, "Min and Max are merged into single delegate");
     }
 }

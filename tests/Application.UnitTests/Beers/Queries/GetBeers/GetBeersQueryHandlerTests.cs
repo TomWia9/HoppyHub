@@ -89,4 +89,61 @@ public class GetBeersQueryHandlerTests
         result.Count.Should().Be(3);
         result.Should().BeEquivalentTo(expectedResult);
     }
+
+    /// <summary>
+    ///     Tests that Handle method returns correct PaginatedList of BeerDto when MinReleaseDate and MaxReleaseDate specified.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldReturnCorrectPaginatedListOfBeerDtoWhenMinAndMaxReleaseDateSpecified()
+    {
+        // Arrange
+        var request = new GetBeersQuery
+            { MinReleaseDate = DateOnly.Parse("01.01.2010"), MaxReleaseDate = DateOnly.Parse("01.01.2012") };
+
+        var allBeers = new List<Beer>
+        {
+            new() { Id = Guid.NewGuid(), Name = "Beer 1", ReleaseDate = DateOnly.Parse("01.01.2009") },
+            new() { Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010") },
+            new() { Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011") }
+        };
+        var expectedBeers = new List<Beer>
+        {
+            new() { Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010") },
+            new() { Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011") }
+        };
+
+        var expectedResult = PaginatedList<BeerDto>.Create(expectedBeers.Select(x =>
+            new BeerDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                ReleaseDate = x.ReleaseDate
+            }), 1, 10);
+
+        var allBeersDbSetMock = allBeers.AsQueryable().BuildMockDbSet();
+        var expectedBeersDbSetMock = expectedBeers.AsQueryable().BuildMockDbSet();
+
+        _contextMock.Setup(x => x.Beers).Returns(allBeersDbSetMock.Object);
+        _queryServiceMock.Setup(x =>
+                x.Filter(It.IsAny<IQueryable<Beer>>(), It.IsAny<IEnumerable<Expression<Func<Beer, bool>>>>()))
+            .Returns(expectedBeersDbSetMock.Object);
+        _queryServiceMock.Setup(x =>
+                x.Sort(It.IsAny<IQueryable<Beer>>(), It.IsAny<Expression<Func<Beer, object>>>(),
+                    It.IsAny<SortDirection>()))
+            .Returns(expectedBeersDbSetMock.Object);
+
+        // Act
+        var result = await _handler.Handle(request, CancellationToken.None);
+
+        // Assert
+        result.Should().BeOfType<PaginatedList<BeerDto>>();
+        result.Count.Should().Be(2, "beer with incorrect release date should not be returned");
+        foreach (var beer in result)
+        {
+            beer.ReleaseDate.Should().BeOnOrAfter(request.MinReleaseDate.Value);
+            beer.ReleaseDate.Should().BeOnOrBefore(request.MaxReleaseDate.Value);
+        }
+        result.Should().BeEquivalentTo(expectedResult,
+            "beers release dates should be in requested min and max release dates");
+    }
 }
