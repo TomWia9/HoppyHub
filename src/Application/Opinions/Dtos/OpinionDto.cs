@@ -1,4 +1,5 @@
 ﻿using Application.Common.Mappings;
+using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Opinions.Dtos;
@@ -47,4 +48,10 @@ public record OpinionDto : IMapFrom<Opinion>
     ///     Date of modification.
     /// </summary>
     public DateTime? LastModified { get; init; }
+
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Opinion, OpinionDto>()
+            .ForMember(x => x.Username, opt => opt.Ignore());
+    }
 }
