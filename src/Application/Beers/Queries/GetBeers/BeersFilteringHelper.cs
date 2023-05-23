@@ -40,8 +40,10 @@ public static class BeersFilteringHelper
         var delegates = new List<Expression<Func<Beer, bool>>>
         {
             x => x.AlcoholByVolume >= request.MinAlcoholByVolume && x.AlcoholByVolume <= request.MaxAlcoholByVolume,
-            x => x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract,
-            x => x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu || x.Ibu == null
+            x => (x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract) || x.Blg == null,
+            x => (x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu) || x.Ibu == null,
+            x => (x.ReleaseDate >= request.MinReleaseDate && x.ReleaseDate <= request.MaxReleaseDate) ||
+                 x.ReleaseDate == null
         };
 
         if (!string.IsNullOrWhiteSpace(request.Name))
@@ -49,7 +51,7 @@ public static class BeersFilteringHelper
 
         if (request.BreweryId != null)
             delegates.Add(x => x.Brewery != null && x.Brewery.Id == request.BreweryId);
-        
+
         if (request.BeerStyleId != null)
             delegates.Add(x => x.BeerStyle != null && x.BeerStyle.Id == request.BeerStyleId);
 
@@ -63,7 +65,8 @@ public static class BeersFilteringHelper
         Expression<Func<Beer, bool>> searchDelegate =
             x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Brewery != null && x.Brewery.Name != null && x.Brewery.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.BeerStyle != null && x.BeerStyle.Name != null && x.BeerStyle.Name.ToUpper().Contains(searchQuery)) ||
+                 (x.BeerStyle != null && x.BeerStyle.Name != null &&
+                  x.BeerStyle.Name.ToUpper().Contains(searchQuery)) ||
                  (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);

@@ -54,11 +54,11 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     ///     Maximum Ibu.
     /// </summary>
     public int? MaxIbu { get; init; } = 200;
-    
+
     /// <summary>
     ///     Minimum beer release date.
     /// </summary>
-    public DateOnly? MinReleaseDate { get; init; } = new DateOnly(0,1,1);
+    public DateOnly? MinReleaseDate { get; init; } = DateOnly.MinValue;
 
     /// <summary>
     ///     Maximum beer release date.
