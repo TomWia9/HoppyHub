@@ -46,6 +46,11 @@ public class Beer : BaseAuditableEntity
     ///     The beer composition.
     /// </summary>
     public string? Composition { get; set; }
+    
+    /// <summary>
+    ///     The beer release date.
+    /// </summary>
+    public DateOnly? ReleaseDate { get; set; }
 
     /// <summary>
     ///     The brewery id.
