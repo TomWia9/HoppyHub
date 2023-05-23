@@ -1,7 +1,7 @@
 ﻿using Application.Opinions.Dtos;
 using MediatR;
 
-namespace Application.Opinions.Queries;
+namespace Application.Opinions.Queries.GetOpinion;
 
 /// <summary>
 ///     GetOpinion query.

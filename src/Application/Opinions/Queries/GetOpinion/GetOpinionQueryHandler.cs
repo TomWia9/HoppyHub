@@ -5,7 +5,7 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Opinions.Queries;
+namespace Application.Opinions.Queries.GetOpinion;
 
 /// <summary>
 ///     GetOpinionQuery handler.

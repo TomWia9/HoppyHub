@@ -1,5 +1,5 @@
 ﻿using Application.Opinions.Dtos;
-using Application.Opinions.Queries;
+using Application.Opinions.Queries.GetOpinion;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
