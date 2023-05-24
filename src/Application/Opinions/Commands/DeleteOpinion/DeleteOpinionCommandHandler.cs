@@ -39,7 +39,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     public async Task Handle(DeleteOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (entity == null)
         {
@@ -52,7 +52,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             throw new ForbiddenAccessException();
         }
 
-        _context.BeerStyles.Remove(entity);
+        _context.Opinions.Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
     }
 }
