@@ -64,10 +64,14 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
         var opinions = await opinionsCollection.ProjectTo<OpinionDto>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
-        foreach (var opinion in opinions.Where(opinion => opinion.CreatedBy != null))
+        var users = await _usersService.GetUsersAsync();
+
+        foreach (var opinion in opinions.Where(opinion => opinion.CreatedBy.HasValue))
         {
-            var user = await _usersService.GetUserAsync(opinion.CreatedBy!.Value);
-            opinion.Username = user.Username;
+            if (users.TryGetValue(opinion.CreatedBy!.Value, out var username))
+            {
+                opinion.Username = username;
+            }
         }
 
         return opinions;

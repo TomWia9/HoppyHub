@@ -26,7 +26,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
-    
+
     /// <summary>
     ///     Initializes GetOpinionQueryHandler.
     /// </summary>
@@ -58,9 +58,9 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
         {
             return opinionDto;
         }
-        
-        var user = await _usersService.GetUserAsync(opinion.CreatedBy.Value);
-        opinionDto.Username = user.Username;
+
+        var username = await _usersService.GetUsernameAsync(opinion.CreatedBy.Value);
+        opinionDto.Username = username;
 
         return opinionDto;
     }
