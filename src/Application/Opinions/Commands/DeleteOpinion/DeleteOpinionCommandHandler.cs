@@ -16,12 +16,19 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
+    ///     The current user service.
+    /// </summary>
+    private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public DeleteOpinionCommandHandler(IApplicationDbContext context)
+    /// <param name="currentUserService">The current user service</param>
+    public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
     {
         _context = context;
+        _currentUserService = currentUserService;
     }
 
     /// <summary>
@@ -37,6 +44,12 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
         if (entity == null)
         {
             throw new NotFoundException(nameof(Opinion), request.Id);
+        }
+
+        if (!_currentUserService.AdministratorAccess &&
+            entity.CreatedBy != _currentUserService.UserId)
+        {
+            throw new ForbiddenAccessException();
         }
 
         _context.BeerStyles.Remove(entity);
