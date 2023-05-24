@@ -4,6 +4,7 @@ using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
+using Application.Users.Dtos;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Helpers;

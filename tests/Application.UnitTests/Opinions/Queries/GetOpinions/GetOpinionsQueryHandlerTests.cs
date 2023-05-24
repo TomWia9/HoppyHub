@@ -5,6 +5,7 @@ using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Opinions.Dtos;
 using Application.Opinions.Queries.GetOpinions;
+using Application.Users.Dtos;
 using Application.Users.Queries;
 using AutoMapper;
 using Domain.Entities;

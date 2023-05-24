@@ -3,6 +3,7 @@ using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Opinions.Queries.GetOpinion;
+using Application.Users.Dtos;
 using Application.Users.Queries;
 using AutoMapper;
 using Domain.Entities;

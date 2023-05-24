@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Users.Dtos;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
 using Moq;

@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Users.Dtos;
 using MediatR;
 
 namespace Application.Users.Queries.GetUser;

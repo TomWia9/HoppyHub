@@ -1,4 +1,4 @@
-﻿namespace Application.Users.Queries;
+﻿namespace Application.Users.Dtos;
 
 /// <summary>
 ///     UserDto record.
