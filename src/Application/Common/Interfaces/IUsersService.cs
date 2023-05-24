@@ -29,6 +29,12 @@ public interface IUsersService
     Task<Dictionary<Guid, string?>> GetUsersAsync();
 
     /// <summary>
+    ///     Gets username by user id.
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    Task<string?> GetUsernameAsync(Guid userId);
+
+    /// <summary>
     ///     Updates user.
     /// </summary>
     /// <param name="request">Update user command</param>

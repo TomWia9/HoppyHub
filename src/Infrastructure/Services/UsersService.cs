@@ -64,6 +64,17 @@ public class UsersService : IUsersService
     }
 
     /// <summary>
+    ///     Gets username by user id.
+    /// </summary>
+    /// <param name="userId">The user id</param>
+    public async Task<string?> GetUsernameAsync(Guid userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString());
+
+        return user?.UserName;
+    }
+
+    /// <summary>
     ///     Gets users.
     /// </summary>
     /// <param name="request">Get users query</param>
