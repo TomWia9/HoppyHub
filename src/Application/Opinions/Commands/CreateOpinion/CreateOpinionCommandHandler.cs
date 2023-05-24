@@ -1,8 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -46,6 +48,11 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
+        if (!await _context.Beers.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
+        {
+            throw new NotFoundException(nameof(Beer), request.BeerId);
+        }
+        
         var entity = new Opinion
         {
             Rate = request.Rate,
