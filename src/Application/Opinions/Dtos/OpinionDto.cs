@@ -49,6 +49,10 @@ public record OpinionDto : IMapFrom<Opinion>
     /// </summary>
     public DateTime? LastModified { get; init; }
 
+    /// <summary>
+    ///     Creates Opinion - OpinionDto map ignoring Username.
+    /// </summary>
+    /// <param name="profile">The profile</param>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Opinion, OpinionDto>()

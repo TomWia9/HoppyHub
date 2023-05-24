@@ -18,7 +18,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The mapper
+    ///     The mapper.
     /// </summary>
     private readonly IMapper _mapper;
 

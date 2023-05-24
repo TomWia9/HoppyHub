@@ -86,7 +86,7 @@ public class UsersServiceTests
     }
 
     /// <summary>
-    ///     Tests that GetUsernameAsync method returns UserDto when Id is valid.
+    ///     Tests that GetUsernameAsync method returns Username when Id is valid.
     /// </summary>
     [Fact]
     public async Task GetUsernameAsync_ShouldReturnUsername_WhenIdIsValid()
@@ -247,7 +247,7 @@ public class UsersServiceTests
         result.Should().BeOfType<PaginatedList<UserDto>>();
         result.Should().HaveCount(0);
     }
-    
+
     /// <summary>
     ///     Tests that UpdateUserAsync method throws NotFoundException when user not found.
     /// </summary>
