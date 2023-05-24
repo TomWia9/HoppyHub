@@ -5,11 +5,11 @@ using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
-using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Helpers;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Services;
 
@@ -91,6 +91,20 @@ public class UsersService : IUsersService
         }
 
         return mappedUsers.ToPaginatedList(request.PageNumber, request.PageSize);
+    }
+
+    /// <summary>
+    ///     Gets users dictionary with id as a key and username as a value.
+    /// </summary>
+    public async Task<Dictionary<Guid, string?>> GetUsersAsync()
+    {
+        var users = await _userManager.Users
+            .Select(x => new { x.Id, x.UserName })
+            .ToListAsync();
+
+        var usersDictionary = users.ToDictionary(x => x.Id, x => x.UserName);
+
+        return usersDictionary;
     }
 
     /// <summary>

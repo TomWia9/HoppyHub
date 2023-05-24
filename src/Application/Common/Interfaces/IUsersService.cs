@@ -2,7 +2,6 @@
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
-using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 
 namespace Application.Common.Interfaces;
@@ -17,19 +16,24 @@ public interface IUsersService
     /// </summary>
     /// <param name="userId">The user id</param>
     public Task<UserDto> GetUserAsync(Guid userId);
-    
+
     /// <summary>
     ///     Gets users.
     /// </summary>
     /// <param name="request">Get users query</param>
     Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request);
-    
+
+    /// <summary>
+    ///     Gets users dictionary with id as a key and username as a value.
+    /// </summary>
+    Task<Dictionary<Guid, string?>> GetUsersAsync();
+
     /// <summary>
     ///     Updates user.
     /// </summary>
     /// <param name="request">Update user command</param>
     Task UpdateUserAsync(UpdateUserCommand request);
-    
+
     /// <summary>
     ///     Deletes user.
     /// </summary>
