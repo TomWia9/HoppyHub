@@ -3,12 +3,12 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.BeerStyles.Commands.DeleteBeerStyle;
+namespace Application.Opinions.Commands.DeleteOpinion;
 
 /// <summary>
-///     DeleteBeerStyleCommand handler.
+///     DeleteOpinionCommand handler
 /// </summary>
-public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleCommand>
+public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
 {
     /// <summary>
     ///     The database context.
@@ -16,27 +16,27 @@ public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     Initializes DeleteBeerStyleCommandHandler.
+    ///     Initializes DeleteOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public DeleteBeerStyleCommandHandler(IApplicationDbContext context)
+    public DeleteOpinionCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
     /// <summary>
-    ///     Handles DeleteBeerStyleCommand.
+    ///     Handles DeleteOpinionCommand.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task Handle(DeleteBeerStyleCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
             await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(BeerStyle), request.Id);
+            throw new NotFoundException(nameof(Opinion), request.Id);
         }
 
         _context.BeerStyles.Remove(entity);

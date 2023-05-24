@@ -3,12 +3,12 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.BeerStyles.Commands.DeleteBeerStyle;
+namespace Application.Opinions.Commands.UpdateOpinion;
 
 /// <summary>
-///     DeleteBeerStyleCommand handler.
+///     UpdateOpinionCommand handler.
 /// </summary>
-public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleCommand>
+public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 {
     /// <summary>
     ///     The database context.
@@ -16,30 +16,32 @@ public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     Initializes DeleteBeerStyleCommandHandler.
+    ///     Initializes UpdateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public DeleteBeerStyleCommandHandler(IApplicationDbContext context)
+    public UpdateOpinionCommandHandler(IApplicationDbContext context)
     {
         _context = context;
     }
 
     /// <summary>
-    ///     Handles DeleteBeerStyleCommand.
+    ///     Handles UpdateOpinionCommand.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task Handle(DeleteBeerStyleCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(BeerStyle), request.Id);
+            throw new NotFoundException(nameof(Opinion), request.Id);
         }
 
-        _context.BeerStyles.Remove(entity);
+        entity.Rate = request.Rate;
+        entity.Comment = request.Comment;
+
         await _context.SaveChangesAsync(cancellationToken);
     }
 }
