@@ -48,7 +48,7 @@ public class BeerStylesControllerTests : ControllerSetup<BeerStylesController>
     ///     Tests that GetBeerStyle method returns BeerStyleDto.
     /// </summary>
     [Fact]
-    public async Task GetBeerStyle_ShouldReturnBeerStylDto()
+    public async Task GetBeerStyle_ShouldReturnBeerStyleDto()
     {
         // Arrange
         var beerStyleId = Guid.NewGuid();

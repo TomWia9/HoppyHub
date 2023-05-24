@@ -30,7 +30,7 @@ public static class BeerStylesFilteringHelper
     /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
-    /// <param name="request">The GetBeersQuery</param>
+    /// <param name="request">The GetBeerStylesQuery</param>
     public static IEnumerable<Expression<Func<BeerStyle, bool>>> GetDelegates(GetBeerStylesQuery request)
     {
         var delegates = new List<Expression<Func<BeerStyle, bool>>>();

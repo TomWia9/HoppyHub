@@ -75,6 +75,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedBreweriesAsync();
             await SeedBeerStylesAsync();
             await SeedBeersAsync();
+            await SeedOpinionsAsync();
 
             Log.Logger.Information("Seeding database completed");
         }
@@ -174,7 +175,24 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedDatabaseFromSql(tableName);
         }
     }
+    
+    /// <summary>
+    ///     Seeds opinions asynchronously.
+    /// </summary>
+    private async Task SeedOpinionsAsync()
+    {
+        if (!await _context.Opinions.AnyAsync())
+        {
+            const string tableName = nameof(_context.Opinions);
 
+            await SeedDatabaseFromSql(tableName);
+        }
+    }
+
+    /// <summary>
+    ///     Seeds database from sql file.
+    /// </summary>
+    /// <param name="tableName">The table name</param>
     private async Task SeedDatabaseFromSql(string tableName)
     {
         Log.Logger.Information("Seeding {TableName}...", tableName);
