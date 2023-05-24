@@ -5,8 +5,6 @@ using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Opinions.Dtos;
 using Application.Opinions.Queries.GetOpinions;
-using Application.Users.Dtos;
-using Application.Users.Queries;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
@@ -63,27 +61,29 @@ public class GetOpinionsQueryHandlerTests
     public async Task Handle_ShouldReturnPaginatedListOfOpinionDto()
     {
         // Arrange
+        const string username = "testUser";
+        var userId = Guid.NewGuid();
         var request = new GetOpinionsQuery() { PageNumber = 1, PageSize = 10 };
         var opinions = new List<Opinion>
         {
             new()
             {
                 Id = Guid.NewGuid(), Rate = 4, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = Guid.NewGuid(), Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             },
             new()
             {
                 Id = Guid.NewGuid(), Rate = 6, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = Guid.NewGuid(), Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             },
             new()
             {
                 Id = Guid.NewGuid(), Rate = 8, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = Guid.NewGuid(), Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             }
         };
-        var user = new UserDto { Username = "testUser" };
-        var expectedResult = PaginatedList<OpinionDto>.Create(opinions.Select(x => new OpinionDto()
+        var users = new Dictionary<Guid, string?> { { userId, username } };
+        var expectedResult = PaginatedList<OpinionDto>.Create(opinions.Select(x => new OpinionDto
         {
             Id = x.Id,
             Rate = x.Rate,
@@ -92,7 +92,7 @@ public class GetOpinionsQueryHandlerTests
             CreatedBy = x.CreatedBy,
             Created = x.Created,
             LastModified = x.LastModified,
-            Username = user.Username
+            Username = username
         }), 1, 10);
 
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
@@ -105,7 +105,7 @@ public class GetOpinionsQueryHandlerTests
                 x.Sort(It.IsAny<IQueryable<Opinion>>(), It.IsAny<Expression<Func<Opinion, object>>>(),
                     It.IsAny<SortDirection>()))
             .Returns(opinionsDbSetMock.Object);
-        _usersServiceMock.Setup(x => x.GetUserAsync(It.IsAny<Guid>())).ReturnsAsync(user);
+        _usersServiceMock.Setup(x => x.GetUsersAsync()).ReturnsAsync(users);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

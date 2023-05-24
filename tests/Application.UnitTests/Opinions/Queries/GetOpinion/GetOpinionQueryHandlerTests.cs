@@ -1,10 +1,7 @@
-﻿using Application.Beers.Queries.GetBeer;
-using Application.Common.Exceptions;
+﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Opinions.Queries.GetOpinion;
-using Application.Users.Dtos;
-using Application.Users.Queries;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
@@ -53,13 +50,13 @@ public class GetOpinionQueryHandlerTests
     public async Task Handle_ShouldReturnOpinionDtoWithUsername_WhenIdIsValidAndCreatedByIsNotNull()
     {
         // Arrange
+        const string username = "testUser";
         var opinionId = Guid.NewGuid();
         var opinion = new Opinion { Id = opinionId, Rate = 8, CreatedBy = Guid.NewGuid() };
-        var user = new UserDto { Username = "testUser" };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(opinion);
-        _usersServiceMock.Setup(x => x.GetUserAsync(It.IsAny<Guid>())).ReturnsAsync(user);
+        _usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
 
         var query = new GetOpinionQuery { Id = opinionId };
 
@@ -70,7 +67,7 @@ public class GetOpinionQueryHandlerTests
         result.Should().NotBeNull();
         result.Id.Should().Be(opinion.Id);
         result.Rate.Should().Be(opinion.Rate);
-        result.Username.Should().Be(user.Username);
+        result.Username.Should().Be(username);
     }
 
     /// <summary>
