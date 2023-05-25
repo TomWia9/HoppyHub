@@ -24,6 +24,11 @@ public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleComm
         _context = context;
     }
 
+    /// <summary>
+    ///     Handles DeleteBeerStyleCommand.
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(DeleteBeerStyleCommand request, CancellationToken cancellationToken)
     {
         var entity =
