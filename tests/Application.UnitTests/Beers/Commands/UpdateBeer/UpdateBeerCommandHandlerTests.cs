@@ -55,7 +55,8 @@ public class UpdateBeerCommandHandlerTests
 
         var command = new UpdateBeerCommand
         {
-            Id = beerId, Name = "New Name",
+            Id = beerId, 
+            Name = "New Name",
             BreweryId = breweryId,
             BeerStyleId = beerStyleId,
             ReleaseDate = DateOnly.FromDateTime(DateTime.Now)

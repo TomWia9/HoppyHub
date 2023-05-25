@@ -43,8 +43,6 @@ public class CreateOpinionCommandHandlerTests
         _mapperMock = new Mock<IMapper>();
         _contextMock = new Mock<IApplicationDbContext>();
         _usersServiceMock = new Mock<IUsersService>();
-        // var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
-        // var mapper = configurationProvider.CreateMapper();
         _handler = new CreateOpinionCommandHandler(_contextMock.Object, _mapperMock.Object, _usersServiceMock.Object);
     }
 
