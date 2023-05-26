@@ -21,7 +21,7 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     Initializes DeleteOpinionCommandHandler.
+    ///     Initializes DeleteFavoriteCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
