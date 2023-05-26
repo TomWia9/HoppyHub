@@ -23,5 +23,5 @@ FROM Beers
          CROSS JOIN (SELECT TOP (@OpinionsPerBeer) DATEADD(DAY, ABS(CHECKSUM(NEWID())) %
                                                                 (DATEDIFF(DAY, '2020-01-01', '2023-12-31') + 1),
                                                            '2020-01-01') AS CreatedDate
-                     FROM sys.all_columns) AS Opinions
+                     FROM sys.all_columns) AS BeerOpinions
 ORDER BY Beers.Id
