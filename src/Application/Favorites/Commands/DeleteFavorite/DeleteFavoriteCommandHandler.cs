@@ -1,7 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Favorites.Commands.DeleteFavorite;
 
@@ -38,18 +38,15 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(DeleteFavoriteCommand request, CancellationToken cancellationToken)
     {
-        var entity =
-            await _context.Favorites.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+        var currentUserId = _currentUserService.UserId;
+        var entity = await _context.Favorites.FirstOrDefaultAsync(x =>
+                x.BeerId == request.BeerId && x.CreatedBy == currentUserId,
+            cancellationToken: cancellationToken);
 
         if (entity == null)
         {
-            throw new NotFoundException(nameof(Favorite), request.Id);
-        }
-
-        if (!_currentUserService.AdministratorAccess &&
-            entity.CreatedBy != _currentUserService.UserId)
-        {
-            throw new ForbiddenAccessException();
+            throw new NotFoundException(
+                $"Beer with \"{request.BeerId}\" id has been not found for user with \"{currentUserId}\" id.");
         }
 
         _context.Favorites.Remove(entity);

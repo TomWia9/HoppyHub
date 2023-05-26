@@ -8,7 +8,7 @@ namespace Application.Favorites.Commands.DeleteFavorite;
 public record DeleteFavoriteCommand : IRequest
 {
     /// <summary>
-    ///     The favorite id.
+    ///     The added to favorites beer id.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid BeerId { get; set; }
 }

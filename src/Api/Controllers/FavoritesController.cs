@@ -42,15 +42,15 @@ public class FavoritesController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Deletes the favorite.
+    ///     Deletes the beer from favorites.
     /// </summary>
-    /// <param name="id">The favorite id</param>
+    /// <param name="beerId">The id of the beer added to favorites</param>
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.UserAccess)]
-    [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteFavorite(Guid id)
+    [HttpDelete("{beerId:guid}")]
+    public async Task<IActionResult> DeleteFavorite(Guid beerId)
     {
-        await Mediator.Send(new DeleteFavoriteCommand { Id = id });
+        await Mediator.Send(new DeleteFavoriteCommand { BeerId = beerId });
 
         return NoContent();
     }
