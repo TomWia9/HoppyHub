@@ -10,5 +10,5 @@ public record CreateFavoriteCommand : IRequest
     /// <summary>
     ///     The favorite beer id.
     /// </summary>
-    public Guid BeerId { get; set; }
+    public Guid BeerId { get; init; }
 }
