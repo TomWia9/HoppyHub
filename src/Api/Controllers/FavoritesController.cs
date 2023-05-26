@@ -1,6 +1,8 @@
 ﻿using Application.Common.Models;
 using Application.Favorites.Commands.CreateFavorite;
 using Application.Favorites.Commands.DeleteFavorite;
+using Application.Favorites.Dtos;
+using Application.Favorites.Queries.GetFavorites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +13,20 @@ namespace Api.Controllers;
 /// </summary>
 public class FavoritesController : ApiControllerBase
 {
+    /// <summary>
+    ///     Gets favorite beers of a specific user.
+    /// </summary>
+    /// <returns>An ActionResult of type FavoritesListDto</returns>
+    [HttpGet]
+    public async Task<ActionResult<FavoritesListDto>> GetFavorites([FromQuery] GetFavoritesQuery query)
+    {
+        var result = await Mediator.Send(query);
+
+        Response.Headers.Add("X-Pagination",  result.Beers.GetMetadata());
+
+        return Ok(result);
+    }
+    
     /// <summary>
     ///     Adds beer to favorites.
     /// </summary>

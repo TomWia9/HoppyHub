@@ -1,11 +1,12 @@
 ﻿using Application.Beers.Dtos;
+using Application.Common.Models;
 
 namespace Application.Favorites.Dtos;
 
 /// <summary>
 ///     The favorites list transfer object.
 /// </summary>
-public record FavoritesListDto //: IMapFrom<Favorite>
+public record FavoritesListDto
 {
     /// <summary>
     ///     The user id.
@@ -15,15 +16,5 @@ public record FavoritesListDto //: IMapFrom<Favorite>
     /// <summary>
     ///     The favorites beers.
     /// </summary>
-    public IEnumerable<BeerDto> Beers { get; set; }
-
-    // /// <summary>
-    // ///     Creates Favorite - FavoriteDto map.
-    // /// </summary>
-    // /// <param name="profile">The profile</param>
-    // public void Mapping(Profile profile)
-    // {
-    //     profile.CreateMap<Favorite, FavoritesListDto>()
-    //         .ForMember(x => x.Username, opt => opt.Ignore());
-    // }
+    public PaginatedList<BeerDto> Beers { get; set; }
 }
