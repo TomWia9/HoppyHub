@@ -6,7 +6,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Favorites.Queries.GetFavorites;
 
@@ -47,7 +46,7 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Favor
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<FavoritesListDto> Handle(GetFavoritesQuery request, CancellationToken cancellationToken)
     {
-        var favoritesCollection = _context.Favorites.Include(x => x.Beer).AsQueryable();
+        var favoritesCollection = _context.Favorites.AsQueryable();
 
         var delegates = FavoritesFilteringHelper.GetDelegates(request);
         var sortingColumn = FavoritesFilteringHelper.GetSortingColumn(request.SortBy);
@@ -61,7 +60,7 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Favor
         return new FavoritesListDto
         {
             UserId = request.UserId,
-            Beers = beers
+            FavoriteBeers = beers
         };
     }
 }

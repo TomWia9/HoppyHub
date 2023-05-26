@@ -22,7 +22,7 @@ public class FavoritesController : ApiControllerBase
     {
         var result = await Mediator.Send(query);
 
-        Response.Headers.Add("X-Pagination",  result.Beers.GetMetadata());
+        Response.Headers.Add("X-Pagination",  result.FavoriteBeers?.GetMetadata());
 
         return Ok(result);
     }

@@ -16,5 +16,5 @@ public record FavoritesListDto
     /// <summary>
     ///     The favorites beers.
     /// </summary>
-    public PaginatedList<BeerDto> Beers { get; set; }
+    public PaginatedList<BeerDto>? FavoriteBeers { get; set; }
 }
