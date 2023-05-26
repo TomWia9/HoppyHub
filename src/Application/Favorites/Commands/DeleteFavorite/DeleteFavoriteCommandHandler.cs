@@ -46,7 +46,7 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
         if (entity == null)
         {
             throw new NotFoundException(
-                $"Beer with \"{request.BeerId}\" id has been not found for user with \"{currentUserId}\" id.");
+                $"Beer with \"{request.BeerId}\" id has been not found in favorites of user with \"{currentUserId}\" id.");
         }
 
         _context.Favorites.Remove(entity);
