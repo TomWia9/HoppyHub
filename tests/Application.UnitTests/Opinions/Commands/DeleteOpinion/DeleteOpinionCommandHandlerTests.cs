@@ -109,10 +109,10 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///      Tests that Handle method updates opinion when user tries to delete not his opinion but he has admin access.
+    ///      Tests that Handle method deletes opinion when user tries to delete not his opinion but he has admin access.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldUpdateOpinion_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
+    public async Task Handle_ShouldDeleteOpinion_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
     {
         // Arrange
         var opinionId = Guid.NewGuid();
