@@ -55,8 +55,6 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Favor
         favoritesCollection = _queryService.Filter(favoritesCollection, delegates);
         favoritesCollection = _queryService.Sort(favoritesCollection, sortingColumn, request.SortDirection);
 
-        var test = await favoritesCollection.ToListAsync();
-        
         var beers = await favoritesCollection.Select(x => x.Beer).ProjectTo<BeerDto>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
