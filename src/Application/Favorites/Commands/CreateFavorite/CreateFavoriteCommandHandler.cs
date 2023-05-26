@@ -32,7 +32,7 @@ public class CreateFavoriteCommandHandler : IRequestHandler<CreateFavoriteComman
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(CreateFavoriteCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Favorites.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
+        if (!await _context.Beers.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }

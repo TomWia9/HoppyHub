@@ -30,7 +30,7 @@ public class CreateFavoriteCommandValidator : AbstractValidator<CreateFavoriteCo
         _context = context;
 
         RuleFor(x => x.BeerId).MustAsync(BeSingleFavoritePerBeer)
-            .WithMessage("Only one opinion per beer is allowed.");
+            .WithMessage("Only one favorite per beer is allowed.");
     }
 
     /// <summary>
