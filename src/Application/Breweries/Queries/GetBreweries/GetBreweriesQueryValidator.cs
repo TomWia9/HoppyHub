@@ -10,7 +10,7 @@ namespace Application.Breweries.Queries.GetBreweries;
 public class GetBreweriesQueryValidator : QueryValidator<GetBreweriesQuery>
 {
     /// <summary>
-    ///     Initializes GetBeersQueryValidator.
+    ///     Initializes GetBreweriesQueryValidator.
     /// </summary>
     public GetBreweriesQueryValidator(IDateTime dateTime)
     {

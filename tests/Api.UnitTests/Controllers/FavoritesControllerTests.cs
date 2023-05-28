@@ -1,6 +1,10 @@
 ﻿using Api.Controllers;
+using Application.Beers.Dtos;
+using Application.Common.Mappings;
 using Application.Favorites.Commands.CreateFavorite;
 using Application.Favorites.Commands.DeleteFavorite;
+using Application.Favorites.Dtos;
+using Application.Favorites.Queries.GetFavorites;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -12,6 +16,33 @@ namespace Api.UnitTests.Controllers;
 [ExcludeFromCodeCoverage]
 public class FavoritesControllerTests : ControllerSetup<FavoritesController>
 {
+    /// <summary>
+    ///     Tests that GetFavorites method returns FavoritesListDto.
+    /// </summary>
+    [Fact]
+    public async Task GetFavorites_ShouldReturnFavoritesListDto()
+    {
+        // Arrange
+        var favoriteBeers = new List<BeerDto>().ToPaginatedList(1, 10);
+        var expectedResult = new FavoritesListDto
+        {
+            UserId = Guid.NewGuid(),
+            FavoriteBeers = favoriteBeers
+        };
+        var query = new GetFavoritesQuery();
+
+        MediatorMock.Setup(m => m.Send(query, CancellationToken.None)).ReturnsAsync(expectedResult);
+
+        // Act
+        var response = await Controller.GetFavorites(query);
+
+        // Assert
+        response.Result.Should().BeOfType<OkObjectResult>()
+            .Which.Value.Should().BeSameAs(expectedResult);
+        Controller.Response.Headers.Should().ContainKey("X-Pagination");
+        Controller.Response.Headers["X-Pagination"].Should().BeEquivalentTo(expectedResult.FavoriteBeers.GetMetadata());
+    }
+
     /// <summary>
     ///     Tests that CreateFavorite method returns NoContent.
     /// </summary>
