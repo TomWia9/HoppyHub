@@ -7,7 +7,6 @@ using Application.Beers.Queries.GetBeers;
 using Application.Common.Models;
 using Application.Favorites.Commands.CreateFavorite;
 using Application.Favorites.Commands.DeleteFavorite;
-using Application.Favorites.Dtos;
 using Application.Favorites.Queries.GetFavorites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -97,9 +96,10 @@ public class BeersController : ApiControllerBase
     /// <summary>
     ///     Gets favorite beers of a specific user.
     /// </summary>
-    /// <returns>An ActionResult of type FavoritesListDto</returns>
-    [HttpGet("favorites/{userId:guid}")] //TODO Remove FavoritesListDto, use PaginatedList<BeerDto> instead
-    public async Task<ActionResult<FavoritesListDto>> GetFavorites(Guid userId, [FromQuery] GetFavoritesQuery query)
+    /// <returns>An ActionResult of type PaginatedList of BeerDto</returns>
+    [HttpGet("favorites/{userId:guid}")]
+    public async Task<ActionResult<PaginatedList<BeerDto>>> GetFavorites(Guid userId,
+        [FromQuery] GetFavoritesQuery query)
     {
         if (userId != query.UserId)
         {
@@ -108,7 +108,7 @@ public class BeersController : ApiControllerBase
 
         var result = await Mediator.Send(query);
 
-        Response.Headers.Add("X-Pagination", result.FavoriteBeers?.GetMetadata());
+        Response.Headers.Add("X-Pagination", result.GetMetadata());
 
         return Ok(result);
     }

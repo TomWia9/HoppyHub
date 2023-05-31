@@ -1,19 +1,18 @@
 ﻿using Application.Beers.Dtos;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
-using Application.Favorites.Dtos;
+using Application.Common.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Favorites.Queries.GetFavorites;
 
 /// <summary>
 ///     GetFavoritesQuery handler.
 /// </summary>
-public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, FavoritesListDto>
+public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, PaginatedList<BeerDto>>
 {
     /// <summary>
     ///     The database context.
@@ -45,7 +44,7 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Favor
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task<FavoritesListDto> Handle(GetFavoritesQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedList<BeerDto>> Handle(GetFavoritesQuery request, CancellationToken cancellationToken)
     {
         var favoritesCollection = _context.Favorites.AsQueryable();
 
@@ -55,13 +54,7 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Favor
         favoritesCollection = _queryService.Filter(favoritesCollection, delegates);
         favoritesCollection = _queryService.Sort(favoritesCollection, sortingColumn, request.SortDirection);
 
-        var beers = await favoritesCollection.Select(x => x.Beer).ProjectTo<BeerDto>(_mapper.ConfigurationProvider)
+        return await favoritesCollection.Select(x => x.Beer).ProjectTo<BeerDto>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-
-        return new FavoritesListDto
-        {
-            UserId = request.UserId,
-            FavoriteBeers = beers
-        };
     }
 }
