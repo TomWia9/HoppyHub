@@ -5,6 +5,10 @@ using Application.Beers.Dtos;
 using Application.Beers.Queries.GetBeer;
 using Application.Beers.Queries.GetBeers;
 using Application.Common.Models;
+using Application.Favorites.Commands.CreateFavorite;
+using Application.Favorites.Commands.DeleteFavorite;
+using Application.Favorites.Dtos;
+using Application.Favorites.Queries.GetFavorites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -68,7 +72,7 @@ public class BeersController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return BadRequest();
+            return BadRequest(InvalidIdMessage);
         }
 
         await Mediator.Send(command);
@@ -86,6 +90,53 @@ public class BeersController : ApiControllerBase
     public async Task<IActionResult> DeleteBeer(Guid id)
     {
         await Mediator.Send(new DeleteBeerCommand { Id = id });
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Gets favorite beers of a specific user.
+    /// </summary>
+    /// <returns>An ActionResult of type FavoritesListDto</returns>
+    [HttpGet("favorites/{userId:guid}")] //TODO Remove FavoritesListDto, use PaginatedList<BeerDto> instead
+    public async Task<ActionResult<FavoritesListDto>> GetFavorites(Guid userId, [FromQuery] GetFavoritesQuery query)
+    {
+        if (userId != query.UserId)
+        {
+            return BadRequest(InvalidIdMessage);
+        }
+
+        var result = await Mediator.Send(query);
+
+        Response.Headers.Add("X-Pagination", result.FavoriteBeers?.GetMetadata());
+
+        return Ok(result);
+    }
+
+    /// <summary>
+    ///     Adds beer to favorites.
+    /// </summary>
+    /// <param name="beerId">The beer id.</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.UserAccess)]
+    [HttpPost("{beerId:guid}/favorites")]
+    public async Task<IActionResult> CreateFavorite(Guid beerId)
+    {
+        await Mediator.Send(new CreateFavoriteCommand { BeerId = beerId });
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Deletes the beer from favorites.
+    /// </summary>
+    /// <param name="beerId">The id of the beer added to favorites</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.UserAccess)]
+    [HttpDelete("{beerId:guid}/favorites")]
+    public async Task<IActionResult> DeleteFavorite(Guid beerId)
+    {
+        await Mediator.Send(new DeleteFavoriteCommand { BeerId = beerId });
 
         return NoContent();
     }
