@@ -3,7 +3,7 @@ using Application.Beers.Dtos;
 using Application.Common.Enums;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
-using Application.Favorites.Dtos;
+using Application.Common.Models;
 using Application.Favorites.Queries.GetFavorites;
 using AutoMapper;
 using Domain.Entities;
@@ -47,7 +47,7 @@ public class GetFavoritesQueryHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method returns FavoritesListDto.
+    ///     Tests that Handle method returns favorite beers of specified user.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldReturnFavoritesListDto()
@@ -73,19 +73,14 @@ public class GetFavoritesQueryHandlerTests
                 Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId,
             }
         };
-        var expectedResult = new FavoritesListDto
-        {
-            UserId = userId,
-            FavoriteBeers = beers.Select(x => new BeerDto
-            {
-                Id = x.Id,
-                Name = x.Name,
-                AlcoholByVolume = x.AlcoholByVolume,
-                Blg = x.Blg
-            }).ToPaginatedList(request.PageNumber, request.PageSize)
-        };
-
         var favoritesDbSetMock = favorites.AsQueryable().BuildMockDbSet();
+        var expectedResult = PaginatedList<BeerDto>.Create(beers.Select(x => new BeerDto
+        {
+            Id = x.Id,
+            Name = x.Name,
+            AlcoholByVolume = x.AlcoholByVolume,
+            Blg = x.Blg
+        }), 1, 10);
 
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);
         _queryServiceMock.Setup(x =>
@@ -100,9 +95,9 @@ public class GetFavoritesQueryHandlerTests
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().BeOfType<FavoritesListDto>();
-        result.FavoriteBeers.Should().NotBeEmpty();
-        result.FavoriteBeers!.Count.Should().Be(1);
+        result.Should().BeOfType<PaginatedList<BeerDto>>();
+        result.Should().NotBeEmpty();
+        result.Count.Should().Be(1);
         result.Should().BeEquivalentTo(expectedResult);
     }
 }

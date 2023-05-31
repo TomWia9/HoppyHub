@@ -69,7 +69,7 @@ public class OpinionsController : ApiControllerBase
     {
         if (id != command.Id)
         {
-            return BadRequest();
+            return BadRequest(InvalidIdMessage);
         }
 
         await Mediator.Send(command);
