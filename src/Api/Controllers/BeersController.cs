@@ -96,16 +96,11 @@ public class BeersController : ApiControllerBase
     /// <summary>
     ///     Gets favorite beers of a specific user.
     /// </summary>
+    /// <param name="query">The GetFavoritesQuery</param>
     /// <returns>An ActionResult of type PaginatedList of BeerDto</returns>
-    [HttpGet("favorites/{userId:guid}")]
-    public async Task<ActionResult<PaginatedList<BeerDto>>> GetFavorites(Guid userId,
-        [FromQuery] GetFavoritesQuery query)
+    [HttpGet("favorites")]
+    public async Task<ActionResult<PaginatedList<BeerDto>>> GetFavorites([FromQuery] GetFavoritesQuery query)
     {
-        if (userId != query.UserId)
-        {
-            return BadRequest(InvalidIdMessage);
-        }
-
         var result = await Mediator.Send(query);
 
         Response.Headers.Add("X-Pagination", result.GetMetadata());
