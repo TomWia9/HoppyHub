@@ -49,7 +49,7 @@ public class UsersController : ApiControllerBase
     {
         if (id != command.UserId)
         {
-            return BadRequest();
+            return BadRequest(InvalidIdMessage);
         }
 
         await Mediator.Send(command);

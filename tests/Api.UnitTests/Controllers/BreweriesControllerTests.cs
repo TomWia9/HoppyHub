@@ -121,7 +121,7 @@ public class BreweriesControllerTests : ControllerSetup<BreweriesController>
         var response = await Controller.UpdateBrewery(id, command);
 
         // Assert
-        response.Should().BeOfType<BadRequestResult>();
+        response.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
     }
 
     /// <summary>
