@@ -29,16 +29,24 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IUsersService _usersService;
 
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
-    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService)
+    /// <param name="beersService">The beers service</param>
+    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
+        IBeersService beersService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
+        _beersService = beersService;
     }
 
     /// <summary>
@@ -52,7 +60,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
-        
+
         var entity = new Opinion
         {
             Rating = request.Rating,
@@ -60,8 +68,21 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             BeerId = request.BeerId
         };
 
-        await _context.Opinions.AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
+        try
+        {
+            await _context.Opinions.AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            await _beersService.CalculateBeerRatingAsync(request.BeerId);
+            await _context.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
         opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);

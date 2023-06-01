@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Application.Common.Interfaces;
 
@@ -37,6 +38,15 @@ public interface IApplicationDbContext
     ///     The favorites.
     /// </summary>
     DbSet<Favorite> Favorites { get; }
+    
+    /// <summary>
+    ///     Provides access to database related information and operations for this context.
+    /// </summary>
+    DatabaseFacade Database { get; }
 
+    /// <summary>
+    ///     Saves changes asynchronously. 
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token</param>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
