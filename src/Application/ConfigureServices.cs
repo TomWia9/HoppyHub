@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Application.Beers.Services;
 using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
@@ -9,12 +10,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Application;
 
 /// <summary>
-///     The ConfigureServices class
+///     The ConfigureServices class.
 /// </summary>
 public static class ConfigureServices
 {
     /// <summary>
-    ///     Adds application project services
+    ///     Adds application project services.
     /// </summary>
     /// <param name="services">The services</param>
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
@@ -31,6 +32,7 @@ public static class ConfigureServices
         });
         
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
+        services.AddTransient<IBeersService, BeersService>();
 
         return services;
     }
