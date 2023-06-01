@@ -1,6 +1,7 @@
 ﻿using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
 using Application.Common.Mappings;
+using AutoMapper;
 using Domain.Entities;
 
 namespace Application.Beers.Dtos;
@@ -64,4 +65,25 @@ public record BeerDto : IMapFrom<Beer>
     ///     The beer release date.
     /// </summary>
     public DateOnly? ReleaseDate { get; set; }
+
+    /// <summary>
+    ///     The beer opinions count.
+    /// </summary>
+    public int OpinionsCount { get; set; }
+
+    /// <summary>
+    ///     The beer adds to favorites count.
+    /// </summary>
+    public int FavoritesCount { get; set; }
+
+    /// <summary>
+    ///     Creates Beer - BeerDto map.
+    /// </summary>
+    /// <param name="profile">The profile</param>
+    public void Mapping(Profile profile)
+    {
+        profile.CreateMap<Beer, BeerDto>()
+            .ForMember(x => x.OpinionsCount, opt => opt.MapFrom(x => x.Opinions.Count))
+            .ForMember(x => x.FavoritesCount, opt => opt.MapFrom(x => x.Favorites.Count));
+    }
 }
