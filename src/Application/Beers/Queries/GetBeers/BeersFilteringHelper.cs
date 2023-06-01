@@ -45,7 +45,7 @@ public static class BeersFilteringHelper
         {
             x => x.AlcoholByVolume >= request.MinAlcoholByVolume && x.AlcoholByVolume <= request.MaxAlcoholByVolume,
             x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating,
-            x => x.Opinions.Count >= request.MinOpinionsCount && x.Opinions.Count <= request.MaxOpinionCount,
+            x => x.Opinions.Count >= request.MinOpinionsCount && x.Opinions.Count <= request.MaxOpinionsCount,
             x => x.Favorites.Count >= request.MinFavoritesCount && x.Favorites.Count <= request.MaxFavoritesCount,
             x => (x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract) || x.Blg == null,
             x => (x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu) || x.Ibu == null,

@@ -93,5 +93,5 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     /// <summary>
     ///     Maximum opinion count.
     /// </summary>
-    public int? MaxOpinionCount { get; init; } = int.MaxValue;
+    public int? MaxOpinionsCount { get; init; } = int.MaxValue;
 }
