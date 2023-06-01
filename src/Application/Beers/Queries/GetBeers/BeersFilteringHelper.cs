@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Beers.Dtos;
 using Domain.Entities;
 
 namespace Application.Beers.Queries.GetBeers;
@@ -18,7 +19,10 @@ public static class BeersFilteringHelper
         { nameof(Beer.BeerStyle).ToUpper(), x => x.BeerStyle!.Name ?? string.Empty },
         { nameof(Beer.AlcoholByVolume).ToUpper(), x => x.AlcoholByVolume },
         { nameof(Beer.Blg).ToUpper(), x => x.Blg ?? 0 },
-        { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 }
+        { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 },
+        { nameof(Beer.Rating).ToUpper(), x => x.Rating },
+        { nameof(BeerDto.OpinionsCount).ToUpper(), x => x.Opinions.Count },
+        { nameof(BeerDto.FavoritesCount), x => x.Favorites.Count },
     };
 
     /// <summary>
@@ -40,6 +44,9 @@ public static class BeersFilteringHelper
         var delegates = new List<Expression<Func<Beer, bool>>>
         {
             x => x.AlcoholByVolume >= request.MinAlcoholByVolume && x.AlcoholByVolume <= request.MaxAlcoholByVolume,
+            x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating,
+            x => x.Opinions.Count >= request.MinOpinionsCount && x.Opinions.Count <= request.MaxOpinionCount,
+            x => x.Favorites.Count >= request.MinFavoritesCount && x.Favorites.Count <= request.MaxFavoritesCount,
             x => (x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract) || x.Blg == null,
             x => (x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu) || x.Ibu == null,
             x => (x.ReleaseDate >= request.MinReleaseDate && x.ReleaseDate <= request.MaxReleaseDate) ||
