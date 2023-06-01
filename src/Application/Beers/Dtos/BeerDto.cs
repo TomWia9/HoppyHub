@@ -14,27 +14,27 @@ public record BeerDto : IMapFrom<Beer>
     ///     The beer Id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The beer name.
     /// </summary>
     public string? Name { get; set; }
-    
+
     /// <summary>
     ///     The brewery.
     /// </summary>
-    public BreweryDto? Brewery { get; set; } 
-    
+    public BreweryDto? Brewery { get; set; }
+
     /// <summary>
     ///     The alcohol by volume.
     /// </summary>
     public double AlcoholByVolume { get; set; }
-    
+
     /// <summary>
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
-    
+
     /// <summary>
     ///     The beer composition.
     /// </summary>
@@ -46,15 +46,20 @@ public record BeerDto : IMapFrom<Beer>
     public double? Blg { get; set; }
 
     /// <summary>
+    ///     The beer average rating.
+    /// </summary>
+    public double Rating { get; set; }
+
+    /// <summary>
     ///     The beer style.
     /// </summary>
-    public BeerStyleDto? BeerStyle { get; set; } 
+    public BeerStyleDto? BeerStyle { get; set; }
 
     /// <summary>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }
-    
+
     /// <summary>
     ///     The beer release date.
     /// </summary>
