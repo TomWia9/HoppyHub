@@ -22,7 +22,7 @@ public static class BeersFilteringHelper
         { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 },
         { nameof(Beer.Rating).ToUpper(), x => x.Rating },
         { nameof(BeerDto.OpinionsCount).ToUpper(), x => x.Opinions.Count },
-        { nameof(BeerDto.FavoritesCount).ToUpper(), x => x.Favorites.Count },
+        { nameof(BeerDto.FavoritesCount).ToUpper(), x => x.Favorites.Count }
     };
 
     /// <summary>
