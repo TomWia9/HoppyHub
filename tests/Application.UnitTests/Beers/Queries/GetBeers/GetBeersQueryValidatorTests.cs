@@ -848,6 +848,6 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
             .WithErrorMessage(
-                "SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU, RATING, OPINIONSCOUNT, FavoritesCount]");
+                "SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU, RATING, OPINIONSCOUNT, FAVORITESCOUNT]");
     }
 }
