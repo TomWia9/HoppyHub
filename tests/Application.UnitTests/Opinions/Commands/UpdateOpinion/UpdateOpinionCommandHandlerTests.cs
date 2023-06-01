@@ -1,8 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Opinions.Commands.DeleteOpinion;
 using Application.Opinions.Commands.UpdateOpinion;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
+using MockQueryable.Moq;
 using Moq;
 
 namespace Application.UnitTests.Opinions.Commands.UpdateOpinion;
@@ -158,5 +160,36 @@ public class UpdateOpinionCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+    }
+    
+    /// <summary>
+    ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldRollbackTransactionAndThrowException_WhenErrorOccurs()
+    {
+        // Arrange
+        const string exceptionMessage = "Error occurred while calculating beer rating";
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var existingOpinion = new Opinion
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+        var command = new UpdateOpinionCommand
+        {
+            Id = opinionId,
+            Rating = 7,
+            Comment = "New comment",
+        };
+        
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existingOpinion);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()))
+            .ThrowsAsync(new Exception(exceptionMessage));
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
     }
 }

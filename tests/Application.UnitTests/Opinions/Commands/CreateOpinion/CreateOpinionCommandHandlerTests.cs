@@ -103,6 +103,37 @@ public class CreateOpinionCommandHandlerTests
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
     }
+    
+    /// <summary>
+    ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldRollbackTransactionAndThrowException_WhenErrorOccurs()
+    {
+        // Arrange
+        const string exceptionMessage = "Error occurred while calculating beer rating";
+        var beerId = Guid.NewGuid();
+        var request = new CreateOpinionCommand
+        {
+            Rating = 6,
+            Comment = "Sample comment",
+            BeerId = beerId
+        };
+        var beers = new List<Beer> { new() { Id = beerId } };
+        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
+        var opinions = Enumerable.Empty<Opinion>();
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
+        _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(request.BeerId))
+            .ThrowsAsync(new Exception(exceptionMessage));
+        
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(request, CancellationToken.None))
+            .Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
+    }
 
     /// <summary>
     ///     Tests that Handle method throws NotFoundException when beer does not exists.

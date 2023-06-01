@@ -150,4 +150,29 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
+    
+    /// <summary>
+    ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldRollbackTransactionAndThrowException_WhenErrorOccurs()
+    {
+        // Arrange
+        const string exceptionMessage = "Error occurred while calculating beer rating";
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var opinion = new Opinion { Id = opinionId, CreatedBy = userId };
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { opinionId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(opinion);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()))
+            .ThrowsAsync(new Exception(exceptionMessage));
+        var command = new DeleteOpinionCommand { Id = opinionId };
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);
+    }
 }
