@@ -26,6 +26,7 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.Property(x => x.ReleaseDate).HasConversion<DateOnlyConverter>()
             .HasColumnType("date");
         builder.Property(x => x.BreweryId).IsRequired();
+        builder.Property(x => x.Rating).IsRequired();
 
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.Beer)
