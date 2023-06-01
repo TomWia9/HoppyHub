@@ -21,14 +21,22 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     Initializes UpdateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
-    public UpdateOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
+    /// <param name="beersService">The beers service</param>
+    public UpdateOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
+        IBeersService beersService)
     {
         _context = context;
         _currentUserService = currentUserService;
+        _beersService = beersService;
     }
 
     /// <summary>
@@ -52,9 +60,22 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             throw new ForbiddenAccessException();
         }
 
-        entity.Rating = request.Rating;
-        entity.Comment = request.Comment;
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
-        await _context.SaveChangesAsync(cancellationToken);
+        try
+        {
+            entity.Rating = request.Rating;
+            entity.Comment = request.Comment;
+
+            await _context.SaveChangesAsync(cancellationToken);
+            await _beersService.CalculateBeerRatingAsync(entity.BeerId);
+            await _context.SaveChangesAsync(cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 }
