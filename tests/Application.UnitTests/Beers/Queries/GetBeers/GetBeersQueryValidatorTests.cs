@@ -59,7 +59,7 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for MinAlcoholByVolume when MinAlcoholByVolume is valid.
     /// </summary>
@@ -437,6 +437,370 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
+    ///     Tests that validation should not have error for MinRating when MinRating is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMinRating_WhenMinRatingIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinRating = 7
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MinRating);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinRating when MinRating is out of range.
+    /// </summary>
+    [Theory]
+    [InlineData(0)]
+    [InlineData(11)]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinRating_WhenMinRatingIsOutOfRange(
+        double minRating)
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinRating = minRating
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinRating);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinRating when MinRating is greater than MaxRating.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinRating_WhenMinRatingIsGreaterThanMaxRating()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinRating = 30,
+            MaxRating = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinRating)
+            .WithErrorMessage("Min value must be less than or equal to Max value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MaxRating when MaxRating is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMaxRating_WhenMaxRatingIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxRating = 7
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MaxRating);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxRating when MaxRating is out of range.
+    /// </summary>
+    [Theory]
+    [InlineData(0)]
+    [InlineData(11)]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxRating_WhenMaxRatingIsOutOfRange(
+        double maxRating)
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxRating = maxRating
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxRating);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxRating when MaxRating is less than MinRating.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxRating_WhenMaxRatingIsLessThanMinRating()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinRating = 30,
+            MaxRating = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxRating)
+            .WithErrorMessage("Max value must be greater than or equal to Min value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MinOpinionsCount when MinOpinionsCount is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMinOpinionsCount_WhenMinOpinionsCountIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinOpinionsCount = 25
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MinOpinionsCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinOpinionsCount when MinOpinionsCount is out of range.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinOpinionsCount_WhenMinOpinionsCountIsOutOfRange()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinOpinionsCount = -1
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinOpinionsCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinOpinionsCount when MinOpinionsCount is greater than MaxOpinionsCount.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMinOpinionsCount_WhenMinOpinionsCountIsGreaterThanMaxOpinionsCount()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinOpinionsCount = 30,
+            MaxOpinionsCount = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinOpinionsCount)
+            .WithErrorMessage("Min value must be less than or equal to Max value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MaxOpinionsCount when MaxOpinionsCount is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMaxOpinionsCount_WhenMaxOpinionsCountIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxOpinionsCount = 25
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MaxRating);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxOpinionsCount when MaxOpinionsCount is out of range.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxOpinionsCount_WhenMaxOpinionsCountIsOutOfRange()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxOpinionsCount = -1
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxOpinionsCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxOpinionsCount when MaxOpinionsCount is less than MinRating.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMaxOpinionsCount_WhenMaxOpinionsCountIsLessThanMinOpinionsCount()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinOpinionsCount = 30,
+            MaxOpinionsCount = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxOpinionsCount)
+            .WithErrorMessage("Max value must be greater than or equal to Min value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MinFavoritesCount when MinFavoritesCount is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMinFavoritesCount_WhenMinFavoritesCountIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinFavoritesCount = 25
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MinFavoritesCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinFavoritesCount when MinFavoritesCount is out of range.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMinFavoritesCount_WhenMinFavoritesCountIsOutOfRange()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinFavoritesCount = -1
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinFavoritesCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MinFavoritesCount when MinFavoritesCount is greater than MaxFavoritesCount.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMinFavoritesCount_WhenMinFavoritesCountIsGreaterThanMaxFavoritesCount()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinFavoritesCount = 30,
+            MaxFavoritesCount = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MinFavoritesCount)
+            .WithErrorMessage("Min value must be less than or equal to Max value");
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for MaxFavoritesCount when MaxFavoritesCount is valid.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMaxFavoritesCount_WhenMaxFavoritesCountIsValid()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxFavoritesCount = 25
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.MaxFavoritesCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxFavoritesCount when MaxFavoritesCount is out of range.
+    /// </summary>
+    [Fact]
+    public void GetBeersQuery_ShouldHaveValidationErrorForMaxFavoritesCount_WhenMaxFavoritesCountIsOutOfRange()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MaxFavoritesCount = -1
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxFavoritesCount);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for MaxFavoritesCount when MaxFavoritesCount is less than MinFavoritesCount.
+    /// </summary>
+    [Fact]
+    public void
+        GetBeersQuery_ShouldHaveValidationErrorForMaxFavoritesCount_WhenMaxFavoritesCountIsLessThanMinFavoritesCount()
+    {
+        // Arrange
+        var query = new GetBeersQuery
+        {
+            MinFavoritesCount = 30,
+            MaxFavoritesCount = 20
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.MaxFavoritesCount)
+            .WithErrorMessage("Max value must be greater than or equal to Min value");
+    }
+
+    /// <summary>
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>
     [Theory]
@@ -446,6 +810,9 @@ public class GetBeersQueryValidatorTests
     [InlineData("ALCOHOLBYVOLUME")]
     [InlineData("blg")]
     [InlineData("ibu")]
+    [InlineData("rating")]
+    [InlineData("opinionscount")]
+    [InlineData("FavoritesCount")]
     [InlineData("")]
     [InlineData(null)]
     public void GetBeersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
@@ -480,6 +847,7 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU]");
+            .WithErrorMessage(
+                "SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU, RATING, OPINIONSCOUNT, FavoritesCount]");
     }
 }
