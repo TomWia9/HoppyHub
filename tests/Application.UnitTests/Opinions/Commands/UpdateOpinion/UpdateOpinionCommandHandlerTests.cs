@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Opinions.Commands.UpdateOpinion;
+using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using Moq;
 
@@ -23,6 +24,11 @@ public class UpdateOpinionCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
+    ///     The beers service mock.
+    /// </summary>
+    private readonly Mock<IBeersService> _beersServiceMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateOpinionCommandHandler _handler;
@@ -34,7 +40,9 @@ public class UpdateOpinionCommandHandlerTests
     {
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
-        _handler = new UpdateOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object);
+        _beersServiceMock = new Mock<IBeersService>();
+        _handler = new UpdateOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
+            _beersServiceMock.Object);
     }
 
     /// <summary>
@@ -49,6 +57,7 @@ public class UpdateOpinionCommandHandlerTests
         var existingOpinion = new Opinion
             { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
@@ -64,7 +73,8 @@ public class UpdateOpinionCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
 
     /// <summary>
@@ -129,6 +139,7 @@ public class UpdateOpinionCommandHandlerTests
         var existingOpinion = new Opinion
             { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
@@ -145,6 +156,7 @@ public class UpdateOpinionCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
 }
