@@ -36,44 +36,44 @@ public class CreateOpinionCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Rate when Rate is valid.
+    ///     Tests that validation should not have error for Rating when Rating is valid.
     /// </summary>
     [Fact]
-    public async Task CreateOpinionCommand_ShouldNotHaveValidationErrorForRate_WhenRateIsValid()
+    public async Task CreateOpinionCommand_ShouldNotHaveValidationErrorForRating_WhenRatingIsValid()
     {
         // Arrange
         var command = new CreateOpinionCommand()
         {
-            Rate = 5
+            Rating = 5
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Rate);
+        result.ShouldNotHaveValidationErrorFor(x => x.Rating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for Rate when Rate is out of range.
+    ///     Tests that validation should have error for Rating when Rating is out of range.
     /// </summary>
     [Theory]
     [InlineData(-1)]
     [InlineData(11)]
-    public async Task CreateOpinionCommand_ShouldHaveValidationErrorForRate_WhenRateIsOutOfRange(
-        int rate)
+    public async Task CreateOpinionCommand_ShouldHaveValidationErrorForRating_WhenRatingIsOutOfRange(
+        int rating)
     {
         // Arrange
         var command = new CreateOpinionCommand
         {
-            Rate = rate
+            Rating = rating
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Rate);
+        result.ShouldHaveValidationErrorFor(x => x.Rating);
     }
 
     /// <summary>
@@ -145,14 +145,14 @@ public class CreateOpinionCommandValidatorTests
         var command = new CreateOpinionCommand
         {
             BeerId = beerId,
-            Rate = 5
+            Rating = 5
         };
         var opinions = new List<Opinion>
         {
             new()
             {
                 BeerId = beerId,
-                Rate = 4
+                Rating = 4
             }
         };
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();

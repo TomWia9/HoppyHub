@@ -47,7 +47,7 @@ public class UpdateOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
-            { Id = opinionId, Rate = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
@@ -56,7 +56,7 @@ public class UpdateOpinionCommandHandlerTests
         var command = new UpdateOpinionCommand
         {
             Id = opinionId,
-            Rate = 7,
+            Rating = 7,
             Comment = "New comment",
         };
 
@@ -80,7 +80,7 @@ public class UpdateOpinionCommandHandlerTests
             .ReturnsAsync((Opinion?)null);
 
         var command = new UpdateOpinionCommand
-            { Id = opinionId, Rate = 5, Comment = "Sample comment" };
+            { Id = opinionId, Rating = 5, Comment = "Sample comment" };
 
         var expectedMessage = $"Entity \"{nameof(Opinion)}\" ({opinionId}) was not found.";
 
@@ -99,7 +99,7 @@ public class UpdateOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
-            { Id = opinionId, Rate = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
@@ -108,7 +108,7 @@ public class UpdateOpinionCommandHandlerTests
         var command = new UpdateOpinionCommand
         {
             Id = opinionId,
-            Rate = 7,
+            Rating = 7,
             Comment = "New comment",
         };
 
@@ -127,7 +127,7 @@ public class UpdateOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
-            { Id = opinionId, Rate = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
@@ -137,7 +137,7 @@ public class UpdateOpinionCommandHandlerTests
         var command = new UpdateOpinionCommand
         {
             Id = opinionId,
-            Rate = 7,
+            Rating = 7,
             Comment = "New comment",
         };
 

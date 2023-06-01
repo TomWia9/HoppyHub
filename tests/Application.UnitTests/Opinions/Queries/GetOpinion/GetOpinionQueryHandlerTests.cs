@@ -52,7 +52,7 @@ public class GetOpinionQueryHandlerTests
         // Arrange
         const string username = "testUser";
         var opinionId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, Rate = 8, CreatedBy = Guid.NewGuid() };
+        var opinion = new Opinion { Id = opinionId, Rating = 8, CreatedBy = Guid.NewGuid() };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(opinion);
@@ -66,7 +66,7 @@ public class GetOpinionQueryHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(opinion.Id);
-        result.Rate.Should().Be(opinion.Rate);
+        result.Rating.Should().Be(opinion.Rating);
         result.Username.Should().Be(username);
     }
 
@@ -78,7 +78,7 @@ public class GetOpinionQueryHandlerTests
     {
         // Arrange
         var opinionId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, Rate = 8 };
+        var opinion = new Opinion { Id = opinionId, Rating = 8 };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(opinion);
@@ -91,7 +91,7 @@ public class GetOpinionQueryHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Id.Should().Be(opinion.Id);
-        result.Rate.Should().Be(opinion.Rate);
+        result.Rating.Should().Be(opinion.Rating);
         result.Username.Should().BeNull();
     }
 

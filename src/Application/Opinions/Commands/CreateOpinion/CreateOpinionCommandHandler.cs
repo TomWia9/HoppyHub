@@ -55,7 +55,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         
         var entity = new Opinion
         {
-            Rate = request.Rate,
+            Rating = request.Rating,
             Comment = request.Comment,
             BeerId = request.BeerId
         };

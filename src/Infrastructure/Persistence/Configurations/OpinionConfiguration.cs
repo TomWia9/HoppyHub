@@ -16,7 +16,7 @@ public class OpinionConfiguration : BaseConfiguration<Opinion>
     {
         base.Configure(builder);
 
-        builder.Property(x => x.Rate).IsRequired();
+        builder.Property(x => x.Rating).IsRequired();
         builder.Property(x => x.Comment).HasMaxLength(1000);
         builder.Property(x => x.CreatedBy).IsRequired();
         builder.Property(x => x.Created).IsRequired();

@@ -8,9 +8,9 @@ namespace Domain.Entities;
 public class Opinion : BaseAuditableEntity
 {
     /// <summary>
-    ///     The rate in 1-10 scale.
+    ///     The rating in 1-10 scale.
     /// </summary>
-    public int Rate { get; set; }
+    public int Rating { get; set; }
 
     /// <summary>
     ///     The comment.

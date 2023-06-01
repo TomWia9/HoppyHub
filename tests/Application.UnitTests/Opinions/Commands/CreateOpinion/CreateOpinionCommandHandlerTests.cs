@@ -57,14 +57,14 @@ public class CreateOpinionCommandHandlerTests
         var beerId = Guid.NewGuid();
         var request = new CreateOpinionCommand
         {
-            Rate = 6,
+            Rating = 6,
             Comment = "Sample comment",
             BeerId = beerId
         };
         var expectedOpinionDto = new OpinionDto
         {
             BeerId = beerId,
-            Rate = request.Rate,
+            Rating = request.Rating,
             Comment = request.Comment,
             CreatedBy = Guid.NewGuid()
         };
@@ -84,7 +84,7 @@ public class CreateOpinionCommandHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<OpinionDto>();
-        result.Rate.Should().Be(request.Rate);
+        result.Rating.Should().Be(request.Rating);
         result.Comment.Should().Be(request.Comment);
         result.BeerId.Should().Be(request.BeerId);
         result.Username.Should().Be(username);
@@ -102,7 +102,7 @@ public class CreateOpinionCommandHandlerTests
         var beerId = Guid.NewGuid();
         var command = new CreateOpinionCommand
         {
-            Rate = 6,
+            Rating = 6,
             Comment = "Sample comment",
             BeerId = beerId
         };

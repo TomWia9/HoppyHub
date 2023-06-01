@@ -92,7 +92,7 @@ public class DeleteOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
-            { Id = opinionId, Rate = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);
@@ -118,7 +118,7 @@ public class DeleteOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
-            { Id = opinionId, Rate = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingOpinion);

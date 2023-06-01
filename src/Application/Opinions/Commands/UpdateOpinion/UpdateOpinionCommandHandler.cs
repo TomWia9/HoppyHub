@@ -52,7 +52,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             throw new ForbiddenAccessException();
         }
 
-        entity.Rate = request.Rate;
+        entity.Rating = request.Rating;
         entity.Comment = request.Comment;
 
         await _context.SaveChangesAsync(cancellationToken);

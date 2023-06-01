@@ -32,7 +32,7 @@ public class OpinionsFilteringHelperTests
     public void GetSortingColumn_ShouldReturnCorrectColumn_WhenSortByIsProvided()
     {
         // Arrange
-        const string sortBy = nameof(Opinion.Rate);
+        const string sortBy = nameof(Opinion.Rating);
 
         // Act
         var result = OpinionsFilteringHelper.GetSortingColumn(sortBy);
@@ -50,8 +50,8 @@ public class OpinionsFilteringHelperTests
         // Arrange
         var request = new GetOpinionsQuery
         {
-            MinRate = 5,
-            MaxRate = 10,
+            MinRating = 5,
+            MaxRating = 10,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             SearchQuery = "test"
@@ -73,8 +73,8 @@ public class OpinionsFilteringHelperTests
         // Arrange
         var request = new GetOpinionsQuery()
         {
-            MinRate = 5,
-            MaxRate = 10,
+            MinRating = 5,
+            MaxRating = 10,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
         };

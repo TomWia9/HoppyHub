@@ -23,128 +23,128 @@ public class GetOpinionsQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for MinRate when MinRate is valid.
+    ///     Tests that validation should not have error for MinRating when MinRating is valid.
     /// </summary>
     [Fact]
-    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForMinRate_WhenMinRateIsValid()
+    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForMinRating_WhenMinRateIsValid()
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MinRate = 4
+            MinRating = 4
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.MinRate);
+        result.ShouldNotHaveValidationErrorFor(x => x.MinRating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinRate when MinRate is out of range.
+    ///     Tests that validation should have error for MinRating when MinRating is out of range.
     /// </summary>
     [Theory]
     [InlineData(0)]
     [InlineData(11)]
-    public void GetOpinionsQuery_ShouldHaveValidationErrorForMinRate_WhenMinRateIsOutOfRange(
-        int minRate)
+    public void GetOpinionsQuery_ShouldHaveValidationErrorForMinRating_WhenMinRatingIsOutOfRange(
+        int minRating)
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MinRate = minRate
+            MinRating = minRating
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MinRate);
+        result.ShouldHaveValidationErrorFor(x => x.MinRating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinRate when MinRate is greater than MaxRate.
+    ///     Tests that validation should have error for MinRating when MinRating is greater than MaxRating.
     /// </summary>
     [Fact]
     public void
-        GetOpinionsQuery_ShouldHaveValidationErrorForMinAlcoholByVolume_WhenMinAlcoholByVolumeIsGreaterThanMaxAlcoholByVolume()
+        GetOpinionsQuery_ShouldHaveValidationErrorForMinRating_WhenMinRatingIsGreaterThanMaxRating()
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MinRate = 4,
-            MaxRate = 3
+            MinRating = 4,
+            MaxRating = 3
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MinRate)
+        result.ShouldHaveValidationErrorFor(x => x.MinRating)
             .WithErrorMessage("Min value must be less than or equal to Max value");
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for MaxRate when MaxRate is valid.
+    ///     Tests that validation should not have error for MaxRating when MaxRating is valid.
     /// </summary>
     [Fact]
-    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForMaxRate_WhenMaxRateIsValid()
+    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForMaxRating_WhenMaxRatingIsValid()
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MaxRate = 6
+            MaxRating = 6
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.MaxRate);
+        result.ShouldNotHaveValidationErrorFor(x => x.MaxRating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MaxRate when MaxRate is out of range.
+    ///     Tests that validation should have error for MaxRating when MaxRating is out of range.
     /// </summary>
     [Theory]
     [InlineData(0)]
     [InlineData(11)]
-    public void GetOpinionsQuery_ShouldHaveValidationErrorForMaxRate_WhenMaxRateIsOutOfRange(
+    public void GetOpinionsQuery_ShouldHaveValidationErrorForMaxRating_WhenMaxRatingIsOutOfRange(
         int maxRate)
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MaxRate = maxRate
+            MaxRating = maxRate
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MaxRate);
+        result.ShouldHaveValidationErrorFor(x => x.MaxRating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MaxAlcoholByVolume when MaxRate is less than MaxRate.
+    ///     Tests that validation should have error for MaxRating when MaxRating is less than MinRating.
     /// </summary>
     [Fact]
     public void
-        GetOpinionsQuery_ShouldHaveValidationErrorForMaxAlcoholByVolume_WhenMaxAlcoholByVolumeIsLessThanMinAlcoholByVolume()
+        GetOpinionsQuery_ShouldHaveValidationErrorForMaxRating_WhenMaxRatingIsLessThanMinRating()
     {
         // Arrange
         var query = new GetOpinionsQuery
         {
-            MinRate = 4,
-            MaxRate = 3
+            MinRating = 4,
+            MaxRating = 3
         };
 
         // Act
         var result = _validator.TestValidate(query);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MaxRate)
+        result.ShouldHaveValidationErrorFor(x => x.MaxRating)
             .WithErrorMessage("Max value must be greater than or equal to Min value");
     }
 
@@ -153,7 +153,7 @@ public class GetOpinionsQueryValidatorTests
     /// </summary>
     [Theory]
     [InlineData("lastModified")]
-    [InlineData("rate")]
+    [InlineData("rating")]
     [InlineData("comment")]
     [InlineData("")]
     [InlineData(null)]
@@ -189,6 +189,6 @@ public class GetOpinionsQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [LASTMODIFIED, RATE, COMMENT]");
+            .WithErrorMessage("SortBy must be in [LASTMODIFIED, RATING, COMMENT]");
     }
 }
