@@ -29,16 +29,16 @@ public class BeersService : IBeersService
     /// </summary>
     public async Task CalculateBeerRatingAsync(Guid beerId)
     {
-        var beerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
-            .AverageAsync(x => x.Rating);
-
         var beer = await _context.Beers.FindAsync(beerId);
 
         if (beer == null)
         {
             throw new NotFoundException(nameof(Beer), beerId);
         }
-
+        
+        var beerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
+            .AverageAsync(x => x.Rating);
+        
         beer.Rating = Math.Round(beerRating, 2);
     }
 }
