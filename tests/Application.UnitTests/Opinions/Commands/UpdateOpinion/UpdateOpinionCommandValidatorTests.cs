@@ -23,44 +23,44 @@ public class UpdateOpinionCommandValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for Rate when Rate is valid.
+    ///     Tests that validation should not have error for Rating when Rating is valid.
     /// </summary>
     [Fact]
-    public async Task UpdateOpinionCommand_ShouldNotHaveValidationErrorForRate_WhenRateIsValid()
+    public async Task UpdateOpinionCommand_ShouldNotHaveValidationErrorForRate_WhenRatingIsValid()
     {
         // Arrange
         var command = new UpdateOpinionCommand()
         {
-            Rate = 5
+            Rating = 5
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.Rate);
+        result.ShouldNotHaveValidationErrorFor(x => x.Rating);
     }
 
     /// <summary>
-    ///     Tests that validation should have error for Rate when Rate is out of range.
+    ///     Tests that validation should have error for Rating when Rating is out of range.
     /// </summary>
     [Theory]
     [InlineData(-1)]
     [InlineData(11)]
-    public async Task UpdateOpinionCommand_ShouldHaveValidationErrorForRate_WhenRateIsOutOfRange(
+    public async Task UpdateOpinionCommand_ShouldHaveValidationErrorForRating_WhenRatingIsOutOfRange(
         int rate)
     {
         // Arrange
         var command = new UpdateOpinionCommand
         {
-            Rate = rate
+            Rating = rate
         };
 
         // Act
         var result = await _validator.TestValidateAsync(command);
 
         // Assert
-        result.ShouldHaveValidationErrorFor(x => x.Rate);
+        result.ShouldHaveValidationErrorFor(x => x.Rating);
     }
 
     /// <summary>

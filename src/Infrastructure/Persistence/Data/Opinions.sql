@@ -10,7 +10,7 @@ FROM AspNetUsers
 WHERE Username = 'user@localhost'
 
 -- Generate @OpinionsPerBeer opinions for each beer
-INSERT INTO Opinions (Id, Rate, Comment, BeerId, Created, CreatedBy, LastModified, LastModifiedBy)
+INSERT INTO Opinions (Id, Rating, Comment, BeerId, Created, CreatedBy, LastModified, LastModifiedBy)
 SELECT NEWID(),
        FLOOR(RAND(CHECKSUM(NEWID())) * 10) + 1,
        'Sample comment',
@@ -25,3 +25,11 @@ FROM Beers
                                                            '2020-01-01') AS CreatedDate
                      FROM sys.all_columns) AS BeerOpinions
 ORDER BY Beers.Id
+
+-- Update beers ratings
+UPDATE Beers
+SET Rating = ISNULL(Opinions.AverageRating, 0)
+FROM Beers
+         LEFT JOIN (SELECT BeerId, ROUND(AVG(CAST(Rating AS FLOAT)), 2) AS AverageRating
+                    FROM Opinions
+                    GROUP BY BeerId) AS Opinions ON Beers.Id = Opinions.BeerId

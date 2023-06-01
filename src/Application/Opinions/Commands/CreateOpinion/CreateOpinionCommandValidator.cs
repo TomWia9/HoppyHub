@@ -29,7 +29,7 @@ public class CreateOpinionCommandValidator : AbstractValidator<CreateOpinionComm
         _context = context;
         _currentUserService = currentUserService;
         
-        RuleFor(x => x.Rate).NotEmpty().InclusiveBetween(1, 10);
+        RuleFor(x => x.Rating).NotEmpty().InclusiveBetween(1, 10);
         RuleFor(x => x.Comment).MaximumLength(1000);
         RuleFor(x => x.BeerId).NotEmpty().MustAsync(BeSingleOpinionPerBeer)
             .WithMessage("Only one opinion per beer is allowed.");

@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Beers.Services;
+using Application.Common.Interfaces;
 using Application.Common.Services;
 using AutoMapper;
 using MediatR;
@@ -36,7 +37,7 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IMediator));
     }
-    
+
     /// <summary>
     ///     Tests that the AddApplicationServices method registers AutoMapper services
     ///     from the executing assembly to the service collection.
@@ -47,7 +48,7 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IMapper));
     }
-    
+
     /// <summary>
     ///     Tests that the AddApplicationServices method adds the QueryService
     ///     to the service collection as IQueryService.
@@ -58,6 +59,19 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IQueryService<>));
         _services.Should().Contain(s => s.ImplementationType == typeof(QueryService<>));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
+    /// <summary>
+    ///     Tests that the AddApplicationServices method adds the BeersService
+    ///     to the service collection as IBeersService.
+    /// </summary>
+    [Fact]
+    public void AddApplicationServices_ShouldAddBeersService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IBeersService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(BeersService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 }

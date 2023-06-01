@@ -11,14 +11,14 @@ namespace Application.Opinions.Queries.GetOpinions;
 public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<OpinionDto>>
 {
     /// <summary>
-    ///     Minimum rate.
+    ///     Minimum rating.
     /// </summary>
-    public int? MinRate { get; init; } = 1;
+    public int? MinRating { get; init; } = 1;
 
     /// <summary>
-    ///     Maximum rate.
+    ///     Maximum rating.
     /// </summary>
-    public int? MaxRate { get; init; } = 10;
+    public int? MaxRating { get; init; } = 10;
 
     /// <summary>
     ///     Beer id.

@@ -64,4 +64,34 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     ///     Maximum beer release date.
     /// </summary>
     public DateOnly? MaxReleaseDate { get; init; } = DateOnly.FromDateTime(DateTime.Now);
+
+    /// <summary>
+    ///     Minimum rating.
+    /// </summary>
+    public double? MinRating { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum rating.
+    /// </summary>
+    public double? MaxRating { get; init; } = 10;
+
+    /// <summary>
+    ///     Minimum favorites count.
+    /// </summary>
+    public int? MinFavoritesCount { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum favorites count.
+    /// </summary>
+    public int? MaxFavoritesCount { get; init; } = int.MaxValue;
+
+    /// <summary>
+    ///     Minimum opinion count.
+    /// </summary>
+    public int? MinOpinionsCount { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum opinion count.
+    /// </summary>
+    public int? MaxOpinionsCount { get; init; } = int.MaxValue;
 }

@@ -68,17 +68,17 @@ public class GetOpinionsQueryHandlerTests
         {
             new()
             {
-                Id = Guid.NewGuid(), Rate = 4, Comment = "Sample comment", BeerId = Guid.NewGuid(),
+                Id = Guid.NewGuid(), Rating = 4, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             },
             new()
             {
-                Id = Guid.NewGuid(), Rate = 6, Comment = "Sample comment", BeerId = Guid.NewGuid(),
+                Id = Guid.NewGuid(), Rating = 6, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             },
             new()
             {
-                Id = Guid.NewGuid(), Rate = 8, Comment = "Sample comment", BeerId = Guid.NewGuid(),
+                Id = Guid.NewGuid(), Rating = 8, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
             }
         };
@@ -86,7 +86,7 @@ public class GetOpinionsQueryHandlerTests
         var expectedResult = PaginatedList<OpinionDto>.Create(opinions.Select(x => new OpinionDto
         {
             Id = x.Id,
-            Rate = x.Rate,
+            Rating = x.Rating,
             Comment = x.Comment,
             BeerId = x.BeerId,
             CreatedBy = x.CreatedBy,

@@ -26,8 +26,8 @@ public class OpinionsControllerTests : ControllerSetup<OpinionsController>
         // Arrange
         var opinions = new List<OpinionDto>
         {
-            new() { Id = Guid.NewGuid(), Rate = 9 },
-            new() { Id = Guid.NewGuid(), Rate = 8 }
+            new() { Id = Guid.NewGuid(), Rating = 9 },
+            new() { Id = Guid.NewGuid(), Rating = 8 }
         };
         var query = new GetOpinionsQuery();
         var expectedResult = PaginatedList<OpinionDto>.Create(opinions, 1, 10);
@@ -52,7 +52,7 @@ public class OpinionsControllerTests : ControllerSetup<OpinionsController>
     {
         // Arrange
         var opinionId = Guid.NewGuid();
-        var expectedResult = new OpinionDto { Id = opinionId, Rate = 3 };
+        var expectedResult = new OpinionDto { Id = opinionId, Rating = 3 };
 
         MediatorMock.Setup(m => m.Send(It.IsAny<GetOpinionQuery>(), CancellationToken.None))
             .ReturnsAsync(expectedResult);

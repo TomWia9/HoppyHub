@@ -9,9 +9,9 @@ namespace Application.Opinions.Commands.CreateOpinion;
 public record CreateOpinionCommand : IRequest<OpinionDto>
 {
     /// <summary>
-    ///     The rate in 1-10 scale.
+    ///     The rating in 1-10 scale.
     /// </summary>
-    public int Rate { get; init; }
+    public int Rating { get; init; }
 
     /// <summary>
     ///     The comment.

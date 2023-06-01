@@ -12,7 +12,7 @@ public class UpdateOpinionCommandValidator : AbstractValidator<UpdateOpinionComm
     /// </summary>
     public UpdateOpinionCommandValidator()
     {
-        RuleFor(x => x.Rate).NotEmpty().InclusiveBetween(1, 10);
+        RuleFor(x => x.Rating).NotEmpty().InclusiveBetween(1, 10);
         RuleFor(x => x.Comment).MaximumLength(1000);
     }
 }

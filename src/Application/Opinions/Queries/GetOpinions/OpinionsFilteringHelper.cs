@@ -14,7 +14,7 @@ public static class OpinionsFilteringHelper
     public static readonly Dictionary<string, Expression<Func<Opinion, object>>> SortingColumns = new()
     {
         { nameof(Opinion.LastModified).ToUpper(), x => x.LastModified ?? new DateTime() },
-        { nameof(Opinion.Rate).ToUpper(), x => x.Rate },
+        { nameof(Opinion.Rating).ToUpper(), x => x.Rating },
         { nameof(Opinion.Comment).ToUpper(), x => x.Comment ?? string.Empty },
     };
 
@@ -36,7 +36,7 @@ public static class OpinionsFilteringHelper
     {
         var delegates = new List<Expression<Func<Opinion, bool>>>
         {
-            x => x.Rate >= request.MinRate && x.Rate <= request.MaxRate,
+            x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating,
         };
 
         if (request.BeerId != null)

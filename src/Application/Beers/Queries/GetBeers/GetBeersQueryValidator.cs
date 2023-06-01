@@ -15,17 +15,30 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
     {
         RuleFor(x => x.Name).MaximumLength(200);
         RuleFor(x => x.MinAlcoholByVolume).InclusiveBetween(0, 100).LessThanOrEqualTo(x => x.MaxAlcoholByVolume)
-            .WithMessage("Min value must be less than or equal to Max value");
+            .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxAlcoholByVolume).InclusiveBetween(0, 100).GreaterThanOrEqualTo(x => x.MinAlcoholByVolume)
-            .WithMessage("Max value must be greater than or equal to Min value");
+            .WithMessage(MaxValueMessage);
         RuleFor(x => x.MinExtract).InclusiveBetween(0, 100).LessThanOrEqualTo(x => x.MaxExtract)
-            .WithMessage("Min value must be less than or equal to Max value");
+            .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxExtract).InclusiveBetween(0, 100).GreaterThanOrEqualTo(x => x.MinExtract)
-            .WithMessage("Max value must be greater than or equal to Min value");
+            .WithMessage(MaxValueMessage);
         RuleFor(x => x.MinIbu).InclusiveBetween(0, 200).LessThanOrEqualTo(x => x.MaxIbu)
-            .WithMessage("Min value must be less than or equal to Max value");
+            .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxIbu).InclusiveBetween(0, 200).GreaterThanOrEqualTo(x => x.MinIbu)
-            .WithMessage("Max value must be greater than or equal to Min value");
+            .WithMessage(MaxValueMessage);
+        RuleFor(x => x.MinRating).InclusiveBetween(1, 10).LessThanOrEqualTo(x => x.MaxRating)
+            .WithMessage(MinValueMessage);
+        RuleFor(x => x.MaxRating).InclusiveBetween(1, 10).GreaterThanOrEqualTo(x => x.MinRating)
+            .WithMessage(MaxValueMessage);
+        RuleFor(x => x.MinOpinionsCount).GreaterThanOrEqualTo(0).LessThanOrEqualTo(x => x.MaxOpinionsCount)
+            .WithMessage(MinValueMessage);
+        RuleFor(x => x.MaxOpinionsCount).GreaterThanOrEqualTo(0).GreaterThanOrEqualTo(x => x.MinOpinionsCount)
+            .WithMessage(MaxValueMessage);
+        RuleFor(x => x.MinFavoritesCount).GreaterThanOrEqualTo(0).LessThanOrEqualTo(x => x.MaxFavoritesCount)
+            .WithMessage(MinValueMessage);
+        RuleFor(x => x.MaxFavoritesCount).GreaterThanOrEqualTo(0)
+            .GreaterThanOrEqualTo(x => x.MinFavoritesCount)
+            .WithMessage(MaxValueMessage);
         RuleFor(x => x.SortBy)
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) || BeersFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
