@@ -2,7 +2,6 @@
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using MockQueryable.Moq;
 using Moq;
 
 namespace Application.UnitTests.BeerStyles.Commands.UpdateBeerStyle;
@@ -42,10 +41,8 @@ public class UpdateBeerStyleCommandHandlerTests
         var beerStyleId = Guid.NewGuid();
         var existingBeerStyle = new BeerStyle
             { Id = beerStyleId, Name = "Grodziskie", Description = "Old desc", CountryOfOrigin = "England" };
-        var beerStyles = new List<BeerStyle> { existingBeerStyle };
-        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.BeerStyles)
-            .Returns(beerStylesDbSetMock.Object);
+        _contextMock.Setup(x => x.BeerStyles.FindAsync(new object[] { beerStyleId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(existingBeerStyle);
 
         var command = new UpdateBeerStyleCommand
             { Id = beerStyleId, Name = "Grodziskie", Description = "New desc", CountryOfOrigin = "Poland" };
@@ -64,9 +61,9 @@ public class UpdateBeerStyleCommandHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenBeerStyleDoesNotExist()
     {
         // Arrange
-        var beerStyles = Enumerable.Empty<BeerStyle>();
-        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+        _contextMock
+            .Setup(x => x.BeerStyles.FindAsync(new object[] { It.IsAny<Guid>() }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((BeerStyle?)null);
         var command = new UpdateBeerStyleCommand { Id = Guid.NewGuid(), Name = "New Name" };
 
         // Act & Assert
