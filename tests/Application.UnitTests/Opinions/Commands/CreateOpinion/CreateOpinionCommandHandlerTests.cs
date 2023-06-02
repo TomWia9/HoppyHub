@@ -100,6 +100,7 @@ public class CreateOpinionCommandHandlerTests
         result.BeerId.Should().Be(request.BeerId);
         result.Username.Should().Be(username);
 
+        _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
     }

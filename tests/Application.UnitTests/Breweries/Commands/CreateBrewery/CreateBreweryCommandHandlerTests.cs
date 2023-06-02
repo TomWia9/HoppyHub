@@ -80,6 +80,7 @@ public class CreateBreweryCommandHandlerTests
         result.Address!.Number.Should().Be(request.Number);
         result.Address!.City.Should().Be(request.City);
 
+        _contextMock.Verify(x => x.Breweries.AddAsync(It.IsAny<Brewery>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 }
