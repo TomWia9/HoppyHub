@@ -19,6 +19,7 @@ public class OpinionsController : ApiControllerBase
     /// <summary>
     ///     Gets opinions.
     /// </summary>
+    /// <param name="query">The GetOpinionsQuery</param>
     /// <returns>An ActionResult of type PaginatedList of OpinionDto</returns>
     [HttpGet]
     public async Task<ActionResult<OpinionDto>> GetOpinions([FromQuery] GetOpinionsQuery query)

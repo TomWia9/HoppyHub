@@ -18,6 +18,7 @@ public class BeerStylesController : ApiControllerBase
     /// <summary>
     ///     Gets beer styles.
     /// </summary>
+    /// <param name="query">The GetBeerStylesQuery</param>
     /// <returns>An ActionResult of type PaginatedList of BeerStyleDto</returns>
     [HttpGet]
     public async Task<ActionResult<BeerStyleDto>> GetBeerStyles([FromQuery] GetBeerStylesQuery query)

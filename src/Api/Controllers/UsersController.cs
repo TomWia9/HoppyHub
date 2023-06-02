@@ -30,6 +30,7 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Gets users.
     /// </summary>
+    /// <param name="query">The GetUsersQuery</param>
     [HttpGet]
     public async Task<ActionResult<UserDto>> GetUsers([FromQuery] GetUsersQuery query)
     {
@@ -43,6 +44,8 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Updates user.
     /// </summary>
+    /// <param name="id">The user id</param>
+    /// <param name="command">The UpdateUserCommand</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
@@ -60,6 +63,7 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Deletes user.
     /// </summary>
+    /// <param name="id">The user id</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id)
