@@ -32,6 +32,9 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Pagin
     /// <summary>
     ///     Initializes GetFavoritesQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="queryService">The query service</param>
+    /// <param name="mapper">The mapper</param>
     public GetFavoritesQueryHandler(IApplicationDbContext context, IQueryService<Favorite> queryService, IMapper mapper)
     {
         _context = context;

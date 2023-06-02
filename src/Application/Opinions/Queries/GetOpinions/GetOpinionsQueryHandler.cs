@@ -37,6 +37,10 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     /// <summary>
     ///     Initializes GetOpinionsQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="mapper">The mapper</param>
+    /// <param name="queryService">The query service</param>
+    /// <param name="usersService">The users service</param>
     public GetOpinionsQueryHandler(IApplicationDbContext context, IQueryService<Opinion> queryService, IMapper mapper,
         IUsersService usersService)
     {

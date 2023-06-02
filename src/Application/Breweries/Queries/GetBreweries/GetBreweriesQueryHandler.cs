@@ -32,6 +32,9 @@ public class GetBreweriesQueryHandler : IRequestHandler<GetBreweriesQuery, Pagin
     /// <summary>
     ///     Initializes GetBreweriesQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="queryService">The query service</param>
+    /// <param name="mapper">The mapper</param>
     public GetBreweriesQueryHandler(IApplicationDbContext context, IQueryService<Brewery> queryService, IMapper mapper)
     {
         _context = context;

@@ -30,6 +30,9 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     /// <summary>
     ///     Initializes GetOpinionQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="mapper">The mapper</param>
+    /// <param name="usersService">The users service</param>
     public GetOpinionQueryHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService)
     {
         _context = context;

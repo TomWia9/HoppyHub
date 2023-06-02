@@ -3,7 +3,7 @@
 namespace Application.Beers.Commands.DeleteBeer;
 
 /// <summary>
-///     DeleteBeer command
+///     DeleteBeer command.
 /// </summary>
 public record DeleteBeerCommand : IRequest
 {
