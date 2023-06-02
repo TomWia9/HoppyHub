@@ -1,18 +1,10 @@
-﻿using FluentValidation;
+﻿using Application.Opinions.Commands.Common;
 
 namespace Application.Opinions.Commands.UpdateOpinion;
 
 /// <summary>
 ///     UpdateOpinionCommand validator.
 /// </summary>
-public class UpdateOpinionCommandValidator : AbstractValidator<UpdateOpinionCommand>
+public class UpdateOpinionCommandValidator : BaseOpinionCommandValidator<UpdateOpinionCommand>
 {
-    /// <summary>
-    ///     Initializes UpdateOpinionCommandValidator.
-    /// </summary>
-    public UpdateOpinionCommandValidator()
-    {
-        RuleFor(x => x.Rating).NotEmpty().InclusiveBetween(1, 10);
-        RuleFor(x => x.Comment).MaximumLength(1000);
-    }
 }
