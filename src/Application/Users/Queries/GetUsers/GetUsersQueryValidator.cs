@@ -1,4 +1,5 @@
 ﻿using Application.Common.Abstractions;
+using Application.Users.Dtos;
 using FluentValidation;
 
 namespace Application.Users.Queries.GetUsers;
@@ -13,8 +14,8 @@ public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
     /// </summary>
     private readonly IEnumerable<string> _sortingColumns = new List<string>
     {
-        "EMAIL",
-        "USERNAME"
+        nameof(UserDto.Email).ToUpper(),
+        nameof(UserDto.Username).ToUpper()
     };
 
     /// <summary>

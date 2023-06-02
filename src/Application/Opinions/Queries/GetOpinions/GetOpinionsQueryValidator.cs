@@ -14,9 +14,9 @@ public class GetOpinionsQueryValidator : QueryValidator<GetOpinionsQuery>
     public GetOpinionsQueryValidator()
     {
         RuleFor(x => x.MinRating).InclusiveBetween(1, 10).LessThanOrEqualTo(x => x.MaxRating)
-            .WithMessage("Min value must be less than or equal to Max value");
+            .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxRating).InclusiveBetween(1, 10).GreaterThanOrEqualTo(x => x.MinRating)
-            .WithMessage("Max value must be greater than or equal to Min value");
+            .WithMessage(MaxValueMessage);
         RuleFor(x => x.SortBy)
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) || OpinionsFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
