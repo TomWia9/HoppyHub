@@ -11,5 +11,5 @@ public record GetOpinionQuery : IRequest<OpinionDto>
     /// <summary>
     ///     The opinion id.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 }

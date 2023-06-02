@@ -68,7 +68,7 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     /// <summary>
     ///     Minimum rating.
     /// </summary>
-    public double? MinRating { get; init; } = 0;
+    public double? MinRating { get; init; } = 1;
 
     /// <summary>
     ///     Maximum rating.
