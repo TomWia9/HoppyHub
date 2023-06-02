@@ -13,15 +13,15 @@ public record UserDto
     /// <summary>
     ///     The email.
     /// </summary>
-    public string? Email { get; init; }
+    public string? Email { get; set; }
 
     /// <summary>
     ///     The username.
     /// </summary>
-    public string? Username { get; init; }
+    public string? Username { get; set; }
 
     /// <summary>
     ///     The role.
     /// </summary>
-    public string? Role { get; init; }
+    public string? Role { get; set; }
 }
