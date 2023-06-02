@@ -10,7 +10,7 @@ public abstract class BaseBeerCommandValidator<TCommand> : AbstractValidator<TCo
     protected const string UniqueNameErrorMessage = "The beer name must be unique within the brewery.";
 
     /// <summary>
-    ///     Initializes UpdateBeerCommandValidator.
+    ///     Initializes BaseBeerCommandValidator.
     /// </summary>
     protected BaseBeerCommandValidator()
     {
