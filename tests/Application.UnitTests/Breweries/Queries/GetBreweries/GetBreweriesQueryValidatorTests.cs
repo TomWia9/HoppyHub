@@ -1,4 +1,5 @@
-﻿using Application.Breweries.Queries.GetBreweries;
+﻿using Application.Breweries.Dtos;
+using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
 using FluentValidation.TestHelper;
 using Moq;
@@ -308,8 +309,8 @@ public class GetBreweriesQueryValidatorTests
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>
     [Theory]
-    [InlineData("name")]
-    [InlineData("foundationYear")]
+    [InlineData(nameof(BreweryDto.Name))]
+    [InlineData(nameof(BreweryDto.FoundationYear))]
     [InlineData("")]
     [InlineData(null)]
     public void GetBreweriesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)

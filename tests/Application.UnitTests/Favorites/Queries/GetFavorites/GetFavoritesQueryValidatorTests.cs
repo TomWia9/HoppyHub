@@ -1,4 +1,5 @@
 ﻿using Application.Favorites.Queries.GetFavorites;
+using Domain.Entities;
 using FluentValidation.TestHelper;
 
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
@@ -64,8 +65,8 @@ public class GetFavoritesQueryValidatorTests
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>
     [Theory]
-    [InlineData("lastModified")]
-    [InlineData("Beer")]
+    [InlineData(nameof(Favorite.LastModified))]
+    [InlineData(nameof(Favorite.Beer))]
     [InlineData("")]
     [InlineData(null)]
     public void GetFavoritesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)

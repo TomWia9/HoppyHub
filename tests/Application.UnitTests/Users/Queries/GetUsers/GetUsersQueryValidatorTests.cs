@@ -1,4 +1,5 @@
-﻿using Application.Users.Queries.GetUsers;
+﻿using Application.Users.Dtos;
+using Application.Users.Queries.GetUsers;
 using FluentValidation.TestHelper;
 
 namespace Application.UnitTests.Users.Queries.GetUsers;
@@ -85,8 +86,8 @@ public class GetUsersQueryValidatorTests
     /// </summary>
     /// <param name="sortBy">The column by which to sort</param>
     [Theory]
-    [InlineData("email")]
-    [InlineData("username")]
+    [InlineData(nameof(UserDto.Email))]
+    [InlineData(nameof(UserDto.Username))]
     [InlineData("")]
     [InlineData(null)]
     public void GetUsersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
