@@ -12,7 +12,7 @@ namespace Application.UnitTests.Breweries.Commands.Common;
 public class BaseBreweryCommandValidatorTests
 {
     /// <summary>
-    ///     The TestBrewery command.
+    ///     The TestBaseBrewery command.
     /// </summary>
     private record TestBaseBreweryCommand : BaseBreweryCommand;
 
