@@ -5,7 +5,8 @@ namespace Application.BeerStyles.Commands.Common;
 /// <summary>
 ///     BaseBeerStyleCommand abstract validator.
 /// </summary>
-public abstract class BaseBeerStyleCommandValidator<TCommand> : AbstractValidator<TCommand> where TCommand : BaseBeerStyleCommand
+public abstract class BaseBeerStyleCommandValidator<TCommand> : AbstractValidator<TCommand>
+    where TCommand : BaseBeerStyleCommand
 {
     protected const string UniqueNameErrorMessage = "The beer style name must be unique.";
 
