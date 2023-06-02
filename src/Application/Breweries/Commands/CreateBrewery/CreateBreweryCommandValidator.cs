@@ -36,7 +36,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
         RuleFor(x => x.State).NotEmpty().MaximumLength(50);
         RuleFor(x => x.Country).NotEmpty().MaximumLength(50);
         RuleFor(x => x.Name).NotEmpty().MaximumLength(500)
-            .MustAsync(BeUniqueName)
+            .MustAsync(BeUniquelyNamed)
             .WithMessage("The brewery name must be unique.");
     }
 
@@ -46,7 +46,7 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     /// <param name="model">The CreateBreweryCommand</param>
     /// <param name="name">The brewery name</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    private async Task<bool> BeUniqueName(CreateBreweryCommand model, string name,
+    private async Task<bool> BeUniquelyNamed(CreateBreweryCommand model, string name,
         CancellationToken cancellationToken)
     {
         return await _context.Breweries.AllAsync(x => x.Name != name.Trim(), cancellationToken);

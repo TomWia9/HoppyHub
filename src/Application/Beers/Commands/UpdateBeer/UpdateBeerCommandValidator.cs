@@ -30,7 +30,7 @@ public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
         RuleFor(x => x.BeerStyleId).NotEmpty();
         RuleFor(x => x.Ibu).InclusiveBetween(0, 200);
         RuleFor(x => x.Name).NotEmpty().MaximumLength(200)
-            .MustAsync(BeUniqueNameWithinBrewery)
+            .MustAsync(BeUniquelyNamedWithinBrewery)
             .WithMessage("The beer name must be unique within the brewery.");
     }
 
@@ -40,7 +40,7 @@ public class UpdateBeerCommandValidator : AbstractValidator<UpdateBeerCommand>
     /// <param name="model">The UpdateBeerCommand</param>
     /// <param name="name">The beer name</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    private async Task<bool> BeUniqueNameWithinBrewery(UpdateBeerCommand model, string name,
+    private async Task<bool> BeUniquelyNamedWithinBrewery(UpdateBeerCommand model, string name,
         CancellationToken cancellationToken)
     {
         return await _context.Beers.Where(x => x.Id != model.Id && x.BreweryId == model.BreweryId)
