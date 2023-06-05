@@ -39,7 +39,6 @@ public static class ConfigureServices
 
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
 
-        //TODO Add unit tests
         services.AddTransient<IFilteringHelper<Brewery, GetBreweriesQuery>, BreweriesFilteringHelper>();
         services.AddTransient<IFilteringHelper<Beer, GetBeersQuery>, BeersFilteringHelper>();
         services.AddTransient<IFilteringHelper<BeerStyle, GetBeerStylesQuery>, BeerStylesFilteringHelper>();

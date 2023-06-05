@@ -1,7 +1,13 @@
-﻿using Application.Beers.Services;
+﻿using Application.Beers.Queries.GetBeers;
+using Application.Beers.Services;
+using Application.BeerStyles.Queries.GetBeerStyles;
+using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
 using Application.Common.Services;
+using Application.Favorites.Queries.GetFavorites;
+using Application.Opinions.Queries.GetOpinions;
 using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -72,6 +78,35 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IBeersService));
         _services.Should().Contain(s => s.ImplementationType == typeof(BeersService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
+    /// <summary>
+    ///     Tests that the AddApplicationServices method adds the filtering helpers
+    ///     to the service collection as IFilteringHelper.
+    /// </summary>
+    [Fact]
+    public void AddApplicationServices_ShouldAddFilteringHelpers()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Beer, GetBeersQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(BeersFilteringHelper));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<BeerStyle, GetBeerStylesQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(BeerStylesFilteringHelper));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Brewery, GetBreweriesQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(BreweriesFilteringHelper));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Favorite, GetFavoritesQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(FavoritesFilteringHelper));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Opinion, GetOpinionsQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(OpinionsFilteringHelper));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 }
