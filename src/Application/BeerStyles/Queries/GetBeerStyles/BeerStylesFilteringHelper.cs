@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Common.Abstractions;
 using Domain.Entities;
 
 namespace Application.BeerStyles.Queries.GetBeerStyles;
@@ -6,8 +7,15 @@ namespace Application.BeerStyles.Queries.GetBeerStyles;
 /// <summary>
 ///     BeerStylesFilteringHelper class.
 /// </summary>
-public static class BeerStylesFilteringHelper
+public class BeerStylesFilteringHelper : FilteringHelperBase<BeerStyle, GetBeerStylesQuery>
 {
+    /// <summary>
+    ///     Initializes BeerStylesFilteringHelper.
+    /// </summary>
+    public BeerStylesFilteringHelper() : base(SortingColumns)
+    {
+    }
+
     /// <summary>
     ///     Beer styles sorting columns.
     /// </summary>
@@ -18,20 +26,10 @@ public static class BeerStylesFilteringHelper
     };
 
     /// <summary>
-    ///     Gets sorting column expression.
-    /// </summary>
-    /// <param name="sortBy">Column by which to sort</param>
-    /// <returns>The sorting expression</returns>
-    public static Expression<Func<BeerStyle, object>> GetSortingColumn(string? sortBy)
-    {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
-    }
-
-    /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
     /// <param name="request">The GetBeerStylesQuery</param>
-    public static IEnumerable<Expression<Func<BeerStyle, bool>>> GetDelegates(GetBeerStylesQuery request)
+    public override IEnumerable<Expression<Func<BeerStyle, bool>>> GetDelegates(GetBeerStylesQuery request)
     {
         var delegates = new List<Expression<Func<BeerStyle, bool>>>();
 

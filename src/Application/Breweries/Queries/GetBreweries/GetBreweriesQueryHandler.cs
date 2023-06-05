@@ -30,16 +30,24 @@ public class GetBreweriesQueryHandler : IRequestHandler<GetBreweriesQuery, Pagin
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The breweries filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Brewery, GetBreweriesQuery> _filteringHelper;
+
+    /// <summary>
     ///     Initializes GetBreweriesQueryHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="queryService">The query service</param>
     /// <param name="mapper">The mapper</param>
-    public GetBreweriesQueryHandler(IApplicationDbContext context, IQueryService<Brewery> queryService, IMapper mapper)
+    /// <param name="filteringHelper">The breweries filtering helper</param>
+    public GetBreweriesQueryHandler(IApplicationDbContext context, IQueryService<Brewery> queryService, IMapper mapper,
+        IFilteringHelper<Brewery, GetBreweriesQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
+        _filteringHelper = filteringHelper;
     }
 
     /// <summary>
@@ -51,8 +59,8 @@ public class GetBreweriesQueryHandler : IRequestHandler<GetBreweriesQuery, Pagin
     {
         var breweriesCollection = _context.Breweries.AsQueryable();
 
-        var delegates = BreweriesFilteringHelper.GetDelegates(request);
-        var sortingColumn = BreweriesFilteringHelper.GetSortingColumn(request.SortBy);
+        var delegates = _filteringHelper.GetDelegates(request);
+        var sortingColumn = _filteringHelper.GetSortingColumn(request.SortBy);
 
         breweriesCollection = _queryService.Filter(breweriesCollection, delegates);
         breweriesCollection = _queryService.Sort(breweriesCollection, sortingColumn, request.SortDirection);

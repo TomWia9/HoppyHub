@@ -1,8 +1,14 @@
 ﻿using System.Reflection;
+using Application.Beers.Queries.GetBeers;
 using Application.Beers.Services;
+using Application.BeerStyles.Queries.GetBeerStyles;
+using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
+using Application.Favorites.Queries.GetFavorites;
+using Application.Opinions.Queries.GetOpinions;
+using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,8 +36,16 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
-        
+
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
+
+        //TODO Add unit tests
+        services.AddTransient<IFilteringHelper<Brewery, GetBreweriesQuery>, BreweriesFilteringHelper>();
+        services.AddTransient<IFilteringHelper<Beer, GetBeersQuery>, BeersFilteringHelper>();
+        services.AddTransient<IFilteringHelper<BeerStyle, GetBeerStylesQuery>, BeerStylesFilteringHelper>();
+        services.AddTransient<IFilteringHelper<Favorite, GetFavoritesQuery>, FavoritesFilteringHelper>();
+        services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
+
         services.AddTransient<IBeersService, BeersService>();
 
         return services;

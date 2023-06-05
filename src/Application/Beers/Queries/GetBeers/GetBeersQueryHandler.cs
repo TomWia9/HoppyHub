@@ -30,16 +30,24 @@ public class GetBeersQueryHandler : IRequestHandler<GetBeersQuery, PaginatedList
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The beers filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Beer, GetBeersQuery> _filteringHelper;
+
+    /// <summary>
     ///     Initializes GetBeersQueryHandler
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="queryService">The query service</param>
     /// <param name="mapper">The mapper</param>
-    public GetBeersQueryHandler(IApplicationDbContext context, IQueryService<Beer> queryService, IMapper mapper)
+    /// <param name="filteringHelper">The beers filtering helper</param>
+    public GetBeersQueryHandler(IApplicationDbContext context, IQueryService<Beer> queryService, IMapper mapper,
+        IFilteringHelper<Beer, GetBeersQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
+        _filteringHelper = filteringHelper;
     }
 
     /// <summary>
@@ -51,12 +59,12 @@ public class GetBeersQueryHandler : IRequestHandler<GetBeersQuery, PaginatedList
     {
         var beersCollection = _context.Beers.AsQueryable();
 
-        var delegates = BeersFilteringHelper.GetDelegates(request);
-        var sortingColumn = BeersFilteringHelper.GetSortingColumn(request.SortBy);
+        var delegates = _filteringHelper.GetDelegates(request);
+        var sortingColumn = _filteringHelper.GetSortingColumn(request.SortBy);
 
         beersCollection = _queryService.Filter(beersCollection, delegates);
         beersCollection = _queryService.Sort(beersCollection, sortingColumn, request.SortDirection);
-        
+
         return await beersCollection.ProjectTo<BeerDto>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request.PageNumber, request.PageSize);
     }
