@@ -1,4 +1,5 @@
 ﻿using Application.Beers.Queries.GetBeers;
+using Application.Common.Interfaces;
 using Domain.Entities;
 
 namespace Application.UnitTests.Beers.Queries.GetBeers;
@@ -10,6 +11,19 @@ namespace Application.UnitTests.Beers.Queries.GetBeers;
 public class BeersFilteringHelperTests
 {
     /// <summary>
+    ///     The beers filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Beer, GetBeersQuery> _filteringHelper;
+
+    /// <summary>
+    ///     Setups BeersFilteringHelperTests.
+    /// </summary>
+    public BeersFilteringHelperTests()
+    {
+        _filteringHelper = new BeersFilteringHelper();
+    }
+    
+    /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
     [Fact]
@@ -19,7 +33,7 @@ public class BeersFilteringHelperTests
         string? sortBy = null;
 
         // Act
-        var result = BeersFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(BeersFilteringHelper.SortingColumns.First().Value);
@@ -35,7 +49,7 @@ public class BeersFilteringHelperTests
         const string sortBy = nameof(Beer.Name);
 
         // Act
-        var result = BeersFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(BeersFilteringHelper.SortingColumns[sortBy.ToUpper()]);
@@ -52,19 +66,29 @@ public class BeersFilteringHelperTests
         {
             MinAlcoholByVolume = 5,
             MaxAlcoholByVolume = 10,
+            MinExtract = 10,
+            MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
+            MinReleaseDate = DateOnly.MinValue,
+            MaxReleaseDate = DateOnly.MaxValue,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
-            Style = "Ale",
-            SearchQuery = "IPA",
+            BeerStyleId = Guid.NewGuid(),
+            MinRating = 2,
+            MaxRating = 8,
+            MinOpinionsCount = 20,
+            MaxOpinionsCount = 50,
+            MinFavoritesCount = 20,
+            MaxFavoritesCount = 50,
+            SearchQuery = "IPA"
         };
 
         // Act
-        var result = BeersFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(11, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -78,17 +102,27 @@ public class BeersFilteringHelperTests
         {
             MinAlcoholByVolume = 5,
             MaxAlcoholByVolume = 10,
+            MinExtract = 10,
+            MaxExtract = 18,
             MinIbu = 20,
             MaxIbu = 50,
+            MinReleaseDate = DateOnly.MinValue,
+            MaxReleaseDate = DateOnly.MaxValue,
             Name = "IPA",
             BreweryId = Guid.NewGuid(),
-            Style = "Ale",
+            BeerStyleId = Guid.NewGuid(),
+            MinRating = 2,
+            MaxRating = 8,
+            MinOpinionsCount = 20,
+            MaxOpinionsCount = 50,
+            MinFavoritesCount = 20,
+            MaxFavoritesCount = 50,
         };
 
         // Act
-        var result = BeersFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(10, "Min and Max are merged into single delegate");
     }
 }

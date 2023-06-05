@@ -3,7 +3,7 @@ using Application.Common.Mappings;
 using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
-using Application.Users.Queries;
+using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Mvc;
@@ -99,7 +99,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
         var result = await Controller.UpdateUser(userId, command);
 
         // Assert
-        result.Should().BeOfType<BadRequestResult>();
+        result.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
-﻿using Application.Common.Models;
-using Domain.Entities;
+﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +11,7 @@ namespace Infrastructure.Persistence;
 /// <summary>
 ///     ApplicationDbContextInitializer class.
 /// </summary>
-public class ApplicationDbContextInitializer
+public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
 {
     /// <summary>
     ///     The database context.
@@ -73,6 +73,10 @@ public class ApplicationDbContextInitializer
             await SeedRolesAsync();
             await SeedUsersAsync();
             await SeedBreweriesAsync();
+            await SeedBeerStylesAsync();
+            await SeedBeersAsync();
+            await SeedOpinionsAsync();
+            await SeedFavoritesAsync();
 
             Log.Logger.Information("Seeding database completed");
         }
@@ -135,48 +139,102 @@ public class ApplicationDbContextInitializer
     }
 
     /// <summary>
-    ///     Seeds beers asynchronously.
+    ///     Seeds breweries asynchronously.
     /// </summary>
     private async Task SeedBreweriesAsync()
     {
-        if (!await _context.Beers.AnyAsync())
+        if (!await _context.Breweries.AnyAsync())
         {
-            Log.Logger.Information("Seeding breweries and beers...");
+            const string tableName = nameof(_context.Breweries);
 
-            const string fileName = "Breweries.json";
-
-            await SeedDatabaseFromJson<Brewery>(fileName);
+            await SeedDatabaseFromSql(tableName);
         }
     }
 
-    private async Task SeedDatabaseFromJson<T>(string fileName) where T : class
+    /// <summary>
+    ///     Seeds beer styles asynchronously.
+    /// </summary>
+    private async Task SeedBeerStylesAsync()
     {
-        var jsonFilePath = "../Infrastructure/Persistence/Data/" + fileName;
-
-        if (!File.Exists(jsonFilePath))
+        if (!await _context.BeerStyles.AnyAsync())
         {
-            throw new FileNotFoundException($"File not found at {jsonFilePath}");
+            const string tableName = nameof(_context.BeerStyles);
+
+            await SeedDatabaseFromSql(tableName);
+        }
+    }
+
+    /// <summary>
+    ///     Seeds beers asynchronously.
+    /// </summary>
+    private async Task SeedBeersAsync()
+    {
+        if (!await _context.Beers.AnyAsync())
+        {
+            const string tableName = nameof(_context.Beers);
+
+            await SeedDatabaseFromSql(tableName);
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds opinions asynchronously.
+    /// </summary>
+    private async Task SeedOpinionsAsync()
+    {
+        if (!await _context.Opinions.AnyAsync())
+        {
+            const string tableName = nameof(_context.Opinions);
+
+            await SeedDatabaseFromSql(tableName);
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds favorites asynchronously.
+    /// </summary>
+    private async Task SeedFavoritesAsync()
+    {
+        if (!await _context.Favorites.AnyAsync())
+        {
+            const string tableName = nameof(_context.Favorites);
+
+            await SeedDatabaseFromSql(tableName);
+        }
+    }
+
+    /// <summary>
+    ///     Seeds database from sql file.
+    /// </summary>
+    /// <param name="tableName">The table name</param>
+    private async Task SeedDatabaseFromSql(string tableName)
+    {
+        Log.Logger.Information("Seeding {TableName}...", tableName);
+
+        var sqlFilePath = "../Infrastructure/Persistence/Data/" + tableName + ".sql";
+
+        if (!File.Exists(sqlFilePath))
+        {
+            throw new FileNotFoundException($"File not found at {sqlFilePath}");
         }
 
         try
         {
-            var json = await File.ReadAllTextAsync(jsonFilePath);
-            var entities = JsonConvert.DeserializeObject<List<T>>(json);
+            var sqlScript = await File.ReadAllTextAsync(sqlFilePath);
+            var result = await _context.Database.ExecuteSqlRawAsync(sqlScript);
 
-            if (entities != null && entities.Any())
+            if (result > 0)
             {
-                await _context.AddRangeAsync(entities);
-                await _context.SaveChangesAsync();
-                Log.Logger.Information("{Type} data seeded", typeof(T).Name);
+                Log.Logger.Information("{TableName} successfully seeded", tableName);
             }
             else
             {
-                Log.Logger.Warning("{Type} data file empty", typeof(T).Name);
+                Log.Error("Seeding {TableName} failed", tableName);
             }
         }
         catch (JsonSerializationException ex)
         {
-            throw new Exception("Invalid JSON file format", ex);
+            throw new Exception("Invalid sql file", ex);
         }
     }
 }

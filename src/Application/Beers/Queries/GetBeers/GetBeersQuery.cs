@@ -21,9 +21,9 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public Guid? BreweryId { get; init; }
 
     /// <summary>
-    ///     The beer style.
+    ///     The beer style id.
     /// </summary>
-    public string? Style { get; init; }
+    public Guid? BeerStyleId { get; init; }
 
     /// <summary>
     ///     Minimum alcohol by volume.
@@ -36,6 +36,16 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     public double? MaxAlcoholByVolume { get; init; } = 100;
 
     /// <summary>
+    ///     Minimum blg extract.
+    /// </summary>
+    public double? MinExtract { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum blg extract.
+    /// </summary>
+    public double? MaxExtract { get; init; } = 100;
+
+    /// <summary>
     ///     Minimum Ibu.
     /// </summary>
     public int? MinIbu { get; init; } = 0;
@@ -44,4 +54,44 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     ///     Maximum Ibu.
     /// </summary>
     public int? MaxIbu { get; init; } = 200;
+
+    /// <summary>
+    ///     Minimum beer release date.
+    /// </summary>
+    public DateOnly? MinReleaseDate { get; init; } = DateOnly.MinValue;
+
+    /// <summary>
+    ///     Maximum beer release date.
+    /// </summary>
+    public DateOnly? MaxReleaseDate { get; init; } = DateOnly.FromDateTime(DateTime.Now);
+
+    /// <summary>
+    ///     Minimum rating.
+    /// </summary>
+    public double? MinRating { get; init; } = 1;
+
+    /// <summary>
+    ///     Maximum rating.
+    /// </summary>
+    public double? MaxRating { get; init; } = 10;
+
+    /// <summary>
+    ///     Minimum favorites count.
+    /// </summary>
+    public int? MinFavoritesCount { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum favorites count.
+    /// </summary>
+    public int? MaxFavoritesCount { get; init; } = int.MaxValue;
+
+    /// <summary>
+    ///     Minimum opinion count.
+    /// </summary>
+    public int? MinOpinionsCount { get; init; } = 0;
+
+    /// <summary>
+    ///     Maximum opinion count.
+    /// </summary>
+    public int? MaxOpinionsCount { get; init; } = int.MaxValue;
 }

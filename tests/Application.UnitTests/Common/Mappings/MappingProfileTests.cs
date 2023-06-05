@@ -1,7 +1,9 @@
 ﻿using System.Runtime.Serialization;
 using Application.Beers.Dtos;
+using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
 using Application.Common.Mappings;
+using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 
@@ -52,6 +54,8 @@ public class MappingTests
     [InlineData(typeof(Beer), typeof(BeerDto))]
     [InlineData(typeof(Brewery), typeof(BreweryDto))]
     [InlineData(typeof(Address), typeof(AddressDto))]
+    [InlineData(typeof(BeerStyle), typeof(BeerStyleDto))]
+    [InlineData(typeof(Opinion), typeof(OpinionDto))]
     public void Mapping_Should_SupportMappingFromSourceToDestination(Type source, Type destination)
     {
         // Arrange

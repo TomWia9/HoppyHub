@@ -47,16 +47,22 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
         
+        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
+        {
+            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
+        }
+        
         var entity = new Beer
         {
             Name = request.Name,
             BreweryId = request.BreweryId,
             AlcoholByVolume = request.AlcoholByVolume,
             Description = request.Description,
+            Composition = request.Composition,
             Blg = request.Blg,
-            Plato = request.Plato,
-            Style = request.Style,
-            Ibu = request.Ibu
+            BeerStyleId = request.BeerStyleId,
+            Ibu = request.Ibu,
+            ReleaseDate = request.ReleaseDate
         };
 
         await _context.Beers.AddAsync(entity, cancellationToken);

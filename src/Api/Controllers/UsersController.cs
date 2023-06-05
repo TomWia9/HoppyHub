@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
+using Application.Users.Dtos;
 using Application.Users.Queries;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
@@ -29,6 +30,7 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Gets users.
     /// </summary>
+    /// <param name="query">The GetUsersQuery</param>
     [HttpGet]
     public async Task<ActionResult<UserDto>> GetUsers([FromQuery] GetUsersQuery query)
     {
@@ -42,13 +44,15 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Updates user.
     /// </summary>
+    /// <param name="id">The user id</param>
+    /// <param name="command">The UpdateUserCommand</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
     {
         if (id != command.UserId)
         {
-            return BadRequest();
+            return BadRequest(InvalidIdMessage);
         }
 
         await Mediator.Send(command);
@@ -59,6 +63,7 @@ public class UsersController : ApiControllerBase
     /// <summary>
     ///     Deletes user.
     /// </summary>
+    /// <param name="id">The user id</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteUser(Guid id)

@@ -88,7 +88,7 @@ public class CurrentUserServiceTests
     ///     Tests that the UserId property returns null when the "NameIdentifier" claim is missing from the HttpContext.
     /// </summary>
     [Fact]
-    public void UserId_ShouldReturn_WhenNameIdentifierClaimIsMissing()
+    public void UserId_ShouldReturnNull_WhenNameIdentifierClaimIsMissing()
     {
         // Arrange
         var httpContext = new DefaultHttpContext();

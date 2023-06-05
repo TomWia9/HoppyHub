@@ -25,6 +25,11 @@ public abstract class ControllerSetup<T> where T : ApiControllerBase, new()
     protected readonly T Controller;
 
     /// <summary>
+    ///     The expected invalid id error message.
+    /// </summary>
+    protected const string ExpectedInvalidIdMessage = "The ID in the route differs from the ID in the request body.";
+
+    /// <summary>
     ///     Initializes ControllerSetup.
     /// </summary>
     protected ControllerSetup()

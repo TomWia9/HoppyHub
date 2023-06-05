@@ -26,6 +26,8 @@ public class GetBreweryQueryHandler : IRequestHandler<GetBreweryQuery, BreweryDt
     /// <summary>
     ///     Initializes GetBreweryQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="mapper">The mapper</param>
     public GetBreweryQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;

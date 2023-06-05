@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Users.Dtos;
 using MediatR;
 
 namespace Application.Users.Queries.GetUsers;
@@ -26,8 +27,8 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, PaginatedList
     /// <summary>
     ///     Handles GetUsersQuery.
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="request">The request</param>
+    /// <param name="cancellationToken">The cancellation token</param>
     public async Task<PaginatedList<UserDto>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
         return await _usersService.GetUsersAsync(request);

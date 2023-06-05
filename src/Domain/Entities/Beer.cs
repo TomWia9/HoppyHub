@@ -13,10 +13,15 @@ public class Beer : BaseAuditableEntity
     public string? Name { get; set; }
 
     /// <summary>
+    ///     The beer style id.
+    /// </summary>
+    public Guid BeerStyleId { get; set; }
+
+    /// <summary>
     ///     The beer style.
     /// </summary>
-    public string? Style { get; set; }
-    
+    public BeerStyle? BeerStyle { get; set; }
+
     /// <summary>
     ///     The alcohol by volume.
     /// </summary>
@@ -28,11 +33,6 @@ public class Beer : BaseAuditableEntity
     public double? Blg { get; set; }
 
     /// <summary>
-    ///     The extract in Plato units.
-    /// </summary>
-    public double? Plato { get; set; }
-
-    /// <summary>
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; set; }
@@ -41,14 +41,39 @@ public class Beer : BaseAuditableEntity
     ///     The beer description.
     /// </summary>
     public string? Description { get; set; }
-    
+
+    /// <summary>
+    ///     The beer composition.
+    /// </summary>
+    public string? Composition { get; set; }
+
+    /// <summary>
+    ///     The beer release date.
+    /// </summary>
+    public DateOnly? ReleaseDate { get; set; }
+
+    /// <summary>
+    ///     The beer average rating.
+    /// </summary>
+    public double Rating { get; set; }
+
     /// <summary>
     ///     The brewery id.
     /// </summary>
     public Guid BreweryId { get; set; }
-    
+
     /// <summary>
     ///     The brewery.
     /// </summary>
     public Brewery? Brewery { get; set; }
+
+    /// <summary>
+    ///     The beer opinions.
+    /// </summary>
+    public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
+
+    /// <summary>
+    ///     The favorites.
+    /// </summary>
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 }

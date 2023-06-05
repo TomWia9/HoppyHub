@@ -5,7 +5,7 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
-using Application.Users.Queries;
+using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
 using Infrastructure.Services;
@@ -86,7 +86,51 @@ public class UsersServiceTests
     }
 
     /// <summary>
-    ///     Tests that GetUSerAsync method throws NotFound exception when Id is invalid.
+    ///     Tests that GetUsernameAsync method returns Username when Id is valid.
+    /// </summary>
+    [Fact]
+    public async Task GetUsernameAsync_ShouldReturnUsername_WhenIdIsValid()
+    {
+        // Arrange
+        var user = new ApplicationUser
+        {
+            Id = Guid.NewGuid(),
+            Email = "user@example.com",
+            UserName = "user"
+        };
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+
+        // Act
+        var result = await _usersService.GetUsernameAsync(user.Id);
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Should().Be(user.UserName);
+    }
+
+    /// <summary>
+    ///     Tests that GetUsernameAsync method returns null when user not found.
+    /// </summary>
+    [Fact]
+    public async Task GetUsernameAsync_ShouldReturnsNull_WhenUserNotFound()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync((ApplicationUser?)null);
+
+        // Act
+        var result = await _usersService.GetUsernameAsync(userId);
+
+        // Assert
+        result.Should().BeNull();
+    }
+
+    /// <summary>
+    ///     Tests that GetUserAsync method throws NotFound exception when Id is invalid.
     /// </summary>
     [Fact]
     public async Task GetUserAsync_ShouldThrowNotFoundException_WhenIdIsInvalid()
