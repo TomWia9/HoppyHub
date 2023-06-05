@@ -28,17 +28,17 @@ public interface IApplicationDbContext
     ///     The beer styles.
     /// </summary>
     DbSet<BeerStyle> BeerStyles { get; }
-    
+
     /// <summary>
     ///     The beer opinions.
     /// </summary>
     DbSet<Opinion> Opinions { get; }
-    
+
     /// <summary>
     ///     The favorites.
     /// </summary>
     DbSet<Favorite> Favorites { get; }
-    
+
     /// <summary>
     ///     Provides access to database related information and operations for this context.
     /// </summary>
