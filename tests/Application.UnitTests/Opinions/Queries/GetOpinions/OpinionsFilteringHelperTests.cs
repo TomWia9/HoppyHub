@@ -1,4 +1,5 @@
-﻿using Application.Opinions.Queries.GetOpinions;
+﻿using Application.Common.Interfaces;
+using Application.Opinions.Queries.GetOpinions;
 using Domain.Entities;
 
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
@@ -10,6 +11,19 @@ namespace Application.UnitTests.Opinions.Queries.GetOpinions;
 public class OpinionsFilteringHelperTests
 {
     /// <summary>
+    ///     The opinions filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Opinion, GetOpinionsQuery> _filteringHelper;
+
+    /// <summary>
+    ///     Setups OpinionsFilteringHelperTests.
+    /// </summary>
+    public OpinionsFilteringHelperTests()
+    {
+        _filteringHelper = new OpinionsFilteringHelper();
+    }
+
+    /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
     [Fact]
@@ -19,7 +33,7 @@ public class OpinionsFilteringHelperTests
         string? sortBy = null;
 
         // Act
-        var result = OpinionsFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(OpinionsFilteringHelper.SortingColumns.First().Value);
@@ -35,7 +49,7 @@ public class OpinionsFilteringHelperTests
         const string sortBy = nameof(Opinion.Rating);
 
         // Act
-        var result = OpinionsFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(OpinionsFilteringHelper.SortingColumns[sortBy.ToUpper()]);
@@ -58,7 +72,7 @@ public class OpinionsFilteringHelperTests
         };
 
         // Act
-        var result = OpinionsFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(4, "Min and Max are merged into single delegate");
@@ -80,7 +94,7 @@ public class OpinionsFilteringHelperTests
         };
 
         // Act
-        var result = OpinionsFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(3, "Min and Max are merged into single delegate");

@@ -42,9 +42,11 @@ public class GetBreweriesQueryHandlerTests
 
         var mapper = configurationProvider.CreateMapper();
 
+        Mock<IFilteringHelper<Brewery, GetBreweriesQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Brewery>>();
-        _handler = new GetBreweriesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper);
+        _handler = new GetBreweriesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
+            filteringHelperMock.Object);
     }
 
     /// <summary>

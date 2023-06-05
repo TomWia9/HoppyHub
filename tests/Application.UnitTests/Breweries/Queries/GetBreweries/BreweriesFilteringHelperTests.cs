@@ -1,4 +1,5 @@
 ﻿using Application.Breweries.Queries.GetBreweries;
+using Application.Common.Interfaces;
 using Domain.Entities;
 
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
@@ -10,6 +11,19 @@ namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 public class BreweriesFilteringHelperTests
 {
     /// <summary>
+    ///     The breweries filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Brewery, GetBreweriesQuery> _filteringHelper;
+
+    /// <summary>
+    ///     Setups BreweriesFilteringHelperTests.
+    /// </summary>
+    public BreweriesFilteringHelperTests()
+    {
+        _filteringHelper = new BreweriesFilteringHelper();
+    }
+
+    /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
     [Fact]
@@ -19,7 +33,7 @@ public class BreweriesFilteringHelperTests
         string? sortBy = null;
 
         // Act
-        var result = BreweriesFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(BreweriesFilteringHelper.SortingColumns.First().Value);
@@ -35,7 +49,7 @@ public class BreweriesFilteringHelperTests
         const string sortBy = nameof(Brewery.FoundationYear);
 
         // Act
-        var result = BreweriesFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(BreweriesFilteringHelper.SortingColumns[sortBy.ToUpper()]);
@@ -60,7 +74,7 @@ public class BreweriesFilteringHelperTests
         };
 
         // Act
-        var result = BreweriesFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(6, "Min and Max are merged into single delegate");
@@ -84,7 +98,7 @@ public class BreweriesFilteringHelperTests
         };
 
         // Act
-        var result = BreweriesFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(5, "Min and Max are merged into single delegate");

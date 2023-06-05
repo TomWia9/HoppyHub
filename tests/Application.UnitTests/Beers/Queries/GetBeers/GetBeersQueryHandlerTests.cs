@@ -42,9 +42,11 @@ public class GetBeersQueryHandlerTests
 
         var mapper = configurationProvider.CreateMapper();
 
+        Mock<IFilteringHelper<Beer, GetBeersQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Beer>>();
-        _handler = new GetBeersQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper);
+        _handler = new GetBeersQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
+            filteringHelperMock.Object);
     }
 
     /// <summary>
@@ -143,6 +145,7 @@ public class GetBeersQueryHandlerTests
             beer.ReleaseDate.Should().BeOnOrAfter(request.MinReleaseDate.Value);
             beer.ReleaseDate.Should().BeOnOrBefore(request.MaxReleaseDate.Value);
         }
+
         result.Should().BeEquivalentTo(expectedResult,
             "beers release dates should be in requested min and max release dates");
     }

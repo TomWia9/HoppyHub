@@ -41,10 +41,12 @@ public class GetBeerStylesQueryHandlerTests
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
 
         var mapper = configurationProvider.CreateMapper();
-
+        
+        Mock<IFilteringHelper<BeerStyle, GetBeerStylesQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<BeerStyle>>();
-        _handler = new GetBeerStylesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper);
+        _handler = new GetBeerStylesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
+            filteringHelperMock.Object);
     }
 
     /// <summary>
