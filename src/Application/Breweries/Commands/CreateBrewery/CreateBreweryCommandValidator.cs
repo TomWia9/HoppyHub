@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using Application.Breweries.Commands.Common;
 using Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ namespace Application.Breweries.Commands.CreateBrewery;
 /// <summary>
 ///     CreateBreweryCommand validator
 /// </summary>
-public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryCommand>
+public class CreateBreweryCommandValidator : BaseBreweryCommandValidator<CreateBreweryCommand>
 {
     /// <summary>
     ///     The database context.
@@ -20,24 +20,11 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="dateTime">The date time service</param>
-    public CreateBreweryCommandValidator(IApplicationDbContext context, IDateTime dateTime)
+    public CreateBreweryCommandValidator(IApplicationDbContext context, IDateTime dateTime) : base(dateTime)
     {
         _context = context;
 
-        RuleFor(x => x.Description).NotEmpty().MaximumLength(5000);
-        RuleFor(x => x.FoundationYear).NotEmpty().InclusiveBetween(0, dateTime.Now.Year);
-        RuleFor(x => x.WebsiteUrl).MaximumLength(200).Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
-            .WithMessage("Invalid URL.");
-        RuleFor(x => x.Street).NotEmpty().MaximumLength(200);
-        RuleFor(x => x.Number).NotEmpty().MaximumLength(10);
-        RuleFor(x => x.PostCode).NotEmpty().Must(BeAValidPostalCode)
-            .WithMessage("Invalid postal code.");
-        RuleFor(x => x.City).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.State).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.Country).NotEmpty().MaximumLength(50);
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(500)
-            .MustAsync(BeUniqueName)
-            .WithMessage("The brewery name must be unique.");
+        RuleFor(x => x.Name).MustAsync(BeUniquelyNamed!).WithMessage(UniqueNameErrorMessage);
     }
 
     /// <summary>
@@ -46,25 +33,9 @@ public class CreateBreweryCommandValidator : AbstractValidator<CreateBreweryComm
     /// <param name="model">The CreateBreweryCommand</param>
     /// <param name="name">The brewery name</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    private async Task<bool> BeUniqueName(CreateBreweryCommand model, string name,
+    private async Task<bool> BeUniquelyNamed(CreateBreweryCommand model, string name,
         CancellationToken cancellationToken)
     {
         return await _context.Breweries.AllAsync(x => x.Name != name.Trim(), cancellationToken);
-    }
-
-    /// <summary>
-    ///     The custom rule indicating whether postcode is valid.
-    /// </summary>
-    /// <param name="postCode">The post code</param>
-    private static bool BeAValidPostalCode(string? postCode)
-    {
-        // USA format (5 digits followed by an optional dash and 4 more digits)
-        const string usaPattern = @"^\d{5}(?:[-\s]\d{4})?$";
-
-        // Poland format (2 digits, dash, 3 digits)
-        const string polandPattern = @"^\d{2}-\d{3}$";
-
-        return !string.IsNullOrEmpty(postCode) &&
-               (Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern));
     }
 }

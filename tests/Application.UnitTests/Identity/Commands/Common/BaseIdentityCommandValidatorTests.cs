@@ -1,35 +1,47 @@
-﻿using Application.Identity.Commands.LoginUser;
+﻿using Application.Identity.Commands.Common;
 using FluentValidation.TestHelper;
 
-namespace Application.UnitTests.Identity.Commands.LoginUser;
+namespace Application.UnitTests.Identity.Commands.Common;
 
 /// <summary>
-///     Tests for the <see cref="LoginUserCommandValidator"/> class.
+///     Unit tests for the <see cref="BaseIdentityCommandValidator{TCommand}"/> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class LoginUserCommandValidatorTests
+public class BaseIdentityCommandValidatorTests
 {
     /// <summary>
-    ///     The validator.
+    ///     The TestBaseIdentity command.
     /// </summary>
-    private readonly LoginUserCommandValidator _validator;
+    private record TestBaseIdentityCommand : BaseIdentityCommand;
 
     /// <summary>
-    ///     Setups LoginUserCommandValidatorTests.
+    ///     The TestBaseIdentityCommand validator.
     /// </summary>
-    public LoginUserCommandValidatorTests()
+    private class TestBaseIdentityCommandValidator : BaseIdentityCommandValidator<TestBaseIdentityCommand>
     {
-        _validator = new LoginUserCommandValidator();
     }
 
     /// <summary>
-    ///     Tests that validation should have error for Email when email is empty.
+    ///     The TestBaseIdentityCommand validator instance.
+    /// </summary>
+    private readonly TestBaseIdentityCommandValidator _validator;
+
+    /// <summary>
+    ///     Setups BaseIdentityCommandValidatorTests.
+    /// </summary>
+    public BaseIdentityCommandValidatorTests()
+    {
+        _validator = new TestBaseIdentityCommandValidator();
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for Email when Email is empty.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsEmpty()
+    public void BaseIdentityCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsEmpty()
     {
         // Arrange
-        var command = new LoginUserCommand
+        var command = new TestBaseIdentityCommand
         {
             Email = "",
             Password = "password"
@@ -46,10 +58,10 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should have error for Email when Email is invalid.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsInvalid()
+    public void BaseIdentityCommand_ShouldHaveValidationErrorForEmail_WhenEmailIsInvalid()
     {
         // Arrange
-        var command = new LoginUserCommand
+        var command = new TestBaseIdentityCommand
         {
             Email = "invalid_email_format",
             Password = "password"
@@ -66,11 +78,11 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should have error for Email when Email length is greater than maximum.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldHaveValidationErrorForEmail_WhenEmailLengthIsGreaterThanMaximum()
+    public void BaseIdentityCommand_ShouldHaveValidationErrorForEmail_WhenEmailLengthIsGreaterThanMaximum()
     {
         // Arrange
         var email = string.Join("", Enumerable.Repeat("a", 257));
-        var command = new LoginUserCommand
+        var command = new TestBaseIdentityCommand
         {
             Email = email,
             Password = "password"
@@ -87,10 +99,10 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should not have error for Email when Email is valid.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldNotHaveErrorForEmail_WhenEmailIsValid()
+    public void BaseIdentityCommand_ShouldNotHaveErrorForEmail_WhenEmailIsValid()
     {
         // Arrange
-        var command = new LoginUserCommand { Email = "test@example.com" };
+        var command = new TestBaseIdentityCommand { Email = "test@example.com" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -103,10 +115,10 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should have error for Password when Password is empty.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordIsEmpty()
+    public void BaseIdentityCommand_ShouldHaveValidationErrorForPassword_WhenPasswordIsEmpty()
     {
         // Arrange
-        var command = new LoginUserCommand()
+        var command = new TestBaseIdentityCommand()
         {
             Email = "email",
             Password = ""
@@ -123,11 +135,11 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should have error for Password when Password length is greater than maximum.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldHaveValidationErrorForPassword_WhenPasswordLengthIsGreaterThanMaximum()
+    public void BaseIdentityCommand_ShouldHaveValidationErrorForPassword_WhenPasswordLengthIsGreaterThanMaximum()
     {
         // Arrange
         var password = string.Join("", Enumerable.Repeat("a", 257));
-        var command = new LoginUserCommand
+        var command = new TestBaseIdentityCommand
         {
             Email = "email",
             Password = password
@@ -144,10 +156,10 @@ public class LoginUserCommandValidatorTests
     ///     Tests that validation should not have error for Password when Password is valid.
     /// </summary>
     [Fact]
-    public void LoginUserCommand_ShouldNotHaveValidationErrorForPassword_WhenPasswordIsValid()
+    public void BaseIdentityCommand_ShouldNotHaveValidationErrorForPassword_WhenPasswordIsValid()
     {
         // Arrange
-        var command = new LoginUserCommand() { Password = "password" };
+        var command = new TestBaseIdentityCommand() { Password = "password" };
 
         // Act
         var result = _validator.TestValidate(command);

@@ -64,6 +64,7 @@ public class CreateBeerStyleCommandHandlerTests
         result.Description.Should().Be(request.Description);
         result.CountryOfOrigin.Should().Be(request.CountryOfOrigin);
 
+        _contextMock.Verify(x => x.BeerStyles.AddAsync(It.IsAny<BeerStyle>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 }

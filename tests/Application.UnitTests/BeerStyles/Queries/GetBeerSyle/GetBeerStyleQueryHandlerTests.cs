@@ -4,7 +4,6 @@ using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
-using MockQueryable.Moq;
 using Moq;
 
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerSyle;
@@ -47,9 +46,8 @@ public class GetBeerStyleQueryHandlerTests
         var beerStyleId = Guid.NewGuid();
         var beerStyle = new BeerStyle
             { Id = beerStyleId, Name = "IPA", Description = "test description", CountryOfOrigin = "USA" };
-        var beerStyles = new List<BeerStyle> { beerStyle };
-        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+        _contextMock.Setup(x => x.BeerStyles.FindAsync(new object[] { beerStyleId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(beerStyle);
 
         var query = new GetBeerStyleQuery { Id = beerStyleId };
 
@@ -71,9 +69,9 @@ public class GetBeerStyleQueryHandlerTests
     public async Task Handle_ShouldThrowNotFoundException_WhenIdIsInvalid()
     {
         // Arrange
-        var beerStyles = Enumerable.Empty<BeerStyle>();
-        var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+        _contextMock
+            .Setup(x => x.BeerStyles.FindAsync(new object[] { It.IsAny<Guid>() }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((BeerStyle?)null);
         var query = new GetBeerStyleQuery { Id = Guid.NewGuid() };
 
         // Act & Assert

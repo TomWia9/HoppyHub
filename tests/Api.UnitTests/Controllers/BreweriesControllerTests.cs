@@ -52,7 +52,7 @@ public class BreweriesControllerTests : ControllerSetup<BreweriesController>
     {
         // Arrange
         var breweryId = Guid.NewGuid();
-        var expectedResult = new BreweryDto() { Id = breweryId, Name = "Test brewery" };
+        var expectedResult = new BreweryDto { Id = breweryId, Name = "Test brewery" };
 
         MediatorMock.Setup(m => m.Send(It.IsAny<GetBreweryQuery>(), CancellationToken.None))
             .ReturnsAsync(expectedResult);

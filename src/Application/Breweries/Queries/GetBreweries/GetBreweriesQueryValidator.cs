@@ -20,10 +20,10 @@ public class GetBreweriesQueryValidator : QueryValidator<GetBreweriesQuery>
         RuleFor(x => x.City).MaximumLength(50);
         RuleFor(x => x.MinFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
             .LessThanOrEqualTo(x => x.MaxFoundationYear)
-            .WithMessage("Min value must be less than or equal to Max value");
+            .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
             .GreaterThanOrEqualTo(x => x.MinFoundationYear)
-            .WithMessage("Max value must be greater than or equal to Min value");
+            .WithMessage(MaxValueMessage);
         RuleFor(x => x.SortBy)
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) ||

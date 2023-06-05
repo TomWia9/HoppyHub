@@ -13,5 +13,5 @@ public record GetFavoritesQuery : QueryParameters, IRequest<PaginatedList<BeerDt
     /// <summary>
     ///     The user id.
     /// </summary>
-    public Guid UserId { get; set; }
+    public Guid UserId { get; init; }
 }

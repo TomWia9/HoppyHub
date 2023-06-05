@@ -1,4 +1,5 @@
-﻿using Application.BeerStyles.Queries.GetBeerStyles;
+﻿using Application.BeerStyles.Dtos;
+using Application.BeerStyles.Queries.GetBeerStyles;
 using FluentValidation.TestHelper;
 
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerStyles;
@@ -64,8 +65,8 @@ public class GetBeerStylesQueryValidatorTests
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>
     [Theory]
-    [InlineData("name")]
-    [InlineData("countryOfOrigin")]
+    [InlineData(nameof(BeerStyleDto.Name))]
+    [InlineData(nameof(BeerStyleDto.CountryOfOrigin))]
     [InlineData("")]
     [InlineData(null)]
     public void GetBeerStylesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)

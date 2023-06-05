@@ -1,4 +1,5 @@
-﻿using Application.Opinions.Queries.GetOpinions;
+﻿using Application.Opinions.Dtos;
+using Application.Opinions.Queries.GetOpinions;
 using FluentValidation.TestHelper;
 
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
@@ -152,9 +153,9 @@ public class GetOpinionsQueryValidatorTests
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>
     [Theory]
-    [InlineData("lastModified")]
-    [InlineData("rating")]
-    [InlineData("comment")]
+    [InlineData(nameof(OpinionDto.LastModified))]
+    [InlineData(nameof(OpinionDto.Rating))]
+    [InlineData(nameof(OpinionDto.Comment))]
     [InlineData("")]
     [InlineData(null)]
     public void GetOpinionsQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)

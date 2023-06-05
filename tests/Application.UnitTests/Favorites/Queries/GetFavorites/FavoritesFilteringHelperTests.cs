@@ -1,4 +1,5 @@
-﻿using Application.Favorites.Queries.GetFavorites;
+﻿using Application.Common.Interfaces;
+using Application.Favorites.Queries.GetFavorites;
 using Domain.Entities;
 
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
@@ -10,6 +11,19 @@ namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 public class FavoritesFilteringHelperTests
 {
     /// <summary>
+    ///     The favorites filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Favorite, GetFavoritesQuery> _filteringHelper;
+
+    /// <summary>
+    ///     Setups FavoritesFilteringHelperTests.
+    /// </summary>
+    public FavoritesFilteringHelperTests()
+    {
+        _filteringHelper = new FavoritesFilteringHelper();
+    }
+    
+    /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
     [Fact]
@@ -19,7 +33,7 @@ public class FavoritesFilteringHelperTests
         string? sortBy = null;
 
         // Act
-        var result = FavoritesFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(FavoritesFilteringHelper.SortingColumns.First().Value);
@@ -35,7 +49,7 @@ public class FavoritesFilteringHelperTests
         const string sortBy = nameof(Favorite.Beer);
 
         // Act
-        var result = FavoritesFilteringHelper.GetSortingColumn(sortBy);
+        var result = _filteringHelper.GetSortingColumn(sortBy);
 
         // Assert
         result.Should().Be(FavoritesFilteringHelper.SortingColumns[sortBy.ToUpper()]);
@@ -55,7 +69,7 @@ public class FavoritesFilteringHelperTests
         };
 
         // Act
-        var result = FavoritesFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(2);
@@ -74,7 +88,7 @@ public class FavoritesFilteringHelperTests
         };
 
         // Act
-        var result = FavoritesFilteringHelper.GetDelegates(request);
+        var result = _filteringHelper.GetDelegates(request);
 
         // Assert
         result.Should().HaveCount(1);

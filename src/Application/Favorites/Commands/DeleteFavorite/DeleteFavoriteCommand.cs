@@ -10,5 +10,5 @@ public record DeleteFavoriteCommand : IRequest
     /// <summary>
     ///     The added to favorites beer id.
     /// </summary>
-    public Guid BeerId { get; set; }
+    public Guid BeerId { get; init; }
 }

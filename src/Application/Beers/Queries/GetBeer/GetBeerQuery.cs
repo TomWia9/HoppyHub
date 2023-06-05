@@ -11,5 +11,5 @@ public record GetBeerQuery : IRequest<BeerDto>
     /// <summary>
     ///     The beer id.
     /// </summary>
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 }

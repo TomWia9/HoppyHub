@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Common.Abstractions;
 using Domain.Entities;
 
 namespace Application.Opinions.Queries.GetOpinions;
@@ -6,8 +7,15 @@ namespace Application.Opinions.Queries.GetOpinions;
 /// <summary>
 ///     OpinionsFilteringHelper class.
 /// </summary>
-public static class OpinionsFilteringHelper
+public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQuery>
 {
+    /// <summary>
+    ///     Initializes OpinionsFilteringHelper.
+    /// </summary>
+    public OpinionsFilteringHelper() : base(SortingColumns)
+    {
+    }
+    
     /// <summary>
     ///     Opinions sorting columns.
     /// </summary>
@@ -19,20 +27,10 @@ public static class OpinionsFilteringHelper
     };
 
     /// <summary>
-    ///     Gets sorting column expression.
-    /// </summary>
-    /// <param name="sortBy">Column by which to sort</param>
-    /// <returns>The sorting expression</returns>
-    public static Expression<Func<Opinion, object>> GetSortingColumn(string? sortBy)
-    {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
-    }
-
-    /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
     /// <param name="request">The GetOpinionsQuery</param>
-    public static IEnumerable<Expression<Func<Opinion, bool>>> GetDelegates(GetOpinionsQuery request)
+    public override IEnumerable<Expression<Func<Opinion, bool>>> GetDelegates(GetOpinionsQuery request)
     {
         var delegates = new List<Expression<Func<Opinion, bool>>>
         {

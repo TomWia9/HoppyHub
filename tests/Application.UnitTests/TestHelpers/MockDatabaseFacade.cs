@@ -9,6 +9,7 @@ namespace Application.UnitTests.TestHelpers;
 /// <summary>
 ///     Database facade mock.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public class MockDatabaseFacade : DatabaseFacade
 {
     /// <summary>

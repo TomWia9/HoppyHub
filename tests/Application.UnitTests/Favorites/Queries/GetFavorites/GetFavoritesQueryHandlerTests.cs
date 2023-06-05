@@ -41,9 +41,10 @@ public class GetFavoritesQueryHandlerTests
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
 
+        Mock<IFilteringHelper<Favorite, GetFavoritesQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Favorite>>();
-        _handler = new GetFavoritesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper);
+        _handler = new GetFavoritesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper, filteringHelperMock.Object);
     }
 
     /// <summary>

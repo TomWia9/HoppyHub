@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Opinions.Commands.Common;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace Application.Opinions.Commands.CreateOpinion;
 /// <summary>
 ///     CreateOpinionCommand validator.
 /// </summary>
-public class CreateOpinionCommandValidator : AbstractValidator<CreateOpinionCommand>
+public class CreateOpinionCommandValidator : BaseOpinionCommandValidator<CreateOpinionCommand>
 {
     /// <summary>
     ///     The database context.
@@ -29,8 +30,6 @@ public class CreateOpinionCommandValidator : AbstractValidator<CreateOpinionComm
         _context = context;
         _currentUserService = currentUserService;
         
-        RuleFor(x => x.Rating).NotEmpty().InclusiveBetween(1, 10);
-        RuleFor(x => x.Comment).MaximumLength(1000);
         RuleFor(x => x.BeerId).NotEmpty().MustAsync(BeSingleOpinionPerBeer)
             .WithMessage("Only one opinion per beer is allowed.");
     }

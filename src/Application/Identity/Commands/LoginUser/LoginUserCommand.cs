@@ -1,4 +1,5 @@
 ﻿using Application.Common.Models;
+using Application.Identity.Commands.Common;
 using MediatR;
 
 namespace Application.Identity.Commands.LoginUser;
@@ -6,15 +7,4 @@ namespace Application.Identity.Commands.LoginUser;
 /// <summary>
 ///     LoginUser command.
 /// </summary>
-public record LoginUserCommand : IRequest<AuthenticationResult>
-{
-    /// <summary>
-    ///     The user email.
-    /// </summary>
-    public string? Email { get; init; }
-
-    /// <summary>
-    ///     The password.
-    /// </summary>
-    public string? Password { get; init; }
-}
+public record LoginUserCommand : BaseIdentityCommand, IRequest<AuthenticationResult>;

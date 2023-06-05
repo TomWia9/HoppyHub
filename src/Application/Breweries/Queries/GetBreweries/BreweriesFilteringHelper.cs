@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Common.Abstractions;
 using Domain.Entities;
 
 namespace Application.Breweries.Queries.GetBreweries;
@@ -6,8 +7,15 @@ namespace Application.Breweries.Queries.GetBreweries;
 /// <summary>
 ///     BreweriesFilteringHelper class.
 /// </summary>
-public static class BreweriesFilteringHelper
+public class BreweriesFilteringHelper : FilteringHelperBase<Brewery, GetBreweriesQuery>
 {
+    /// <summary>
+    ///     Initializes BreweriesFilteringHelper.
+    /// </summary>
+    public BreweriesFilteringHelper() : base(SortingColumns)
+    {
+    }
+    
     /// <summary>
     ///     Breweries sorting columns.
     /// </summary>
@@ -16,22 +24,12 @@ public static class BreweriesFilteringHelper
         { nameof(Brewery.Name).ToUpper(), x => x.Name ?? string.Empty },
         { nameof(Brewery.FoundationYear).ToUpper(), x => x.FoundationYear }
     };
-
-    /// <summary>
-    ///     Gets sorting column expression.
-    /// </summary>
-    /// <param name="sortBy">Column by which to sort</param>
-    /// <returns>The sorting expression</returns>
-    public static Expression<Func<Brewery, object>> GetSortingColumn(string? sortBy)
-    {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
-    }
-
+    
     /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
     /// <param name="request">The GetBreweriesQuery</param>
-    public static IEnumerable<Expression<Func<Brewery, bool>>> GetDelegates(GetBreweriesQuery request)
+    public override IEnumerable<Expression<Func<Brewery, bool>>> GetDelegates(GetBreweriesQuery request)
     {
         var delegates = new List<Expression<Func<Brewery, bool>>>
         {

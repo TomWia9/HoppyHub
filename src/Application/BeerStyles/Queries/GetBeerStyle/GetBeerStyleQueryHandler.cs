@@ -41,8 +41,8 @@ public class GetBeerStyleQueryHandler : IRequestHandler<GetBeerStyleQuery, BeerS
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerStyleDto> Handle(GetBeerStyleQuery request, CancellationToken cancellationToken)
     {
-        var beerStyle = await _context.BeerStyles
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+        var beerStyle =
+            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
         if (beerStyle == null)
         {

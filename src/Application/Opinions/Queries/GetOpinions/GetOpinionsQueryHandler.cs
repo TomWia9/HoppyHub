@@ -35,15 +35,26 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     private readonly IUsersService _usersService;
 
     /// <summary>
+    ///     The opinions filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Opinion, GetOpinionsQuery> _filteringHelper;
+
+    /// <summary>
     ///     Initializes GetOpinionsQueryHandler.
     /// </summary>
+    /// <param name="context">The database context</param>
+    /// <param name="mapper">The mapper</param>
+    /// <param name="queryService">The query service</param>
+    /// <param name="usersService">The users service</param>
+    /// <param name="filteringHelper">The opinions filtering helper</param>
     public GetOpinionsQueryHandler(IApplicationDbContext context, IQueryService<Opinion> queryService, IMapper mapper,
-        IUsersService usersService)
+        IUsersService usersService, IFilteringHelper<Opinion, GetOpinionsQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
         _usersService = usersService;
+        _filteringHelper = filteringHelper;
     }
 
     /// <summary>
@@ -55,8 +66,8 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     {
         var opinionsCollection = _context.Opinions.AsQueryable();
 
-        var delegates = OpinionsFilteringHelper.GetDelegates(request);
-        var sortingColumn = OpinionsFilteringHelper.GetSortingColumn(request.SortBy);
+        var delegates = _filteringHelper.GetDelegates(request);
+        var sortingColumn = _filteringHelper.GetSortingColumn(request.SortBy);
 
         opinionsCollection = _queryService.Filter(opinionsCollection, delegates);
         opinionsCollection = _queryService.Sort(opinionsCollection, sortingColumn, request.SortDirection);

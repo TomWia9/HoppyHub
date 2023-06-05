@@ -83,6 +83,7 @@ public class CreateBeerCommandHandlerTests
         result.Ibu.Should().Be(request.Ibu);
         result.ReleaseDate.Should().Be(request.ReleaseDate);
 
+        _contextMock.Verify(x => x.Beers.AddAsync(It.IsAny<Beer>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 

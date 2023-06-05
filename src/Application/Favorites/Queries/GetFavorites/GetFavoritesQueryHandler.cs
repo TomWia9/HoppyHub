@@ -30,13 +30,24 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Pagin
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The favorites filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<Favorite, GetFavoritesQuery> _filteringHelper;
+
+    /// <summary>
     ///     Initializes GetFavoritesQueryHandler.
     /// </summary>
-    public GetFavoritesQueryHandler(IApplicationDbContext context, IQueryService<Favorite> queryService, IMapper mapper)
+    /// <param name="context">The database context</param>
+    /// <param name="queryService">The query service</param>
+    /// <param name="mapper">The mapper</param>
+    /// <param name="filteringHelper">The favorites filtering helper</param>
+    public GetFavoritesQueryHandler(IApplicationDbContext context, IQueryService<Favorite> queryService, IMapper mapper,
+        IFilteringHelper<Favorite, GetFavoritesQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
+        _filteringHelper = filteringHelper;
     }
 
     /// <summary>
@@ -48,8 +59,8 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Pagin
     {
         var favoritesCollection = _context.Favorites.AsQueryable();
 
-        var delegates = FavoritesFilteringHelper.GetDelegates(request);
-        var sortingColumn = FavoritesFilteringHelper.GetSortingColumn(request.SortBy);
+        var delegates = _filteringHelper.GetDelegates(request);
+        var sortingColumn = _filteringHelper.GetSortingColumn(request.SortBy);
 
         favoritesCollection = _queryService.Filter(favoritesCollection, delegates);
         favoritesCollection = _queryService.Sort(favoritesCollection, sortingColumn, request.SortDirection);

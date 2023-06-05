@@ -15,6 +15,7 @@ public class BreweriesController : ApiControllerBase
     /// <summary>
     ///     Gets breweries.
     /// </summary>
+    /// <param name="query">The GetBreweriesQuery</param>
     /// <returns>An ActionResult of type PaginatedList of BreweryDto</returns>
     [HttpGet]
     public async Task<ActionResult<BreweryDto>> GetBreweries([FromQuery] GetBreweriesQuery query)

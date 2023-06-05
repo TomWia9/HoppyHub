@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.BeerStyles.Commands.Common;
+using Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace Application.BeerStyles.Commands.CreateBeerStyle;
 /// <summary>
 ///     CreateBeerStyleCommand validator.
 /// </summary>
-public class CreateBeerStyleCommandValidator : AbstractValidator<CreateBeerStyleCommand>
+public class CreateBeerStyleCommandValidator : BaseBeerStyleCommandValidator<CreateBeerStyleCommand>
 {
     /// <summary>
     ///     The database context.
@@ -22,10 +23,8 @@ public class CreateBeerStyleCommandValidator : AbstractValidator<CreateBeerStyle
     {
         _context = context;
 
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(100).MustAsync(BeUniquelyNamed)
-            .WithMessage("The beer style name must be unique.");
-        RuleFor(x => x.Description).NotEmpty().MaximumLength(1000);
-        RuleFor(x => x.CountryOfOrigin).NotEmpty().MaximumLength(50);
+        RuleFor(x => x.Name).MustAsync(BeUniquelyNamed!)
+            .WithMessage(UniqueNameErrorMessage);
     }
 
     /// <summary>

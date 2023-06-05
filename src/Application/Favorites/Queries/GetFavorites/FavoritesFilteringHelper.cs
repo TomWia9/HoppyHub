@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Application.Common.Abstractions;
 using Domain.Entities;
 
 namespace Application.Favorites.Queries.GetFavorites;
@@ -6,8 +7,15 @@ namespace Application.Favorites.Queries.GetFavorites;
 /// <summary>
 ///     FavoritesFilteringHelper class.
 /// </summary>
-public class FavoritesFilteringHelper
+public class FavoritesFilteringHelper : FilteringHelperBase<Favorite, GetFavoritesQuery>
 {
+    /// <summary>
+    ///     Initializes FavoritesFilteringHelper.
+    /// </summary>
+    public FavoritesFilteringHelper() : base(SortingColumns)
+    {
+    }
+
     /// <summary>
     ///     Favorites sorting columns.
     /// </summary>
@@ -18,20 +26,10 @@ public class FavoritesFilteringHelper
     };
 
     /// <summary>
-    ///     Gets sorting column expression.
-    /// </summary>
-    /// <param name="sortBy">Column by which to sort</param>
-    /// <returns>The sorting expression</returns>
-    public static Expression<Func<Favorite, object>> GetSortingColumn(string? sortBy)
-    {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
-    }
-
-    /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
     /// <param name="request">The GetFavoritesQuery</param>
-    public static IEnumerable<Expression<Func<Favorite, bool>>> GetDelegates(GetFavoritesQuery request)
+    public override IEnumerable<Expression<Func<Favorite, bool>>> GetDelegates(GetFavoritesQuery request)
     {
         var delegates = new List<Expression<Func<Favorite, bool>>>
         {

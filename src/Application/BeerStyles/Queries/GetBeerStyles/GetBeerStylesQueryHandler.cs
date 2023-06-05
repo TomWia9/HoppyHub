@@ -30,17 +30,24 @@ public class GetBeerStylesQueryHandler : IRequestHandler<GetBeerStylesQuery, Pag
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The beer styles filtering helper.
+    /// </summary>
+    private readonly IFilteringHelper<BeerStyle, GetBeerStylesQuery> _filteringHelper;
+
+    /// <summary>
     ///     Initializes GetBeerStylesQueryHandler
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="queryService">The query service</param>
     /// <param name="mapper">The mapper</param>
+    /// <param name="filteringHelper">The beer styles filtering helper</param>
     public GetBeerStylesQueryHandler(IApplicationDbContext context, IQueryService<BeerStyle> queryService,
-        IMapper mapper)
+        IMapper mapper, IFilteringHelper<BeerStyle, GetBeerStylesQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
+        _filteringHelper = filteringHelper;
     }
 
     /// <summary>
@@ -53,8 +60,8 @@ public class GetBeerStylesQueryHandler : IRequestHandler<GetBeerStylesQuery, Pag
     {
         var beerStylesCollection = _context.BeerStyles.AsQueryable();
 
-        var delegates = BeerStylesFilteringHelper.GetDelegates(request);
-        var sortingColumn = BeerStylesFilteringHelper.GetSortingColumn(request.SortBy);
+        var delegates = _filteringHelper.GetDelegates(request);
+        var sortingColumn = _filteringHelper.GetSortingColumn(request.SortBy);
 
         beerStylesCollection = _queryService.Filter(beerStylesCollection, delegates);
         beerStylesCollection = _queryService.Sort(beerStylesCollection, sortingColumn, request.SortDirection);

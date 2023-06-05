@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Application.Beers.Dtos;
+using Application.Common.Abstractions;
 using Domain.Entities;
 
 namespace Application.Beers.Queries.GetBeers;
@@ -7,8 +8,15 @@ namespace Application.Beers.Queries.GetBeers;
 /// <summary>
 ///     BeersFilteringHelper class.
 /// </summary>
-public static class BeersFilteringHelper
+public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
 {
+    /// <summary>
+    ///     Initializes BeersFilteringHelper.
+    /// </summary>
+    public BeersFilteringHelper() : base(SortingColumns)
+    {
+    }
+    
     /// <summary>
     ///     Beers sorting columns.
     /// </summary>
@@ -26,20 +34,10 @@ public static class BeersFilteringHelper
     };
 
     /// <summary>
-    ///     Gets sorting column expression.
-    /// </summary>
-    /// <param name="sortBy">Column by which to sort</param>
-    /// <returns>The sorting expression</returns>
-    public static Expression<Func<Beer, object>> GetSortingColumn(string? sortBy)
-    {
-        return string.IsNullOrEmpty(sortBy) ? SortingColumns.First().Value : SortingColumns[sortBy.ToUpper()];
-    }
-
-    /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
     /// <param name="request">The GetBeersQuery</param>
-    public static IEnumerable<Expression<Func<Beer, bool>>> GetDelegates(GetBeersQuery request)
+    public override IEnumerable<Expression<Func<Beer, bool>>> GetDelegates(GetBeersQuery request)
     {
         var delegates = new List<Expression<Func<Beer, bool>>>
         {

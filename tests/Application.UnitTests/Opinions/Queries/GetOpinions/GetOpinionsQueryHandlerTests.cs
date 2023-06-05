@@ -47,11 +47,12 @@ public class GetOpinionsQueryHandlerTests
 
         var mapper = configurationProvider.CreateMapper();
 
+        Mock<IFilteringHelper<Opinion, GetOpinionsQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Opinion>>();
         _usersServiceMock = new Mock<IUsersService>();
         _handler = new GetOpinionsQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
-            _usersServiceMock.Object);
+            _usersServiceMock.Object, filteringHelperMock.Object);
     }
 
     /// <summary>
