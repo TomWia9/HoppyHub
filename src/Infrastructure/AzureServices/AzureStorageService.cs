@@ -88,35 +88,6 @@ public class AzureStorageService : IAzureStorageService
     }
 
     /// <summary>
-    ///     Downloads a blob with the specified filename.
-    /// </summary>
-    /// <param name="blobFilename">Filename</param>
-    /// <returns>Blob</returns>
-    public async Task<BlobDto?> DownloadAsync(string blobFilename)
-    {
-        try
-        {
-            var file = _blobContainerClient.GetBlobClient(blobFilename);
-
-            if (await file.ExistsAsync())
-            {
-                var data = await file.OpenReadAsync();
-                var content = await file.DownloadContentAsync();
-                var contentType = content.Value.Details.ContentType;
-
-                return new BlobDto { Content = data, Name = blobFilename, ContentType = contentType };
-            }
-        }
-        catch (RequestFailedException ex)
-            when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
-        {
-            _logger.LogError("File {BlobFilename} was not found", blobFilename);
-        }
-
-        return null;
-    }
-
-    /// <summary>
     ///     Deletes a blob with the specified filename.
     /// </summary>
     /// <param name="blobFilename">Filename</param>
@@ -138,4 +109,34 @@ public class AzureStorageService : IAzureStorageService
 
         return new BlobResponseDto { Error = false, Status = $"File: {blobFilename} has been successfully deleted." };
     }
+
+    // probably not needed, at least for now
+    // /// <summary>
+    // ///     Downloads a blob with the specified filename.
+    // /// </summary>
+    // /// <param name="blobFilename">Filename</param>
+    // /// <returns>Blob</returns>
+    // public async Task<BlobDto?> DownloadAsync(string blobFilename)
+    // {
+    //     try
+    //     {
+    //         var file = _blobContainerClient.GetBlobClient(blobFilename);
+    //
+    //         if (await file.ExistsAsync())
+    //         {
+    //             var data = await file.OpenReadAsync();
+    //             var content = await file.DownloadContentAsync();
+    //             var contentType = content.Value.Details.ContentType;
+    //
+    //             return new BlobDto { Content = data, Name = blobFilename, ContentType = contentType };
+    //         }
+    //     }
+    //     catch (RequestFailedException ex)
+    //         when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
+    //     {
+    //         _logger.LogError("File {BlobFilename} was not found", blobFilename);
+    //     }
+    //
+    //     return null;
+    // }
 }

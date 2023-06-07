@@ -16,22 +16,17 @@ public interface IAzureStorageService
     Task<BlobResponseDto> UploadAsync(IFormFile blob);
 
     /// <summary>
-    ///     Downloads a blob with the specified filename.
-    /// </summary>
-    /// <param name="blobFilename">Filename</param>
-    /// <returns>Blob</returns>
-    Task<BlobDto?> DownloadAsync(string blobFilename);
-
-    /// <summary>
     ///     Deletes a blob with the specified filename.
     /// </summary>
     /// <param name="blobFilename">Filename</param>
     /// <returns>BlobResponseDto with status</returns>
     Task<BlobResponseDto> DeleteAsync(string blobFilename);
 
+    // Probably not needed, at least for now
     // /// <summary>
-    // ///     Returns a list of all files located in the specified path in container.
+    // ///     Downloads a blob with the specified filename.
     // /// </summary>
-    // /// <returns>Blobs in a list</returns>
-    // Task<List<BlobDto>> ListAsync();
+    // /// <param name="blobFilename">Filename</param>
+    // /// <returns>Blob</returns>
+    // Task<BlobDto?> DownloadAsync(string blobFilename);
 }
