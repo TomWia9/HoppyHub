@@ -37,14 +37,18 @@ app.MapControllers();
 try
 {
     Log.Information("Starting Hoppy Hub");
-    
+
     using (var scope = app.Services.CreateScope())
     {
         var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
         await initializer.InitializeAsync();
-        await initializer.SeedAsync();
+
+        if (app.Environment.IsDevelopment())
+        {
+            await initializer.SeedAsync();
+        }
     }
-    
+
     app.Run();
 }
 catch (Exception e)
