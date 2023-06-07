@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Infrastructure.AzureServices;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -38,6 +39,7 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
+        services.AddTransient<IAzureStorageService, AzureStorageService>();
 
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
