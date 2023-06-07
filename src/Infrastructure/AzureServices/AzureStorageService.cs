@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.Models.BlobContainer;
 using Azure;
 using Azure.Storage.Blobs;
@@ -32,11 +33,33 @@ public class AzureStorageService : IAzureStorageService
     public AzureStorageService(ILogger<AzureStorageService> logger, IConfiguration configuration)
     {
         _logger = logger;
+        _blobContainerClient = CreateBlobContainerClient(configuration);
+    }
 
+    private BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
+    {
         var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
         var blobContainerName = configuration.GetValue<string>("BlobContainerSettings:BlobContainerName");
 
-        _blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
+        if (string.IsNullOrEmpty(blobConnectionString))
+        {
+            throw new RemoteServiceConnectionException("The blob storage connection string is null");
+        }
+
+        if (string.IsNullOrEmpty(blobContainerName))
+        {
+            throw new RemoteServiceConnectionException("The blob storage container name is null");
+        }
+
+        try
+        {
+            return new BlobContainerClient(blobConnectionString, blobContainerName);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Cannot connect to te blob container. Exception message: {ExMessage}", e.Message);
+            throw new RemoteServiceConnectionException(e.Message);
+        }
     }
 
     /// <summary>
@@ -109,34 +132,4 @@ public class AzureStorageService : IAzureStorageService
 
         return new BlobResponseDto { Error = false, Status = $"File: {blobFilename} has been successfully deleted." };
     }
-
-    // probably not needed, at least for now
-    // /// <summary>
-    // ///     Downloads a blob with the specified filename.
-    // /// </summary>
-    // /// <param name="blobFilename">Filename</param>
-    // /// <returns>Blob</returns>
-    // public async Task<BlobDto?> DownloadAsync(string blobFilename)
-    // {
-    //     try
-    //     {
-    //         var file = _blobContainerClient.GetBlobClient(blobFilename);
-    //
-    //         if (await file.ExistsAsync())
-    //         {
-    //             var data = await file.OpenReadAsync();
-    //             var content = await file.DownloadContentAsync();
-    //             var contentType = content.Value.Details.ContentType;
-    //
-    //             return new BlobDto { Content = data, Name = blobFilename, ContentType = contentType };
-    //         }
-    //     }
-    //     catch (RequestFailedException ex)
-    //         when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
-    //     {
-    //         _logger.LogError("File {BlobFilename} was not found", blobFilename);
-    //     }
-    //
-    //     return null;
-    // }
 }

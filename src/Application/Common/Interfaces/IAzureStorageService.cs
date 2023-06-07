@@ -21,12 +21,4 @@ public interface IAzureStorageService
     /// <param name="blobFilename">Filename</param>
     /// <returns>BlobResponseDto with status</returns>
     Task<BlobResponseDto> DeleteAsync(string blobFilename);
-
-    // Probably not needed, at least for now
-    // /// <summary>
-    // ///     Downloads a blob with the specified filename.
-    // /// </summary>
-    // /// <param name="blobFilename">Filename</param>
-    // /// <returns>Blob</returns>
-    // Task<BlobDto?> DownloadAsync(string blobFilename);
 }
