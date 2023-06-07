@@ -32,8 +32,4 @@
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="Controllers\TestStorageController.cs" />
-    </ItemGroup>
-
 </Project>

@@ -77,24 +77,13 @@ public class AzureStorageService : IAzureStorageService
 
             await using (var data = blob.OpenReadStream())
             {
-                await client.UploadAsync(data);
+                await client.UploadAsync(data, true);
             }
 
             response.Status = $"File {blob.FileName} Uploaded Successfully";
             response.Error = false;
             response.Blob.Uri = client.Uri.AbsoluteUri;
             response.Blob.Name = client.Name;
-        }
-        catch (RequestFailedException ex)
-            when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
-        {
-            _logger.LogError("File with name '{BlobFileName}' already exists in container", blob.FileName);
-
-            response.Status =
-                $"File with name {blob.FileName} already exists in container. Please use another name to store your file.";
-            response.Error = true;
-
-            return response;
         }
         catch (RequestFailedException ex)
         {
