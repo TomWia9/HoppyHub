@@ -36,6 +36,10 @@ public class AzureStorageService : IAzureStorageService
         _blobContainerClient = CreateBlobContainerClient(configuration);
     }
 
+    /// <summary>
+    ///     Creates blob container client.
+    /// </summary>
+    /// <param name="configuration">The configuration</param>
     private BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
     {
         var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
