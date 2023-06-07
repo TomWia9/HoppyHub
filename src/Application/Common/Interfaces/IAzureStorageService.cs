@@ -20,7 +20,7 @@ public interface IAzureStorageService
     /// </summary>
     /// <param name="blobFilename">Filename</param>
     /// <returns>Blob</returns>
-    Task<BlobDto> DownloadAsync(string blobFilename);
+    Task<BlobDto?> DownloadAsync(string blobFilename);
 
     /// <summary>
     ///     Deletes a blob with the specified filename.
@@ -30,7 +30,7 @@ public interface IAzureStorageService
     Task<BlobResponseDto> DeleteAsync(string blobFilename);
 
     // /// <summary>
-    // ///     Returns a list of all files located in the container.
+    // ///     Returns a list of all files located in the specified path in container.
     // /// </summary>
     // /// <returns>Blobs in a list</returns>
     // Task<List<BlobDto>> ListAsync();

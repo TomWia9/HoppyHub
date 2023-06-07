@@ -62,27 +62,28 @@ public class AzureStorageService : IAzureStorageService
             response.Blob.Uri = client.Uri.AbsoluteUri;
             response.Blob.Name = client.Name;
         }
-        // If the file already exists, we catch the exception and do not upload it
         catch (RequestFailedException ex)
             when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
         {
             _logger.LogError("File with name '{BlobFileName}' already exists in container", blob.FileName);
+
             response.Status =
                 $"File with name {blob.FileName} already exists in container. Please use another name to store your file.";
             response.Error = true;
+
             return response;
         }
-        // If we get an unexpected error, we catch it here and return the error message
         catch (RequestFailedException ex)
         {
-            // Log error to console and create a new response we can return to the requesting method
-            _logger.LogError($"Unhandled Exception. ID: {ex.StackTrace} - Message: {ex.Message}");
+            _logger.LogError("Unhandled Exception. ID: {ExStackTrace} - Message: {ExMessage}", ex.StackTrace,
+                ex.Message);
+
             response.Status = $"Unexpected error: {ex.StackTrace}. Check log with StackTrace ID.";
             response.Error = true;
+
             return response;
         }
 
-        // Return the BlobUploadResponse object
         return response;
     }
 
@@ -91,9 +92,28 @@ public class AzureStorageService : IAzureStorageService
     /// </summary>
     /// <param name="blobFilename">Filename</param>
     /// <returns>Blob</returns>
-    public async Task<BlobDto> DownloadAsync(string blobFilename)
+    public async Task<BlobDto?> DownloadAsync(string blobFilename)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var file = _blobContainerClient.GetBlobClient(blobFilename);
+
+            if (await file.ExistsAsync())
+            {
+                var data = await file.OpenReadAsync();
+                var content = await file.DownloadContentAsync();
+                var contentType = content.Value.Details.ContentType;
+
+                return new BlobDto { Content = data, Name = blobFilename, ContentType = contentType };
+            }
+        }
+        catch (RequestFailedException ex)
+            when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
+        {
+            _logger.LogError("File {BlobFilename} was not found", blobFilename);
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -103,6 +123,19 @@ public class AzureStorageService : IAzureStorageService
     /// <returns>BlobResponseDto with status</returns>
     public async Task<BlobResponseDto> DeleteAsync(string blobFilename)
     {
-        throw new NotImplementedException();
+        var file = _blobContainerClient.GetBlobClient(blobFilename);
+
+        try
+        {
+            await file.DeleteAsync();
+        }
+        catch (RequestFailedException ex)
+            when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
+        {
+            _logger.LogError("File {BlobFilename} was not found", blobFilename);
+            return new BlobResponseDto { Error = true, Status = $"File with name {blobFilename} not found." };
+        }
+
+        return new BlobResponseDto { Error = false, Status = $"File: {blobFilename} has been successfully deleted." };
     }
 }
