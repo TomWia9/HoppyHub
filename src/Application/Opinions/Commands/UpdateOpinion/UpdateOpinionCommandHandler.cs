@@ -68,19 +68,33 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             throw new ForbiddenAccessException();
         }
 
-        var imageUri = await HandleOpinionImageAsync(request.Image, entity.BeerId, entity.ImageUri);
+        var entityImageUri = entity.ImageUri;
+
+        if (request.Image != null)
+        {
+            entity.ImageUri = await HandleOpinionImageUploadAsync(request.Image, entity.BeerId);
+        }
+        else
+        {
+            entity.ImageUri = null;
+        }
+
+        entity.Rating = request.Rating;
+        entity.Comment = request.Comment;
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
         try
         {
-            entity.Rating = request.Rating;
-            entity.Comment = request.Comment;
-            entity.ImageUri = imageUri;
-
             await _context.SaveChangesAsync(cancellationToken);
             await _beersService.CalculateBeerRatingAsync(entity.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
+
+            if (request.Image == null && !string.IsNullOrEmpty(entityImageUri))
+            {
+                await HandleOpinionImageDeleteAsync(entityImageUri);
+            }
+
             await transaction.CommitAsync(cancellationToken);
         }
         catch
@@ -91,46 +105,39 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     }
 
     /// <summary>
-    ///     Uploads image to blob container and returns image uri if request contains image, deletes it otherwise.
+    ///     Uploads image to blob container and returns image uri if request contains image.
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="beerId">The beer id</param>
-    /// <param name="entityImageUri">The current entity image uri</param>
-    private async Task<string?> HandleOpinionImageAsync(IFormFile? image, Guid beerId, string? entityImageUri)
+    private async Task<string?> HandleOpinionImageUploadAsync(IFormFile image, Guid beerId)
     {
-        // If update request contains image then upload photo.
-        if (image != null)
+        var path = CreateImagePath(image, beerId);
+        var blobResponse = await _azureStorageService.UploadAsync(path, image);
+
+        if (blobResponse.Error)
         {
-            var path = CreateImagePath(image, beerId);
-
-            var blobResponse = await _azureStorageService.UploadAsync(path, image);
-
-            if (blobResponse.Error)
-            {
-                throw new RemoteServiceConnectionException("Failed to upload the image. The opinion was not saved.");
-            }
-
-            return blobResponse.Blob.Uri;
+            throw new RemoteServiceConnectionException("Failed to upload the image. The opinion was not saved.");
         }
 
-        // If update request does not contain image and entity has image uri, then delete image from blob.
-        if (!string.IsNullOrEmpty(entityImageUri))
+        return blobResponse.Blob.Uri;
+    }
+
+    /// <summary>
+    ///     Deletes image from blob.
+    /// </summary>
+    /// <param name="imageUri">The image uri</param>
+    private async Task HandleOpinionImageDeleteAsync(string imageUri)
+    {
+        var startIndex = imageUri.IndexOf("Opinions", StringComparison.Ordinal);
+        var path = imageUri[startIndex..];
+
+        var blobResponse = await _azureStorageService.DeleteAsync(path);
+
+        if (blobResponse.Error)
         {
-            var startIndex = entityImageUri.IndexOf("Opinions", StringComparison.Ordinal);
-            var path = entityImageUri[startIndex..];
-
-            var blobResponse = await _azureStorageService.DeleteAsync(path);
-
-            if (blobResponse.Error)
-            {
-                throw new RemoteServiceConnectionException(
-                    "Failed to delete the image. The opinion was not saved.");
-            }
-
-            return null;
+            throw new RemoteServiceConnectionException(
+                "Failed to delete the image. The opinion was not deleted.");
         }
-
-        return null;
     }
 
     /// <summary>
@@ -138,7 +145,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     /// </summary>
     /// <param name="file">The file</param>
     /// <param name="beerId">The beer id</param>
-    private string CreateImagePath(IFormFile file, Guid beerId)
+    private string CreateImagePath(IFormFile file, Guid beerId) //TODO move to files helper
     {
         var extension = Path.GetExtension(file.FileName);
         var userId = _currentUserService.UserId.ToString();
