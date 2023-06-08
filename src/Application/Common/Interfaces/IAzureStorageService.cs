@@ -17,9 +17,9 @@ public interface IAzureStorageService
     Task<BlobResponseDto> UploadAsync(string path, IFormFile blob);
 
     /// <summary>
-    ///     Deletes a blob with the specified filename.
+    ///     Deletes a blob on a given path.
     /// </summary>
-    /// <param name="blobFilename">Filename</param>
+    /// <param name="path">The blob path</param>
     /// <returns>BlobResponseDto with status</returns>
-    Task<BlobResponseDto> DeleteAsync(string blobFilename);
+    Task<BlobResponseDto> DeleteAsync(string path);
 }

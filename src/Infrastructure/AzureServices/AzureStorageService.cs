@@ -73,13 +73,13 @@ public class AzureStorageService : IAzureStorageService
     }
 
     /// <summary>
-    ///     Deletes a blob with the specified filename.
+    ///     Deletes a blob on a given path.
     /// </summary>
-    /// <param name="blobFilename">Filename</param>
+    /// <param name="path">The blob path</param>
     /// <returns>BlobResponseDto with status</returns>
-    public async Task<BlobResponseDto> DeleteAsync(string blobFilename)
+    public async Task<BlobResponseDto> DeleteAsync(string path)
     {
-        var file = _blobContainerClient.GetBlobClient(blobFilename);
+        var file = _blobContainerClient.GetBlobClient(path);
 
         try
         {
@@ -88,10 +88,10 @@ public class AzureStorageService : IAzureStorageService
         catch (RequestFailedException ex)
             when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
         {
-            _logger.LogError("File {BlobFilename} was not found", blobFilename);
-            return new BlobResponseDto { Error = true, Status = $"File with name {blobFilename} not found." };
+            _logger.LogError("File {Path} was not found", path);
+            return new BlobResponseDto { Error = true, Status = $"File with name {path} not found." };
         }
 
-        return new BlobResponseDto { Error = false, Status = $"File: {blobFilename} has been successfully deleted." };
+        return new BlobResponseDto { Error = false, Status = $"File: {path} has been successfully deleted." };
     }
 }
