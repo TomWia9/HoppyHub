@@ -18,7 +18,7 @@ public class Opinion : BaseAuditableEntity
     public string? Comment { get; set; }
 
     /// <summary>
-    ///     The opinion image uri.
+    ///     The beer image uri.
     /// </summary>
     public string? ImageUri { get; set; }
 

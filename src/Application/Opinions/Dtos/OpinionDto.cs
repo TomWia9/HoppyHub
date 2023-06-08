@@ -25,7 +25,7 @@ public record OpinionDto : IMapFrom<Opinion>
     public string? Comment { get; init; }
 
     /// <summary>
-    ///     The opinion image uri.
+    ///     The beer image uri.
     /// </summary>
     public string? ImageUri { get; set; }
 
