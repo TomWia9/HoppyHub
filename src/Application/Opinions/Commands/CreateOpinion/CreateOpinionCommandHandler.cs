@@ -76,14 +76,19 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
-        var imageUri = await HandleOpinionImageAsync(request.Image, request.BeerId);
+        string? imageUri = null;
+
+        if (request.Image != null)
+        {
+            imageUri = await HandleOpinionImageUploadAsync(request.Image, request.BeerId);
+        }
 
         var entity = new Opinion
         {
             Rating = request.Rating,
             Comment = request.Comment,
             BeerId = request.BeerId,
-            ImageUri = request.Image != null ? imageUri : null
+            ImageUri = imageUri
         };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
@@ -113,13 +118,8 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="beerId">The beer id</param>
-    private async Task<string?> HandleOpinionImageAsync(IFormFile? image, Guid beerId)
+    private async Task<string?> HandleOpinionImageUploadAsync(IFormFile image, Guid beerId)
     {
-        if (image == null)
-        {
-            return null;
-        }
-
         var path = CreateImagePath(image, beerId);
         var blobResponse = await _azureStorageService.UploadAsync(path, image);
 
