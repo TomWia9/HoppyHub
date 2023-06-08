@@ -66,7 +66,7 @@ public class OpinionsController : ApiControllerBase
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateOpinion(Guid id, [FromBody] UpdateOpinionCommand command)
+    public async Task<IActionResult> UpdateOpinion(Guid id, [FromForm] UpdateOpinionCommand command)
     {
         if (id != command.Id)
         {
