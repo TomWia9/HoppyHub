@@ -1,11 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models.BlobContainer;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.AzureServices;
@@ -29,41 +27,11 @@ public class AzureStorageService : IAzureStorageService
     ///     Initializes AzureStorageService.
     /// </summary>
     /// <param name="logger">The logger</param>
-    /// <param name="configuration">The configuration</param>
-    public AzureStorageService(ILogger<AzureStorageService> logger, IConfiguration configuration)
+    /// <param name="blobContainerClient">The blob container client</param>
+    public AzureStorageService(ILogger<AzureStorageService> logger, BlobContainerClient blobContainerClient)
     {
         _logger = logger;
-        _blobContainerClient = CreateBlobContainerClient(configuration);
-    }
-
-    /// <summary>
-    ///     Creates blob container client.
-    /// </summary>
-    /// <param name="configuration">The configuration</param>
-    private BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
-    {
-        var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
-        var blobContainerName = configuration.GetValue<string>("BlobContainerSettings:BlobContainerName");
-
-        if (string.IsNullOrEmpty(blobConnectionString))
-        {
-            throw new RemoteServiceConnectionException("The blob storage connection string is null");
-        }
-
-        if (string.IsNullOrEmpty(blobContainerName))
-        {
-            throw new RemoteServiceConnectionException("The blob storage container name is null");
-        }
-
-        try
-        {
-            return new BlobContainerClient(blobConnectionString, blobContainerName);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError("Cannot connect to te blob container. Exception message: {ExMessage}", e.Message);
-            throw new RemoteServiceConnectionException(e.Message);
-        }
+        _blobContainerClient = blobContainerClient;
     }
 
     /// <summary>

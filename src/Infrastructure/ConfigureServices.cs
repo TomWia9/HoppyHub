@@ -1,6 +1,8 @@
 ﻿using System.Text;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Azure.Storage.Blobs;
 using Infrastructure.AzureServices;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
@@ -12,16 +14,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace Infrastructure;
 
 /// <summary>
-///     The ConfigureServices class
+///     The ConfigureServices class.
 /// </summary>
 public static class ConfigureServices
 {
     /// <summary>
-    ///     Adds infrastructure project services
+    ///     Adds infrastructure project services.
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
@@ -39,7 +42,8 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
-        services.AddTransient<IAzureStorageService, AzureStorageService>();
+        services.AddSingleton<IAzureStorageService, AzureStorageService>();
+        services.AddSingleton(_ => CreateBlobContainerClient(configuration));
 
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
@@ -80,12 +84,39 @@ public static class ConfigureServices
             options.AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
         });
-        
-        services.Configure<IdentityOptions>(options =>
-        {
-            options.User.RequireUniqueEmail = true;
-        });
+
+        services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
 
         return services;
+    }
+
+    /// <summary>
+    ///     Creates blob container client.
+    /// </summary>
+    /// <param name="configuration">The configuration</param>
+    private static BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
+    {
+        var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
+        var blobContainerName = configuration.GetValue<string>("BlobContainerSettings:BlobContainerName");
+
+        if (string.IsNullOrEmpty(blobConnectionString))
+        {
+            throw new RemoteServiceConnectionException("The blob storage connection string is null");
+        }
+
+        if (string.IsNullOrEmpty(blobContainerName))
+        {
+            throw new RemoteServiceConnectionException("The blob storage container name is null");
+        }
+
+        try
+        {
+            return new BlobContainerClient(blobConnectionString, blobContainerName);
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Error("Cannot connect to te blob container. Exception message: {ExMessage}", e.Message);
+            throw new RemoteServiceConnectionException(e.Message);
+        }
     }
 }
