@@ -37,15 +37,16 @@ public class AzureStorageService : IAzureStorageService
     /// <summary>
     ///     Uploads a file submitted with the request.
     /// </summary>
+    /// <param name="path">The blob path</param>
     /// <param name="blob">The blob for upload</param>
     /// <returns>BlobResponseDto with status</returns>
-    public async Task<BlobResponseDto> UploadAsync(IFormFile blob)
+    public async Task<BlobResponseDto> UploadAsync(string path, IFormFile blob)
     {
         BlobResponseDto response = new();
 
         try
         {
-            var client = _blobContainerClient.GetBlobClient(blob.FileName);
+            var client = _blobContainerClient.GetBlobClient(path);
 
             await using (var data = blob.OpenReadStream())
             {
