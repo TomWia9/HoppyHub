@@ -1,6 +1,5 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Models.BlobContainer;
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
@@ -77,26 +76,14 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
-        var blobResponse = new BlobResponseDto();
-
-        if (request.Image != null)
-        {
-            var path = CreateImagePath(request.Image, request.BeerId);
-
-            blobResponse = await _azureStorageService.UploadAsync(path, request.Image);
-
-            if (blobResponse.Error)
-            {
-                throw new RemoteServiceConnectionException("Failed to upload the photo. The opinion was not saved.");
-            }
-        }
+        var imageUri = await HandleOpinionImageAsync(request.Image, request.BeerId);
 
         var entity = new Opinion
         {
             Rating = request.Rating,
             Comment = request.Comment,
             BeerId = request.BeerId,
-            ImageUri = request.Image != null ? blobResponse.Blob.Uri : null
+            ImageUri = request.Image != null ? imageUri : null
         };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
@@ -119,6 +106,29 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);
 
         return opinionDto;
+    }
+
+    /// <summary>
+    ///     Uploads image to blob container and returns image uri if request contains image.
+    /// </summary>
+    /// <param name="image">The image</param>
+    /// <param name="beerId">The beer id</param>
+    private async Task<string?> HandleOpinionImageAsync(IFormFile? image, Guid beerId)
+    {
+        if (image == null)
+        {
+            return null;
+        }
+
+        var path = CreateImagePath(image, beerId);
+        var blobResponse = await _azureStorageService.UploadAsync(path, image);
+
+        if (blobResponse.Error)
+        {
+            throw new RemoteServiceConnectionException("Failed to upload the image. The opinion was not saved.");
+        }
+
+        return blobResponse.Blob.Uri;
     }
 
     /// <summary>
