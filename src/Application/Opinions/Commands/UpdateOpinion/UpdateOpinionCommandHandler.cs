@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.UpdateOpinion;
 
@@ -24,7 +25,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     ///     The beers service.
     /// </summary>
     private readonly IBeersService _beersService;
-    
+
     /// <summary>
     ///     The opinions service.
     /// </summary>
@@ -54,7 +55,8 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     public async Task Handle(UpdateOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken);
+            await _context.Opinions.Include(x => x.Beer)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (entity == null)
         {
@@ -71,7 +73,8 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
         if (request.Image != null)
         {
-            entity.ImageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, entity.BeerId);
+            entity.ImageUri =
+                await _opinionsService.UploadOpinionImageAsync(request.Image, entity.Beer!.BreweryId, entity.BeerId);
         }
         else
         {

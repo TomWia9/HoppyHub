@@ -34,10 +34,11 @@ public class OpinionsService : IOpinionsService
     ///     Uploads image to blob container and returns image uri if request contains image.
     /// </summary>
     /// <param name="image">The image</param>
+    /// <param name="breweryId">The brewery id</param>
     /// <param name="beerId">The beer id</param>
-    public async Task<string?> UploadOpinionImageAsync(IFormFile image, Guid beerId)
+    public async Task<string?> UploadOpinionImageAsync(IFormFile image, Guid breweryId, Guid beerId)
     {
-        var path = CreateImagePath(image, beerId);
+        var path = CreateImagePath(image, breweryId, beerId);
         var blobResponse = await _azureStorageService.UploadAsync(path, image);
 
         if (blobResponse.Error)
@@ -65,17 +66,18 @@ public class OpinionsService : IOpinionsService
                 "Failed to delete the image. The opinion was not deleted.");
         }
     }
-    
+
     /// <summary>
     ///     Returns image path to match the folder structure in container "Opinions/BeerId/UserId.jpg/png"
     /// </summary>
     /// <param name="file">The file</param>
+    /// <param name="breweryId">The brewery id</param>
     /// <param name="beerId">The beer id</param>
-    private string CreateImagePath(IFormFile file, Guid beerId)
+    private string CreateImagePath(IFormFile file, Guid breweryId, Guid beerId)
     {
         var extension = Path.GetExtension(file.FileName);
         var userId = _currentUserService.UserId.ToString();
 
-        return $"Opinions/{beerId.ToString()}/{userId}" + extension;
+        return $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{userId}" + extension;
     }
 }

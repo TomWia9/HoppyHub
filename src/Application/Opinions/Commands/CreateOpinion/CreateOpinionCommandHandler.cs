@@ -4,7 +4,6 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -63,25 +62,37 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Beers.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
+        var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
+            cancellationToken: cancellationToken);
+
+        if (beer == null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
         string? imageUri = null;
-
-        if (request.Image != null)
-        {
-            imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, request.BeerId);
-        }
-
+        
         var entity = new Opinion
         {
             Rating = request.Rating,
             Comment = request.Comment,
-            BeerId = request.BeerId,
-            ImageUri = imageUri
+            BeerId = request.BeerId
         };
+
+        if (request.Image != null)
+        {
+            imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, beer.BreweryId, request.BeerId);
+        }
+
+        entity.ImageUri = imageUri;
+
+        // var entity = new Opinion
+        // {
+        //     Rating = request.Rating,
+        //     Comment = request.Comment,
+        //     BeerId = request.BeerId,
+        //     ImageUri = imageUri
+        // };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 

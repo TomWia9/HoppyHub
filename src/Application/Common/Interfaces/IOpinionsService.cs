@@ -11,8 +11,9 @@ public interface IOpinionsService
     ///     Uploads image to blob container and returns image uri if request contains image.
     /// </summary>
     /// <param name="image">The image</param>
+    /// <param name="breweryId">The brewery id</param>
     /// <param name="beerId">The beer id</param>
-    Task<string?> UploadOpinionImageAsync(IFormFile image, Guid beerId);
+    Task<string?> UploadOpinionImageAsync(IFormFile image, Guid breweryId, Guid beerId);
 
     /// <summary>
     ///     Deletes image from blob.
