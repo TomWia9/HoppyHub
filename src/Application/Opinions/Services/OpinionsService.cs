@@ -35,7 +35,7 @@ public class OpinionsService : IOpinionsService
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="beerId">The beer id</param>
-    public async Task<string?> HandleOpinionImageUploadAsync(IFormFile image, Guid beerId)
+    public async Task<string?> UploadOpinionImageAsync(IFormFile image, Guid beerId)
     {
         var path = CreateImagePath(image, beerId);
         var blobResponse = await _azureStorageService.UploadAsync(path, image);
@@ -52,7 +52,7 @@ public class OpinionsService : IOpinionsService
     ///     Deletes image from blob.
     /// </summary>
     /// <param name="imageUri">The image uri</param>
-    public async Task HandleOpinionImageDeleteAsync(string imageUri)
+    public async Task DeleteOpinionImageAsync(string imageUri)
     {
         var startIndex = imageUri.IndexOf("Opinions", StringComparison.Ordinal);
         var path = imageUri[startIndex..];

@@ -78,7 +78,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
 
             if (!string.IsNullOrEmpty(entity.ImageUri))
             {
-                await _opinionsService.HandleOpinionImageDeleteAsync(entity.ImageUri);
+                await _opinionsService.DeleteOpinionImageAsync(entity.ImageUri);
             }
 
             await transaction.CommitAsync(cancellationToken);

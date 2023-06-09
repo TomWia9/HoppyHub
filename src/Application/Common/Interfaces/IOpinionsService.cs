@@ -12,11 +12,11 @@ public interface IOpinionsService
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="beerId">The beer id</param>
-    Task<string?> HandleOpinionImageUploadAsync(IFormFile image, Guid beerId);
+    Task<string?> UploadOpinionImageAsync(IFormFile image, Guid beerId);
 
     /// <summary>
     ///     Deletes image from blob.
     /// </summary>
     /// <param name="imageUri">The image uri</param>
-    Task HandleOpinionImageDeleteAsync(string imageUri);
+    Task DeleteOpinionImageAsync(string imageUri);
 }

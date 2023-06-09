@@ -72,7 +72,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
 
         if (request.Image != null)
         {
-            imageUri = await _opinionsService.HandleOpinionImageUploadAsync(request.Image, request.BeerId);
+            imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, request.BeerId);
         }
 
         var entity = new Opinion

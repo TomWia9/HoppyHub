@@ -71,7 +71,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
         if (request.Image != null)
         {
-            entity.ImageUri = await _opinionsService.HandleOpinionImageUploadAsync(request.Image, entity.BeerId);
+            entity.ImageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, entity.BeerId);
         }
         else
         {
@@ -91,7 +91,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
             if (request.Image == null && !string.IsNullOrEmpty(entityImageUri))
             {
-                await _opinionsService.HandleOpinionImageDeleteAsync(entityImageUri);
+                await _opinionsService.DeleteOpinionImageAsync(entityImageUri);
             }
 
             await transaction.CommitAsync(cancellationToken);
