@@ -4,7 +4,6 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
@@ -35,14 +34,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IBeersService _beersService;
 
     /// <summary>
-    ///     The azure storage service.
+    ///     The opinions service.
     /// </summary>
-    private readonly IAzureStorageService _azureStorageService;
-
-    /// <summary>
-    ///     The current user service.
-    /// </summary>
-    private readonly ICurrentUserService _currentUserService;
+    private readonly IOpinionsService _opinionsService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
@@ -51,17 +45,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="azureStorageService">The azure storage service</param>
-    /// <param name="currentUserService">The current user service.</param>
+    /// <param name="opinionsService">The opinions service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService, IAzureStorageService azureStorageService, ICurrentUserService currentUserService)
+        IBeersService beersService, IOpinionsService opinionsService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
-        _azureStorageService = azureStorageService;
-        _currentUserService = currentUserService;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -80,7 +72,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
 
         if (request.Image != null)
         {
-            imageUri = await HandleOpinionImageUploadAsync(request.Image, request.BeerId);
+            imageUri = await _opinionsService.HandleOpinionImageUploadAsync(request.Image, request.BeerId);
         }
 
         var entity = new Opinion
@@ -111,36 +103,5 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);
 
         return opinionDto;
-    }
-
-    /// <summary>
-    ///     Uploads image to blob container and returns image uri if request contains image.
-    /// </summary>
-    /// <param name="image">The image</param>
-    /// <param name="beerId">The beer id</param>
-    private async Task<string?> HandleOpinionImageUploadAsync(IFormFile image, Guid beerId)
-    {
-        var path = CreateImagePath(image, beerId);
-        var blobResponse = await _azureStorageService.UploadAsync(path, image);
-
-        if (blobResponse.Error)
-        {
-            throw new RemoteServiceConnectionException("Failed to upload the image. The opinion was not saved.");
-        }
-
-        return blobResponse.Blob.Uri;
-    }
-
-    /// <summary>
-    ///     Returns file with name changed to match the folder structure in container "Opinions/BeerId/UserId.jpg/png"
-    /// </summary>
-    /// <param name="file">The file</param>
-    /// <param name="beerId">The beer id</param>
-    private string CreateImagePath(IFormFile file, Guid beerId)
-    {
-        var extension = Path.GetExtension(file.FileName);
-        var userId = _currentUserService.UserId.ToString();
-
-        return $"Opinions/{beerId.ToString()}/{userId}" + extension;
     }
 }

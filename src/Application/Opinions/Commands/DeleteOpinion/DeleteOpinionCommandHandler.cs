@@ -26,9 +26,9 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly IBeersService _beersService;
 
     /// <summary>
-    ///     The azure storage service.
+    ///     The opinions service.
     /// </summary>
-    private readonly IAzureStorageService _azureStorageService;
+    private readonly IOpinionsService _opinionsService;
 
     /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
@@ -36,14 +36,14 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="azureStorageService">The azure storage service</param>
+    /// <param name="opinionsService">The opinions service</param>
     public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IBeersService beersService, IAzureStorageService azureStorageService)
+        IBeersService beersService, IOpinionsService opinionsService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _beersService = beersService;
-        _azureStorageService = azureStorageService;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -75,34 +75,18 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             await _context.SaveChangesAsync(cancellationToken);
             await _beersService.CalculateBeerRatingAsync(entity.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
-            await HandleOpinionImageDeleteAsync(entity.ImageUri); //TODO check if this is null
+
+            if (!string.IsNullOrEmpty(entity.ImageUri))
+            {
+                await _opinionsService.HandleOpinionImageDeleteAsync(entity.ImageUri);
+            }
+
             await transaction.CommitAsync(cancellationToken);
         }
         catch
         {
             await transaction.RollbackAsync(cancellationToken);
             throw;
-        }
-    }
-    
-    /// <summary>
-    ///     Deletes image from blob if opinion has image.
-    /// </summary>
-    /// <param name="imageUri">The image uri</param>
-    private async Task HandleOpinionImageDeleteAsync(string? imageUri)
-    {
-        if (!string.IsNullOrEmpty(imageUri))
-        {
-            var startIndex = imageUri.IndexOf("Opinions", StringComparison.Ordinal);
-            var path = imageUri[startIndex..];
-
-            var blobResponse = await _azureStorageService.DeleteAsync(path);
-
-            if (blobResponse.Error)
-            {
-                throw new RemoteServiceConnectionException(
-                    "Failed to delete the image. The opinion was not deleted.");
-            }
         }
     }
 }
