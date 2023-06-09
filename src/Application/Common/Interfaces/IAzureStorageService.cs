@@ -22,4 +22,10 @@ public interface IAzureStorageService
     /// <param name="path">The blob path</param>
     /// <returns>BlobResponseDto with status</returns>
     Task<BlobResponseDto> DeleteAsync(string path);
+
+    /// <summary>
+    ///     Deletes all files in given path.
+    /// </summary>
+    /// <param name="path">The path</param>
+    Task DeleteFilesInPath(string path);
 }

@@ -94,4 +94,20 @@ public class AzureStorageService : IAzureStorageService
 
         return new BlobResponseDto { Error = false, Status = $"File: {path} has been successfully deleted." };
     }
+
+    /// <summary>
+    ///     Deletes all files in given path.
+    /// </summary>
+    /// <param name="path">The path</param>
+    public async Task DeleteFilesInPath(string path)
+    {
+        foreach (var blobItem in _blobContainerClient.GetBlobsByHierarchy(prefix: path))
+        {
+            if (blobItem.IsBlob)
+            {
+                await _blobContainerClient.DeleteBlobIfExistsAsync(blobItem.Blob.Name,
+                    DeleteSnapshotsOption.IncludeSnapshots);
+            }
+        }
+    }
 }
