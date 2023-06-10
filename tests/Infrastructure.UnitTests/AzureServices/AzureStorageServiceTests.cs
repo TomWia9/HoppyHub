@@ -42,13 +42,14 @@ public class AzureStorageServiceTests
     public async Task UploadAsync_ShouldReturnBlobResponseDtoWithErrorStatus_WhenUploadFails()
     {
         // Arrange
+        const string path = "test/test";
         var formFileMock = new Mock<IFormFile>();
 
         _blobContainerClientMock.Setup(c => c.GetBlobClient(It.IsAny<string>()))
             .Throws(new RequestFailedException("Upload failed"));
 
         // Act
-        var response = await _azureStorageService.UploadAsync(formFileMock.Object);
+        var response = await _azureStorageService.UploadAsync(path, formFileMock.Object);
 
         // Assert
         response.Error.Should().BeTrue();

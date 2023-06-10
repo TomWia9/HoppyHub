@@ -29,6 +29,11 @@ public class UpdateOpinionCommandHandlerTests
     ///     The beers service mock.
     /// </summary>
     private readonly Mock<IBeersService> _beersServiceMock;
+    
+    /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
 
     /// <summary>
     ///     The handler.
@@ -43,8 +48,10 @@ public class UpdateOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
+        _opinionsServiceMock = new Mock<IOpinionsService>();
+        
         _handler = new UpdateOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
-            _beersServiceMock.Object);
+            _beersServiceMock.Object, _opinionsServiceMock.Object);
     }
 
     /// <summary>

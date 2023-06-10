@@ -37,6 +37,11 @@ public class CreateOpinionCommandHandlerTests
     private readonly Mock<IBeersService> _beersServiceMock;
 
     /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateOpinionCommandHandler _handler;
@@ -50,8 +55,10 @@ public class CreateOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _usersServiceMock = new Mock<IUsersService>();
         _beersServiceMock = new Mock<IBeersService>();
+        _opinionsServiceMock = new Mock<IOpinionsService>();
+
         _handler = new CreateOpinionCommandHandler(_contextMock.Object, _mapperMock.Object, _usersServiceMock.Object,
-            _beersServiceMock.Object);
+            _beersServiceMock.Object, _opinionsServiceMock.Object);
     }
 
     /// <summary>
@@ -104,7 +111,7 @@ public class CreateOpinionCommandHandlerTests
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
     }
-    
+
     /// <summary>
     ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
     /// </summary>
@@ -130,7 +137,7 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(request.BeerId))
             .ThrowsAsync(new Exception(exceptionMessage));
-        
+
         // Act & Assert
         await _handler.Invoking(x => x.Handle(request, CancellationToken.None))
             .Should().ThrowAsync<Exception>().WithMessage(exceptionMessage);

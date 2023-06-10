@@ -29,6 +29,11 @@ public class DeleteOpinionCommandHandlerTests
     private readonly Mock<IBeersService> _beersServiceMock;
 
     /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteOpinionCommandHandler _handler;
@@ -41,8 +46,10 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
+        _opinionsServiceMock = new Mock<IOpinionsService>();
+
         _handler = new DeleteOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
-            _beersServiceMock.Object);
+            _beersServiceMock.Object, _opinionsServiceMock.Object);
     }
 
     /// <summary>
@@ -124,7 +131,8 @@ public class DeleteOpinionCommandHandlerTests
     ///      Tests that Handle method removes opinion when user tries to delete not his opinion but he has admin access.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldRemoveOpinionAndCalculateBeerRating_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
+    public async Task
+        Handle_ShouldRemoveOpinionAndCalculateBeerRating_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
     {
         // Arrange
         var opinionId = Guid.NewGuid();
@@ -150,7 +158,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
     /// </summary>

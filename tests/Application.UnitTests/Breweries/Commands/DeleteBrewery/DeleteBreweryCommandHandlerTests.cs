@@ -18,6 +18,11 @@ public class DeleteBreweryCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
+    ///     The azure storage service mock.
+    /// </summary>
+    private readonly Mock<IAzureStorageService> _azureStorageServiceMock;
+    
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteBreweryCommandHandler _handler;
@@ -28,7 +33,8 @@ public class DeleteBreweryCommandHandlerTests
     public DeleteBreweryCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _handler = new DeleteBreweryCommandHandler(_contextMock.Object);
+        _azureStorageServiceMock = new Mock<IAzureStorageService>();
+        _handler = new DeleteBreweryCommandHandler(_contextMock.Object, _azureStorageServiceMock.Object);
     }
 
     /// <summary>
