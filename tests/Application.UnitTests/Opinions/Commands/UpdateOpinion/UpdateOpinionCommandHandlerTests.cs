@@ -1,9 +1,9 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Opinions.Commands.DeleteOpinion;
 using Application.Opinions.Commands.UpdateOpinion;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
 
@@ -29,11 +29,16 @@ public class UpdateOpinionCommandHandlerTests
     ///     The beers service mock.
     /// </summary>
     private readonly Mock<IBeersService> _beersServiceMock;
-    
+
     /// <summary>
     ///     The opinions service mock.
     /// </summary>
     private readonly Mock<IOpinionsService> _opinionsServiceMock;
+
+    /// <summary>
+    ///     The form file mock.
+    /// </summary>
+    private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
     ///     The handler.
@@ -49,33 +54,48 @@ public class UpdateOpinionCommandHandlerTests
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
         _opinionsServiceMock = new Mock<IOpinionsService>();
-        
+        _formFileMock = new Mock<IFormFile>();
+
         _handler = new UpdateOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
             _beersServiceMock.Object, _opinionsServiceMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method updates opinion when user updates his own opinion and opinion exists.
+    ///     Tests that Handle method updates opinion and uploads image when user updates his own opinion
+    ///     and opinion exists and updated opinion contains image.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldUpdateOpinion_WhenUserUpdatesHisOwnOpinionAndOpinionExists()
+    public async Task
+        Handle_ShouldUpdateOpinionAndUploadImage_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndUpdatedOpinionContainsImage()
     {
         // Arrange
+        const string imageUri = "blob.com/opinions/test.jpg";
+
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
+        var beerId = Guid.NewGuid();
+        var beer = new Beer { Id = beerId, BreweryId = Guid.NewGuid() };
         var existingOpinion = new Opinion
-            { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+        {
+            Id = opinionId, Rating = 9, BeerId = beerId, Beer = beer, Comment = "Sample comment", CreatedBy = userId,
+            ImageUri = null
+        };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingOpinion);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _opinionsServiceMock
+            .Setup(x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+            .ReturnsAsync(imageUri);
 
         var command = new UpdateOpinionCommand
         {
             Id = opinionId,
             Rating = 7,
             Comment = "New comment",
+            Image = _formFileMock.Object
         };
 
         // Act
@@ -84,6 +104,100 @@ public class UpdateOpinionCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(
+            x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(x => x.DeleteOpinionImageAsync(It.IsAny<string>()), Times.Never);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method updates opinion and deletes image when user updates his own opinion
+    ///     and opinion exists and opinion contains image and updated opinion does not contains image.
+    /// </summary>
+    [Fact]
+    public async Task
+        Handle_ShouldUpdateOpinionAndDeleteImage_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndOpinionContainsImageAndUpdatedOpinionDoesNotContainsImage()
+    {
+        // Arrange
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var beerId = Guid.NewGuid();
+        var beer = new Beer { Id = beerId, BreweryId = Guid.NewGuid() };
+        var existingOpinion = new Opinion
+        {
+            Id = opinionId, Rating = 9, BeerId = beerId, Beer = beer, Comment = "Sample comment", CreatedBy = userId,
+            ImageUri = "test.com"
+        };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _opinionsServiceMock
+            .Setup(x => x.DeleteOpinionImageAsync(It.IsAny<string>()))
+            .Returns(Task.CompletedTask);
+
+        var command = new UpdateOpinionCommand
+        {
+            Id = opinionId,
+            Rating = 7,
+            Comment = "New comment",
+            Image = null
+        };
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(
+            x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never);
+        _opinionsServiceMock.Verify(x => x.DeleteOpinionImageAsync(It.IsAny<string>()), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method updates opinion when user updates his own opinion
+    ///     and opinion exists and opinion does not contain image and updated opinion also does not contains image.
+    /// </summary>
+    [Fact]
+    public async Task
+        Handle_ShouldUpdateOpinion_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndOpinionDoesNotContainImageAndUpdatedOpinionAlsoDoesNotContainsImage()
+    {
+        // Arrange
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var beerId = Guid.NewGuid();
+        var beer = new Beer { Id = beerId, BreweryId = Guid.NewGuid() };
+        var existingOpinion = new Opinion
+        {
+            Id = opinionId, Rating = 9, BeerId = beerId, Beer = beer, Comment = "Sample comment", CreatedBy = userId,
+            ImageUri = null
+        };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+
+        var command = new UpdateOpinionCommand
+        {
+            Id = opinionId,
+            Rating = 7,
+            Comment = "New comment",
+            Image = null
+        };
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(
+            x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never);
+        _opinionsServiceMock.Verify(x => x.DeleteOpinionImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
@@ -94,9 +208,10 @@ public class UpdateOpinionCommandHandlerTests
     {
         // Arrange
         var opinionId = Guid.NewGuid();
+        var opinions = Enumerable.Empty<Opinion>();
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { It.IsAny<Guid>() }, CancellationToken.None))
-            .ReturnsAsync((Opinion?)null);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
 
         var command = new UpdateOpinionCommand
             { Id = opinionId, Rating = 5, Comment = "Sample comment" };
@@ -119,9 +234,10 @@ public class UpdateOpinionCommandHandlerTests
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
             { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingOpinion);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
 
         var command = new UpdateOpinionCommand
@@ -147,10 +263,11 @@ public class UpdateOpinionCommandHandlerTests
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
             { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingOpinion);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
 
@@ -168,7 +285,7 @@ public class UpdateOpinionCommandHandlerTests
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
     /// </summary>
@@ -181,16 +298,16 @@ public class UpdateOpinionCommandHandlerTests
         var userId = Guid.NewGuid();
         var existingOpinion = new Opinion
             { Id = opinionId, Rating = 9, BeerId = Guid.NewGuid(), Comment = "Sample comment", CreatedBy = userId };
+        var opinions = new List<Opinion> { existingOpinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
         var command = new UpdateOpinionCommand
         {
             Id = opinionId,
             Rating = 7,
             Comment = "New comment",
         };
-        
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingOpinion);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
         _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()))
             .ThrowsAsync(new Exception(exceptionMessage));

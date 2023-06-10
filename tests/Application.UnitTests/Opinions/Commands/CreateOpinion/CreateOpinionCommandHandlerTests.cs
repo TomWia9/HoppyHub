@@ -42,6 +42,9 @@ public class CreateOpinionCommandHandlerTests
     /// </summary>
     private readonly Mock<IOpinionsService> _opinionsServiceMock;
 
+    /// <summary>
+    ///     The form file mock.
+    /// </summary>
     private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
@@ -75,8 +78,7 @@ public class CreateOpinionCommandHandlerTests
     {
         // Arrange
         const string username = "testUser";
-        const string fileName = "image.jpg";
-        const string imageUri = $"blob.com/opinions/{fileName}";
+        const string imageUri = "blob.com/opinions/test.jpg";
 
         _opinionsServiceMock
             .Setup(x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
