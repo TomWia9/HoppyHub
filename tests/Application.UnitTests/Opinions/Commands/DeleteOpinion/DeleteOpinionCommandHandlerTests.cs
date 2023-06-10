@@ -53,15 +53,47 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes opinion from database when opinion exists.
+    ///     Tests that Handle method removes opinion from database and deletes image when opinion exists and opinion has image.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRating_WhenOpinionExists()
+    public async Task
+        Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRatingAndDeleteImage_WhenOpinionExistsAndOpinionHasImage()
     {
         // Arrange
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, CreatedBy = userId };
+        var opinion = new Opinion { Id = opinionId, CreatedBy = userId, ImageUri = "test.com" };
+        var command = new DeleteOpinionCommand { Id = opinionId };
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { opinionId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(opinion);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>())).Returns(Task.CompletedTask);
+        _opinionsServiceMock.Setup(x => x.DeleteOpinionImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
+        _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(x => x.DeleteOpinionImageAsync(It.IsAny<string>()), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method removes opinion from database, calculates beer rating and not deletes image
+    ///     when opinion exists and opinion does not has image.
+    /// </summary>
+    [Fact]
+    public async Task
+        Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRatingAndNotDeleteImage_WhenOpinionExistsAndOpinionDoesNotHasImage()
+    {
+        // Arrange
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var opinion = new Opinion { Id = opinionId, CreatedBy = userId, ImageUri = null };
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { opinionId }, It.IsAny<CancellationToken>()))
@@ -77,6 +109,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsServiceMock.Verify(x => x.DeleteOpinionImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
