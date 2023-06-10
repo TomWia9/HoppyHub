@@ -6,6 +6,7 @@ using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Favorites.Queries.GetFavorites;
 using Application.Opinions.Queries.GetOpinions;
+using Application.Opinions.Services;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -78,6 +79,19 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IBeersService));
         _services.Should().Contain(s => s.ImplementationType == typeof(BeersService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+    
+    /// <summary>
+    ///     Tests that the AddApplicationServices method adds the OpinionService
+    ///     to the service collection as IOpinionsService.
+    /// </summary>
+    [Fact]
+    public void AddApplicationServices_ShouldAddOpinionsService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IOpinionsService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(OpinionsService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 
