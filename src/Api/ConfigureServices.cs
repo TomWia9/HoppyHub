@@ -9,12 +9,12 @@ using Microsoft.OpenApi.Models;
 namespace Api;
 
 /// <summary>
-///     The ConfigureServices class
+///     The ConfigureServices class.
 /// </summary>
 public static class ConfigureServices
 {
     /// <summary>
-    ///     Adds api project services
+    ///     Adds api project services.
     /// </summary>
     /// <param name="services">The services</param>
     public static IServiceCollection AddApiServices(this IServiceCollection services)

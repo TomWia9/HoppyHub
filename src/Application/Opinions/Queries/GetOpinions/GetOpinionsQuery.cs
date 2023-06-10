@@ -21,6 +21,11 @@ public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<Opinion
     public int? MaxRating { get; init; } = 10;
 
     /// <summary>
+    ///     Indicates whether opinions have images.
+    /// </summary>
+    public bool? HaveImages { get; init; }
+
+    /// <summary>
     ///     Beer id.
     /// </summary>
     public Guid? BeerId { get; init; }

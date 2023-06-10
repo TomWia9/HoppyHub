@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.AzureServices;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -67,7 +68,7 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
-    
+
     /// <summary>
     ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContextInitializer to the service collection.
     /// </summary>
@@ -146,5 +147,18 @@ public class ConfigureServicesTests
 
         // Assert
         requireUniqueEmail.Should().BeTrue();
+    }
+
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the AzureStorageService
+    ///     to the service collection as IAzureStorageService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ShouldAddAzureStorageService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IAzureStorageService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(AzureStorageService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Singleton);
     }
 }

@@ -4,7 +4,6 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -34,19 +33,26 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IBeersService _beersService;
 
     /// <summary>
+    ///     The opinions service.
+    /// </summary>
+    private readonly IOpinionsService _opinionsService;
+
+    /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
+    /// <param name="opinionsService">The opinions service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService)
+        IBeersService beersService, IOpinionsService opinionsService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -56,16 +62,27 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Beers.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
+        var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
+            cancellationToken: cancellationToken);
+
+        if (beer == null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
+        string? imageUri = null;
+
+        if (request.Image != null)
+        {
+            imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, beer.BreweryId, request.BeerId);
+        }
+        
         var entity = new Opinion
         {
             Rating = request.Rating,
             Comment = request.Comment,
-            BeerId = request.BeerId
+            BeerId = request.BeerId,
+            ImageUri = imageUri
         };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);

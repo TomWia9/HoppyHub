@@ -26,17 +26,24 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly IBeersService _beersService;
 
     /// <summary>
+    ///     The opinions service.
+    /// </summary>
+    private readonly IOpinionsService _opinionsService;
+
+    /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="beersService">The beers service</param>
+    /// <param name="opinionsService">The opinions service</param>
     public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IBeersService beersService)
+        IBeersService beersService, IOpinionsService opinionsService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _beersService = beersService;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -68,6 +75,12 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             await _context.SaveChangesAsync(cancellationToken);
             await _beersService.CalculateBeerRatingAsync(entity.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
+
+            if (!string.IsNullOrEmpty(entity.ImageUri))
+            {
+                await _opinionsService.DeleteOpinionImageAsync(entity.ImageUri);
+            }
+
             await transaction.CommitAsync(cancellationToken);
         }
         catch

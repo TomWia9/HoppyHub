@@ -1,5 +1,7 @@
 ﻿using Application.Opinions.Commands.Common;
 using FluentValidation.TestHelper;
+using Microsoft.AspNetCore.Http;
+using Moq;
 
 namespace Application.UnitTests.Opinions.Commands.Common;
 
@@ -111,5 +113,105 @@ public class BaseOpinionCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Comment);
+    }
+
+    /// <summary>
+    ///     Tests that validation should not have error for Image when Image is valid.
+    /// </summary>
+    [Fact]
+    public void BaseOpinionCommand_ShouldNotHaveValidationErrorForImage_WhenImageIsValid()
+    {
+        // Arrange
+        const int imageSize = 2 * 1024 * 1024; //2MB
+        const string imageFileName = "test.jpg";
+
+        var imageMock = new Mock<IFormFile>();
+
+        imageMock.Setup(x => x.Length).Returns(imageSize);
+        imageMock.Setup(x => x.FileName).Returns(imageFileName);
+
+        var command = new TestBaseOpinionCommand
+        {
+            Image = imageMock.Object
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.Image);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for Image when Image is null.
+    /// </summary>
+    [Fact]
+    public void BaseOpinionCommand_ShouldNotHaveValidationErrorForImage_WhenImageIsNull()
+    {
+        // Arrange
+        var command = new TestBaseOpinionCommand
+        {
+            Image = null
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.Image);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for Image when Image has invalid extension.
+    /// </summary>
+    [Fact]
+    public void BaseOpinionCommand_ShouldHaveValidationErrorForImage_WhenImageHasInvalidExtension()
+    {
+        // Arrange
+        const int imageSize = 2 * 1024 * 1024; //2MB
+        const string imageFileName = "test.pdf";
+
+        var imageMock = new Mock<IFormFile>();
+
+        imageMock.Setup(x => x.Length).Returns(imageSize);
+        imageMock.Setup(x => x.FileName).Returns(imageFileName);
+
+        var command = new TestBaseOpinionCommand
+        {
+            Image = imageMock.Object
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Image).WithErrorMessage("Only JPG and PNG files are allowed.");
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for Image when Image exceeds maximum size.
+    /// </summary>
+    [Fact]
+    public void BaseOpinionCommand_ShouldHaveValidationErrorForImage_WhenImageExceedsMaximumSize()
+    {
+        // Arrange
+        const int imageSize = 6 * 1024 * 1024; //6MB
+        const string imageFileName = "test.png";
+
+        var imageMock = new Mock<IFormFile>();
+
+        imageMock.Setup(x => x.Length).Returns(imageSize);
+        imageMock.Setup(x => x.FileName).Returns(imageFileName);
+
+        var command = new TestBaseOpinionCommand
+        {
+            Image = imageMock.Object
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Image).WithErrorMessage("The file exceeds the maximum size of 5MB.");
     }
 }

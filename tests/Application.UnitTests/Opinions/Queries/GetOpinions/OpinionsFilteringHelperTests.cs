@@ -68,6 +68,7 @@ public class OpinionsFilteringHelperTests
             MaxRating = 10,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
+            HaveImages = true,
             SearchQuery = "test"
         };
 
@@ -75,7 +76,7 @@ public class OpinionsFilteringHelperTests
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(4, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -91,12 +92,13 @@ public class OpinionsFilteringHelperTests
             MaxRating = 10,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
+            HaveImages = false
         };
 
         // Act
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(3, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(4, "Min and Max are merged into single delegate");
     }
 }

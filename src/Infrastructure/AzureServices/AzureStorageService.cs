@@ -1,11 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models.BlobContainer;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Infrastructure.AzureServices;
@@ -29,55 +27,26 @@ public class AzureStorageService : IAzureStorageService
     ///     Initializes AzureStorageService.
     /// </summary>
     /// <param name="logger">The logger</param>
-    /// <param name="configuration">The configuration</param>
-    public AzureStorageService(ILogger<AzureStorageService> logger, IConfiguration configuration)
+    /// <param name="blobContainerClient">The blob container client</param>
+    public AzureStorageService(ILogger<AzureStorageService> logger, BlobContainerClient blobContainerClient)
     {
         _logger = logger;
-        _blobContainerClient = CreateBlobContainerClient(configuration);
-    }
-
-    /// <summary>
-    ///     Creates blob container client.
-    /// </summary>
-    /// <param name="configuration">The configuration</param>
-    private BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
-    {
-        var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
-        var blobContainerName = configuration.GetValue<string>("BlobContainerSettings:BlobContainerName");
-
-        if (string.IsNullOrEmpty(blobConnectionString))
-        {
-            throw new RemoteServiceConnectionException("The blob storage connection string is null");
-        }
-
-        if (string.IsNullOrEmpty(blobContainerName))
-        {
-            throw new RemoteServiceConnectionException("The blob storage container name is null");
-        }
-
-        try
-        {
-            return new BlobContainerClient(blobConnectionString, blobContainerName);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError("Cannot connect to te blob container. Exception message: {ExMessage}", e.Message);
-            throw new RemoteServiceConnectionException(e.Message);
-        }
+        _blobContainerClient = blobContainerClient;
     }
 
     /// <summary>
     ///     Uploads a file submitted with the request.
     /// </summary>
+    /// <param name="path">The blob path</param>
     /// <param name="blob">The blob for upload</param>
     /// <returns>BlobResponseDto with status</returns>
-    public async Task<BlobResponseDto> UploadAsync(IFormFile blob)
+    public async Task<BlobResponseDto> UploadAsync(string path, IFormFile blob)
     {
         BlobResponseDto response = new();
 
         try
         {
-            var client = _blobContainerClient.GetBlobClient(blob.FileName);
+            var client = _blobContainerClient.GetBlobClient(path);
 
             await using (var data = blob.OpenReadStream())
             {
@@ -104,13 +73,13 @@ public class AzureStorageService : IAzureStorageService
     }
 
     /// <summary>
-    ///     Deletes a blob with the specified filename.
+    ///     Deletes a blob on a given path.
     /// </summary>
-    /// <param name="blobFilename">Filename</param>
+    /// <param name="path">The blob path</param>
     /// <returns>BlobResponseDto with status</returns>
-    public async Task<BlobResponseDto> DeleteAsync(string blobFilename)
+    public async Task<BlobResponseDto> DeleteAsync(string path)
     {
-        var file = _blobContainerClient.GetBlobClient(blobFilename);
+        var file = _blobContainerClient.GetBlobClient(path);
 
         try
         {
@@ -119,10 +88,26 @@ public class AzureStorageService : IAzureStorageService
         catch (RequestFailedException ex)
             when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
         {
-            _logger.LogError("File {BlobFilename} was not found", blobFilename);
-            return new BlobResponseDto { Error = true, Status = $"File with name {blobFilename} not found." };
+            _logger.LogError("File {Path} was not found", path);
+            return new BlobResponseDto { Error = true, Status = $"File with name {path} not found." };
         }
 
-        return new BlobResponseDto { Error = false, Status = $"File: {blobFilename} has been successfully deleted." };
+        return new BlobResponseDto { Error = false, Status = $"File: {path} has been successfully deleted." };
+    }
+
+    /// <summary>
+    ///     Deletes all files in given path.
+    /// </summary>
+    /// <param name="path">The path</param>
+    public async Task DeleteFilesInPath(string path)
+    {
+        foreach (var blobItem in _blobContainerClient.GetBlobsByHierarchy(prefix: path))
+        {
+            if (blobItem.IsBlob)
+            {
+                await _blobContainerClient.DeleteBlobIfExistsAsync(blobItem.Blob.Name,
+                    DeleteSnapshotsOption.IncludeSnapshots);
+            }
+        }
     }
 }

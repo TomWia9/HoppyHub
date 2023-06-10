@@ -18,6 +18,7 @@ public class OpinionConfiguration : BaseConfiguration<Opinion>
 
         builder.Property(x => x.Rating).IsRequired();
         builder.Property(x => x.Comment).HasMaxLength(1000);
+        builder.Property(x => x.ImageUri).HasMaxLength(200);
         builder.Property(x => x.CreatedBy).IsRequired();
         builder.Property(x => x.Created).IsRequired();
         builder.Property(x => x.LastModifiedBy).IsRequired();

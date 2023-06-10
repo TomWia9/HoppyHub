@@ -16,12 +16,19 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
+    ///     The azure storage service.
+    /// </summary>
+    private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
     ///     Initializes DeleteBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public DeleteBeerCommandHandler(IApplicationDbContext context)
+    /// <param name="azureStorageService">The azure storage service</param>
+    public DeleteBeerCommandHandler(IApplicationDbContext context, IAzureStorageService azureStorageService)
     {
         _context = context;
+        _azureStorageService = azureStorageService;
     }
 
     /// <summary>
@@ -38,7 +45,23 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
             throw new NotFoundException(nameof(Beer), request.Id);
         }
 
-        _context.Beers.Remove(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+
+        try
+        {
+            _context.Beers.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            //Delete all beer related opinion images from blob container.
+            var beerOpinionImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
+            await _azureStorageService.DeleteFilesInPath(beerOpinionImagesPath);
+
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 }
