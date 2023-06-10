@@ -31,7 +31,7 @@ public class OpinionsService : IOpinionsService
     }
 
     /// <summary>
-    ///     Uploads image to blob container and returns image uri if request contains image.
+    ///     Uploads image to blob container and returns image uri.
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="breweryId">The brewery id</param>
@@ -68,7 +68,7 @@ public class OpinionsService : IOpinionsService
     }
 
     /// <summary>
-    ///     Returns image path to match the folder structure in container "Opinions/BeerId/UserId.jpg/png"
+    ///     Returns image path to match the folder structure in container "Opinions/BreweryId/BeerId/UserId.jpg/png"
     /// </summary>
     /// <param name="file">The file</param>
     /// <param name="breweryId">The brewery id</param>

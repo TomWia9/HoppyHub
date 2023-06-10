@@ -8,7 +8,7 @@ namespace Application.Common.Interfaces;
 public interface IOpinionsService
 {
     /// <summary>
-    ///     Uploads image to blob container and returns image uri if request contains image.
+    ///     Uploads image to blob container and returns image uri.
     /// </summary>
     /// <param name="image">The image</param>
     /// <param name="breweryId">The brewery id</param>
