@@ -16,12 +16,19 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
+    ///     The azure storage service.
+    /// </summary>
+    private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
     ///     Initializes DeleteBreweryCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public DeleteBreweryCommandHandler(IApplicationDbContext context)
+    /// <param name="azureStorageService">The azure storage service</param>
+    public DeleteBreweryCommandHandler(IApplicationDbContext context, IAzureStorageService azureStorageService)
     {
         _context = context;
+        _azureStorageService = azureStorageService;
     }
 
     /// <summary>
@@ -39,7 +46,14 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             throw new NotFoundException(nameof(Brewery), request.Id);
         }
 
+        // TODO: Wrap this in transaction
         _context.Breweries.Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
+        
+        //Delete all beer opinions.
+        var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
+
+        await _azureStorageService.DeleteFilesInPath(breweryBeersOpinionImagesPath);
+        //transaction commit.
     }
 }

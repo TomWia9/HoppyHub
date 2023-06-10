@@ -71,28 +71,19 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         }
 
         string? imageUri = null;
-        
-        var entity = new Opinion
-        {
-            Rating = request.Rating,
-            Comment = request.Comment,
-            BeerId = request.BeerId
-        };
 
         if (request.Image != null)
         {
             imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, beer.BreweryId, request.BeerId);
         }
-
-        entity.ImageUri = imageUri;
-
-        // var entity = new Opinion
-        // {
-        //     Rating = request.Rating,
-        //     Comment = request.Comment,
-        //     BeerId = request.BeerId,
-        //     ImageUri = imageUri
-        // };
+        
+        var entity = new Opinion
+        {
+            Rating = request.Rating,
+            Comment = request.Comment,
+            BeerId = request.BeerId,
+            ImageUri = imageUri
+        };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
