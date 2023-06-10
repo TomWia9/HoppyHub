@@ -46,14 +46,23 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             throw new NotFoundException(nameof(Brewery), request.Id);
         }
 
-        // TODO: Wrap this in transaction
-        _context.Breweries.Remove(entity);
-        await _context.SaveChangesAsync(cancellationToken);
-        
-        //Delete all beer opinions.
-        var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
+        await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
-        await _azureStorageService.DeleteFilesInPath(breweryBeersOpinionImagesPath);
-        //transaction commit.
+        try
+        {
+            _context.Breweries.Remove(entity);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            //Delete all brewery related opinion images from blob container.
+            var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
+            await _azureStorageService.DeleteFilesInPath(breweryBeersOpinionImagesPath);
+
+            await transaction.CommitAsync(cancellationToken);
+        }
+        catch
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            throw;
+        }
     }
 }
