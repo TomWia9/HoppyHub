@@ -25,11 +25,8 @@ public abstract class BaseOpinionCommandValidator<TCommand> : AbstractValidator<
 
     private bool BeAValidFile(IFormFile? file)
     {
-        if (file == null)
-            return true;
-
         var allowedExtensions = new[] { ".jpg", ".jpeg", ".png" };
-        var fileExtension = Path.GetExtension(file.FileName);
+        var fileExtension = Path.GetExtension(file?.FileName);
 
         return allowedExtensions.Contains(fileExtension, StringComparer.OrdinalIgnoreCase);
     }

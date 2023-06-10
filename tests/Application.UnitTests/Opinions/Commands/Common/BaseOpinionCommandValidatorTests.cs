@@ -141,6 +141,25 @@ public class BaseOpinionCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Image);
     }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for Image when Image is null.
+    /// </summary>
+    [Fact]
+    public void BaseOpinionCommand_ShouldNotHaveValidationErrorForImage_WhenImageIsNull()
+    {
+        // Arrange
+        var command = new TestBaseOpinionCommand
+        {
+            Image = null
+        };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.Image);
+    }
 
     /// <summary>
     ///     Tests that validation should have error for Image when Image has invalid extension.
