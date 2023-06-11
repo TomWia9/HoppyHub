@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Beers.Commands.CreateBeer;
 
 /// <summary>
-///     CreateBeerCommand validator
+///     CreateBeerCommand validator.
 /// </summary>
 public class CreateBeerCommandValidator : BaseBeerCommandValidator<CreateBeerCommand>
 {

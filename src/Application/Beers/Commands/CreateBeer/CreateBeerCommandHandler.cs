@@ -39,7 +39,6 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    /// <returns></returns>
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
         if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
