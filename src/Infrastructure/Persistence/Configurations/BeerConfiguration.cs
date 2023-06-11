@@ -28,6 +28,10 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.Property(x => x.BreweryId).IsRequired();
         builder.Property(x => x.Rating).IsRequired();
 
+        builder.HasOne(x => x.BeerImage)
+            .WithOne(y => y.Beer)
+            .HasForeignKey<BeerImage>(y => y.BeerId);
+
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.Beer)
             .IsRequired();
