@@ -33,9 +33,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IBeersService _beersService;
 
     /// <summary>
-    ///     The opinions service.
+    ///     The images service.
     /// </summary>
-    private readonly IOpinionsService _opinionsService;
+    private readonly IImagesService<Opinion> _imagesService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
@@ -44,15 +44,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="opinionsService">The opinions service</param>
+    /// <param name="imagesService">The images service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService, IOpinionsService opinionsService)
+        IBeersService beersService, IImagesService<Opinion> imagesService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
-        _opinionsService = opinionsService;
+        _imagesService = imagesService;
     }
 
     /// <summary>
@@ -70,19 +70,11 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
-        string? imageUri = null;
-
-        if (request.Image != null)
-        {
-            imageUri = await _opinionsService.UploadOpinionImageAsync(request.Image, beer.BreweryId, request.BeerId);
-        }
-        
         var entity = new Opinion
         {
             Rating = request.Rating,
             Comment = request.Comment,
-            BeerId = request.BeerId,
-            ImageUri = imageUri
+            BeerId = request.BeerId
         };
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
@@ -91,6 +83,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         {
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            if (request.Image != null)
+            {
+                entity.ImageUri = await _imagesService.UploadImageAsync(request.Image, beer.BreweryId,
+                    request.BeerId, entity.Id);
+
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
             await _beersService.CalculateBeerRatingAsync(request.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);

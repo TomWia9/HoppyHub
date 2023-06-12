@@ -17,19 +17,19 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The beers service.
+    ///     The images service.
     /// </summary>
-    private readonly IBeersService _beersService;
+    private readonly IImagesService<Beer> _imagesService;
 
     /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="beersService">The beers service</param>
-    public UpsertBeerImageCommandHandler(IApplicationDbContext context, IBeersService beersService)
+    /// <param name="imagesService">The images service</param>
+    public UpsertBeerImageCommandHandler(IApplicationDbContext context, IImagesService<Beer> imagesService)
     {
         _context = context;
-        _beersService = beersService;
+        _imagesService = imagesService;
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
 
         try
         {
-            var imageUri = await _beersService.UploadBeerImageAsync(request.Image!, beer.BreweryId, request.BeerId);
+            var imageUri = await _imagesService.UploadImageAsync(request.Image!, beer.BreweryId, request.BeerId);
 
             // Create new BeerImage for requested beer if it was not created for some reason.
             if (entity == null)

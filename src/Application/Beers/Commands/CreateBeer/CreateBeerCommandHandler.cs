@@ -24,21 +24,21 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The beers service.
+    ///     The images service.
     /// </summary>
-    private readonly IBeersService _beersService;
+    private readonly IImagesService<Beer> _imagesService;
 
     /// <summary>
     ///     Initializes CreateBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="beersService">The beers service</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IBeersService beersService)
+    /// <param name="imagesService">The images service</param>
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IImagesService<Beer> imagesService)
     {
         _context = context;
         _mapper = mapper;
-        _beersService = beersService;
+        _imagesService = imagesService;
     }
 
     /// <summary>
@@ -52,12 +52,12 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
-        
+
         if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
         {
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
         }
-        
+
         var entity = new Beer
         {
             Name = request.Name,
@@ -72,7 +72,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             BeerImage = new BeerImage
             {
                 TempImage = true,
-                ImageUri = _beersService.GetTempImageUri()
+                ImageUri = _imagesService.GetTempImageUri()
             }
         };
 
