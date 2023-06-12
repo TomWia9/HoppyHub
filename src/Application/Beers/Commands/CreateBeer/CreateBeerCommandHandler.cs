@@ -24,14 +24,21 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     Initializes CreateBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper)
+    /// <param name="beersService">The beers service</param>
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IBeersService beersService)
     {
         _context = context;
         _mapper = mapper;
+        _beersService = beersService;
     }
 
     /// <summary>
@@ -61,7 +68,12 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             Blg = request.Blg,
             BeerStyleId = request.BeerStyleId,
             Ibu = request.Ibu,
-            ReleaseDate = request.ReleaseDate
+            ReleaseDate = request.ReleaseDate,
+            BeerImage = new BeerImage
+            {
+                TempImage = true,
+                ImageUri = _beersService.GetTempImageUri()
+            }
         };
 
         await _context.Beers.AddAsync(entity, cancellationToken);
