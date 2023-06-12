@@ -54,7 +54,10 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
 
             //Delete all beer related opinion images from blob container.
             var beerOpinionImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
+            var beerImagesPath = $"Beers/{entity.BreweryId}/{entity.Id}";
+
             await _azureStorageService.DeleteFilesInPath(beerOpinionImagesPath);
+            await _azureStorageService.DeleteFilesInPath(beerImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
         }

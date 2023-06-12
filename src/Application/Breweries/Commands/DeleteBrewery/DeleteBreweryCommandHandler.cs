@@ -53,9 +53,12 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             _context.Breweries.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            //Delete all brewery related opinion images from blob container.
+            //Delete all brewery related images from blob container.
             var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
+            var breweryBeerImagesPath = $"Beers/{entity.Id}";
+
             await _azureStorageService.DeleteFilesInPath(breweryBeersOpinionImagesPath);
+            await _azureStorageService.DeleteFilesInPath(breweryBeerImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
         }
