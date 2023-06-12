@@ -22,6 +22,11 @@ public class BeersService : IBeersService
     private readonly IAzureStorageService _azureStorageService;
 
     /// <summary>
+    ///     Temp image uri.
+    /// </summary>
+    private const string TempImageUri = "https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg";
+
+    /// <summary>
     ///     Initializes BeersService.
     /// </summary>
     /// <param name="context">The database context</param>
@@ -78,12 +83,20 @@ public class BeersService : IBeersService
     }
 
     /// <summary>
+    ///     Gets temp image uri.
+    /// </summary>
+    public string GetTempImageUri()
+    {
+        return TempImageUri;
+    }
+
+    /// <summary>
     ///     Returns image path to match the folder structure in container "Beers/BreweryId/BeerId.jpg/png"
     /// </summary>
     /// <param name="file">The file</param>
     /// <param name="breweryId">The brewery id</param>
     /// <param name="beerId">The beer id</param>
-    private string CreateImagePath(IFormFile file, Guid breweryId, Guid beerId)
+    private static string CreateImagePath(IFormFile file, Guid breweryId, Guid beerId)
     {
         var extension = Path.GetExtension(file.FileName);
 

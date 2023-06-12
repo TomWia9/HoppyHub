@@ -26,4 +26,9 @@ public interface IBeersService
     /// </summary>
     /// <param name="imageUri">The image uri</param>
     Task DeleteBeerImageAsync(string imageUri);
+
+    /// <summary>
+    ///     Gets temp image uri.
+    /// </summary>
+    string GetTempImageUri();
 }
