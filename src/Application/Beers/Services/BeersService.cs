@@ -55,6 +55,12 @@ public class BeersService : IBeersService
         beer.Rating = Math.Round(beerRating, 2);
     }
 
+    /// <summary>
+    ///     Uploads image to blob container and returns image uri.
+    /// </summary>
+    /// <param name="image">The image</param>
+    /// <param name="breweryId">The brewery id</param>
+    /// <param name="beerId">The beer id</param>
     public async Task<string> UploadBeerImageAsync(IFormFile image, Guid breweryId, Guid beerId)
     {
         var path = CreateImagePath(image, breweryId, beerId);
@@ -68,6 +74,10 @@ public class BeersService : IBeersService
         return blobResponse.Blob.Uri;
     }
 
+    /// <summary>
+    ///     Deletes image from blob.
+    /// </summary>
+    /// <param name="imageUri">The image uri</param>
     public async Task DeleteBeerImageAsync(string imageUri)
     {
         var startIndex = imageUri.IndexOf("Beers", StringComparison.Ordinal);
