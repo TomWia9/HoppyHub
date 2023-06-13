@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.BeerImages.Commands.DeleteBeerImage;
 
 /// <summary>
-///     DeleteBeerImageCommand handler
+///     DeleteBeerImageCommand handler.
 /// </summary>
 public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageCommand>
 {

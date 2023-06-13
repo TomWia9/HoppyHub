@@ -10,7 +10,7 @@ namespace Infrastructure.Persistence.Configurations;
 public class BeerImagesConfiguration : IEntityTypeConfiguration<BeerImage>
 {
     /// <summary>
-    ///     Configures the address entity.
+    ///     Configures the beer image entity.
     /// </summary>
     /// <param name="builder">The builder</param>
     public void Configure(EntityTypeBuilder<BeerImage> builder)
