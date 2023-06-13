@@ -1,4 +1,6 @@
 ﻿using Api.Controllers;
+using Application.BeerImages.Commands.DeleteBeerImage;
+using Application.BeerImages.Commands.UpsertBeerImage;
 using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
@@ -139,6 +141,60 @@ public class BeersControllerTests : ControllerSetup<BeersController>
 
         // Act
         var response = await Controller.DeleteBeer(id);
+
+        // Assert
+        response.Should().BeOfType<NoContentResult>();
+    }
+
+    /// <summary>
+    ///     Tests that UpsertBeerImage method returns NoContent when beer id is valid.
+    /// </summary>
+    [Fact]
+    public async Task UpsertBeerImage_ShouldReturnNoContent_WhenBeerIdIsValid()
+    {
+        // Arrange
+        const string imageUri = "https://test.com/test.jpg";
+        var beerId = Guid.NewGuid();
+        var command = new UpsertBeerImageCommand { BeerId = beerId };
+        MediatorMock.Setup(m => m.Send(command, CancellationToken.None)).ReturnsAsync(imageUri);
+
+        // Act
+        var response = await Controller.UpsertBeerImage(beerId, command);
+
+        // Assert
+        response.Should().BeOfType<CreatedAtActionResult>();
+    }
+
+    /// <summary>
+    ///     Tests that UpsertBeerImage method returns BadRequest when beer id is invalid.
+    /// </summary>
+    [Fact]
+    public async Task UpsertBeerImage_ShouldReturnBadRequest_WhenBeerIdIsInvalid()
+    {
+        // Arrange
+        var beerId = Guid.NewGuid();
+        var command = new UpsertBeerImageCommand { BeerId = Guid.NewGuid() };
+
+        // Act
+        var response = await Controller.UpsertBeerImage(beerId, command);
+
+        // Assert
+        response.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
+    }
+
+    /// <summary>
+    ///     Tests that DeleteBeerImage method returns NoContent.
+    /// </summary>
+    [Fact]
+    public async Task DeleteBeerImage_ShouldReturnNoContent()
+    {
+        // Arrange
+        var beerId = Guid.NewGuid();
+        MediatorMock.Setup(m => m.Send(It.IsAny<DeleteBeerImageCommand>(), CancellationToken.None))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var response = await Controller.DeleteBeerImage(beerId);
 
         // Assert
         response.Should().BeOfType<NoContentResult>();
