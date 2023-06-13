@@ -74,7 +74,7 @@ public class CreateOpinionCommandHandlerTests
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldCreateOpinionAndCalculateBeerRatingAndUploadImageAndReturnCorrectOpinionDto_WhenOpinionContainImage()
+        Handle_ShouldCreateOpinionAndCalculateBeerRatingAndUploadImageAndReturnCorrectOpinionDto_WhenOpinionContainsImage()
     {
         // Arrange
         const string username = "testUser";
@@ -131,7 +131,7 @@ public class CreateOpinionCommandHandlerTests
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _imagesServiceMock.Verify(x => x.UploadImageAsync(request.Image, breweryId, beerId, It.IsAny<Guid?>()),
             Times.Once);
-        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(3));
     }
 
     /// <summary>
