@@ -22,6 +22,11 @@ public class CreateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
+    ///     The images service mock.
+    /// </summary>
+    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateBeerCommandHandler _handler;
@@ -32,9 +37,10 @@ public class CreateBeerCommandHandlerTests
     public CreateBeerCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
+        _imagesServiceMock = new Mock<IImagesService<Beer>>();
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
-        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper);
+        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper, _imagesServiceMock.Object);
     }
 
     /// <summary>
@@ -144,7 +150,7 @@ public class CreateBeerCommandHandlerTests
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerStyles = Enumerable.Empty<BeerStyle>();
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        
+
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
 

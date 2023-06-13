@@ -38,9 +38,9 @@ public class CreateOpinionCommandHandlerTests
     private readonly Mock<IBeersService> _beersServiceMock;
 
     /// <summary>
-    ///     The opinions service mock.
+    ///     The images service mock.
     /// </summary>
-    private readonly Mock<IOpinionsService> _opinionsServiceMock;
+    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
 
     /// <summary>
     ///     The form file mock.
@@ -61,11 +61,11 @@ public class CreateOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _usersServiceMock = new Mock<IUsersService>();
         _beersServiceMock = new Mock<IBeersService>();
-        _opinionsServiceMock = new Mock<IOpinionsService>();
+        _imagesServiceMock = new Mock<IImagesService<Opinion>>();
         _formFileMock = new Mock<IFormFile>();
 
         _handler = new CreateOpinionCommandHandler(_contextMock.Object, _mapperMock.Object, _usersServiceMock.Object,
-            _beersServiceMock.Object, _opinionsServiceMock.Object);
+            _beersServiceMock.Object, _imagesServiceMock.Object);
     }
 
     /// <summary>
@@ -80,8 +80,9 @@ public class CreateOpinionCommandHandlerTests
         const string username = "testUser";
         const string imageUri = "blob.com/opinions/test.jpg";
 
-        _opinionsServiceMock
-            .Setup(x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
+        _imagesServiceMock
+            .Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
+                It.IsAny<Guid?>()))
             .ReturnsAsync(imageUri);
 
         var beerId = Guid.NewGuid();
@@ -128,7 +129,8 @@ public class CreateOpinionCommandHandlerTests
 
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
-        _opinionsServiceMock.Verify(x => x.UploadOpinionImageAsync(request.Image, breweryId, beerId), Times.Once);
+        _imagesServiceMock.Verify(x => x.UploadImageAsync(request.Image, breweryId, beerId, It.IsAny<Guid?>()),
+            Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
     }
 
@@ -186,8 +188,8 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
-        _opinionsServiceMock.Verify(
-            x => x.UploadOpinionImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never);
+        _imagesServiceMock.Verify(
+            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()), Times.Never);
     }
 
     /// <summary>
