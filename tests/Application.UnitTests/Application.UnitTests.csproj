@@ -29,4 +29,8 @@
       <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="BeerImages\Commands\DeleteBeerImage\" />
+    </ItemGroup>
+
 </Project>

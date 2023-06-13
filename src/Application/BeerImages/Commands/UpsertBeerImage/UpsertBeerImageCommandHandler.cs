@@ -41,6 +41,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
             cancellationToken: cancellationToken);
+        
         if (beer == null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
