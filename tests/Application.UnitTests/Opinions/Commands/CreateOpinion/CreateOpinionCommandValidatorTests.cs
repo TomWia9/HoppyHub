@@ -24,7 +24,7 @@ public class CreateOpinionCommandValidatorTests
     private readonly CreateOpinionCommandValidator _validator;
 
     /// <summary>
-    ///     Initializes CreateOpinionCommandValidatorTests.
+    ///     Setups CreateOpinionCommandValidatorTests.
     /// </summary>
     public CreateOpinionCommandValidatorTests()
     {

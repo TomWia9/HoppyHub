@@ -8,7 +8,6 @@ using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Favorites.Queries.GetFavorites;
 using Application.Opinions.Queries.GetOpinions;
-using Application.Opinions.Services;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
@@ -47,7 +46,8 @@ public static class ConfigureServices
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
 
         services.AddTransient<IBeersService, BeersService>();
-        services.AddTransient<IOpinionsService, OpinionsService>();
+        services.AddTransient(typeof(IImagesService<>), typeof(ImagesService<>));
+
 
         return services;
     }

@@ -14,7 +14,7 @@ public class BeersService : IBeersService
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-
+    
     /// <summary>
     ///     Initializes BeersService.
     /// </summary>
@@ -35,10 +35,10 @@ public class BeersService : IBeersService
         {
             throw new NotFoundException(nameof(Beer), beerId);
         }
-        
+
         var beerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
             .AverageAsync(x => x.Rating);
-        
+
         beer.Rating = Math.Round(beerRating, 2);
     }
 }

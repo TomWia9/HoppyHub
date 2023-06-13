@@ -39,10 +39,10 @@ public class DeleteBreweryCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes Brewery from database and deletes related opinion images when Brewery exists.
+    ///     Tests that Handle method removes Brewery from database and deletes related images when Brewery exists.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldRemoveBreweryFromDatabaseAndDeleteRelatedOpinionImages_WhenBreweryExists()
+    public async Task Handle_ShouldRemoveBreweryFromDatabaseAndDeleteRelatedImages_WhenBreweryExists()
     {
         // Arrange
         var breweryId = Guid.NewGuid();
@@ -60,7 +60,7 @@ public class DeleteBreweryCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Breweries.Remove(brewery), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _azureStorageServiceMock.Verify(x => x.DeleteFilesInPath(It.IsAny<string>()), Times.Once);
+        _azureStorageServiceMock.Verify(x => x.DeleteFilesInPath(It.IsAny<string>()), Times.Exactly(2));
     }
 
     /// <summary>

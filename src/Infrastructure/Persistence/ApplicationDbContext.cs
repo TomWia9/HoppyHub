@@ -36,6 +36,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Beer> Beers => Set<Beer>();
 
     /// <summary>
+    ///     The beer images.
+    /// </summary>
+    public DbSet<BeerImage> BeerImages => Set<BeerImage>();
+
+    /// <summary>
     ///     The breweries.
     /// </summary>
     public DbSet<Brewery> Breweries => Set<Brewery>();

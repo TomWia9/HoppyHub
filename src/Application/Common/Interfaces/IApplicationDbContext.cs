@@ -13,6 +13,11 @@ public interface IApplicationDbContext
     ///     The beers.
     /// </summary>
     DbSet<Beer> Beers { get; }
+    
+    /// <summary>
+    ///     The beer images.
+    /// </summary>
+    DbSet<BeerImage> BeerImages { get; }
 
     /// <summary>
     ///     The breweries.

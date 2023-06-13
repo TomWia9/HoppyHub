@@ -27,9 +27,9 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     private readonly IBeersService _beersService;
 
     /// <summary>
-    ///     The opinions service.
+    ///     The images service.
     /// </summary>
-    private readonly IOpinionsService _opinionsService;
+    private readonly IImagesService<Opinion> _imagesService;
 
     /// <summary>
     ///     Initializes UpdateOpinionCommandHandler.
@@ -37,14 +37,14 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="opinionsService">The opinions service</param>
+    /// <param name="imagesService">The images service</param>
     public UpdateOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IBeersService beersService, IOpinionsService opinionsService)
+        IBeersService beersService, IImagesService<Opinion> imagesService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _beersService = beersService;
-        _opinionsService = opinionsService;
+        _imagesService = imagesService;
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
         if (request.Image != null)
         {
             entity.ImageUri =
-                await _opinionsService.UploadOpinionImageAsync(request.Image, entity.Beer!.BreweryId, entity.BeerId);
+                await _imagesService.UploadImageAsync(request.Image, entity.Beer!.BreweryId, entity.BeerId, entity.Id);
         }
         else
         {
@@ -94,7 +94,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
             if (request.Image == null && !string.IsNullOrEmpty(entityImageUri))
             {
-                await _opinionsService.DeleteOpinionImageAsync(entityImageUri);
+                await _imagesService.DeleteImageAsync(entityImageUri);
             }
 
             await transaction.CommitAsync(cancellationToken);
