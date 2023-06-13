@@ -50,6 +50,7 @@ public class CreateBeerCommandHandlerTests
     public async Task Handle_ShouldCreateBeerAndReturnCorrectBeerDto()
     {
         // Arrange
+        const string tempImageUri = "test.com";
         var breweryId = Guid.NewGuid();
         var beerStyleId = Guid.NewGuid();
         var request = new CreateBeerCommand
@@ -74,6 +75,7 @@ public class CreateBeerCommandHandlerTests
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+        _imagesServiceMock.Setup(x => x.GetTempImageUri()).Returns(tempImageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -88,6 +90,7 @@ public class CreateBeerCommandHandlerTests
         result.Blg.Should().Be(request.Blg);
         result.Ibu.Should().Be(request.Ibu);
         result.ReleaseDate.Should().Be(request.ReleaseDate);
+        result.ImageUri.Should().NotBeNull();
 
         _contextMock.Verify(x => x.Beers.AddAsync(It.IsAny<Beer>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
