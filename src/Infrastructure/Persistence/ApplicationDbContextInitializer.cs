@@ -3,7 +3,6 @@ using Application.Common.Models;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using Serilog;
 
 namespace Infrastructure.Persistence;
@@ -232,9 +231,10 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
                 Log.Error("Seeding {TableName} failed", tableName);
             }
         }
-        catch (JsonSerializationException ex)
+        catch 
         {
-            throw new Exception("Invalid sql file", ex);
+            Log.Error("Seeding {TableName} failed", tableName);
+            throw;
         }
     }
 }

@@ -105,7 +105,7 @@ public class ImagesService<T> : IImagesService<T>
     /// <param name="breweryId">The brewery id</param>
     /// <param name="beerId">The beer id</param>
     /// <param name="opinionId">The opinion id</param>
-    private string CreateImagePath(IFormFile file, Guid breweryId, Guid beerId, Guid? opinionId)
+    private static string CreateImagePath(IFormFile file, Guid breweryId, Guid beerId, Guid? opinionId)
     {
         var extension = Path.GetExtension(file.FileName);
 

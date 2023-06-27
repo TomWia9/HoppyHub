@@ -68,12 +68,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     /// <summary>
     ///     OnModelCreating override.
     /// </summary>
-    /// <param name="modelBuilder">The ModelBuilder</param>
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <param name="builder">The ModelBuilder</param>
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
     }
 
     /// <summary>
