@@ -4,23 +4,11 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.BeerStyles.Commands.Common;
 
 /// <summary>
-///     Unit tests for the <see cref="BaseBeerStyleCommandValidator{TCommand}"/> class.
+///     Unit tests for the <see cref="BaseBeerStyleCommandValidator{TCommand}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BaseBeerStyleCommandValidatorTests
 {
-    /// <summary>
-    ///     The TestBaseBeerStyle command.
-    /// </summary>
-    private record TestBaseBeerStyleCommand : BaseBeerStyleCommand;
-
-    /// <summary>
-    ///     The TestBaseBeerStyleCommand validator.
-    /// </summary>
-    private class TestBaseBeerStyleCommandValidator : BaseBeerStyleCommandValidator<TestBaseBeerStyleCommand>
-    {
-    }
-
     /// <summary>
     ///     The TestBaseBeerStyleCommand validator instance.
     /// </summary>
@@ -41,7 +29,7 @@ public class BaseBeerStyleCommandValidatorTests
     public void BaseBeerStyleCommand_ShouldNotHaveValidationErrorForName_WhenNameIsValid()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             Name = "India Pale Ale"
         };
@@ -60,7 +48,7 @@ public class BaseBeerStyleCommandValidatorTests
     public void BaseBeerStyleCommand_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             Name = new string('x', 101)
         };
@@ -79,7 +67,7 @@ public class BaseBeerStyleCommandValidatorTests
     public void BaseBeerStyleCommand_ShouldHaveValidationErrorForName_WhenNameIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             Name = string.Empty
         };
@@ -118,7 +106,7 @@ public class BaseBeerStyleCommandValidatorTests
         BaseBeerStyleCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             Description = new string('x', 1001)
         };
@@ -137,7 +125,7 @@ public class BaseBeerStyleCommandValidatorTests
     public void BaseBeerStyleCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             Description = string.Empty
         };
@@ -176,7 +164,7 @@ public class BaseBeerStyleCommandValidatorTests
         BaseBeerStyleCommand_ShouldHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             CountryOfOrigin = new string('x', 51)
         };
@@ -195,7 +183,7 @@ public class BaseBeerStyleCommandValidatorTests
     public void BaseBeerStyleCommand_ShouldHaveValidationErrorForCountryOfOrigin_WhenCountryOfOriginIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBeerStyleCommand()
+        var command = new TestBaseBeerStyleCommand
         {
             CountryOfOrigin = string.Empty
         };
@@ -205,5 +193,17 @@ public class BaseBeerStyleCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.CountryOfOrigin);
+    }
+
+    /// <summary>
+    ///     The TestBaseBeerStyle command.
+    /// </summary>
+    private record TestBaseBeerStyleCommand : BaseBeerStyleCommand;
+
+    /// <summary>
+    ///     The TestBaseBeerStyleCommand validator.
+    /// </summary>
+    private class TestBaseBeerStyleCommandValidator : BaseBeerStyleCommandValidator<TestBaseBeerStyleCommand>
+    {
     }
 }

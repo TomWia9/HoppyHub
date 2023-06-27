@@ -42,6 +42,8 @@ public static class ConfigureServices
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
+        services.AddTransient<IBeersImagesService, BeersImagesService>();
+        services.AddTransient<IOpinionsImagesService, OpinionsImagesService>();
         services.AddSingleton<IAzureStorageService, AzureStorageService>();
         services.AddSingleton(_ => CreateBlobContainerClient(configuration));
 

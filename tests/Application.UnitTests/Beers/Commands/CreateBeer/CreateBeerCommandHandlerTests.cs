@@ -11,20 +11,20 @@ using Moq;
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateBeerCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerCommandHandlerTests
 {
     /// <summary>
+    ///     The beers images service mock.
+    /// </summary>
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
+
+    /// <summary>
     ///     The database context mock.
     /// </summary>
     private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
-    ///     The images service mock.
-    /// </summary>
-    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
 
     /// <summary>
     ///     The handler.
@@ -37,10 +37,10 @@ public class CreateBeerCommandHandlerTests
     public CreateBeerCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _imagesServiceMock = new Mock<IImagesService<Beer>>();
+        _beersImagesServiceMock = new Mock<IBeersImagesService>();
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
-        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper, _imagesServiceMock.Object);
+        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper, _beersImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class CreateBeerCommandHandlerTests
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
-        _imagesServiceMock.Setup(x => x.GetTempImageUri()).Returns(tempImageUri);
+        _beersImagesServiceMock.Setup(x => x.GetTempBeerImageUri()).Returns(tempImageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

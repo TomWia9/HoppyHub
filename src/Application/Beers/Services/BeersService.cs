@@ -14,7 +14,7 @@ public class BeersService : IBeersService
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-    
+
     /// <summary>
     ///     Initializes BeersService.
     /// </summary>
@@ -31,7 +31,7 @@ public class BeersService : IBeersService
     {
         var beer = await _context.Beers.FindAsync(beerId);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), beerId);
         }

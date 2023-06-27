@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 
 /// <summary>
-///     Tests for the <see cref="FavoritesFilteringHelper"/> class.
+///     Tests for the <see cref="FavoritesFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class FavoritesFilteringHelperTests
@@ -22,7 +22,7 @@ public class FavoritesFilteringHelperTests
     {
         _filteringHelper = new FavoritesFilteringHelper();
     }
-    
+
     /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
@@ -82,9 +82,9 @@ public class FavoritesFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegatesWithoutSearchQuery()
     {
         // Arrange
-        var request = new GetFavoritesQuery()
+        var request = new GetFavoritesQuery
         {
-            UserId = Guid.NewGuid(),
+            UserId = Guid.NewGuid()
         };
 
         // Act

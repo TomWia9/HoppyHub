@@ -8,20 +8,20 @@ using Moq;
 namespace Application.UnitTests.Breweries.Commands.DeleteBrewery;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteBreweryCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteBreweryCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteBreweryCommandHandlerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The azure storage service mock.
     /// </summary>
     private readonly Mock<IAzureStorageService> _azureStorageServiceMock;
+
+    /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     The handler.
@@ -52,7 +52,7 @@ public class DeleteBreweryCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(brewery);
-        _azureStorageServiceMock.Setup(x => x.DeleteFilesInPath(It.IsAny<string>())).Returns(Task.CompletedTask);
+        _azureStorageServiceMock.Setup(x => x.DeleteInPath(It.IsAny<string>())).Returns(Task.CompletedTask);
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
@@ -60,7 +60,7 @@ public class DeleteBreweryCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Breweries.Remove(brewery), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _azureStorageServiceMock.Verify(x => x.DeleteFilesInPath(It.IsAny<string>()), Times.Exactly(2));
+        _azureStorageServiceMock.Verify(x => x.DeleteInPath(It.IsAny<string>()), Times.Exactly(2));
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class DeleteBreweryCommandHandlerTests
         await action.Should().ThrowAsync<NotFoundException>();
         _contextMock.Verify(x => x.Breweries.Remove(It.IsAny<Brewery>()), Times.Never);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _azureStorageServiceMock.Verify(x => x.DeleteFilesInPath(It.IsAny<string>()), Times.Never);
+        _azureStorageServiceMock.Verify(x => x.DeleteInPath(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class DeleteBreweryCommandHandlerTests
         _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(brewery);
 
-        _azureStorageServiceMock.Setup(x => x.DeleteFilesInPath(It.IsAny<string>()))
+        _azureStorageServiceMock.Setup(x => x.DeleteInPath(It.IsAny<string>()))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         // Act & Assert

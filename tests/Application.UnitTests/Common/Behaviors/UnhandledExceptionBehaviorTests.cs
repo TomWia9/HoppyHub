@@ -1,5 +1,5 @@
 ﻿using Application.Common.Behaviors;
-using Application.UnitTests.Helpers;
+using Application.UnitTests.TestHelpers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -7,7 +7,7 @@ using Moq;
 namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="UnhandledExceptionBehavior{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="UnhandledExceptionBehavior{TRequest,TResponse}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UnhandledExceptionBehaviorTests
@@ -18,14 +18,14 @@ public class UnhandledExceptionBehaviorTests
     private readonly Mock<ILogger<UnhandledExceptionBehavior<TestRequest, TestResponse>>> _loggerMock;
 
     /// <summary>
-    ///     The performance behavior.
-    /// </summary>
-    private readonly UnhandledExceptionBehavior<TestRequest, TestResponse> _unhandledExceptionBehavior;
-
-    /// <summary>
     ///     The request handler delegate mock.
     /// </summary>
     private readonly Mock<RequestHandlerDelegate<TestResponse>> _requestHandlerDelegateMock;
+
+    /// <summary>
+    ///     The performance behavior.
+    /// </summary>
+    private readonly UnhandledExceptionBehavior<TestRequest, TestResponse> _unhandledExceptionBehavior;
 
     /// <summary>
     ///     Setups UnhandledExceptionBehaviorTests.

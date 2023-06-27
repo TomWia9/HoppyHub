@@ -3,7 +3,7 @@
 namespace Application.Users.Commands.UpdateUser;
 
 /// <summary>
-///     UpdateUser command. 
+///     UpdateUser command.
 /// </summary>
 public record UpdateUserCommand : IRequest
 {

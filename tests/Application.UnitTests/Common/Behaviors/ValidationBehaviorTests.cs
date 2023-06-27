@@ -1,5 +1,5 @@
 ﻿using Application.Common.Behaviors;
-using Application.UnitTests.Helpers;
+using Application.UnitTests.TestHelpers;
 using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
@@ -9,20 +9,20 @@ using ValidationException = Application.Common.Exceptions.ValidationException;
 namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="ValidationBehavior{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="ValidationBehavior{TRequest,TResponse}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ValidationBehaviorTests
 {
     /// <summary>
-    ///     The validator mock.
-    /// </summary>
-    private readonly Mock<IValidator<TestRequest>> _validatorMock;
-
-    /// <summary>
     ///     The request handler delegate mock.
     /// </summary>
     private readonly Mock<RequestHandlerDelegate<TestResponse>> _requestHandlerDelegateMock;
+
+    /// <summary>
+    ///     The validator mock.
+    /// </summary>
+    private readonly Mock<IValidator<TestRequest>> _validatorMock;
 
     /// <summary>
     ///     The validators.

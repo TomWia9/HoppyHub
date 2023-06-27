@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 
 /// <summary>
-///     Unit tests for the <see cref="GetFavoritesQueryHandler"/> class.
+///     Unit tests for the <see cref="GetFavoritesQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetFavoritesQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetFavoritesQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<Favorite>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetFavoritesQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<Favorite>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetFavoritesQueryHandlerTests.
@@ -74,7 +74,7 @@ public class GetFavoritesQueryHandlerTests
         {
             new()
             {
-                Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId,
+                Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId
             }
         };
         var favoritesDbSetMock = favorites.AsQueryable().BuildMockDbSet();

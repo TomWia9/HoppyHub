@@ -46,6 +46,7 @@ public abstract class BaseBreweryCommandValidator<TCommand> : AbstractValidator<
         const string polandPattern = @"^\d{2}-\d{3}$";
 
         return !string.IsNullOrEmpty(postCode) &&
-               (Regex.IsMatch(postCode, usaPattern) || Regex.IsMatch(postCode, polandPattern));
+               (Regex.IsMatch(postCode, usaPattern, RegexOptions.NonBacktracking) ||
+                Regex.IsMatch(postCode, polandPattern, RegexOptions.NonBacktracking));
     }
 }

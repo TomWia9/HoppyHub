@@ -10,13 +10,6 @@ namespace Application.Breweries.Queries.GetBreweries;
 public class BreweriesFilteringHelper : FilteringHelperBase<Brewery, GetBreweriesQuery>
 {
     /// <summary>
-    ///     Initializes BreweriesFilteringHelper.
-    /// </summary>
-    public BreweriesFilteringHelper() : base(SortingColumns)
-    {
-    }
-    
-    /// <summary>
     ///     Breweries sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Brewery, object>>> SortingColumns = new()
@@ -24,7 +17,14 @@ public class BreweriesFilteringHelper : FilteringHelperBase<Brewery, GetBrewerie
         { nameof(Brewery.Name).ToUpper(), x => x.Name ?? string.Empty },
         { nameof(Brewery.FoundationYear).ToUpper(), x => x.FoundationYear }
     };
-    
+
+    /// <summary>
+    ///     Initializes BreweriesFilteringHelper.
+    /// </summary>
+    public BreweriesFilteringHelper() : base(SortingColumns)
+    {
+    }
+
     /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>
@@ -33,7 +33,7 @@ public class BreweriesFilteringHelper : FilteringHelperBase<Brewery, GetBrewerie
     {
         var delegates = new List<Expression<Func<Brewery, bool>>>
         {
-            x => x.FoundationYear >= request.MinFoundationYear && x.FoundationYear <= request.MaxFoundationYear,
+            x => x.FoundationYear >= request.MinFoundationYear && x.FoundationYear <= request.MaxFoundationYear
         };
 
         if (!string.IsNullOrWhiteSpace(request.Name))

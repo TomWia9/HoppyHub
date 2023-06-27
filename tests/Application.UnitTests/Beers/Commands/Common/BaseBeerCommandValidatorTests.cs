@@ -4,23 +4,11 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Beers.Commands.Common;
 
 /// <summary>
-///     Unit tests for the <see cref="BaseBeerCommandValidator{TCommand}"/> class.
+///     Unit tests for the <see cref="BaseBeerCommandValidator{TCommand}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BaseBeerCommandValidatorTests
 {
-    /// <summary>
-    ///     The TestBaseBeer command.
-    /// </summary>
-    private record TestBaseBeerCommand : BaseBeerCommand;
-
-    /// <summary>
-    ///     The TestBaseBeerCommand validator.
-    /// </summary>
-    private class TestBaseBeerCommandValidator : BaseBeerCommandValidator<TestBaseBeerCommand>
-    {
-    }
-
     /// <summary>
     ///     The TestBaseBeerCommand validator instance.
     /// </summary>
@@ -362,5 +350,17 @@ public class BaseBeerCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
+    }
+
+    /// <summary>
+    ///     The TestBaseBeer command.
+    /// </summary>
+    private record TestBaseBeerCommand : BaseBeerCommand;
+
+    /// <summary>
+    ///     The TestBaseBeerCommand validator.
+    /// </summary>
+    private class TestBaseBeerCommandValidator : BaseBeerCommandValidator<TestBaseBeerCommand>
+    {
     }
 }

@@ -66,7 +66,7 @@ public class Beer : BaseAuditableEntity
     ///     The brewery.
     /// </summary>
     public Brewery? Brewery { get; set; }
-    
+
     /// <summary>
     ///     The beer image.
     /// </summary>

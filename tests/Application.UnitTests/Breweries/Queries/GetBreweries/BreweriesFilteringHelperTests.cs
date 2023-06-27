@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 
 /// <summary>
-///     Tests for the <see cref="BreweriesFilteringHelper"/> class.
+///     Tests for the <see cref="BreweriesFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BreweriesFilteringHelperTests
@@ -62,7 +62,7 @@ public class BreweriesFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegates()
     {
         // Arrange
-        var request = new GetBreweriesQuery()
+        var request = new GetBreweriesQuery
         {
             Name = "Pinta",
             Country = "Poland",
@@ -87,7 +87,7 @@ public class BreweriesFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegatesWithoutSearchQuery()
     {
         // Arrange
-        var request = new GetBreweriesQuery()
+        var request = new GetBreweriesQuery
         {
             Name = "Pinta",
             Country = "Poland",

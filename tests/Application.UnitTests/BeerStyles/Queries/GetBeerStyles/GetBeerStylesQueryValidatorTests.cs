@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerStyles;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBeerStylesQueryValidator"/> class.
+///     Unit tests for the <see cref="GetBeerStylesQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeerStylesQueryValidatorTests

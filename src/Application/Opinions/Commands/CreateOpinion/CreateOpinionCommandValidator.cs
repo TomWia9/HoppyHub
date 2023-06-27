@@ -29,7 +29,7 @@ public class CreateOpinionCommandValidator : BaseOpinionCommandValidator<CreateO
     {
         _context = context;
         _currentUserService = currentUserService;
-        
+
         RuleFor(x => x.BeerId).NotEmpty().MustAsync(BeSingleOpinionPerBeer)
             .WithMessage("Only one opinion per beer is allowed.");
     }

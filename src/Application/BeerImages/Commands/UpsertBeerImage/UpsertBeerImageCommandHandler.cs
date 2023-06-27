@@ -12,24 +12,24 @@ namespace Application.BeerImages.Commands.UpsertBeerImage;
 public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageCommand, string>
 {
     /// <summary>
+    ///     The beer images service.
+    /// </summary>
+    private readonly IBeersImagesService _beerImagesService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The images service.
-    /// </summary>
-    private readonly IImagesService<Beer> _imagesService;
-
-    /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="imagesService">The images service</param>
-    public UpsertBeerImageCommandHandler(IApplicationDbContext context, IImagesService<Beer> imagesService)
+    /// <param name="beerImagesService">The beer images service</param>
+    public UpsertBeerImageCommandHandler(IApplicationDbContext context, IBeersImagesService beerImagesService)
     {
         _context = context;
-        _imagesService = imagesService;
+        _beerImagesService = beerImagesService;
     }
 
     /// <summary>
@@ -40,24 +40,25 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     public async Task<string> Handle(UpsertBeerImageCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken: cancellationToken);
-        
-        if (beer == null)
+            cancellationToken);
+
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
         var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 
         try
         {
-            var imageUri = await _imagesService.UploadImageAsync(request.Image!, beer.BreweryId, request.BeerId);
+            var imagePath = _beerImagesService.CreateImagePath(request.Image!, beer.BreweryId, beer.Id);
+            var imageUri = await _beerImagesService.UploadImageAsync(imagePath, request.Image!);
 
             // Create new BeerImage for requested beer if it was not created for some reason.
-            if (entity == null)
+            if (entity is null)
             {
                 entity = new BeerImage
                 {

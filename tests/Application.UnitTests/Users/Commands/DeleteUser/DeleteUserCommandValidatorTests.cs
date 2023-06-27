@@ -6,7 +6,7 @@ using Moq;
 namespace Application.UnitTests.Users.Commands.DeleteUser;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteUserCommandValidator"/> class.
+///     Unit tests for the <see cref="DeleteUserCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteUserCommandValidatorTests

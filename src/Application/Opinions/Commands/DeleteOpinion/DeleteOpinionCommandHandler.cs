@@ -11,6 +11,11 @@ namespace Application.Opinions.Commands.DeleteOpinion;
 public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
 {
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
@@ -21,14 +26,9 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     The beers service.
+    ///     The opinions images service.
     /// </summary>
-    private readonly IBeersService _beersService;
-
-    /// <summary>
-    ///     The images service.
-    /// </summary>
-    private readonly IImagesService<Opinion> _imagesService;
+    private readonly IOpinionsImagesService _opinionsImagesService;
 
     /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
@@ -36,14 +36,14 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="imagesService">The images service</param>
+    /// <param name="opinionsImagesService">The opinions images service</param>
     public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IBeersService beersService, IImagesService<Opinion> imagesService)
+        IBeersService beersService, IOpinionsImagesService opinionsImagesService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _beersService = beersService;
-        _imagesService = imagesService;
+        _opinionsImagesService = opinionsImagesService;
     }
 
     /// <summary>
@@ -54,9 +54,9 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     public async Task Handle(DeleteOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Opinion), request.Id);
         }
@@ -78,7 +78,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
 
             if (!string.IsNullOrEmpty(entity.ImageUri))
             {
-                await _imagesService.DeleteImageAsync(entity.ImageUri);
+                await _opinionsImagesService.DeleteImageAsync(entity.ImageUri);
             }
 
             await transaction.CommitAsync(cancellationToken);

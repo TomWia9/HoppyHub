@@ -3,7 +3,7 @@
 namespace Infrastructure.Converters;
 
 /// <summary>
-///     Converts <see cref="DateOnly" /> to <see cref="DateTime"/> and vice versa.
+///     Converts <see cref="DateOnly" /> to <see cref="DateTime" /> and vice versa.
 /// </summary>
 public class DateOnlyConverter : ValueConverter<DateOnly, DateTime>
 {

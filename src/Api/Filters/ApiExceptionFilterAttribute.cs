@@ -26,7 +26,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
             { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             { typeof(BadRequestException), HandleBadRequestException },
-            { typeof(RemoteServiceConnectionException), HandleRemoteServiceConnectionException },
+            { typeof(RemoteServiceConnectionException), HandleRemoteServiceConnectionException }
         };
     }
 

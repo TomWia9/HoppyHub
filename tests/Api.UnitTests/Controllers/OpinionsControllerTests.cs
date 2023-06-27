@@ -12,7 +12,7 @@ using Moq;
 namespace Api.UnitTests.Controllers;
 
 /// <summary>
-///     Unit tests for the <see cref="OpinionsController"/> class.
+///     Unit tests for the <see cref="OpinionsController" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class OpinionsControllerTests : ControllerSetup<OpinionsController>
@@ -64,7 +64,7 @@ public class OpinionsControllerTests : ControllerSetup<OpinionsController>
         response.Result.Should().BeOfType<OkObjectResult>()
             .Which.Value.Should().BeSameAs(expectedResult);
     }
-    
+
     /// <summary>
     ///     Tests that CreateOpinion method returns CreatedAtAction.
     /// </summary>

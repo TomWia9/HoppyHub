@@ -6,7 +6,7 @@ using Moq;
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 
 /// <summary>
-///     Unit tests for the <see cref="UpsertBeerImageCommandValidator"/> class.
+///     Unit tests for the <see cref="UpsertBeerImageCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpsertBeerImageCommandValidatorTests

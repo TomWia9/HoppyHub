@@ -7,7 +7,7 @@ namespace Application.Opinions.Commands.UpdateOpinion;
 ///     UpdateOpinion command.
 /// </summary>
 public record UpdateOpinionCommand : BaseOpinionCommand, IRequest
-{   
+{
     /// <summary>
     ///     The opinion id.
     /// </summary>

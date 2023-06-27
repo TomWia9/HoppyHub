@@ -12,7 +12,7 @@ public record UpsertBeerImageCommand : IRequest<string>
     ///     The beer id.
     /// </summary>
     public Guid BeerId { get; init; }
-    
+
     /// <summary>
     ///     The beer image.
     /// </summary>

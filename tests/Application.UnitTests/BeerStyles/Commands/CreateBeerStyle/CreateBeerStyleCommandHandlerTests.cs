@@ -10,7 +10,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Commands.CreateBeerStyle;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerStyleCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateBeerStyleCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerStyleCommandHandlerTests
@@ -43,7 +43,7 @@ public class CreateBeerStyleCommandHandlerTests
     public async Task Handle_ShouldCreateBeerStyleAndReturnCorrectBeerStyleDto()
     {
         // Arrange
-        var request = new CreateBeerStyleCommand()
+        var request = new CreateBeerStyleCommand
         {
             Name = "India Pale Ale",
             Description = "Test Description",

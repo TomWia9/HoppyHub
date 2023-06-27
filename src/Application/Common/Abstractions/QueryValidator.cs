@@ -9,7 +9,7 @@ public abstract class QueryValidator<T> : AbstractValidator<T> where T : QueryPa
 {
     protected const string MinValueMessage = "Min value must be less than or equal to Max value";
     protected const string MaxValueMessage = "Max value must be greater than or equal to Min value";
-    
+
     /// <summary>
     ///     Initializes QueryValidator.
     /// </summary>

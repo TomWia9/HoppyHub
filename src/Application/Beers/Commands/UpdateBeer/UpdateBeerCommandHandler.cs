@@ -32,19 +32,19 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(UpdateBeerCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
+        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken))
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
-        
-        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
+
+        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
         {
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
         }
 
-        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Beer), request.Id);
         }

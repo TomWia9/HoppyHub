@@ -4,7 +4,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Identity.Commands.RegisterUser;
 
 /// <summary>
-///     Tests for the <see cref="RegisterUserCommandValidator"/> class.
+///     Tests for the <see cref="RegisterUserCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class RegisterUserCommandValidatorTests

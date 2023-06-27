@@ -29,7 +29,7 @@ public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<Opinion
     ///     Beer id.
     /// </summary>
     public Guid? BeerId { get; init; }
-    
+
     /// <summary>
     ///     User id.
     /// </summary>

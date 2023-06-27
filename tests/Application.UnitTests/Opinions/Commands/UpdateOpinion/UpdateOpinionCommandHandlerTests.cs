@@ -10,11 +10,16 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.UpdateOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateOpinionCommandHandler"/> class.
+///     Unit tests for the <see cref="UpdateOpinionCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateOpinionCommandHandlerTests
 {
+    /// <summary>
+    ///     The beers service mock.
+    /// </summary>
+    private readonly Mock<IBeersService> _beersServiceMock;
+
     /// <summary>
     ///     The database context mock.
     /// </summary>
@@ -24,16 +29,6 @@ public class UpdateOpinionCommandHandlerTests
     ///     The current user service mock.
     /// </summary>
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
-
-    /// <summary>
-    ///     The beers service mock.
-    /// </summary>
-    private readonly Mock<IBeersService> _beersServiceMock;
-
-    /// <summary>
-    ///     The images service mock.
-    /// </summary>
-    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
 
     /// <summary>
     ///     The form file mock.
@@ -46,6 +41,11 @@ public class UpdateOpinionCommandHandlerTests
     private readonly UpdateOpinionCommandHandler _handler;
 
     /// <summary>
+    ///     The opinions images service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsImagesService> _opinionsImagesServiceMock;
+
+    /// <summary>
     ///     Setups UpdateOpinionCommandHandlerTests.
     /// </summary>
     public UpdateOpinionCommandHandlerTests()
@@ -53,11 +53,11 @@ public class UpdateOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
-        _imagesServiceMock = new Mock<IImagesService<Opinion>>();
+        _opinionsImagesServiceMock = new Mock<IOpinionsImagesService>();
         _formFileMock = new Mock<IFormFile>();
 
         _handler = new UpdateOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
-            _beersServiceMock.Object, _imagesServiceMock.Object);
+            _beersServiceMock.Object, _opinionsImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -69,12 +69,14 @@ public class UpdateOpinionCommandHandlerTests
         Handle_ShouldUpdateOpinionAndUploadImage_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndUpdatedOpinionContainsImage()
     {
         // Arrange
+        const string imagePath = "Opinions/test.jpg";
         const string imageUri = "blob.com/opinions/test.jpg";
 
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var beerId = Guid.NewGuid();
-        var beer = new Beer { Id = beerId, BreweryId = Guid.NewGuid() };
+        var breweryId = Guid.NewGuid();
+        var beer = new Beer { Id = beerId, BreweryId = breweryId };
         var existingOpinion = new Opinion
         {
             Id = opinionId, Rating = 9, BeerId = beerId, Beer = beer, Comment = "Sample comment", CreatedBy = userId,
@@ -86,9 +88,10 @@ public class UpdateOpinionCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
-        _imagesServiceMock
-            .Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
-                It.IsAny<Guid?>()))
+        _opinionsImagesServiceMock.Setup(x => x.CreateImagePath(_formFileMock.Object, breweryId,
+            beerId, opinionId)).Returns(imagePath);
+        _opinionsImagesServiceMock
+            .Setup(x => x.UploadImageAsync(imagePath, _formFileMock.Object))
             .ReturnsAsync(imageUri);
 
         var command = new UpdateOpinionCommand
@@ -105,10 +108,11 @@ public class UpdateOpinionCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
-        _imagesServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()),
-            Times.Once);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
+        _opinionsImagesServiceMock.Verify(
+            x => x.CreateImagePath(_formFileMock.Object, breweryId, beerId, opinionId), Times.Once);
+        _opinionsImagesServiceMock.Verify(
+            x => x.UploadImageAsync(imagePath, _formFileMock.Object), Times.Once);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
@@ -135,7 +139,7 @@ public class UpdateOpinionCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
-        _imagesServiceMock
+        _opinionsImagesServiceMock
             .Setup(x => x.DeleteImageAsync(It.IsAny<string>()))
             .Returns(Task.CompletedTask);
 
@@ -153,10 +157,9 @@ public class UpdateOpinionCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
-        _imagesServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()),
+        _opinionsImagesServiceMock.Verify(x => x.UploadImageAsync(It.IsAny<string>(), It.IsAny<IFormFile>()),
             Times.Never);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
     }
 
     /// <summary>
@@ -198,10 +201,10 @@ public class UpdateOpinionCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
-        _imagesServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()),
+        _opinionsImagesServiceMock.Verify(
+            x => x.UploadImageAsync(It.IsAny<string>(), It.IsAny<IFormFile>()),
             Times.Never);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
@@ -228,7 +231,8 @@ public class UpdateOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method throws ForbiddenException when user tries to update not his opinion and user has no admin access.
+    ///     Tests that Handle method throws ForbiddenException when user tries to update not his opinion and user has no admin
+    ///     access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldThrowForbiddenException_WhenUserTriesToUpdateNotHisOpinionAndUserHasNoAdminAccess()
@@ -248,7 +252,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
 
         // Act & Assert
@@ -257,7 +261,7 @@ public class UpdateOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///      Tests that Handle method updates opinion when user tries to update not his opinion but he has admin access.
+    ///     Tests that Handle method updates opinion when user tries to update not his opinion but he has admin access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldUpdateOpinion_WhenUserTriesToUpdateNotHisOpinionButHasAdminAccess()
@@ -279,7 +283,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
 
         // Act
@@ -308,7 +312,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);

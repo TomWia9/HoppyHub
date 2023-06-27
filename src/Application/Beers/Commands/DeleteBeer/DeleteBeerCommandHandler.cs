@@ -11,14 +11,14 @@ namespace Application.Beers.Commands.DeleteBeer;
 public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The azure storage service.
     /// </summary>
     private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     Initializes DeleteBeerCommandHandler.
@@ -38,9 +38,9 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(DeleteBeerCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Beer), request.Id);
         }
@@ -52,12 +52,12 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
             _context.Beers.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            //Delete all beer related opinion images from blob container.
+            //Delete all beer related images from blob container.
             var beerOpinionImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
             var beerImagesPath = $"Beers/{entity.BreweryId}/{entity.Id}";
 
-            await _azureStorageService.DeleteFilesInPath(beerOpinionImagesPath);
-            await _azureStorageService.DeleteFilesInPath(beerImagesPath);
+            await _azureStorageService.DeleteInPath(beerOpinionImagesPath);
+            await _azureStorageService.DeleteInPath(beerImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
         }

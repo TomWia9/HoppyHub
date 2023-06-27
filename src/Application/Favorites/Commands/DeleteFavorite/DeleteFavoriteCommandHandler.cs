@@ -41,9 +41,9 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
         var currentUserId = _currentUserService.UserId;
         var entity = await _context.Favorites.FirstOrDefaultAsync(x =>
                 x.BeerId == request.BeerId && x.CreatedBy == currentUserId,
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(
                 $"Beer with \"{request.BeerId}\" id has been not found in favorites of user with \"{currentUserId}\" id.");

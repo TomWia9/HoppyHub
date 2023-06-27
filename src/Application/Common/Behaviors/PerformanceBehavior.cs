@@ -11,9 +11,9 @@ namespace Application.Common.Behaviors;
 public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
     /// <summary>
-    ///     The timer.
+    ///     The current user service.
     /// </summary>
-    private readonly Stopwatch _timer;
+    private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
     ///     The logger.
@@ -21,9 +21,9 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     private readonly ILogger<PerformanceBehavior<TRequest, TResponse>> _logger;
 
     /// <summary>
-    ///     The current user service.
+    ///     The timer.
     /// </summary>
-    private readonly ICurrentUserService _currentUserService;
+    private readonly Stopwatch _timer;
 
 
     /// <summary>

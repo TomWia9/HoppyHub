@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
 
 /// <summary>
-///     Unit tests for the <see cref="GetOpinionsQueryValidator"/> class.
+///     Unit tests for the <see cref="GetOpinionsQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetOpinionsQueryValidatorTests

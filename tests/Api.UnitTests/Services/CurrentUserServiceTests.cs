@@ -8,7 +8,7 @@ using Moq;
 namespace Api.UnitTests.Services;
 
 /// <summary>
-///     Tests for the <see cref="CurrentUserService"/> class.
+///     Tests for the <see cref="CurrentUserService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CurrentUserServiceTests
@@ -19,14 +19,14 @@ public class CurrentUserServiceTests
     private readonly Mock<ClaimsPrincipal> _claimsPrincipalMock;
 
     /// <summary>
-    ///     HttpContextAccessor mock.
-    /// </summary>
-    private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
-
-    /// <summary>
     ///     Tested service.
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
+    ///     HttpContextAccessor mock.
+    /// </summary>
+    private readonly Mock<IHttpContextAccessor> _httpContextAccessorMock;
 
     /// <summary>
     ///     Setups CurrentUserServiceTests.

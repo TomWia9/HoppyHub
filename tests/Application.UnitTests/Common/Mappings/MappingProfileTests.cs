@@ -10,7 +10,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Common.Mappings;
 
 /// <summary>
-///     Unit tests for the <see cref="MappingProfile"/> class.
+///     Unit tests for the <see cref="MappingProfile" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class MappingTests
@@ -70,7 +70,7 @@ public class MappingTests
 
     private static object GetInstanceOf(Type type)
     {
-        if (type.GetConstructor(Type.EmptyTypes) != null)
+        if (type.GetConstructor(Type.EmptyTypes) is not null)
             return Activator.CreateInstance(type)!;
 
         // Type without parameterless constructor

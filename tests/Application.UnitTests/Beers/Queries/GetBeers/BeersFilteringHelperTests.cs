@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Beers.Queries.GetBeers;
 
 /// <summary>
-///     Tests for the <see cref="BeersFilteringHelper"/> class.
+///     Tests for the <see cref="BeersFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BeersFilteringHelperTests
@@ -22,7 +22,7 @@ public class BeersFilteringHelperTests
     {
         _filteringHelper = new BeersFilteringHelper();
     }
-    
+
     /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
@@ -116,7 +116,7 @@ public class BeersFilteringHelperTests
             MinOpinionsCount = 20,
             MaxOpinionsCount = 50,
             MinFavoritesCount = 20,
-            MaxFavoritesCount = 50,
+            MaxFavoritesCount = 50
         };
 
         // Act

@@ -3,7 +3,7 @@
 namespace Infrastructure.UnitTests.Converters;
 
 /// <summary>
-///     Tests for the <see cref="DateOnlyConverter"/> class.
+///     Tests for the <see cref="DateOnlyConverter" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DateOnlyConverterTests

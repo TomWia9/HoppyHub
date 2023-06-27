@@ -1,6 +1,6 @@
 ﻿using Application.Common.Behaviors;
 using Application.Common.Interfaces;
-using Application.UnitTests.Helpers;
+using Application.UnitTests.TestHelpers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="PerformanceBehavior{TRequest,TResponse}"/> class.
+///     Unit tests for the <see cref="PerformanceBehavior{TRequest,TResponse}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class PerformanceBehaviorTests
@@ -94,16 +94,6 @@ public class PerformanceBehaviorTests
     private class TestRequestHandler : IRequestHandler<TestRequest, TestResponse>
     {
         /// <summary>
-        ///     The elapsed milliseconds.
-        /// </summary>
-        private int ElapsedMilliseconds { get; }
-
-        /// <summary>
-        ///     The response.
-        /// </summary>
-        private TestResponse Response { get; }
-
-        /// <summary>
         ///     Initializes TestRequestHandler
         /// </summary>
         /// <param name="elapsedMilliseconds"></param>
@@ -112,6 +102,16 @@ public class PerformanceBehaviorTests
             ElapsedMilliseconds = elapsedMilliseconds;
             Response = new TestResponse();
         }
+
+        /// <summary>
+        ///     The elapsed milliseconds.
+        /// </summary>
+        private int ElapsedMilliseconds { get; }
+
+        /// <summary>
+        ///     The response.
+        /// </summary>
+        private TestResponse Response { get; }
 
         /// <summary>
         ///     Handles TestRequest.

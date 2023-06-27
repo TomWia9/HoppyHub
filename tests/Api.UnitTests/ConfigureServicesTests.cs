@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Api.UnitTests;
 
 /// <summary>
-///     Tests for the <see cref="ConfigureServices"/> class.
+///     Tests for the <see cref="ConfigureServices" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ConfigureServicesTests

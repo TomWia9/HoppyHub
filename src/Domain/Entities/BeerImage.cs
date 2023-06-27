@@ -19,12 +19,12 @@ public class BeerImage
     ///     Indicates whether image is temporary.
     /// </summary>
     public bool TempImage { get; set; } = true;
-    
+
     /// <summary>
     ///     The beer id.
     /// </summary>
     public Guid BeerId { get; set; }
-    
+
     /// <summary>
     ///     The beer.
     /// </summary>

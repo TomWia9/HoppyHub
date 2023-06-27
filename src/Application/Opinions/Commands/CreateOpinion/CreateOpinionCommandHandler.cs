@@ -13,6 +13,11 @@ namespace Application.Opinions.Commands.CreateOpinion;
 public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand, OpinionDto>
 {
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
@@ -23,19 +28,14 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The opinions images service.
+    /// </summary>
+    private readonly IOpinionsImagesService _opinionsImagesService;
+
+    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
-
-    /// <summary>
-    ///     The beers service.
-    /// </summary>
-    private readonly IBeersService _beersService;
-
-    /// <summary>
-    ///     The images service.
-    /// </summary>
-    private readonly IImagesService<Opinion> _imagesService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
@@ -44,15 +44,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="imagesService">The images service</param>
+    /// <param name="opinionsImagesService">The opinions images service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService, IImagesService<Opinion> imagesService)
+        IBeersService beersService, IOpinionsImagesService opinionsImagesService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
-        _imagesService = imagesService;
+        _opinionsImagesService = opinionsImagesService;
     }
 
     /// <summary>
@@ -63,9 +63,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
@@ -84,10 +84,12 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            if (request.Image != null)
+            if (request.Image is not null)
             {
-                entity.ImageUri = await _imagesService.UploadImageAsync(request.Image, beer.BreweryId,
-                    request.BeerId, entity.Id);
+                var imagePath =
+                    _opinionsImagesService.CreateImagePath(request.Image!, beer.BreweryId, beer.Id, entity.Id);
+
+                entity.ImageUri = await _opinionsImagesService.UploadImageAsync(imagePath, request.Image!);
 
                 await _context.SaveChangesAsync(cancellationToken);
             }
@@ -103,7 +105,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
-        opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);
+        opinionDto.Username = opinionDto.CreatedBy is null
+            ? null
+            : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
 
         return opinionDto;
     }

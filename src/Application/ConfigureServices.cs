@@ -46,8 +46,6 @@ public static class ConfigureServices
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
 
         services.AddTransient<IBeersService, BeersService>();
-        services.AddTransient(typeof(IImagesService<>), typeof(ImagesService<>));
-
 
         return services;
     }

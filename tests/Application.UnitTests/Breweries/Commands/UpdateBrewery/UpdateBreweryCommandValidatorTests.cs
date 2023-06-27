@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Breweries.Commands.UpdateBrewery;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateBreweryCommandValidator"/> class.
+///     Unit tests for the <see cref="UpdateBreweryCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateBreweryCommandValidatorTests

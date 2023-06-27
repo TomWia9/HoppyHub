@@ -10,7 +10,7 @@ using Moq;
 namespace Application.UnitTests.Opinions.Queries.GetOpinion;
 
 /// <summary>
-///     Tests for the <see cref="GetOpinionQueryHandler"/> class.
+///     Tests for the <see cref="GetOpinionQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetOpinionQueryHandlerTests
@@ -21,14 +21,14 @@ public class GetOpinionQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The UsersService mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetOpinionQueryHandler _handler;
+
+    /// <summary>
+    ///     The UsersService mock.
+    /// </summary>
+    private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups GetBeerQueryHandlerTests.
@@ -105,7 +105,7 @@ public class GetOpinionQueryHandlerTests
         var opinions = Enumerable.Empty<Opinion>();
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
-        var query = new GetOpinionQuery() { Id = Guid.NewGuid() };
+        var query = new GetOpinionQuery { Id = Guid.NewGuid() };
 
         // Act & Assert
         await _handler.Invoking(x => x.Handle(query, CancellationToken.None))

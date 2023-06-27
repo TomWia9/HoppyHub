@@ -9,20 +9,20 @@ using Moq;
 namespace Infrastructure.UnitTests.AzureServices;
 
 /// <summary>
-///     Tests for the <see cref="AzureStorageService"/> class.
+///     Tests for the <see cref="AzureStorageService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class AzureStorageServiceTests
 {
     /// <summary>
-    ///     The blob container client mock.
-    /// </summary>
-    private readonly Mock<BlobContainerClient> _blobContainerClientMock;
-
-    /// <summary>
     ///     The azure storage service.
     /// </summary>
     private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
+    ///     The blob container client mock.
+    /// </summary>
+    private readonly Mock<BlobContainerClient> _blobContainerClientMock;
 
     /// <summary>
     ///     Setups AzureStorageServiceTests.

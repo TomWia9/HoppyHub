@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Application.UnitTests;
 
 /// <summary>
-///     Unit tests for the <see cref="ConfigureServices"/> class.
+///     Unit tests for the <see cref="ConfigureServices" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ConfigureServicesTests
@@ -78,19 +78,6 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IBeersService));
         _services.Should().Contain(s => s.ImplementationType == typeof(BeersService));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-    }
-
-    /// <summary>
-    ///     Tests that the AddApplicationServices method adds the ImagesService
-    ///     to the service collection as IImagesService.
-    /// </summary>
-    [Fact]
-    public void AddApplicationServices_ShouldAddImagesService()
-    {
-        // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IImagesService<>));
-        _services.Should().Contain(s => s.ImplementationType == typeof(ImagesService<>));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 

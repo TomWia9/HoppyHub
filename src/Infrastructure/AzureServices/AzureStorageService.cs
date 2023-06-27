@@ -14,14 +14,14 @@ namespace Infrastructure.AzureServices;
 public class AzureStorageService : IAzureStorageService
 {
     /// <summary>
-    ///     The logger.
-    /// </summary>
-    private readonly ILogger<AzureStorageService> _logger;
-
-    /// <summary>
     ///     The blob container client.
     /// </summary>
     private readonly BlobContainerClient _blobContainerClient;
+
+    /// <summary>
+    ///     The logger.
+    /// </summary>
+    private readonly ILogger<AzureStorageService> _logger;
 
     /// <summary>
     ///     Initializes AzureStorageService.
@@ -96,10 +96,23 @@ public class AzureStorageService : IAzureStorageService
     }
 
     /// <summary>
-    ///     Deletes all files in given path.
+    ///     Deletes a blob by blob uri.
+    /// </summary>
+    /// <param name="uri">The blob uri</param>
+    /// <returns>BlobResponseDto with status</returns>
+    public async Task<BlobResponseDto> DeleteByUriAsync(string uri)
+    {
+        var uriBuilder = new BlobUriBuilder(new Uri(uri));
+        var path = uriBuilder.BlobName;
+
+        return await DeleteAsync(path);
+    }
+
+    /// <summary>
+    ///     Deletes all blobs in given path.
     /// </summary>
     /// <param name="path">The path</param>
-    public async Task DeleteFilesInPath(string path)
+    public async Task DeleteInPath(string path)
     {
         foreach (var blobItem in _blobContainerClient.GetBlobsByHierarchy(prefix: path))
         {

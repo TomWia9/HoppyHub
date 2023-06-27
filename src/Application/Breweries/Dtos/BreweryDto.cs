@@ -12,7 +12,7 @@ public record BreweryDto : IMapFrom<Brewery>
     ///     The brewery id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The brewery name.
     /// </summary>

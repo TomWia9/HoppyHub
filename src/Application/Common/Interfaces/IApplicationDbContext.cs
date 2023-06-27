@@ -13,7 +13,7 @@ public interface IApplicationDbContext
     ///     The beers.
     /// </summary>
     DbSet<Beer> Beers { get; }
-    
+
     /// <summary>
     ///     The beer images.
     /// </summary>
@@ -50,7 +50,7 @@ public interface IApplicationDbContext
     DatabaseFacade Database { get; }
 
     /// <summary>
-    ///     Saves changes asynchronously. 
+    ///     Saves changes asynchronously.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token</param>
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);

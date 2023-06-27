@@ -11,7 +11,7 @@ public class Favorite : BaseAuditableEntity
     ///     The beer id.
     /// </summary>
     public Guid BeerId { get; set; }
-    
+
     /// <summary>
     ///     The beer.
     /// </summary>

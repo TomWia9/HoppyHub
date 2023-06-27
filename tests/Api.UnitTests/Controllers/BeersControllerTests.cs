@@ -17,7 +17,7 @@ using Moq;
 namespace Api.UnitTests.Controllers;
 
 /// <summary>
-///     Unit tests for the <see cref="BeersController"/> class.
+///     Unit tests for the <see cref="BeersController" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BeersControllerTests : ControllerSetup<BeersController>

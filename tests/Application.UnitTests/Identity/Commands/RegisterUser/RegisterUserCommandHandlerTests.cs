@@ -6,13 +6,13 @@ using Moq;
 namespace Application.UnitTests.Identity.Commands.RegisterUser;
 
 /// <summary>
-///     Tests for the <see cref="RegisterUserCommandHandler"/> class.
+///     Tests for the <see cref="RegisterUserCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class RegisterUserCommandHandlerTests
 {
-    private readonly Mock<IIdentityService> _identityServiceMock;
     private readonly RegisterUserCommandHandler _handler;
+    private readonly Mock<IIdentityService> _identityServiceMock;
 
     /// <summary>
     ///     Setups RegisterUserCommandHandlerTests.

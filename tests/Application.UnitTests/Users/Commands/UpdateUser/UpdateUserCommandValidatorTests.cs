@@ -6,7 +6,7 @@ using Moq;
 namespace Application.UnitTests.Users.Commands.UpdateUser;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateUserCommandValidator"/> class.
+///     Unit tests for the <see cref="UpdateUserCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateUserCommandValidatorTests

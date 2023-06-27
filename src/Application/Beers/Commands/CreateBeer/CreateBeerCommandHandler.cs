@@ -14,6 +14,11 @@ namespace Application.Beers.Commands.CreateBeer;
 public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerDto>
 {
     /// <summary>
+    ///     The beer images service.
+    /// </summary>
+    private readonly IBeersImagesService _beerImagesService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
@@ -24,21 +29,17 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The images service.
-    /// </summary>
-    private readonly IImagesService<Beer> _imagesService;
-
-    /// <summary>
     ///     Initializes CreateBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="imagesService">The images service</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IImagesService<Beer> imagesService)
+    /// <param name="beerImagesService">The beer images service</param>
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper,
+        IBeersImagesService beerImagesService)
     {
         _context = context;
         _mapper = mapper;
-        _imagesService = imagesService;
+        _beerImagesService = beerImagesService;
     }
 
     /// <summary>
@@ -48,12 +49,12 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
+        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken))
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
 
-        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
+        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
         {
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
         }
@@ -72,7 +73,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             BeerImage = new BeerImage
             {
                 TempImage = true,
-                ImageUri = _imagesService.GetTempImageUri()
+                ImageUri = _beerImagesService.GetTempBeerImageUri()
             }
         };
 

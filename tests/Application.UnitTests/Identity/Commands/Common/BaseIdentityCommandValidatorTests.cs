@@ -4,23 +4,11 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Identity.Commands.Common;
 
 /// <summary>
-///     Unit tests for the <see cref="BaseIdentityCommandValidator{TCommand}"/> class.
+///     Unit tests for the <see cref="BaseIdentityCommandValidator{TCommand}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BaseIdentityCommandValidatorTests
 {
-    /// <summary>
-    ///     The TestBaseIdentity command.
-    /// </summary>
-    private record TestBaseIdentityCommand : BaseIdentityCommand;
-
-    /// <summary>
-    ///     The TestBaseIdentityCommand validator.
-    /// </summary>
-    private class TestBaseIdentityCommandValidator : BaseIdentityCommandValidator<TestBaseIdentityCommand>
-    {
-    }
-
     /// <summary>
     ///     The TestBaseIdentityCommand validator instance.
     /// </summary>
@@ -118,7 +106,7 @@ public class BaseIdentityCommandValidatorTests
     public void BaseIdentityCommand_ShouldHaveValidationErrorForPassword_WhenPasswordIsEmpty()
     {
         // Arrange
-        var command = new TestBaseIdentityCommand()
+        var command = new TestBaseIdentityCommand
         {
             Email = "email",
             Password = ""
@@ -159,12 +147,24 @@ public class BaseIdentityCommandValidatorTests
     public void BaseIdentityCommand_ShouldNotHaveValidationErrorForPassword_WhenPasswordIsValid()
     {
         // Arrange
-        var command = new TestBaseIdentityCommand() { Password = "password" };
+        var command = new TestBaseIdentityCommand { Password = "password" };
 
         // Act
         var result = _validator.TestValidate(command);
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Password);
+    }
+
+    /// <summary>
+    ///     The TestBaseIdentity command.
+    /// </summary>
+    private record TestBaseIdentityCommand : BaseIdentityCommand;
+
+    /// <summary>
+    ///     The TestBaseIdentityCommand validator.
+    /// </summary>
+    private class TestBaseIdentityCommandValidator : BaseIdentityCommandValidator<TestBaseIdentityCommand>
+    {
     }
 }

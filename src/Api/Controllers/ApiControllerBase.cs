@@ -11,14 +11,14 @@ namespace Api.Controllers;
 public abstract class ApiControllerBase : ControllerBase
 {
     /// <summary>
-    ///     The mediator.
-    /// </summary>
-    private ISender? _mediator;
-
-    /// <summary>
     ///     The invalid id error message.
     /// </summary>
     protected const string InvalidIdMessage = "The ID in the route differs from the ID in the request body.";
+
+    /// <summary>
+    ///     The mediator.
+    /// </summary>
+    private ISender? _mediator;
 
     /// <summary>
     ///     The mediator.
