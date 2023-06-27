@@ -12,7 +12,7 @@ using Moq;
 namespace Api.UnitTests.Controllers;
 
 /// <summary>
-///     Unit tests for the <see cref="UsersController"/> class.
+///     Unit tests for the <see cref="UsersController" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UsersControllerTests : ControllerSetup<UsersController>

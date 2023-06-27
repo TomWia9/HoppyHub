@@ -7,20 +7,20 @@ using Moq;
 namespace Application.UnitTests.Common.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="LoggingBehavior{TRequest}"/> class.
+///     Unit tests for the <see cref="LoggingBehavior{TRequest}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class LoggingBehaviorTests
 {
     /// <summary>
-    ///     The logger mock.
-    /// </summary>
-    private readonly Mock<ILogger<LoggingBehavior<TestRequest>>> _loggerMock;
-
-    /// <summary>
     ///     The current user service mock.
     /// </summary>
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+
+    /// <summary>
+    ///     The logger mock.
+    /// </summary>
+    private readonly Mock<ILogger<LoggingBehavior<TestRequest>>> _loggerMock;
 
     /// <summary>
     ///     The logging behavior.

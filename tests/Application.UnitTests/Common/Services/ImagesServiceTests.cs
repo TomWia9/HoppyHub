@@ -9,7 +9,7 @@ using Moq;
 namespace Application.UnitTests.Common.Services;
 
 /// <summary>
-///     Tests for the <see cref="ImagesService{T}"/> class.
+///     Tests for the <see cref="ImagesService{T}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ImagesServiceTests
@@ -20,14 +20,14 @@ public class ImagesServiceTests
     private readonly Mock<IAzureStorageService> _azureStorageServiceMock;
 
     /// <summary>
-    ///     The opinion images service.
-    /// </summary>
-    private readonly IImagesService<Opinion> _opinionImagesService;
-
-    /// <summary>
     ///     The beer images service.
     /// </summary>
     private readonly IImagesService<Beer> _beerImagesService;
+
+    /// <summary>
+    ///     The opinion images service.
+    /// </summary>
+    private readonly IImagesService<Opinion> _opinionImagesService;
 
     /// <summary>
     ///     Setups ImagesServiceTests.

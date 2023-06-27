@@ -40,15 +40,15 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     public async Task<string> Handle(UpsertBeerImageCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken: cancellationToken);
-        
+            cancellationToken);
+
         if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
         var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
 

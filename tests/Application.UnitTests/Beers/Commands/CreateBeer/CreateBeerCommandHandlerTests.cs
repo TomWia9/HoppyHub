@@ -11,7 +11,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateBeerCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerCommandHandlerTests
@@ -22,14 +22,14 @@ public class CreateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The images service mock.
-    /// </summary>
-    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateBeerCommandHandler _handler;
+
+    /// <summary>
+    ///     The images service mock.
+    /// </summary>
+    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
 
     /// <summary>
     ///     Setups CreateBeerCommandHandlerTests.

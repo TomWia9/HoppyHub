@@ -19,14 +19,14 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The mapper.
-    /// </summary>
-    private readonly IMapper _mapper;
-
-    /// <summary>
     ///     The images service.
     /// </summary>
     private readonly IImagesService<Beer> _imagesService;
+
+    /// <summary>
+    ///     The mapper.
+    /// </summary>
+    private readonly IMapper _mapper;
 
     /// <summary>
     ///     Initializes CreateBeerCommandHandler.
@@ -48,12 +48,12 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken: cancellationToken))
+        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken))
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
 
-        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken: cancellationToken))
+        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
         {
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
         }

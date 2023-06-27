@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Beers.Queries.GetBeers;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBeersQueryValidator"/> class.
+///     Unit tests for the <see cref="GetBeersQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeersQueryValidatorTests
@@ -103,7 +103,8 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinAlcoholByVolume when MinAlcoholByVolume is greater than MaxAlcoholByVolume.
+    ///     Tests that validation should have error for MinAlcoholByVolume when MinAlcoholByVolume is greater than
+    ///     MaxAlcoholByVolume.
     /// </summary>
     [Fact]
     public void
@@ -166,7 +167,8 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MaxAlcoholByVolume when MaxAlcoholByVolume is less than MinAlcoholByVolume.
+    ///     Tests that validation should have error for MaxAlcoholByVolume when MaxAlcoholByVolume is less than
+    ///     MinAlcoholByVolume.
     /// </summary>
     [Fact]
     public void
@@ -600,7 +602,8 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinOpinionsCount when MinOpinionsCount is greater than MaxOpinionsCount.
+    ///     Tests that validation should have error for MinOpinionsCount when MinOpinionsCount is greater than
+    ///     MaxOpinionsCount.
     /// </summary>
     [Fact]
     public void
@@ -720,7 +723,8 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinFavoritesCount when MinFavoritesCount is greater than MaxFavoritesCount.
+    ///     Tests that validation should have error for MinFavoritesCount when MinFavoritesCount is greater than
+    ///     MaxFavoritesCount.
     /// </summary>
     [Fact]
     public void
@@ -780,7 +784,8 @@ public class GetBeersQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MaxFavoritesCount when MaxFavoritesCount is less than MinFavoritesCount.
+    ///     Tests that validation should have error for MaxFavoritesCount when MaxFavoritesCount is less than
+    ///     MinFavoritesCount.
     /// </summary>
     [Fact]
     public void

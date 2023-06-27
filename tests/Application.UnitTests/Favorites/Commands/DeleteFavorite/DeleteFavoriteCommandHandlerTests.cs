@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Favorites.Commands.DeleteFavorite;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteFavoriteCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteFavoriteCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteFavoriteCommandHandlerTests
@@ -74,7 +74,8 @@ public class DeleteFavoriteCommandHandlerTests
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
         var command = new DeleteFavoriteCommand { BeerId = beerId };
-        var expectedMessage = $"Beer with \"{beerId}\" id has been not found in favorites of user with \"{userId}\" id.";
+        var expectedMessage =
+            $"Beer with \"{beerId}\" id has been not found in favorites of user with \"{userId}\" id.";
 
         // Act
         var action = new Func<Task>(() => _handler.Handle(command, CancellationToken.None));

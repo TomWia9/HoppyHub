@@ -8,6 +8,16 @@ namespace Application.Common.Abstractions;
 public abstract record QueryParameters
 {
     /// <summary>
+    ///     The maximum page size.
+    /// </summary>
+    private const int MaxPageSize = 50;
+
+    /// <summary>
+    ///     The default page size.
+    /// </summary>
+    private int _pageSize = 10;
+
+    /// <summary>
     ///     The column by which to sort.
     /// </summary>
     public string? SortBy { get; init; }
@@ -35,14 +45,4 @@ public abstract record QueryParameters
         get => _pageSize;
         set => _pageSize = value > MaxPageSize ? MaxPageSize : value;
     }
-    
-    /// <summary>
-    ///     The maximum page size.
-    /// </summary>
-    private const int MaxPageSize = 50;
-    
-    /// <summary>
-    ///     The default page size.
-    /// </summary>
-    private int _pageSize = 10;
 }

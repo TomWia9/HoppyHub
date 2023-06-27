@@ -66,6 +66,15 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Favorite> Favorites => Set<Favorite>();
 
     /// <summary>
+    ///     Saves changes asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token</param>
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
     ///     OnModelCreating override.
     /// </summary>
     /// <param name="builder">The ModelBuilder</param>
@@ -83,14 +92,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
-    }
-
-    /// <summary>
-    ///     Saves changes asynchronously.
-    /// </summary>
-    /// <param name="cancellationToken">The cancellation token</param>
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return await base.SaveChangesAsync(cancellationToken);
     }
 }

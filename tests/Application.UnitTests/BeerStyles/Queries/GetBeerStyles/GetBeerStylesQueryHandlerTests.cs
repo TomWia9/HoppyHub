@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerStyles;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBeerStylesQueryHandler"/> class.
+///     Unit tests for the <see cref="GetBeerStylesQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeerStylesQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetBeerStylesQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<BeerStyle>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetBeerStylesQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<BeerStyle>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetBeerStylesQueryHandlerTests.
@@ -41,7 +41,7 @@ public class GetBeerStylesQueryHandlerTests
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
 
         var mapper = configurationProvider.CreateMapper();
-        
+
         Mock<IFilteringHelper<BeerStyle, GetBeerStylesQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<BeerStyle>>();

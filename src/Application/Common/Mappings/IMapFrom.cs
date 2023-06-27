@@ -12,5 +12,8 @@ public interface IMapFrom<T>
     ///     Creates a map.
     /// </summary>
     /// <param name="profile"></param>
-    void Mapping(Profile profile) => profile.CreateMap(typeof(T), GetType());
+    void Mapping(Profile profile)
+    {
+        profile.CreateMap(typeof(T), GetType());
+    }
 }

@@ -13,25 +13,20 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.CreateOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateOpinionCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateOpinionCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateOpinionCommandHandlerTests
 {
-    /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
     /// <summary>
     ///     The beers service mock.
     /// </summary>
     private readonly Mock<IBeersService> _beersServiceMock;
 
     /// <summary>
-    ///     The images service mock.
+    ///     The database context mock.
     /// </summary>
-    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     The form file mock.
@@ -44,13 +39,18 @@ public class CreateOpinionCommandHandlerTests
     private readonly CreateOpinionCommandHandler _handler;
 
     /// <summary>
+    ///     The images service mock.
+    /// </summary>
+    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
+
+    /// <summary>
     ///     Setups CreateOpinionCommandHandlerTests.
     /// </summary>
     public CreateOpinionCommandHandlerTests()
     {
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
-        
+
         _contextMock = new Mock<IApplicationDbContext>();
         Mock<IUsersService> usersServiceMock = new();
         _beersServiceMock = new Mock<IBeersService>();
@@ -71,7 +71,7 @@ public class CreateOpinionCommandHandlerTests
     {
         // Arrange
         const string imageUri = "blob.com/opinions/test.jpg";
-        
+
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var request = new CreateOpinionCommand
@@ -92,7 +92,7 @@ public class CreateOpinionCommandHandlerTests
         var beer = new Beer { Id = beerId, BreweryId = breweryId };
         var opinions = Enumerable.Empty<Opinion>();
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
-        
+
         _imagesServiceMock
             .Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
                 It.IsAny<Guid?>()))
@@ -164,7 +164,8 @@ public class CreateOpinionCommandHandlerTests
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _imagesServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()), Times.Never);
+            x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid?>()),
+            Times.Never);
     }
 
     /// <summary>

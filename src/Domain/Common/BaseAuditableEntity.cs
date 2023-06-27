@@ -9,17 +9,17 @@ public abstract class BaseAuditableEntity
     ///     The entity id
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The date of creation
     /// </summary>
     public DateTime? Created { get; set; }
-    
+
     /// <summary>
-    ///    The id of the creator
+    ///     The id of the creator
     /// </summary>
-    public Guid? CreatedBy { get; set; } 
-    
+    public Guid? CreatedBy { get; set; }
+
     /// <summary>
     ///     The date of last modification
     /// </summary>

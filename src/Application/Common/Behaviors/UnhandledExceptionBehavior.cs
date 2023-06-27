@@ -12,6 +12,15 @@ namespace Application.Common.Behaviors;
 public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+    private readonly List<Type> _handledExceptions = new()
+    {
+        typeof(ValidationException),
+        typeof(NotFoundException),
+        typeof(UnauthorizedAccessException),
+        typeof(ForbiddenAccessException),
+        typeof(BadRequestException)
+    };
+
     /// <summary>
     ///     The logger.
     /// </summary>
@@ -52,13 +61,4 @@ public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior
             throw;
         }
     }
-
-    private readonly List<Type> _handledExceptions = new()
-    {
-        typeof(ValidationException),
-        typeof(NotFoundException),
-        typeof(UnauthorizedAccessException),
-        typeof(ForbiddenAccessException),
-        typeof(BadRequestException)
-    };
 }

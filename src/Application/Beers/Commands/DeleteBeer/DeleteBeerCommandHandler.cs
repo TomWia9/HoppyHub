@@ -11,14 +11,14 @@ namespace Application.Beers.Commands.DeleteBeer;
 public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The azure storage service.
     /// </summary>
     private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     Initializes DeleteBeerCommandHandler.
@@ -38,7 +38,7 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task Handle(DeleteBeerCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken);
 
         if (entity is null)
         {

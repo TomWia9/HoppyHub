@@ -8,7 +8,7 @@ namespace Application.Users.Queries.GetUsers;
 /// <summary>
 ///     GetUsers query.
 /// </summary>
-public record GetUsersQuery : QueryParameters, IRequest<PaginatedList<UserDto>> 
+public record GetUsersQuery : QueryParameters, IRequest<PaginatedList<UserDto>>
 {
     /// <summary>
     ///     The role.

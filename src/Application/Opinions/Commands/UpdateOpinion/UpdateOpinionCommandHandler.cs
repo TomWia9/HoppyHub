@@ -12,6 +12,11 @@ namespace Application.Opinions.Commands.UpdateOpinion;
 public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 {
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
@@ -20,11 +25,6 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     ///     The current user service.
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
-
-    /// <summary>
-    ///     The beers service.
-    /// </summary>
-    private readonly IBeersService _beersService;
 
     /// <summary>
     ///     The images service.
@@ -56,7 +56,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
     {
         var entity =
             await _context.Opinions.Include(x => x.Beer)
-                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (entity is null)
         {

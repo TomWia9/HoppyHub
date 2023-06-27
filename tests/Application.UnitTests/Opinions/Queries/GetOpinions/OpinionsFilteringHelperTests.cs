@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
 
 /// <summary>
-///     Tests for the <see cref="OpinionsFilteringHelper"/> class.
+///     Tests for the <see cref="OpinionsFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class OpinionsFilteringHelperTests
@@ -86,7 +86,7 @@ public class OpinionsFilteringHelperTests
     public void GetDelegates_ShouldReturnDelegatesWithoutSearchQuery()
     {
         // Arrange
-        var request = new GetOpinionsQuery()
+        var request = new GetOpinionsQuery
         {
             MinRating = 5,
             MaxRating = 10,

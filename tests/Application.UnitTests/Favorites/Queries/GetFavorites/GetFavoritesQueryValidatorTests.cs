@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 
 /// <summary>
-///     Unit tests for the <see cref="GetFavoritesQueryValidator"/> class.
+///     Unit tests for the <see cref="GetFavoritesQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetFavoritesQueryValidatorTests
@@ -22,7 +22,7 @@ public class GetFavoritesQueryValidatorTests
     {
         _validator = new GetFavoritesQueryValidator();
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for UserId when UserId is valid.
     /// </summary>
@@ -60,7 +60,7 @@ public class GetFavoritesQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.UserId);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
     /// </summary>

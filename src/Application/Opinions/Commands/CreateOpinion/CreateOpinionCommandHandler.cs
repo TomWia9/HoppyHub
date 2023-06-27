@@ -13,9 +13,19 @@ namespace Application.Opinions.Commands.CreateOpinion;
 public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand, OpinionDto>
 {
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
+
+    /// <summary>
+    ///     The images service.
+    /// </summary>
+    private readonly IImagesService<Opinion> _imagesService;
 
     /// <summary>
     ///     The mapper.
@@ -26,16 +36,6 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
-
-    /// <summary>
-    ///     The beers service.
-    /// </summary>
-    private readonly IBeersService _beersService;
-
-    /// <summary>
-    ///     The images service.
-    /// </summary>
-    private readonly IImagesService<Opinion> _imagesService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
@@ -63,7 +63,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         if (beer is null)
         {

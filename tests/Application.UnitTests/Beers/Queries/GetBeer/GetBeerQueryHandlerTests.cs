@@ -10,7 +10,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Queries.GetBeer;
 
 /// <summary>
-///     Tests for the <see cref="GetBeerQueryHandler"/> class.
+///     Tests for the <see cref="GetBeerQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeerQueryHandlerTests

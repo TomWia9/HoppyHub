@@ -15,12 +15,12 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     ///     Current user service
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
-    
+
     /// <summary>
     ///     DateTime service
     /// </summary>
     private readonly IDateTime _dateTimeService;
-    
+
     /// <summary>
     ///     Initializes AuditableEntitySaveChangesInterceptor
     /// </summary>

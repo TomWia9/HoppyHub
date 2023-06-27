@@ -19,9 +19,9 @@ namespace Infrastructure.Services;
 public class UsersService : IUsersService
 {
     /// <summary>
-    ///     The user manager.
+    ///     The current user service.
     /// </summary>
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
     ///     The query service.
@@ -29,9 +29,9 @@ public class UsersService : IUsersService
     private readonly IQueryService<ApplicationUser> _queryService;
 
     /// <summary>
-    ///     The current user service.
+    ///     The user manager.
     /// </summary>
-    private readonly ICurrentUserService _currentUserService;
+    private readonly UserManager<ApplicationUser> _userManager;
 
     /// <summary>
     ///     Initializes UsersService.

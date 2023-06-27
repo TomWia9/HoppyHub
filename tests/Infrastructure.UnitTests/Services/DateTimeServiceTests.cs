@@ -5,7 +5,7 @@ using Moq;
 namespace Infrastructure.UnitTests.Services;
 
 /// <summary>
-///     Tests for the <see cref="DateTimeService"/> class.
+///     Tests for the <see cref="DateTimeService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DateTimeServiceTests

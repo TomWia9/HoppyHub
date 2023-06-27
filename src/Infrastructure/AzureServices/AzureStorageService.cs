@@ -14,14 +14,14 @@ namespace Infrastructure.AzureServices;
 public class AzureStorageService : IAzureStorageService
 {
     /// <summary>
-    ///     The logger.
-    /// </summary>
-    private readonly ILogger<AzureStorageService> _logger;
-
-    /// <summary>
     ///     The blob container client.
     /// </summary>
     private readonly BlobContainerClient _blobContainerClient;
+
+    /// <summary>
+    ///     The logger.
+    /// </summary>
+    private readonly ILogger<AzureStorageService> _logger;
 
     /// <summary>
     ///     Initializes AzureStorageService.

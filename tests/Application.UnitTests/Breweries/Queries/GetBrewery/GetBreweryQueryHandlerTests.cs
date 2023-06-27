@@ -10,7 +10,7 @@ using Moq;
 namespace Application.UnitTests.Breweries.Queries.GetBrewery;
 
 /// <summary>
-///     Tests for the <see cref="GetBreweryQueryHandler"/> class.
+///     Tests for the <see cref="GetBreweryQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBreweryQueryHandlerTests
@@ -60,7 +60,7 @@ public class GetBreweryQueryHandlerTests
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
 
-        var query = new GetBreweryQuery() { Id = breweryId };
+        var query = new GetBreweryQuery { Id = breweryId };
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);

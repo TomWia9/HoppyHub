@@ -8,20 +8,20 @@ using Moq;
 namespace Application.UnitTests.Beers.Services;
 
 /// <summary>
-///     Unit tests for the <see cref="BeersService"/> class.
+///     Unit tests for the <see cref="BeersService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BeersServiceTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The beers service.
     /// </summary>
     private readonly IBeersService _beersService;
+
+    /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups BeersServiceTests.

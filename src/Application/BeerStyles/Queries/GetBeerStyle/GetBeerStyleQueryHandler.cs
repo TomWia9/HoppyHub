@@ -4,7 +4,6 @@ using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.BeerStyles.Queries.GetBeerStyle;
 
@@ -42,7 +41,7 @@ public class GetBeerStyleQueryHandler : IRequestHandler<GetBeerStyleQuery, BeerS
     public async Task<BeerStyleDto> Handle(GetBeerStyleQuery request, CancellationToken cancellationToken)
     {
         var beerStyle =
-            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken);
 
         if (beerStyle is null)
         {

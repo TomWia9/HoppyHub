@@ -10,11 +10,16 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.UpdateOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateOpinionCommandHandler"/> class.
+///     Unit tests for the <see cref="UpdateOpinionCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateOpinionCommandHandlerTests
 {
+    /// <summary>
+    ///     The beers service mock.
+    /// </summary>
+    private readonly Mock<IBeersService> _beersServiceMock;
+
     /// <summary>
     ///     The database context mock.
     /// </summary>
@@ -26,16 +31,6 @@ public class UpdateOpinionCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The beers service mock.
-    /// </summary>
-    private readonly Mock<IBeersService> _beersServiceMock;
-
-    /// <summary>
-    ///     The images service mock.
-    /// </summary>
-    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
-
-    /// <summary>
     ///     The form file mock.
     /// </summary>
     private readonly Mock<IFormFile> _formFileMock;
@@ -44,6 +39,11 @@ public class UpdateOpinionCommandHandlerTests
     ///     The handler.
     /// </summary>
     private readonly UpdateOpinionCommandHandler _handler;
+
+    /// <summary>
+    ///     The images service mock.
+    /// </summary>
+    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
 
     /// <summary>
     ///     Setups UpdateOpinionCommandHandlerTests.
@@ -228,7 +228,8 @@ public class UpdateOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method throws ForbiddenException when user tries to update not his opinion and user has no admin access.
+    ///     Tests that Handle method throws ForbiddenException when user tries to update not his opinion and user has no admin
+    ///     access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldThrowForbiddenException_WhenUserTriesToUpdateNotHisOpinionAndUserHasNoAdminAccess()
@@ -248,7 +249,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
 
         // Act & Assert
@@ -257,7 +258,7 @@ public class UpdateOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///      Tests that Handle method updates opinion when user tries to update not his opinion but he has admin access.
+    ///     Tests that Handle method updates opinion when user tries to update not his opinion but he has admin access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldUpdateOpinion_WhenUserTriesToUpdateNotHisOpinionButHasAdminAccess()
@@ -279,7 +280,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
 
         // Act
@@ -308,7 +309,7 @@ public class UpdateOpinionCommandHandlerTests
         {
             Id = opinionId,
             Rating = 7,
-            Comment = "New comment",
+            Comment = "New comment"
         };
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);

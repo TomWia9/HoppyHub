@@ -11,13 +11,6 @@ namespace Application.Beers.Queries.GetBeers;
 public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
 {
     /// <summary>
-    ///     Initializes BeersFilteringHelper.
-    /// </summary>
-    public BeersFilteringHelper() : base(SortingColumns)
-    {
-    }
-    
-    /// <summary>
     ///     Beers sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Beer, object>>> SortingColumns = new()
@@ -32,6 +25,13 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         { nameof(BeerDto.OpinionsCount).ToUpper(), x => x.Opinions.Count },
         { nameof(BeerDto.FavoritesCount).ToUpper(), x => x.Favorites.Count }
     };
+
+    /// <summary>
+    ///     Initializes BeersFilteringHelper.
+    /// </summary>
+    public BeersFilteringHelper() : base(SortingColumns)
+    {
+    }
 
     /// <summary>
     ///     Gets filtering and searching delegates.

@@ -10,14 +10,14 @@ namespace Application.Common.Behaviors;
 public class LoggingBehavior<TRequest> : IRequestPreProcessor<TRequest> where TRequest : notnull
 {
     /// <summary>
-    ///     The logger.
-    /// </summary>
-    private readonly ILogger<LoggingBehavior<TRequest>> _logger;
-
-    /// <summary>
     ///     The current user service.
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
+    ///     The logger.
+    /// </summary>
+    private readonly ILogger<LoggingBehavior<TRequest>> _logger;
 
     /// <summary>
     ///     Initializes LoggingBehavior.

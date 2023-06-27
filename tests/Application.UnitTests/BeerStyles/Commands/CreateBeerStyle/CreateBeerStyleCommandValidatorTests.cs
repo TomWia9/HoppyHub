@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Commands.CreateBeerStyle;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerStyleCommandValidator"/> class.
+///     Unit tests for the <see cref="CreateBeerStyleCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerStyleCommandValidatorTests
@@ -33,7 +33,7 @@ public class CreateBeerStyleCommandValidatorTests
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
         _validator = new CreateBeerStyleCommandValidator(_contextMock.Object);
     }
-    
+
     /// <summary>
     ///     Tests that validation should have error for Name when Name is not unique.
     /// </summary>

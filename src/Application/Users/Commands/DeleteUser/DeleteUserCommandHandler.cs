@@ -43,7 +43,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
         {
             throw new ForbiddenAccessException();
         }
-        
+
         await _usersService.DeleteUserAsync(request);
     }
 }

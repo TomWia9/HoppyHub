@@ -12,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace Infrastructure.UnitTests;
 
 /// <summary>
-///     Tests for the <see cref="ConfigureServices"/> class.
+///     Tests for the <see cref="ConfigureServices" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ConfigureServicesTests
@@ -70,7 +70,8 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContextInitializer to the service collection.
+    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContextInitializer to the service
+    ///     collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_Should_AddIApplicationDbContextInitializer()

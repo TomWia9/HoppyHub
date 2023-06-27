@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Users.Queries.GetUsers;
 
 /// <summary>
-///     Tests for the <see cref="GetUsersQueryValidator"/> class.
+///     Tests for the <see cref="GetUsersQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetUsersQueryValidatorTests

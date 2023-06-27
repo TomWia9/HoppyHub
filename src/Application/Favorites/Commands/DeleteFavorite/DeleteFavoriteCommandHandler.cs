@@ -41,7 +41,7 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
         var currentUserId = _currentUserService.UserId;
         var entity = await _context.Favorites.FirstOrDefaultAsync(x =>
                 x.BeerId == request.BeerId && x.CreatedBy == currentUserId,
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         if (entity is null)
         {

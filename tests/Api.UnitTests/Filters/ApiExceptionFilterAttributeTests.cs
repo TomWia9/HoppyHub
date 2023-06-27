@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Routing;
 namespace Api.UnitTests.Filters;
 
 /// <summary>
-///     Tests for the <see cref="ApiExceptionFilterAttribute"/> class.
+///     Tests for the <see cref="ApiExceptionFilterAttribute" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ApiExceptionFilterAttributeTests

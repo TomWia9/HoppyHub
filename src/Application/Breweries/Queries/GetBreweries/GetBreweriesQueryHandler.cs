@@ -20,9 +20,9 @@ public class GetBreweriesQueryHandler : IRequestHandler<GetBreweriesQuery, Pagin
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The query service.
+    ///     The breweries filtering helper.
     /// </summary>
-    private readonly IQueryService<Brewery> _queryService;
+    private readonly IFilteringHelper<Brewery, GetBreweriesQuery> _filteringHelper;
 
     /// <summary>
     ///     The mapper.
@@ -30,9 +30,9 @@ public class GetBreweriesQueryHandler : IRequestHandler<GetBreweriesQuery, Pagin
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The breweries filtering helper.
+    ///     The query service.
     /// </summary>
-    private readonly IFilteringHelper<Brewery, GetBreweriesQuery> _filteringHelper;
+    private readonly IQueryService<Brewery> _queryService;
 
     /// <summary>
     ///     Initializes GetBreweriesQueryHandler.

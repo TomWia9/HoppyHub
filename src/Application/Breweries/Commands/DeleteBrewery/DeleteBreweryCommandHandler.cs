@@ -11,14 +11,14 @@ namespace Application.Breweries.Commands.DeleteBrewery;
 public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The azure storage service.
     /// </summary>
     private readonly IAzureStorageService _azureStorageService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     Initializes DeleteBreweryCommandHandler.
@@ -39,7 +39,7 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
     public async Task Handle(DeleteBreweryCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Breweries.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Breweries.FindAsync(new object?[] { request.Id }, cancellationToken);
 
         if (entity is null)
         {

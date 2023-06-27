@@ -10,7 +10,7 @@ using Moq;
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 
 /// <summary>
-///     Unit tests for the <see cref="UpsertBeerImageCommandHandler"/> class.
+///     Unit tests for the <see cref="UpsertBeerImageCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpsertBeerImageCommandHandlerTests
@@ -21,11 +21,6 @@ public class UpsertBeerImageCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The images service mock.
-    /// </summary>
-    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
-
-    /// <summary>
     ///     The form file mock.
     /// </summary>
     private readonly Mock<IFormFile> _formFileMock;
@@ -34,6 +29,11 @@ public class UpsertBeerImageCommandHandlerTests
     ///     The UpsertBeerImageCommand handler.
     /// </summary>
     private readonly UpsertBeerImageCommandHandler _handler;
+
+    /// <summary>
+    ///     The images service mock.
+    /// </summary>
+    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
 
     /// <summary>
     ///     Setups UpsertBeerImageCommandHandlerTests.

@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Favorites.Commands.CreateFavorite;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateFavoriteCommandValidator"/> class.
+///     Unit tests for the <see cref="CreateFavoriteCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateFavoriteCommandValidatorTests
@@ -71,7 +71,7 @@ public class CreateFavoriteCommandValidatorTests
         {
             new()
             {
-                BeerId = beerId,
+                BeerId = beerId
             }
         };
         var favoritesDbSetMock = favorites.AsQueryable().BuildMockDbSet();

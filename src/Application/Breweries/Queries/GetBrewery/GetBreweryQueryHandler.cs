@@ -42,7 +42,7 @@ public class GetBreweryQueryHandler : IRequestHandler<GetBreweryQuery, BreweryDt
     public async Task<BreweryDto> Handle(GetBreweryQuery request, CancellationToken cancellationToken)
     {
         var brewery = await _context.Breweries.Include(x => x.Address)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (brewery is null)
         {

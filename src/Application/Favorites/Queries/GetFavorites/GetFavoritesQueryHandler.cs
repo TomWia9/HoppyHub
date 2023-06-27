@@ -20,9 +20,9 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Pagin
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The query service.
+    ///     The favorites filtering helper.
     /// </summary>
-    private readonly IQueryService<Favorite> _queryService;
+    private readonly IFilteringHelper<Favorite, GetFavoritesQuery> _filteringHelper;
 
     /// <summary>
     ///     The mapper.
@@ -30,9 +30,9 @@ public class GetFavoritesQueryHandler : IRequestHandler<GetFavoritesQuery, Pagin
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The favorites filtering helper.
+    ///     The query service.
     /// </summary>
-    private readonly IFilteringHelper<Favorite, GetFavoritesQuery> _filteringHelper;
+    private readonly IQueryService<Favorite> _queryService;
 
     /// <summary>
     ///     Initializes GetFavoritesQueryHandler.

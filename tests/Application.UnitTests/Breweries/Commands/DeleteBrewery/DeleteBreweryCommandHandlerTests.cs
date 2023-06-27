@@ -8,20 +8,20 @@ using Moq;
 namespace Application.UnitTests.Breweries.Commands.DeleteBrewery;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteBreweryCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteBreweryCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteBreweryCommandHandlerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The azure storage service mock.
     /// </summary>
     private readonly Mock<IAzureStorageService> _azureStorageServiceMock;
+
+    /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     The handler.

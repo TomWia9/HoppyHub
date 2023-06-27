@@ -6,17 +6,17 @@ namespace Application.Common.Abstractions;
 public abstract class FilteringHelperBase<T, TRequest> : IFilteringHelper<T, TRequest>
 {
     /// <summary>
-    ///     The sorting columns.
-    /// </summary>
-    private Dictionary<string, Expression<Func<T, object>>> SortingColumns { get; }
-
-    /// <summary>
     ///     Initializes FilteringHelperBase.
     /// </summary>
     protected FilteringHelperBase(Dictionary<string, Expression<Func<T, object>>> sortingColumns)
     {
         SortingColumns = sortingColumns;
     }
+
+    /// <summary>
+    ///     The sorting columns.
+    /// </summary>
+    private Dictionary<string, Expression<Func<T, object>>> SortingColumns { get; }
 
     /// <summary>
     ///     Gets sorting column expression.

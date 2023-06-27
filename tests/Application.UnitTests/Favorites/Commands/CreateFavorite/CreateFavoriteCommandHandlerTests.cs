@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Favorites.Commands.CreateFavorite;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateFavoriteCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateFavoriteCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateFavoriteCommandHandlerTests

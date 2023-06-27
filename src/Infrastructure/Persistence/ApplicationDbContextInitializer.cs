@@ -118,7 +118,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             Email = "administrator@localhost"
         };
 
-        var user = new ApplicationUser()
+        var user = new ApplicationUser
         {
             UserName = "user@localhost",
             Email = "user@localhost"
@@ -175,7 +175,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds opinions asynchronously.
     /// </summary>
@@ -188,7 +188,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds favorites asynchronously.
     /// </summary>
@@ -231,7 +231,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
                 Log.Error("Seeding {TableName} failed", tableName);
             }
         }
-        catch 
+        catch
         {
             Log.Error("Seeding {TableName} failed", tableName);
             throw;

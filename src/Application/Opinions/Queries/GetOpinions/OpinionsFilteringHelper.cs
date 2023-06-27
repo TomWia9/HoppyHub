@@ -10,13 +10,6 @@ namespace Application.Opinions.Queries.GetOpinions;
 public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQuery>
 {
     /// <summary>
-    ///     Initializes OpinionsFilteringHelper.
-    /// </summary>
-    public OpinionsFilteringHelper() : base(SortingColumns)
-    {
-    }
-
-    /// <summary>
     ///     Opinions sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Opinion, object>>> SortingColumns = new()
@@ -25,6 +18,13 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
         { nameof(Opinion.Rating).ToUpper(), x => x.Rating },
         { nameof(Opinion.Comment).ToUpper(), x => x.Comment ?? string.Empty }
     };
+
+    /// <summary>
+    ///     Initializes OpinionsFilteringHelper.
+    /// </summary>
+    public OpinionsFilteringHelper() : base(SortingColumns)
+    {
+    }
 
     /// <summary>
     ///     Gets filtering and searching delegates.

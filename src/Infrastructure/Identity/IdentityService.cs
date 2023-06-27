@@ -15,14 +15,14 @@ namespace Infrastructure.Identity;
 public class IdentityService : IIdentityService
 {
     /// <summary>
-    ///     The user manager.
-    /// </summary>
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    /// <summary>
     ///     The json web token settings.
     /// </summary>
     private readonly JwtSettings _jwtSettings;
+
+    /// <summary>
+    ///     The user manager.
+    /// </summary>
+    private readonly UserManager<ApplicationUser> _userManager;
 
     /// <summary>
     ///     Initializes IdentityService.
@@ -93,7 +93,7 @@ public class IdentityService : IIdentityService
 
         return await GenerateAuthenticationResult(user);
     }
-    
+
     /// <summary>
     ///     Generates authentication result.
     /// </summary>

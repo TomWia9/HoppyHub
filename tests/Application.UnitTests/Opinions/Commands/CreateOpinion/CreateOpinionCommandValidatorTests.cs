@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.CreateOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateOpinionCommandValidator"/> class.
+///     Unit tests for the <see cref="CreateOpinionCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateOpinionCommandValidatorTests
@@ -44,7 +44,7 @@ public class CreateOpinionCommandValidatorTests
         // Arrange
         var command = new CreateOpinionCommand
         {
-            BeerId = Guid.NewGuid(),
+            BeerId = Guid.NewGuid()
         };
 
         // Act

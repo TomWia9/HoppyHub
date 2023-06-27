@@ -11,14 +11,14 @@ namespace Application.Common.Services;
 public class ImagesService<T> : IImagesService<T>
 {
     /// <summary>
-    ///     The azure storage service.
-    /// </summary>
-    private readonly IAzureStorageService _azureStorageService;
-
-    /// <summary>
     ///     Temp image uri.
     /// </summary>
     private const string TempImageUri = "https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg";
+
+    /// <summary>
+    ///     The azure storage service.
+    /// </summary>
+    private readonly IAzureStorageService _azureStorageService;
 
     /// <summary>
     ///     The entity name.
@@ -89,7 +89,7 @@ public class ImagesService<T> : IImagesService<T>
                 "Failed to delete the image.");
         }
     }
-    
+
     /// <summary>
     ///     Gets temp image uri.
     /// </summary>
@@ -113,7 +113,7 @@ public class ImagesService<T> : IImagesService<T>
         {
             return $"Beers/{breweryId.ToString()}/{beerId.ToString()}" + extension;
         }
-        
+
         return $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}" + extension;
     }
 }

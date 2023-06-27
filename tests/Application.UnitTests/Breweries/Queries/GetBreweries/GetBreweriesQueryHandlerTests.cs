@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBreweriesQueryHandler"/> class.
+///     Unit tests for the <see cref="GetBreweriesQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBreweriesQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetBreweriesQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<Brewery>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetBreweriesQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<Brewery>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetBreweriesQueryHandlerTests.
@@ -64,7 +64,7 @@ public class GetBreweriesQueryHandlerTests
             new() { Id = Guid.NewGuid(), Name = "Brewery 3", FoundationYear = 2015 }
         };
 
-        var expectedResult = PaginatedList<BreweryDto>.Create(breweries.Select(x => new BreweryDto()
+        var expectedResult = PaginatedList<BreweryDto>.Create(breweries.Select(x => new BreweryDto
         {
             Id = x.Id,
             Name = x.Name,

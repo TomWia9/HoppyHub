@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Commands.UpdateBeer;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateBeerCommandHandler"/> class.
+///     Unit tests for the <see cref="UpdateBeerCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateBeerCommandHandlerTests
@@ -55,7 +55,7 @@ public class UpdateBeerCommandHandlerTests
 
         var command = new UpdateBeerCommand
         {
-            Id = beerId, 
+            Id = beerId,
             Name = "New Name",
             BreweryId = breweryId,
             BeerStyleId = beerStyleId,

@@ -8,7 +8,7 @@ using Moq;
 namespace Api.UnitTests.Controllers;
 
 /// <summary>
-///     Unit tests for the <see cref="IdentityController"/> class.
+///     Unit tests for the <see cref="IdentityController" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class IdentityControllerTests : ControllerSetup<IdentityController>

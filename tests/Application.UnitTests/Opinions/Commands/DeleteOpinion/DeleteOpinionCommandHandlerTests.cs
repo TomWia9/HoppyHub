@@ -8,11 +8,16 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.DeleteOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteOpinionCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteOpinionCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteOpinionCommandHandlerTests
 {
+    /// <summary>
+    ///     The beers service mock.
+    /// </summary>
+    private readonly Mock<IBeersService> _beersServiceMock;
+
     /// <summary>
     ///     The database context mock.
     /// </summary>
@@ -24,19 +29,14 @@ public class DeleteOpinionCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The beers service mock.
+    ///     The handler.
     /// </summary>
-    private readonly Mock<IBeersService> _beersServiceMock;
+    private readonly DeleteOpinionCommandHandler _handler;
 
     /// <summary>
     ///     The images service mock.
     /// </summary>
     private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
-
-    /// <summary>
-    ///     The handler.
-    /// </summary>
-    private readonly DeleteOpinionCommandHandler _handler;
 
     /// <summary>
     ///     Setups DeleteOpinionCommandHandlerTests.
@@ -135,7 +135,8 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method throws ForbiddenException when user tries to delete not his opinion and user has no admin access.
+    ///     Tests that Handle method throws ForbiddenException when user tries to delete not his opinion and user has no admin
+    ///     access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldThrowForbiddenException_WhenUserTriesToDeleteNotHisOpinionAndUserHasNoAdminAccess()
@@ -161,7 +162,7 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///      Tests that Handle method removes opinion when user tries to delete not his opinion but he has admin access.
+    ///     Tests that Handle method removes opinion when user tries to delete not his opinion but he has admin access.
     /// </summary>
     [Fact]
     public async Task

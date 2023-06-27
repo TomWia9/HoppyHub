@@ -40,7 +40,7 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     public async Task Handle(DeleteBeerImageCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.Include(x => x.BeerImage)
-            .FirstOrDefaultAsync(x => x.Id == request.BeerId, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.BeerId, cancellationToken);
 
         if (beer is null)
         {

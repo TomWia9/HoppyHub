@@ -14,7 +14,7 @@ public class BeersService : IBeersService
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-    
+
     /// <summary>
     ///     Initializes BeersService.
     /// </summary>

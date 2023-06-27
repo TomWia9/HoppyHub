@@ -3,7 +3,7 @@
 namespace Application.UnitTests.Common.Models;
 
 /// <summary>
-///     Unit tests for the <see cref="PaginatedList{T}"/> class.
+///     Unit tests for the <see cref="PaginatedList{T}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class PaginatedListTests

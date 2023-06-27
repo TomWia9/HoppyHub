@@ -6,13 +6,13 @@ using Moq;
 namespace Application.UnitTests.Identity.Commands.LoginUser;
 
 /// <summary>
-///     Tests for the <see cref="LoginUserCommandHandler"/> class.
+///     Tests for the <see cref="LoginUserCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class LoginUserCommandHandlerTests
 {
-    private readonly Mock<IIdentityService> _identityServiceMock;
     private readonly LoginUserCommandHandler _handler;
+    private readonly Mock<IIdentityService> _identityServiceMock;
 
     /// <summary>
     ///     Setups LoginUserCommandHandlerTests.

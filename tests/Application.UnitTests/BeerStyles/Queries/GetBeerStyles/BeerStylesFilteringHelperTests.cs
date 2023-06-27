@@ -5,7 +5,7 @@ using Domain.Entities;
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerStyles;
 
 /// <summary>
-///     Tests for the <see cref="BeerStylesFilteringHelper"/> class.
+///     Tests for the <see cref="BeerStylesFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BeerStylesFilteringHelperTests
@@ -22,7 +22,7 @@ public class BeerStylesFilteringHelperTests
     {
         _filteringHelper = new BeerStylesFilteringHelper();
     }
-    
+
     /// <summary>
     ///     Tests that GetSortingColumn method returns first column when SortBy is null.
     /// </summary>
@@ -84,7 +84,7 @@ public class BeerStylesFilteringHelperTests
         // Arrange
         var request = new GetBeerStylesQuery
         {
-            CountryOfOrigin = "United States",
+            CountryOfOrigin = "United States"
         };
 
         // Act

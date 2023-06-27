@@ -15,7 +15,7 @@ public interface IFilteringHelper<T, in TRequest>
     /// <param name="sortBy">Column by which to sort</param>
     /// <returns>The sorting expression</returns>
     Expression<Func<T, object>> GetSortingColumn(string? sortBy);
-    
+
     /// <summary>
     ///     Gets filtering and searching delegates.
     /// </summary>

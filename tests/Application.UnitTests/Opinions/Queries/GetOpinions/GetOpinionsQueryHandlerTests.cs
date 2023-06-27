@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
 
 /// <summary>
-///     Unit tests for the <see cref="GetOpinionsQueryHandler"/> class.
+///     Unit tests for the <see cref="GetOpinionsQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetOpinionsQueryHandlerTests
@@ -24,6 +24,11 @@ public class GetOpinionsQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
+    ///     The handler.
+    /// </summary>
+    private readonly GetOpinionsQueryHandler _handler;
+
+    /// <summary>
     ///     The QueryService mock.
     /// </summary>
     private readonly Mock<IQueryService<Opinion>> _queryServiceMock;
@@ -32,11 +37,6 @@ public class GetOpinionsQueryHandlerTests
     ///     The UsersService mock.
     /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
-    ///     The handler.
-    /// </summary>
-    private readonly GetOpinionsQueryHandler _handler;
 
     /// <summary>
     ///     Setups GetOpinionsQueryHandlerTests.
@@ -63,7 +63,7 @@ public class GetOpinionsQueryHandlerTests
         // Arrange
         const string username = "testUser";
         var userId = Guid.NewGuid();
-        var request = new GetOpinionsQuery() { PageNumber = 1, PageSize = 10 };
+        var request = new GetOpinionsQuery { PageNumber = 1, PageSize = 10 };
         var opinions = new List<Opinion>
         {
             new()

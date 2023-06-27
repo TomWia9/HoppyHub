@@ -6,23 +6,11 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.Common;
 
 /// <summary>
-///     Unit tests for the <see cref="BaseOpinionCommandValidator{TCommand}"/> class.
+///     Unit tests for the <see cref="BaseOpinionCommandValidator{TCommand}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BaseOpinionCommandValidatorTests
 {
-    /// <summary>
-    ///     The TestBaseOpinion command.
-    /// </summary>
-    private record TestBaseOpinionCommand : BaseOpinionCommand;
-
-    /// <summary>
-    ///     The TestBaseOpinionCommand validator.
-    /// </summary>
-    private class TestBaseOpinionCommandValidator : BaseOpinionCommandValidator<TestBaseOpinionCommand>
-    {
-    }
-
     /// <summary>
     ///     The TestBaseOpinionCommand validator instance.
     /// </summary>
@@ -141,7 +129,7 @@ public class BaseOpinionCommandValidatorTests
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.Image);
     }
-    
+
     /// <summary>
     ///     Tests that validation should not have error for Image when Image is null.
     /// </summary>
@@ -213,5 +201,17 @@ public class BaseOpinionCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Image).WithErrorMessage("The file exceeds the maximum size of 5MB.");
+    }
+
+    /// <summary>
+    ///     The TestBaseOpinion command.
+    /// </summary>
+    private record TestBaseOpinionCommand : BaseOpinionCommand;
+
+    /// <summary>
+    ///     The TestBaseOpinionCommand validator.
+    /// </summary>
+    private class TestBaseOpinionCommandValidator : BaseOpinionCommandValidator<TestBaseOpinionCommand>
+    {
     }
 }

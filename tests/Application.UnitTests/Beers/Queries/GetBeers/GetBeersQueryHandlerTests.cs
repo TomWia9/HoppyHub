@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Queries.GetBeers;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBeersQueryHandler"/> class.
+///     Unit tests for the <see cref="GetBeersQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeersQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetBeersQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<Beer>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetBeersQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<Beer>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetBeersQueryHandlerTests.

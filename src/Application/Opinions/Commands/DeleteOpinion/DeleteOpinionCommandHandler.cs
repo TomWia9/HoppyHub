@@ -11,6 +11,11 @@ namespace Application.Opinions.Commands.DeleteOpinion;
 public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
 {
     /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
@@ -19,11 +24,6 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     ///     The current user service.
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
-
-    /// <summary>
-    ///     The beers service.
-    /// </summary>
-    private readonly IBeersService _beersService;
 
     /// <summary>
     ///     The images service.
@@ -54,7 +54,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     public async Task Handle(DeleteOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken);
 
         if (entity is null)
         {

@@ -10,7 +10,7 @@ using Domain.Entities;
 namespace Application.UnitTests.Common.Mappings;
 
 /// <summary>
-///     Unit tests for the <see cref="MappingProfile"/> class.
+///     Unit tests for the <see cref="MappingProfile" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class MappingTests

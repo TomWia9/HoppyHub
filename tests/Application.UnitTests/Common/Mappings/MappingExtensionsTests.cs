@@ -4,7 +4,7 @@ using Application.UnitTests.TestHelpers;
 namespace Application.UnitTests.Common.Mappings;
 
 /// <summary>
-///     Unit tests for the <see cref="MappingExtensions"/> class.
+///     Unit tests for the <see cref="MappingExtensions" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class MappingExtensionsTests

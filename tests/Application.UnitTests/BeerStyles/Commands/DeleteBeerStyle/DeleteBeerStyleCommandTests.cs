@@ -7,7 +7,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Commands.DeleteBeerStyle;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteBeerStyleCommand"/> class.
+///     Unit tests for the <see cref="DeleteBeerStyleCommand" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteBeerStyleCommandTests
