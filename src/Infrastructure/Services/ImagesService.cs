@@ -2,19 +2,15 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
-namespace Application.Common.Services;
+namespace Infrastructure.Services;
 
 /// <summary>
 ///     Images service.
 /// </summary>
-public class ImagesService<T> : IImagesService<T>
+public class ImagesService<T> : IImagesService<T> //TODO: Use attributes instead
 {
-    /// <summary>
-    ///     Temp image uri.
-    /// </summary>
-    private const string TempImageUri = "https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg";
-
     /// <summary>
     ///     The azure storage service.
     /// </summary>
@@ -24,6 +20,11 @@ public class ImagesService<T> : IImagesService<T>
     ///     The entity name.
     /// </summary>
     private readonly string _entityName;
+
+    /// <summary>
+    ///     The configuration.
+    /// </summary>
+    private readonly IConfiguration _configuration;
 
     /// <summary>
     ///     The entity names dictionary.
@@ -38,9 +39,11 @@ public class ImagesService<T> : IImagesService<T>
     ///     Initializes ImagesService.
     /// </summary>
     /// <param name="azureStorageService">The azure storage service</param>
-    public ImagesService(IAzureStorageService azureStorageService)
+    /// <param name="configuration">The configuration</param>
+    public ImagesService(IAzureStorageService azureStorageService, IConfiguration configuration)
     {
         _azureStorageService = azureStorageService;
+        _configuration = configuration;
 
         if (_entityNamesDictionary.TryGetValue(typeof(T), out var entityName))
         {
@@ -95,7 +98,8 @@ public class ImagesService<T> : IImagesService<T>
     /// </summary>
     public string GetTempImageUri()
     {
-        return TempImageUri;
+        return _configuration.GetValue<string>("TempBeerImageUri") ??
+               throw new InvalidOperationException("Temp beer image uri does not exists.");
     }
 
     /// <summary>

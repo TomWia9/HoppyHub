@@ -162,4 +162,17 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(AzureStorageService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Singleton);
     }
+    
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the ImagesService
+    ///     to the service collection as IImagesService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ShouldAddImagesService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IImagesService<>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(ImagesService<>));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
 }

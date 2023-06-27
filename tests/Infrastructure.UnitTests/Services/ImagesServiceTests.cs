@@ -1,12 +1,13 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models.BlobContainer;
-using Application.Common.Services;
 using Domain.Entities;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Moq;
 
-namespace Application.UnitTests.Common.Services;
+namespace Infrastructure.UnitTests.Services;
 
 /// <summary>
 ///     Tests for the <see cref="ImagesService{T}" /> class.
@@ -18,6 +19,11 @@ public class ImagesServiceTests
     ///     The azure storage service mock.
     /// </summary>
     private readonly Mock<IAzureStorageService> _azureStorageServiceMock;
+
+    /// <summary>
+    ///     The configuration.
+    /// </summary>
+    private IConfiguration _configuration;
 
     /// <summary>
     ///     The beer images service.
@@ -34,10 +40,19 @@ public class ImagesServiceTests
     /// </summary>
     public ImagesServiceTests()
     {
+        var inMemoryConfiguration = new Dictionary<string, string>
+        {
+            { "TempBeerImageUri", "https://test.com/tempImage.jpg" }
+        };
+
+        _configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(inMemoryConfiguration!)
+            .Build();
+
         _azureStorageServiceMock = new Mock<IAzureStorageService>();
 
-        _opinionImagesService = new ImagesService<Opinion>(_azureStorageServiceMock.Object);
-        _beerImagesService = new ImagesService<Beer>(_azureStorageServiceMock.Object);
+        _opinionImagesService = new ImagesService<Opinion>(_azureStorageServiceMock.Object, _configuration);
+        _beerImagesService = new ImagesService<Beer>(_azureStorageServiceMock.Object, _configuration);
     }
 
     /// <summary>
@@ -105,7 +120,7 @@ public class ImagesServiceTests
     public void Constructor_ShouldThrowKeyNotFoundException_WhenTypeOfTheServiceIsOtherThanBeerOrOpinion()
     {
         // Arrange
-        var act = () => new ImagesService<Brewery>(_azureStorageServiceMock.Object);
+        var act = () => new ImagesService<Brewery>(_azureStorageServiceMock.Object, _configuration);
 
         // Act & Assert
         act.Should().Throw<KeyNotFoundException>();
@@ -183,10 +198,13 @@ public class ImagesServiceTests
     [Fact]
     public void GetImageTempUri_ShouldReturnTempImageUri()
     {
+        // Arrange
+        const string expectedUri = "https://test.com/tempImage.jpg";
+
         // Act
         var result = _beerImagesService.GetTempImageUri();
 
         // Assert
-        result.Should().NotBeEmpty();
+        result.Should().Be(expectedUri);
     }
 }

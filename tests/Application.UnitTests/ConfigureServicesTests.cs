@@ -82,19 +82,6 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddApplicationServices method adds the ImagesService
-    ///     to the service collection as IImagesService.
-    /// </summary>
-    [Fact]
-    public void AddApplicationServices_ShouldAddImagesService()
-    {
-        // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IImagesService<>));
-        _services.Should().Contain(s => s.ImplementationType == typeof(ImagesService<>));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-    }
-
-    /// <summary>
     ///     Tests that the AddApplicationServices method adds the filtering helpers
     ///     to the service collection as IFilteringHelper.
     /// </summary>

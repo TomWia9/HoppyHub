@@ -43,6 +43,7 @@ public static class ConfigureServices
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
         services.AddSingleton<IAzureStorageService, AzureStorageService>();
+        services.AddTransient(typeof(IImagesService<>), typeof(ImagesService<>));
         services.AddSingleton(_ => CreateBlobContainerClient(configuration));
 
         var jwtSettings = new JwtSettings();
