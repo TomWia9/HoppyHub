@@ -56,7 +56,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
         var entity =
             await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Opinion), request.Id);
         }

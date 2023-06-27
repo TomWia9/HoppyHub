@@ -42,7 +42,7 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
         var beer = await _context.Beers.Include(x => x.BeerImage)
             .FirstOrDefaultAsync(x => x.Id == request.BeerId, cancellationToken: cancellationToken);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }

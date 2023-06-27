@@ -31,7 +31,7 @@ public class BeersService : IBeersService
     {
         var beer = await _context.Beers.FindAsync(beerId);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), beerId);
         }

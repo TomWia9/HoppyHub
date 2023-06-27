@@ -41,7 +41,7 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
         var entity =
             await _context.Breweries.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Brewery), request.Id);
         }

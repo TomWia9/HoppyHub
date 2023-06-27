@@ -50,14 +50,14 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
         var opinion = await _context.Opinions
             .FindAsync(new object?[] { request.Id }, cancellationToken);
 
-        if (opinion == null)
+        if (opinion is null)
         {
             throw new NotFoundException(nameof(Opinion), request.Id);
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(opinion);
 
-        if (opinion.CreatedBy == null)
+        if (opinion.CreatedBy is null)
         {
             return opinionDto;
         }

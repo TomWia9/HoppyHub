@@ -58,7 +58,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             await _context.Opinions.Include(x => x.Beer)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Opinion), request.Id);
         }
@@ -71,7 +71,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
         var entityImageUri = entity.ImageUri;
 
-        if (request.Image != null)
+        if (request.Image is not null)
         {
             entity.ImageUri =
                 await _imagesService.UploadImageAsync(request.Image, entity.Beer!.BreweryId, entity.BeerId, entity.Id);
@@ -92,7 +92,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             await _beersService.CalculateBeerRatingAsync(entity.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
 
-            if (request.Image == null && !string.IsNullOrEmpty(entityImageUri))
+            if (request.Image is null && !string.IsNullOrEmpty(entityImageUri))
             {
                 await _imagesService.DeleteImageAsync(entityImageUri);
             }

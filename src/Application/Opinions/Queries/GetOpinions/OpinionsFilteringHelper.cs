@@ -37,13 +37,13 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
             x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating
         };
 
-        if (request.BeerId != null)
+        if (request.BeerId is not null)
             delegates.Add(x => x.BeerId == request.BeerId);
 
-        if (request.UserId != null)
+        if (request.UserId is not null)
             delegates.Add(x => x.CreatedBy == request.UserId);
 
-        if (request.HaveImages != null)
+        if (request.HaveImages is not null)
             delegates.Add(x => !string.IsNullOrEmpty(x.ImageUri) == request.HaveImages);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))

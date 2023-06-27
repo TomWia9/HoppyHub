@@ -81,7 +81,7 @@ public class IdentityService : IIdentityService
 
         var user = await _userManager.FindByEmailAsync(email);
 
-        if (user == null)
+        if (user is null)
             return AuthenticationResult.Failure(new[] { "User doesn't exist" });
 
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, password);

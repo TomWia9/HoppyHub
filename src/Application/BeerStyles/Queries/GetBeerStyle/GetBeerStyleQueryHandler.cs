@@ -44,7 +44,7 @@ public class GetBeerStyleQueryHandler : IRequestHandler<GetBeerStyleQuery, BeerS
         var beerStyle =
             await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
-        if (beerStyle == null)
+        if (beerStyle is null)
         {
             throw new NotFoundException(nameof(BeerStyle), request.Id);
         }

@@ -65,7 +65,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
             cancellationToken: cancellationToken);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
@@ -84,7 +84,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            if (request.Image != null)
+            if (request.Image is not null)
             {
                 entity.ImageUri = await _imagesService.UploadImageAsync(request.Image, beer.BreweryId,
                     request.BeerId, entity.Id);

@@ -44,7 +44,7 @@ public class GetBeerQueryHandler : IRequestHandler<GetBeerQuery, BeerDto>
         var beer = await _context.Beers.Include(x => x.Brewery)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
-        if (beer == null)
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.Id);
         }

@@ -52,7 +52,7 @@ public class CurrentUserService : ICurrentUserService
     /// </summary>
     private string? GetCurrentUserRole()
     {
-        if (_httpContextAccessor.HttpContext != null)
+        if (_httpContextAccessor.HttpContext is not null)
         {
             if (_httpContextAccessor.HttpContext.User.IsInRole(Roles.User)) return Roles.User;
 

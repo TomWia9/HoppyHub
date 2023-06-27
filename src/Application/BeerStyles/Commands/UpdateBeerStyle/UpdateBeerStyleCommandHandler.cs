@@ -34,7 +34,7 @@ public class UpdateBeerStyleCommandHandler : IRequestHandler<UpdateBeerStyleComm
         var entity =
             await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(BeerStyle), request.Id);
         }

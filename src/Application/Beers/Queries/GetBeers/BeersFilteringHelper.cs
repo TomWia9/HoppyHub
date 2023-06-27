@@ -54,10 +54,10 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         if (!string.IsNullOrWhiteSpace(request.Name))
             delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
-        if (request.BreweryId != null)
+        if (request.BreweryId is not null)
             delegates.Add(x => x.Brewery != null && x.Brewery.Id == request.BreweryId);
 
-        if (request.BeerStyleId != null)
+        if (request.BeerStyleId is not null)
             delegates.Add(x => x.BeerStyle != null && x.BeerStyle.Id == request.BeerStyleId);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))

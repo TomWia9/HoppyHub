@@ -66,7 +66,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     /// <param name="context">The database context</param>
     private void UpdateEntities(DbContext? context)
     {
-        if (context == null) return;
+        if (context is null) return;
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {

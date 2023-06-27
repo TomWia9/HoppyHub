@@ -36,7 +36,7 @@ public class UpdateBreweryCommandHandler : IRequestHandler<UpdateBreweryCommand>
             await _context.Breweries.Include(x => x.Address)
                 .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(Brewery), request.Id);
         }
@@ -46,7 +46,7 @@ public class UpdateBreweryCommandHandler : IRequestHandler<UpdateBreweryCommand>
         entity.FoundationYear = request.FoundationYear;
         entity.WebsiteUrl = request.WebsiteUrl;
 
-        if (entity.Address != null)
+        if (entity.Address is not null)
         {
             entity.Address.City = request.City;
             entity.Address.Street = request.Street;

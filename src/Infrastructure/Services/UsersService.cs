@@ -55,7 +55,7 @@ public class UsersService : IUsersService
     {
         var user = await _userManager.FindByIdAsync(userId.ToString());
 
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException(nameof(ApplicationUser), userId);
         }
@@ -126,7 +126,7 @@ public class UsersService : IUsersService
     {
         var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
         }
@@ -156,7 +156,7 @@ public class UsersService : IUsersService
     {
         var user = await _userManager.FindByIdAsync(request.UserId.ToString());
 
-        if (user == null)
+        if (user is null)
         {
             throw new NotFoundException(nameof(ApplicationUser), request.UserId);
         }
