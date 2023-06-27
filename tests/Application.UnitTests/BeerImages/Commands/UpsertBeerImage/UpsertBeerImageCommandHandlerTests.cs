@@ -16,6 +16,11 @@ namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 public class UpsertBeerImageCommandHandlerTests
 {
     /// <summary>
+    ///     The beers images service mock.
+    /// </summary>
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
+
+    /// <summary>
     ///     The database context mock.
     /// </summary>
     private readonly Mock<IApplicationDbContext> _contextMock;
@@ -29,11 +34,6 @@ public class UpsertBeerImageCommandHandlerTests
     ///     The UpsertBeerImageCommand handler.
     /// </summary>
     private readonly UpsertBeerImageCommandHandler _handler;
-
-    /// <summary>
-    ///     The beers images service mock.
-    /// </summary>
-    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
 
     /// <summary>
     ///     Setups UpsertBeerImageCommandHandlerTests.

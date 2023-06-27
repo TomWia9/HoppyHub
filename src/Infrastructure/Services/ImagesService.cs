@@ -13,7 +13,7 @@ public abstract class ImagesService : IImagesService
     ///     The azure storage service.
     /// </summary>
     private readonly IAzureStorageService _azureStorageService;
-    
+
     /// <summary>
     ///     Initializes ImagesService.
     /// </summary>

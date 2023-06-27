@@ -17,6 +17,11 @@ namespace Application.UnitTests.Beers.Commands.CreateBeer;
 public class CreateBeerCommandHandlerTests
 {
     /// <summary>
+    ///     The beers images service mock.
+    /// </summary>
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
+
+    /// <summary>
     ///     The database context mock.
     /// </summary>
     private readonly Mock<IApplicationDbContext> _contextMock;
@@ -25,11 +30,6 @@ public class CreateBeerCommandHandlerTests
     ///     The handler.
     /// </summary>
     private readonly CreateBeerCommandHandler _handler;
-
-    /// <summary>
-    ///     The beers images service mock.
-    /// </summary>
-    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
 
     /// <summary>
     ///     Setups CreateBeerCommandHandlerTests.

@@ -12,14 +12,14 @@ namespace Application.BeerImages.Commands.DeleteBeerImage;
 public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageCommand>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The beer images service.
     /// </summary>
     private readonly IBeersImagesService _beerImagesService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     Initializes DeleteBeerImageCommandHandler.

@@ -23,14 +23,14 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The opinions images service.
-    /// </summary>
-    private readonly IOpinionsImagesService _opinionsImagesService;
-
-    /// <summary>
     ///     The mapper.
     /// </summary>
     private readonly IMapper _mapper;
+
+    /// <summary>
+    ///     The opinions images service.
+    /// </summary>
+    private readonly IOpinionsImagesService _opinionsImagesService;
 
     /// <summary>
     ///     The users service.

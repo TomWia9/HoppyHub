@@ -14,14 +14,14 @@ namespace Application.Beers.Commands.CreateBeer;
 public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerDto>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The beer images service.
     /// </summary>
     private readonly IBeersImagesService _beerImagesService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     The mapper.
@@ -34,7 +34,8 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
     /// <param name="beerImagesService">The beer images service</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IBeersImagesService beerImagesService)
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper,
+        IBeersImagesService beerImagesService)
     {
         _context = context;
         _mapper = mapper;

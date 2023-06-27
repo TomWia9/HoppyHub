@@ -12,14 +12,14 @@ namespace Application.BeerImages.Commands.UpsertBeerImage;
 public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageCommand, string>
 {
     /// <summary>
-    ///     The database context.
-    /// </summary>
-    private readonly IApplicationDbContext _context;
-
-    /// <summary>
     ///     The beer images service.
     /// </summary>
     private readonly IBeersImagesService _beerImagesService;
+
+    /// <summary>
+    ///     The database context.
+    /// </summary>
+    private readonly IApplicationDbContext _context;
 
     /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
