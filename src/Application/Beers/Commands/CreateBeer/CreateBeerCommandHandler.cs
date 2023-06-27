@@ -19,9 +19,9 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The images service.
+    ///     The beer images service.
     /// </summary>
-    private readonly IImagesService<Beer> _imagesService;
+    private readonly IBeersImagesService _beerImagesService;
 
     /// <summary>
     ///     The mapper.
@@ -33,12 +33,12 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="imagesService">The images service</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IImagesService<Beer> imagesService)
+    /// <param name="beerImagesService">The beer images service</param>
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IBeersImagesService beerImagesService)
     {
         _context = context;
         _mapper = mapper;
-        _imagesService = imagesService;
+        _beerImagesService = beerImagesService;
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
             BeerImage = new BeerImage
             {
                 TempImage = true,
-                ImageUri = _imagesService.GetTempImageUri()
+                ImageUri = _beerImagesService.GetTempBeerImageUri()
             }
         };
 

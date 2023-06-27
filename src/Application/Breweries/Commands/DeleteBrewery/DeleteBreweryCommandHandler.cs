@@ -57,8 +57,8 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
             var breweryBeerImagesPath = $"Beers/{entity.Id}";
 
-            await _azureStorageService.DeleteFilesInPath(breweryBeersOpinionImagesPath);
-            await _azureStorageService.DeleteFilesInPath(breweryBeerImagesPath);
+            await _azureStorageService.DeleteInPath(breweryBeersOpinionImagesPath);
+            await _azureStorageService.DeleteInPath(breweryBeerImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
         }

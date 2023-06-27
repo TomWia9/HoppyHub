@@ -23,9 +23,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The images service.
+    ///     The opinions images service.
     /// </summary>
-    private readonly IImagesService<Opinion> _imagesService;
+    private readonly IOpinionsImagesService _opinionsImagesService;
 
     /// <summary>
     ///     The mapper.
@@ -44,15 +44,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
-    /// <param name="imagesService">The images service</param>
+    /// <param name="opinionsImagesService">The opinions images service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService, IImagesService<Opinion> imagesService)
+        IBeersService beersService, IOpinionsImagesService opinionsImagesService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
-        _imagesService = imagesService;
+        _opinionsImagesService = opinionsImagesService;
     }
 
     /// <summary>
@@ -86,8 +86,10 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
 
             if (request.Image is not null)
             {
-                entity.ImageUri = await _imagesService.UploadImageAsync(request.Image, beer.BreweryId,
-                    request.BeerId, entity.Id);
+                var imagePath =
+                    _opinionsImagesService.CreateImagePath(request.Image!, beer.BreweryId, beer.Id, entity.Id);
+
+                entity.ImageUri = await _opinionsImagesService.UploadImageAsync(imagePath, request.Image!);
 
                 await _context.SaveChangesAsync(cancellationToken);
             }

@@ -17,19 +17,19 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The images service.
+    ///     The beer images service.
     /// </summary>
-    private readonly IImagesService<Beer> _imagesService;
+    private readonly IBeersImagesService _beerImagesService;
 
     /// <summary>
     ///     Initializes DeleteBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="imagesService">The images service</param>
-    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IImagesService<Beer> imagesService)
+    /// <param name="beerImagesService">The beer images service</param>
+    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IBeersImagesService beerImagesService)
     {
         _context = context;
-        _imagesService = imagesService;
+        _beerImagesService = beerImagesService;
     }
 
     /// <summary>
@@ -55,11 +55,11 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
             try
             {
-                beer.BeerImage.ImageUri = _imagesService.GetTempImageUri();
+                beer.BeerImage.ImageUri = _beerImagesService.GetTempBeerImageUri();
                 beer.BeerImage.TempImage = true;
                 await _context.SaveChangesAsync(cancellationToken);
 
-                await _imagesService.DeleteImageAsync(beerImageUri);
+                await _beerImagesService.DeleteImageAsync(beerImageUri);
 
                 await transaction.CommitAsync(cancellationToken);
             }
