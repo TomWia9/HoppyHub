@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.UnitTests.Helpers;
+namespace Application.UnitTests.TestHelpers;
 
 /// <summary>
 ///     TestRequest record.

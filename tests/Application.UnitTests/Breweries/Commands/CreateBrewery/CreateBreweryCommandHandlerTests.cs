@@ -33,6 +33,7 @@ public class CreateBreweryCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
+        
         _handler = new CreateBreweryCommandHandler(_contextMock.Object, mapper);
     }
 

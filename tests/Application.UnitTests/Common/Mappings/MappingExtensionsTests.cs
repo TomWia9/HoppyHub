@@ -1,5 +1,5 @@
 ﻿using Application.Common.Mappings;
-using Application.UnitTests.Helpers;
+using Application.UnitTests.TestHelpers;
 
 namespace Application.UnitTests.Common.Mappings;
 

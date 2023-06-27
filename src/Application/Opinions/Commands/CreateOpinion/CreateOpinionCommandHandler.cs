@@ -103,7 +103,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
-        opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);
+        opinionDto.Username = opinionDto.CreatedBy is null
+            ? null
+            : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
 
         return opinionDto;
     }

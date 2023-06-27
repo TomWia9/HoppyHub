@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Opinions.Commands.CreateOpinion;
 using Application.Opinions.Dtos;
 using Application.UnitTests.TestHelpers;
@@ -21,16 +22,6 @@ public class CreateOpinionCommandHandlerTests
     ///     The database context mock.
     /// </summary>
     private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
-    ///     The users service mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
-    ///     The mapper mock.
-    /// </summary>
-    private readonly Mock<IMapper> _mapperMock;
 
     /// <summary>
     ///     The beers service mock.
@@ -57,14 +48,16 @@ public class CreateOpinionCommandHandlerTests
     /// </summary>
     public CreateOpinionCommandHandlerTests()
     {
-        _mapperMock = new Mock<IMapper>();
+        var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
+        var mapper = configurationProvider.CreateMapper();
+        
         _contextMock = new Mock<IApplicationDbContext>();
-        _usersServiceMock = new Mock<IUsersService>();
+        Mock<IUsersService> usersServiceMock = new();
         _beersServiceMock = new Mock<IBeersService>();
         _imagesServiceMock = new Mock<IImagesService<Opinion>>();
         _formFileMock = new Mock<IFormFile>();
 
-        _handler = new CreateOpinionCommandHandler(_contextMock.Object, _mapperMock.Object, _usersServiceMock.Object,
+        _handler = new CreateOpinionCommandHandler(_contextMock.Object, mapper, usersServiceMock.Object,
             _beersServiceMock.Object, _imagesServiceMock.Object);
     }
 
@@ -77,14 +70,8 @@ public class CreateOpinionCommandHandlerTests
         Handle_ShouldCreateOpinionAndCalculateBeerRatingAndUploadImageAndReturnCorrectOpinionDto_WhenOpinionContainsImage()
     {
         // Arrange
-        const string username = "testUser";
         const string imageUri = "blob.com/opinions/test.jpg";
-
-        _imagesServiceMock
-            .Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
-                It.IsAny<Guid?>()))
-            .ReturnsAsync(imageUri);
-
+        
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var request = new CreateOpinionCommand
@@ -100,19 +87,20 @@ public class CreateOpinionCommandHandlerTests
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = imageUri,
-            CreatedBy = Guid.NewGuid()
+            Username = null
         };
         var beer = new Beer { Id = beerId, BreweryId = breweryId };
         var opinions = Enumerable.Empty<Opinion>();
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
-
+        
+        _imagesServiceMock
+            .Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
+                It.IsAny<Guid?>()))
+            .ReturnsAsync(imageUri);
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
-        _usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
-        _mapperMock.Setup(x => x.Map<OpinionDto>(It.IsAny<Opinion>()))
-            .Returns(expectedOpinionDto);
         _beersServiceMock.Setup(s => s.CalculateBeerRatingAsync(request.BeerId)).Returns(Task.CompletedTask);
 
         // Act
@@ -121,11 +109,7 @@ public class CreateOpinionCommandHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<OpinionDto>();
-        result.Rating.Should().Be(request.Rating);
-        result.Comment.Should().Be(request.Comment);
-        result.BeerId.Should().Be(request.BeerId);
-        result.ImageUri.Should().Be(imageUri);
-        result.Username.Should().Be(username);
+        result.Should().BeEquivalentTo(expectedOpinionDto);
 
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);
@@ -143,8 +127,6 @@ public class CreateOpinionCommandHandlerTests
         Handle_ShouldCreateOpinionAndCalculateBeerRatingAndReturnCorrectOpinionDto_WhenOpinionDoesNotContainImage()
     {
         // Arrange
-        const string username = "testUser";
-
         var beerId = Guid.NewGuid();
         var request = new CreateOpinionCommand
         {
@@ -158,7 +140,7 @@ public class CreateOpinionCommandHandlerTests
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = null,
-            CreatedBy = Guid.NewGuid()
+            Username = null
         };
         var beer = new Beer { Id = beerId };
         var opinions = Enumerable.Empty<Opinion>();
@@ -168,9 +150,6 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
-        _usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
-        _mapperMock.Setup(x => x.Map<OpinionDto>(It.IsAny<Opinion>()))
-            .Returns(expectedOpinionDto);
         _beersServiceMock.Setup(s => s.CalculateBeerRatingAsync(request.BeerId)).Returns(Task.CompletedTask);
 
         // Act
@@ -179,11 +158,7 @@ public class CreateOpinionCommandHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.Should().BeOfType<OpinionDto>();
-        result.Rating.Should().Be(request.Rating);
-        result.Comment.Should().Be(request.Comment);
-        result.BeerId.Should().Be(request.BeerId);
-        result.ImageUri.Should().Be(null);
-        result.Username.Should().Be(username);
+        result.Should().BeEquivalentTo(expectedOpinionDto);
 
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(beerId), Times.Once);

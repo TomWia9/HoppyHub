@@ -44,7 +44,6 @@ public class GetOpinionsQueryHandlerTests
     public GetOpinionsQueryHandlerTests()
     {
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
-
         var mapper = configurationProvider.CreateMapper();
 
         Mock<IFilteringHelper<Opinion, GetOpinionsQuery>> filteringHelperMock = new();

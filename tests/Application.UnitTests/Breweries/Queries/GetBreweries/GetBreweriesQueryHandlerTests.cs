@@ -39,7 +39,6 @@ public class GetBreweriesQueryHandlerTests
     public GetBreweriesQueryHandlerTests()
     {
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
-
         var mapper = configurationProvider.CreateMapper();
 
         Mock<IFilteringHelper<Brewery, GetBreweriesQuery>> filteringHelperMock = new();
