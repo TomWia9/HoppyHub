@@ -3,27 +3,20 @@
 namespace Application.Common.Interfaces;
 
 /// <summary>
-///     ImagesService interface.
+///     The images service interface.
 /// </summary>
-public interface IImagesService<T>
+public interface IImagesService
 {
     /// <summary>
     ///     Uploads image to blob container and returns image uri.
     /// </summary>
+    /// <param name="path">The image path</param>
     /// <param name="image">The image</param>
-    /// <param name="breweryId">The brewery id</param>
-    /// <param name="beerId">The beer id</param>
-    /// <param name="opinionId">The opinion id</param>
-    Task<string> UploadImageAsync(IFormFile image, Guid breweryId, Guid beerId, Guid? opinionId = null);
+    Task<string> UploadImageAsync(string path, IFormFile image);
 
     /// <summary>
     ///     Deletes image from blob.
     /// </summary>
     /// <param name="imageUri">The image uri</param>
     Task DeleteImageAsync(string imageUri);
-
-    /// <summary>
-    ///     Gets temp image uri.
-    /// </summary>
-    string GetTempImageUri();
 }
