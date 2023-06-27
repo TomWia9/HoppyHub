@@ -24,8 +24,15 @@ public interface IAzureStorageService
     Task<BlobResponseDto> DeleteAsync(string path);
 
     /// <summary>
-    ///     Deletes all files in given path.
+    ///     Deletes a blob by blob uri.
+    /// </summary>
+    /// <param name="uri">The blob uri</param>
+    /// <returns>BlobResponseDto with status</returns>
+    Task<BlobResponseDto> DeleteByUriAsync(string uri);
+
+    /// <summary>
+    ///     Deletes all blobs in given path.
     /// </summary>
     /// <param name="path">The path</param>
-    Task DeleteFilesInPath(string path);
+    Task DeleteInPath(string path);
 }
