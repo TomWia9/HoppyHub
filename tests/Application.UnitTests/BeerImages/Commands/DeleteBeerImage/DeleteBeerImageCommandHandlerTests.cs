@@ -25,9 +25,9 @@ public class DeleteBeerImageCommandHandlerTests
     private readonly DeleteBeerImageCommandHandler _handler;
 
     /// <summary>
-    ///     The images service mock.
+    ///     The beers images service mock.
     /// </summary>
-    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
 
     /// <summary>
     ///     Setups DeleteBeerImageCommandHandlerTests.
@@ -35,9 +35,9 @@ public class DeleteBeerImageCommandHandlerTests
     public DeleteBeerImageCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _imagesServiceMock = new Mock<IImagesService<Beer>>();
+        _beersImagesServiceMock = new Mock<IBeersImagesService>();
 
-        _handler = new DeleteBeerImageCommandHandler(_contextMock.Object, _imagesServiceMock.Object);
+        _handler = new DeleteBeerImageCommandHandler(_contextMock.Object, _beersImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -59,15 +59,15 @@ public class DeleteBeerImageCommandHandlerTests
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
-        _imagesServiceMock.Setup(x => x.GetTempImageUri()).Returns(tempImageUri);
-        _imagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+        _beersImagesServiceMock.Setup(x => x.GetTempBeerImageUri()).Returns(tempImageUri);
+        _beersImagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
+        _beersImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public class DeleteBeerImageCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
 
-        _imagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>()))
+        _beersImagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>()))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         // Act & Assert

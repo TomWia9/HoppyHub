@@ -31,9 +31,9 @@ public class UpsertBeerImageCommandHandlerTests
     private readonly UpsertBeerImageCommandHandler _handler;
 
     /// <summary>
-    ///     The images service mock.
+    ///     The beers images service mock.
     /// </summary>
-    private readonly Mock<IImagesService<Beer>> _imagesServiceMock;
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
 
     /// <summary>
     ///     Setups UpsertBeerImageCommandHandlerTests.
@@ -41,10 +41,10 @@ public class UpsertBeerImageCommandHandlerTests
     public UpsertBeerImageCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _imagesServiceMock = new Mock<IImagesService<Beer>>();
+        _beersImagesServiceMock = new Mock<IBeersImagesService>();
         _formFileMock = new Mock<IFormFile>();
 
-        _handler = new UpsertBeerImageCommandHandler(_contextMock.Object, _imagesServiceMock.Object);
+        _handler = new UpsertBeerImageCommandHandler(_contextMock.Object, _beersImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -54,7 +54,8 @@ public class UpsertBeerImageCommandHandlerTests
     public async Task Handle_ShouldCreateBeerImageAndReturnCorrectImageUri_WhenBeerImageDoesNotExits()
     {
         // Arrange
-        const string tempImageUri = "https://test.blob.core.windows.net/test-container/Beers/temp.jpg";
+        const string imagePath = "Beers/image.jpg";
+        const string imageUri = "https://test.blob.core.windows.net/test-container/Beers/image.jpg";
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var request = new UpsertBeerImageCommand
@@ -75,14 +76,16 @@ public class UpsertBeerImageCommandHandlerTests
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.BeerImages).Returns(beerImagesDbSetMock.Object);
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _imagesServiceMock.Setup(x => x.UploadImageAsync(_formFileMock.Object, breweryId, beerId, It.IsAny<Guid?>()))
-            .ReturnsAsync(tempImageUri);
+        _beersImagesServiceMock.Setup(x => x.CreateImagePath(_formFileMock.Object, breweryId, beerId))
+            .Returns(imagePath);
+        _beersImagesServiceMock.Setup(x => x.UploadImageAsync(imagePath, _formFileMock.Object))
+            .ReturnsAsync(imageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().Be(tempImageUri);
+        result.Should().Be(imageUri);
 
         _contextMock.Verify(x => x.BeerImages.AddAsync(It.IsAny<BeerImage>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
@@ -95,7 +98,8 @@ public class UpsertBeerImageCommandHandlerTests
     public async Task Handle_ShouldUpdateBeerImageAndReturnCorrectImageUri_WhenBeerImageExits()
     {
         // Arrange
-        const string tempImageUri = "https://test.blob.core.windows.net/test-container/Beers/temp.jpg";
+        const string imagePath = "Beers/image.jpg";
+        const string imageUri = "https://test.blob.core.windows.net/test-container/Beers/image.jpg";
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var request = new UpsertBeerImageCommand
@@ -116,14 +120,16 @@ public class UpsertBeerImageCommandHandlerTests
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.BeerImages).Returns(beerImagesDbSetMock.Object);
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _imagesServiceMock.Setup(x => x.UploadImageAsync(_formFileMock.Object, breweryId, beerId, It.IsAny<Guid?>()))
-            .ReturnsAsync(tempImageUri);
+        _beersImagesServiceMock.Setup(x => x.CreateImagePath(_formFileMock.Object, breweryId, beerId))
+            .Returns(imagePath);
+        _beersImagesServiceMock.Setup(x => x.UploadImageAsync(imagePath, _formFileMock.Object))
+            .ReturnsAsync(imageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        result.Should().Be(tempImageUri);
+        result.Should().Be(imageUri);
 
         _contextMock.Verify(x => x.BeerImages.AddAsync(It.IsAny<BeerImage>(), CancellationToken.None), Times.Never);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
@@ -161,6 +167,7 @@ public class UpsertBeerImageCommandHandlerTests
     public async Task Handle_ShouldRollbackTransactionAndThrowException_WhenErrorOccurs()
     {
         // Arrange
+        const string imagePath = "Beers/image.jpg";
         const string exceptionMessage = "Error occurred while uploading the image";
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
@@ -177,8 +184,10 @@ public class UpsertBeerImageCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
+        _beersImagesServiceMock.Setup(x => x.CreateImagePath(_formFileMock.Object, breweryId, beerId))
+            .Returns(imagePath);
 
-        _imagesServiceMock.Setup(x => x.UploadImageAsync(_formFileMock.Object, breweryId, beerId, It.IsAny<Guid?>()))
+        _beersImagesServiceMock.Setup(x => x.UploadImageAsync(imagePath, _formFileMock.Object))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         // Act & Assert

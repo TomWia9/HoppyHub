@@ -34,9 +34,9 @@ public class DeleteOpinionCommandHandlerTests
     private readonly DeleteOpinionCommandHandler _handler;
 
     /// <summary>
-    ///     The images service mock.
+    ///     The opinions images service mock.
     /// </summary>
-    private readonly Mock<IImagesService<Opinion>> _imagesServiceMock;
+    private readonly Mock<IOpinionsImagesService> _opinionsImagesServiceMock;
 
     /// <summary>
     ///     Setups DeleteOpinionCommandHandlerTests.
@@ -46,10 +46,10 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
-        _imagesServiceMock = new Mock<IImagesService<Opinion>>();
+        _opinionsImagesServiceMock = new Mock<IOpinionsImagesService>();
 
         _handler = new DeleteOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
-            _beersServiceMock.Object, _imagesServiceMock.Object);
+            _beersServiceMock.Object, _opinionsImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ public class DeleteOpinionCommandHandlerTests
             .ReturnsAsync(opinion);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
         _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>())).Returns(Task.CompletedTask);
-        _imagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+        _opinionsImagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
@@ -79,7 +79,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
     }
 
     /// <summary>
@@ -109,7 +109,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
-        _imagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
