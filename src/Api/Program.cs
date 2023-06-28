@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Application.Common.Interfaces;
+using Azure.Identity;
 using Infrastructure;
 using Serilog;
 
@@ -25,6 +26,12 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/HoppyHubSpecification/swagger.json", "Hoppy Hub");
         c.RoutePrefix = string.Empty;
     });
+}
+else
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
 }
 
 app.UseSerilogRequestLogging();
