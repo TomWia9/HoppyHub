@@ -18,7 +18,9 @@ public static class MappingExtensions
     /// <param name="pageSize">The page size</param>
     public static Task<PaginatedList<TDestination>> ToPaginatedListAsync<TDestination>(
         this IQueryable<TDestination> queryable, int pageNumber, int pageSize) where TDestination : class
-        => PaginatedList<TDestination>.CreateAsync(queryable.AsNoTracking(), pageNumber, pageSize);
+    {
+        return PaginatedList<TDestination>.CreateAsync(queryable.AsNoTracking(), pageNumber, pageSize);
+    }
 
     /// <summary>
     ///     Creates paginated list.
@@ -28,7 +30,9 @@ public static class MappingExtensions
     /// <param name="pageSize">The page size</param>
     public static PaginatedList<TDestination> ToPaginatedList<TDestination>(
         this IEnumerable<TDestination> source, int pageNumber, int pageSize) where TDestination : class
-        => PaginatedList<TDestination>.Create(source, pageNumber, pageSize);
+    {
+        return PaginatedList<TDestination>.Create(source, pageNumber, pageSize);
+    }
 
     /// <summary>
     ///     Projects queryable to list asynchronously.
@@ -37,5 +41,7 @@ public static class MappingExtensions
     /// <param name="configuration">The mapper configuration</param>
     public static Task<List<TDestination>> ProjectToListAsync<TDestination>(this IQueryable queryable,
         IConfigurationProvider configuration) where TDestination : class
-        => queryable.ProjectTo<TDestination>(configuration).AsNoTracking().ToListAsync();
+    {
+        return queryable.ProjectTo<TDestination>(configuration).AsNoTracking().ToListAsync();
+    }
 }

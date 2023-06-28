@@ -6,7 +6,7 @@ using Moq;
 namespace Application.UnitTests.Users.Commands.DeleteUser;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteUserCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteUserCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteUserCommandHandlerTests
@@ -17,14 +17,14 @@ public class DeleteUserCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The users service mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteUserCommandHandler _handler;
+
+    /// <summary>
+    ///     The users service mock.
+    /// </summary>
+    private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups DeleteUserCommandHandlerTests.
@@ -72,7 +72,7 @@ public class DeleteUserCommandHandlerTests
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
 
         // Act 
-        Func<Task> action = async () => await _handler.Handle(request, CancellationToken.None);
+        var action = async () => await _handler.Handle(request, CancellationToken.None);
 
         // Assert
         await action.Should().ThrowAsync<ForbiddenAccessException>();

@@ -8,11 +8,16 @@ using Moq;
 namespace Application.UnitTests.Opinions.Commands.DeleteOpinion;
 
 /// <summary>
-///     Unit tests for the <see cref="DeleteOpinionCommandHandler"/> class.
+///     Unit tests for the <see cref="DeleteOpinionCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class DeleteOpinionCommandHandlerTests
 {
+    /// <summary>
+    ///     The beers service mock.
+    /// </summary>
+    private readonly Mock<IBeersService> _beersServiceMock;
+
     /// <summary>
     ///     The database context mock.
     /// </summary>
@@ -24,14 +29,14 @@ public class DeleteOpinionCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The beers service mock.
-    /// </summary>
-    private readonly Mock<IBeersService> _beersServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteOpinionCommandHandler _handler;
+
+    /// <summary>
+    ///     The opinions images service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsImagesService> _opinionsImagesServiceMock;
 
     /// <summary>
     ///     Setups DeleteOpinionCommandHandlerTests.
@@ -41,20 +46,54 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _beersServiceMock = new Mock<IBeersService>();
+        _opinionsImagesServiceMock = new Mock<IOpinionsImagesService>();
+
         _handler = new DeleteOpinionCommandHandler(_contextMock.Object, _currentUserServiceMock.Object,
-            _beersServiceMock.Object);
+            _beersServiceMock.Object, _opinionsImagesServiceMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method removes opinion from database when opinion exists.
+    ///     Tests that Handle method removes opinion from database and deletes image when opinion exists and opinion has image.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRating_WhenOpinionExists()
+    public async Task
+        Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRatingAndDeleteImage_WhenOpinionExistsAndOpinionHasImage()
     {
         // Arrange
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, CreatedBy = userId };
+        var opinion = new Opinion { Id = opinionId, CreatedBy = userId, ImageUri = "test.com" };
+        var command = new DeleteOpinionCommand { Id = opinionId };
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { opinionId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(opinion);
+        _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
+        _beersServiceMock.Setup(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>())).Returns(Task.CompletedTask);
+        _opinionsImagesServiceMock.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).Returns(Task.CompletedTask);
+
+        // Act
+        await _handler.Handle(command, CancellationToken.None);
+
+        // Assert
+        _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
+        _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
+        _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method removes opinion from database, calculates beer rating and not deletes image
+    ///     when opinion exists and opinion does not has image.
+    /// </summary>
+    [Fact]
+    public async Task
+        Handle_ShouldRemoveOpinionFromDatabaseAndCalculateBeerRatingAndNotDeleteImage_WhenOpinionExistsAndOpinionDoesNotHasImage()
+    {
+        // Arrange
+        var opinionId = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var opinion = new Opinion { Id = opinionId, CreatedBy = userId, ImageUri = null };
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Opinions.FindAsync(new object[] { opinionId }, It.IsAny<CancellationToken>()))
@@ -70,6 +109,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.Opinions.Remove(opinion), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
+        _opinionsImagesServiceMock.Verify(x => x.DeleteImageAsync(It.IsAny<string>()), Times.Never);
     }
 
     /// <summary>
@@ -95,7 +135,8 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method throws ForbiddenException when user tries to delete not his opinion and user has no admin access.
+    ///     Tests that Handle method throws ForbiddenException when user tries to delete not his opinion and user has no admin
+    ///     access.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldThrowForbiddenException_WhenUserTriesToDeleteNotHisOpinionAndUserHasNoAdminAccess()
@@ -121,10 +162,11 @@ public class DeleteOpinionCommandHandlerTests
     }
 
     /// <summary>
-    ///      Tests that Handle method removes opinion when user tries to delete not his opinion but he has admin access.
+    ///     Tests that Handle method removes opinion when user tries to delete not his opinion but he has admin access.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldRemoveOpinionAndCalculateBeerRating_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
+    public async Task
+        Handle_ShouldRemoveOpinionAndCalculateBeerRating_WhenUserTriesToDeleteNotHisOpinionButHasAdminAccess()
     {
         // Arrange
         var opinionId = Guid.NewGuid();
@@ -150,7 +192,7 @@ public class DeleteOpinionCommandHandlerTests
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
         _beersServiceMock.Verify(x => x.CalculateBeerRatingAsync(It.IsAny<Guid>()), Times.Once);
     }
-    
+
     /// <summary>
     ///     Tests that Handle method rollbacks transaction and throws exception when error occurs.
     /// </summary>

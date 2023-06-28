@@ -7,7 +7,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Commands.UpdateBeerStyle;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateBeerStyleCommandHandler"/> class.
+///     Unit tests for the <see cref="UpdateBeerStyleCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateBeerStyleCommandHandlerTests

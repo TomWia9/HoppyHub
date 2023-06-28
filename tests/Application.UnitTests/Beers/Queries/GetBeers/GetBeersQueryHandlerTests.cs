@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Queries.GetBeers;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBeersQueryHandler"/> class.
+///     Unit tests for the <see cref="GetBeersQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeersQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetBeersQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<Beer>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetBeersQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<Beer>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetBeersQueryHandlerTests.
@@ -39,7 +39,6 @@ public class GetBeersQueryHandlerTests
     public GetBeersQueryHandlerTests()
     {
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
-
         var mapper = configurationProvider.CreateMapper();
 
         Mock<IFilteringHelper<Beer, GetBeersQuery>> filteringHelperMock = new();
@@ -56,20 +55,23 @@ public class GetBeersQueryHandlerTests
     public async Task Handle_ShouldReturnPaginatedListOfBeerDto()
     {
         // Arrange
+        const string imageUri = "https://test.com/test.jpg";
         var request = new GetBeersQuery { PageNumber = 1, PageSize = 10 };
+        var beerImage = new BeerImage { ImageUri = imageUri };
 
         var beers = new List<Beer>
         {
-            new() { Id = Guid.NewGuid(), Name = "Beer 1", AlcoholByVolume = 5 },
-            new() { Id = Guid.NewGuid(), Name = "Beer 2", AlcoholByVolume = 6 },
-            new() { Id = Guid.NewGuid(), Name = "Beer 3", AlcoholByVolume = 7 }
+            new() { Id = Guid.NewGuid(), Name = "Beer 1", AlcoholByVolume = 5, BeerImage = beerImage },
+            new() { Id = Guid.NewGuid(), Name = "Beer 2", AlcoholByVolume = 6, BeerImage = beerImage },
+            new() { Id = Guid.NewGuid(), Name = "Beer 3", AlcoholByVolume = 7, BeerImage = beerImage }
         };
 
         var expectedResult = PaginatedList<BeerDto>.Create(beers.Select(x => new BeerDto
         {
             Id = x.Id,
             Name = x.Name,
-            AlcoholByVolume = x.AlcoholByVolume
+            AlcoholByVolume = x.AlcoholByVolume,
+            ImageUri = x.BeerImage?.ImageUri
         }), 1, 10);
 
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
@@ -99,19 +101,35 @@ public class GetBeersQueryHandlerTests
     public async Task Handle_ShouldReturnCorrectPaginatedListOfBeerDtoWhenMinAndMaxReleaseDateSpecified()
     {
         // Arrange
+        const string imageUri = "https://test.com/test.jpg";
         var request = new GetBeersQuery
             { MinReleaseDate = DateOnly.Parse("01.01.2010"), MaxReleaseDate = DateOnly.Parse("01.01.2012") };
-
+        var beerImage = new BeerImage { ImageUri = imageUri };
         var allBeers = new List<Beer>
         {
-            new() { Id = Guid.NewGuid(), Name = "Beer 1", ReleaseDate = DateOnly.Parse("01.01.2009") },
-            new() { Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010") },
-            new() { Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011") }
+            new()
+            {
+                Id = Guid.NewGuid(), Name = "Beer 1", ReleaseDate = DateOnly.Parse("01.01.2009"), BeerImage = beerImage
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010"), BeerImage = beerImage
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011"), BeerImage = beerImage
+            }
         };
         var expectedBeers = new List<Beer>
         {
-            new() { Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010") },
-            new() { Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011") }
+            new()
+            {
+                Id = Guid.NewGuid(), Name = "Beer 2", ReleaseDate = DateOnly.Parse("01.02.2010"), BeerImage = beerImage
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Name = "Beer 3", ReleaseDate = DateOnly.Parse("01.04.2011"), BeerImage = beerImage
+            }
         };
 
         var expectedResult = PaginatedList<BeerDto>.Create(expectedBeers.Select(x =>
@@ -119,7 +137,8 @@ public class GetBeersQueryHandlerTests
             {
                 Id = x.Id,
                 Name = x.Name,
-                ReleaseDate = x.ReleaseDate
+                ReleaseDate = x.ReleaseDate,
+                ImageUri = x.BeerImage?.ImageUri
             }), 1, 10);
 
         var allBeersDbSetMock = allBeers.AsQueryable().BuildMockDbSet();

@@ -7,7 +7,7 @@ using Moq;
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 
 /// <summary>
-///     Unit tests for the <see cref="GetBreweriesQueryValidator"/> class.
+///     Unit tests for the <see cref="GetBreweriesQueryValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBreweriesQueryValidatorTests
@@ -208,7 +208,7 @@ public class GetBreweriesQueryValidatorTests
         double minFoundationYear)
     {
         // Arrange
-        var query = new GetBreweriesQuery()
+        var query = new GetBreweriesQuery
         {
             MinFoundationYear = minFoundationYear
         };
@@ -221,14 +221,15 @@ public class GetBreweriesQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MinFoundationYear when MinFoundationYear is greater than MaxFoundationYear.
+    ///     Tests that validation should have error for MinFoundationYear when MinFoundationYear is greater than
+    ///     MaxFoundationYear.
     /// </summary>
     [Fact]
     public void
         GetBreweriesQuery_ShouldHaveValidationErrorForMinFoundationYear_WhenMinFoundationYearIsGreaterThanMaxFoundationYear()
     {
         // Arrange
-        var query = new GetBreweriesQuery()
+        var query = new GetBreweriesQuery
         {
             MinFoundationYear = 2012,
             MaxFoundationYear = 2000
@@ -249,7 +250,7 @@ public class GetBreweriesQueryValidatorTests
     public void GetBreweriesQuery_ShouldNotHaveValidationErrorForMaxFoundationYear_WhenMaxFoundationYearIsValid()
     {
         // Arrange
-        var query = new GetBreweriesQuery()
+        var query = new GetBreweriesQuery
         {
             MaxFoundationYear = 2020
         };
@@ -271,7 +272,7 @@ public class GetBreweriesQueryValidatorTests
         double maxFoundationYear)
     {
         // Arrange
-        var query = new GetBreweriesQuery()
+        var query = new GetBreweriesQuery
         {
             MaxFoundationYear = maxFoundationYear
         };
@@ -284,14 +285,15 @@ public class GetBreweriesQueryValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should have error for MaxFoundationYear when MaxFoundationYear is less than MinFoundationYear.
+    ///     Tests that validation should have error for MaxFoundationYear when MaxFoundationYear is less than
+    ///     MinFoundationYear.
     /// </summary>
     [Fact]
     public void
         GetBreweriesQuery_ShouldHaveValidationErrorForMaxFoundationYear_WhenMaxFoundationYearIsLessThanMinFoundationYear()
     {
         // Arrange
-        var query = new GetBreweriesQuery()
+        var query = new GetBreweriesQuery
         {
             MinFoundationYear = 2004,
             MaxFoundationYear = 2002

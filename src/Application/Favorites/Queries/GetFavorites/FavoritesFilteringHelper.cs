@@ -10,20 +10,20 @@ namespace Application.Favorites.Queries.GetFavorites;
 public class FavoritesFilteringHelper : FilteringHelperBase<Favorite, GetFavoritesQuery>
 {
     /// <summary>
-    ///     Initializes FavoritesFilteringHelper.
-    /// </summary>
-    public FavoritesFilteringHelper() : base(SortingColumns)
-    {
-    }
-
-    /// <summary>
     ///     Favorites sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Favorite, object>>> SortingColumns = new()
     {
         { nameof(Favorite.LastModified).ToUpper(), x => x.LastModified ?? new DateTime() },
-        { nameof(Favorite.Beer).ToUpper(), x => x.Beer!.Name ?? string.Empty },
+        { nameof(Favorite.Beer).ToUpper(), x => x.Beer!.Name ?? string.Empty }
     };
+
+    /// <summary>
+    ///     Initializes FavoritesFilteringHelper.
+    /// </summary>
+    public FavoritesFilteringHelper() : base(SortingColumns)
+    {
+    }
 
     /// <summary>
     ///     Gets filtering and searching delegates.

@@ -11,13 +11,6 @@ namespace Application.Beers.Queries.GetBeers;
 public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
 {
     /// <summary>
-    ///     Initializes BeersFilteringHelper.
-    /// </summary>
-    public BeersFilteringHelper() : base(SortingColumns)
-    {
-    }
-    
-    /// <summary>
     ///     Beers sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Beer, object>>> SortingColumns = new()
@@ -32,6 +25,13 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         { nameof(BeerDto.OpinionsCount).ToUpper(), x => x.Opinions.Count },
         { nameof(BeerDto.FavoritesCount).ToUpper(), x => x.Favorites.Count }
     };
+
+    /// <summary>
+    ///     Initializes BeersFilteringHelper.
+    /// </summary>
+    public BeersFilteringHelper() : base(SortingColumns)
+    {
+    }
 
     /// <summary>
     ///     Gets filtering and searching delegates.
@@ -54,10 +54,10 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         if (!string.IsNullOrWhiteSpace(request.Name))
             delegates.Add(x => x.Name != null && string.Equals(x.Name.ToUpper(), request.Name.ToUpper()));
 
-        if (request.BreweryId != null)
+        if (request.BreweryId is not null)
             delegates.Add(x => x.Brewery != null && x.Brewery.Id == request.BreweryId);
 
-        if (request.BeerStyleId != null)
+        if (request.BeerStyleId is not null)
             delegates.Add(x => x.BeerStyle != null && x.BeerStyle.Id == request.BeerStyleId);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))

@@ -3,7 +3,7 @@
 namespace Infrastructure.Identity;
 
 /// <summary>
-///     The ApplicationUser class. 
+///     The ApplicationUser class.
 /// </summary>
 public class ApplicationUser : IdentityUser<Guid>
 {

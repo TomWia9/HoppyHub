@@ -6,7 +6,7 @@ using Moq;
 namespace Application.UnitTests.Users.Commands.UpdateUser;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateUserCommandHandler"/> class.
+///     Unit tests for the <see cref="UpdateUserCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UpdateUserCommandHandlerTests
@@ -17,14 +17,14 @@ public class UpdateUserCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The users service mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateUserCommandHandler _handler;
+
+    /// <summary>
+    ///     The users service mock.
+    /// </summary>
+    private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups UpdateUserCommandHandlerTests.
@@ -53,7 +53,7 @@ public class UpdateUserCommandHandlerTests
         };
 
         // Act
-        Func<Task> action = async () => await _handler.Handle(command, CancellationToken.None);
+        var action = async () => await _handler.Handle(command, CancellationToken.None);
 
         // Assert
         await action.Should().ThrowAsync<ForbiddenAccessException>();

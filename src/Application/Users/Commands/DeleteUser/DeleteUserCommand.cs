@@ -11,9 +11,9 @@ public record DeleteUserCommand : IRequest
     ///     The user id.
     /// </summary>
     public Guid UserId { get; init; }
-    
+
     /// <summary>
-    ///    The user password.
+    ///     The user password.
     /// </summary>
     public string? Password { get; init; }
 }

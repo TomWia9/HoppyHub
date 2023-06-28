@@ -1,27 +1,26 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Users.Dtos;
-using Application.Users.Queries;
 using Application.Users.Queries.GetUsers;
 using Moq;
 
 namespace Application.UnitTests.Users.Queries.GetUsers;
 
 /// <summary>
-///     Unit tests for the <see cref="GetUsersQueryHandler"/> class.
+///     Unit tests for the <see cref="GetUsersQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetUsersQueryHandlerTests
 {
     /// <summary>
-    ///     The users service mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
-
-    /// <summary>
     ///     The GetUsersQueryHandler mock.
     /// </summary>
     private readonly GetUsersQueryHandler _getUsersQueryHandler;
+
+    /// <summary>
+    ///     The users service mock.
+    /// </summary>
+    private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups GetUsersQueryHandlerTests.

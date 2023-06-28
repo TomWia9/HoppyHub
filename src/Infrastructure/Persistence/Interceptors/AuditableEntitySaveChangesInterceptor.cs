@@ -15,12 +15,12 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     ///     Current user service
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
-    
+
     /// <summary>
     ///     DateTime service
     /// </summary>
     private readonly IDateTime _dateTimeService;
-    
+
     /// <summary>
     ///     Initializes AuditableEntitySaveChangesInterceptor
     /// </summary>
@@ -66,7 +66,7 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
     /// <param name="context">The database context</param>
     private void UpdateEntities(DbContext? context)
     {
-        if (context == null) return;
+        if (context is null) return;
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {

@@ -20,9 +20,9 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The query service.
+    ///     The opinions filtering helper.
     /// </summary>
-    private readonly IQueryService<Opinion> _queryService;
+    private readonly IFilteringHelper<Opinion, GetOpinionsQuery> _filteringHelper;
 
     /// <summary>
     ///     The mapper.
@@ -30,14 +30,14 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The query service.
+    /// </summary>
+    private readonly IQueryService<Opinion> _queryService;
+
+    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
-
-    /// <summary>
-    ///     The opinions filtering helper.
-    /// </summary>
-    private readonly IFilteringHelper<Opinion, GetOpinionsQuery> _filteringHelper;
 
     /// <summary>
     ///     Initializes GetOpinionsQueryHandler.

@@ -15,15 +15,15 @@ using Moq;
 namespace Infrastructure.UnitTests.Services;
 
 /// <summary>
-///     Tests for the <see cref="UsersService"/> class.
+///     Tests for the <see cref="UsersService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UsersServiceTests
 {
     /// <summary>
-    ///     The user manager mock.
+    ///     The current user service mock.
     /// </summary>
-    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
+    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
     ///     The query service mock.
@@ -31,9 +31,9 @@ public class UsersServiceTests
     private readonly Mock<IQueryService<ApplicationUser>> _queryServiceMock;
 
     /// <summary>
-    ///     The current user service mock.
+    ///     The user manager mock.
     /// </summary>
-    private readonly Mock<ICurrentUserService> _currentUserServiceMock;
+    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
 
     /// <summary>
     ///     The users service.
@@ -354,7 +354,7 @@ public class UsersServiceTests
 
         var user = new ApplicationUser
         {
-            Id = request.UserId,
+            Id = request.UserId
         };
 
         _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
@@ -388,7 +388,7 @@ public class UsersServiceTests
 
         var user = new ApplicationUser
         {
-            Id = request.UserId,
+            Id = request.UserId
         };
 
         _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
@@ -525,7 +525,7 @@ public class UsersServiceTests
         _userManagerMock.Setup(x => x.FindByIdAsync(userId.ToString())).ReturnsAsync(null as ApplicationUser);
 
         // Act
-        Func<Task> act = async () => await _usersService.DeleteUserAsync(request);
+        var act = async () => await _usersService.DeleteUserAsync(request);
 
         // Assert
         await act.Should().ThrowAsync<NotFoundException>()
@@ -549,7 +549,7 @@ public class UsersServiceTests
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
 
         // Act
-        Func<Task> act = async () => await _usersService.DeleteUserAsync(request);
+        var act = async () => await _usersService.DeleteUserAsync(request);
 
         // Assert
         await act.Should().ThrowAsync<BadRequestException>()

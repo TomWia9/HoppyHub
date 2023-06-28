@@ -68,6 +68,11 @@ public class Beer : BaseAuditableEntity
     public Brewery? Brewery { get; set; }
 
     /// <summary>
+    ///     The beer image.
+    /// </summary>
+    public BeerImage? BeerImage { get; set; }
+
+    /// <summary>
     ///     The beer opinions.
     /// </summary>
     public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();

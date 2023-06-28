@@ -8,7 +8,7 @@ using Moq;
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerCommandValidator"/> class.
+///     Unit tests for the <see cref="CreateBeerCommandValidator" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerCommandValidatorTests

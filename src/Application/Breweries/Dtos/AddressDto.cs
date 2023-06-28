@@ -12,7 +12,7 @@ public record AddressDto : IMapFrom<Address>
     ///     The address id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The street.
     /// </summary>

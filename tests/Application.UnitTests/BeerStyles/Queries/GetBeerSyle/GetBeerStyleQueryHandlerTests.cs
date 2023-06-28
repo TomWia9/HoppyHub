@@ -9,7 +9,7 @@ using Moq;
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerSyle;
 
 /// <summary>
-///     Tests for the <see cref="GetBeerStyleQueryHandler"/> class.
+///     Tests for the <see cref="GetBeerStyleQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetBeerStyleQueryHandlerTests

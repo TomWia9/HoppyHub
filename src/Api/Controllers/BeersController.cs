@@ -1,4 +1,6 @@
-﻿using Application.Beers.Commands.CreateBeer;
+﻿using Application.BeerImages.Commands.DeleteBeerImage;
+using Application.BeerImages.Commands.UpsertBeerImage;
+using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Commands.DeleteBeer;
 using Application.Beers.Commands.UpdateBeer;
 using Application.Beers.Dtos;
@@ -90,6 +92,40 @@ public class BeersController : ApiControllerBase
     public async Task<IActionResult> DeleteBeer(Guid id)
     {
         await Mediator.Send(new DeleteBeerCommand { Id = id });
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Creates or updates the beer image.
+    /// </summary>
+    /// <param name="beerId">The beer id</param>
+    /// <param name="command">The UpsertBeerImageCommand</param>
+    /// <returns>An ActionResult of string with beer image uri</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpPost("{beerId:guid}/upsertImage")]
+    public async Task<IActionResult> UpsertBeerImage(Guid beerId, [FromForm] UpsertBeerImageCommand command)
+    {
+        if (beerId != command.BeerId)
+        {
+            return BadRequest(InvalidIdMessage);
+        }
+
+        var result = await Mediator.Send(command);
+
+        return CreatedAtAction("GetBeer", new { id = beerId }, result);
+    }
+
+    /// <summary>
+    ///     Deletes the beer image and restores the temp image.
+    /// </summary>
+    /// <param name="beerId">The beer id</param>
+    /// <returns>An ActionResult</returns>
+    [Authorize(Policy = Policies.AdministratorAccess)]
+    [HttpDelete("{beerId:guid}/deleteImage")]
+    public async Task<IActionResult> DeleteBeerImage(Guid beerId)
+    {
+        await Mediator.Send(new DeleteBeerImageCommand { BeerId = beerId });
 
         return NoContent();
     }

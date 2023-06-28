@@ -32,9 +32,9 @@ public class DeleteBeerStyleCommandHandler : IRequestHandler<DeleteBeerStyleComm
     public async Task Handle(DeleteBeerStyleCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken: cancellationToken);
+            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken);
 
-        if (entity == null)
+        if (entity is null)
         {
             throw new NotFoundException(nameof(BeerStyle), request.Id);
         }

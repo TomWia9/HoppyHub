@@ -20,9 +20,9 @@ public class GetBeersQueryHandler : IRequestHandler<GetBeersQuery, PaginatedList
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The query service.
+    ///     The beers filtering helper.
     /// </summary>
-    private readonly IQueryService<Beer> _queryService;
+    private readonly IFilteringHelper<Beer, GetBeersQuery> _filteringHelper;
 
     /// <summary>
     ///     The mapper.
@@ -30,9 +30,9 @@ public class GetBeersQueryHandler : IRequestHandler<GetBeersQuery, PaginatedList
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The beers filtering helper.
+    ///     The query service.
     /// </summary>
-    private readonly IFilteringHelper<Beer, GetBeersQuery> _filteringHelper;
+    private readonly IQueryService<Beer> _queryService;
 
     /// <summary>
     ///     Initializes GetBeersQueryHandler

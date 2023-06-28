@@ -15,9 +15,9 @@ namespace Api.UnitTests.Controllers;
 public abstract class ControllerSetup<T> where T : ApiControllerBase, new()
 {
     /// <summary>
-    ///     The mediator mock.
+    ///     The expected invalid id error message.
     /// </summary>
-    protected readonly Mock<ISender> MediatorMock;
+    protected const string ExpectedInvalidIdMessage = "The ID in the route differs from the ID in the request body.";
 
     /// <summary>
     ///     The service provider.
@@ -25,9 +25,9 @@ public abstract class ControllerSetup<T> where T : ApiControllerBase, new()
     protected readonly T Controller;
 
     /// <summary>
-    ///     The expected invalid id error message.
+    ///     The mediator mock.
     /// </summary>
-    protected const string ExpectedInvalidIdMessage = "The ID in the route differs from the ID in the request body.";
+    protected readonly Mock<ISender> MediatorMock;
 
     /// <summary>
     ///     Initializes ControllerSetup.

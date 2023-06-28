@@ -9,7 +9,7 @@ public class Address
     ///     The Id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The street.
     /// </summary>
@@ -44,7 +44,7 @@ public class Address
     ///     The brewery id.
     /// </summary>
     public Guid BreweryId { get; set; }
-    
+
     /// <summary>
     ///     The brewery.
     /// </summary>

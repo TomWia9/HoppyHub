@@ -8,27 +8,27 @@ using Moq;
 namespace Infrastructure.UnitTests.Services;
 
 /// <summary>
-///     Tests for the <see cref="IdentityService"/> class.
+///     Tests for the <see cref="IdentityService" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class IdentityServiceTests
 {
-    /// <summary>
-    ///     User manager mock.
-    /// </summary>
-    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
-
     /// <summary>
     ///     Identity Service.
     /// </summary>
     private readonly IIdentityService _identityService;
 
     /// <summary>
+    ///     User manager mock.
+    /// </summary>
+    private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
+
+    /// <summary>
     ///     Setups IdentityServiceTests.
     /// </summary>
     public IdentityServiceTests()
     {
-        var jwtSettings = new JwtSettings()
+        var jwtSettings = new JwtSettings
         {
             Secret = "test_secret_12345"
         };
@@ -45,7 +45,7 @@ public class IdentityServiceTests
     }
 
     /// <summary>
-    ///      Tests that the RegisterAsync method returns success when new user is created.
+    ///     Tests that the RegisterAsync method returns success when new user is created.
     /// </summary>
     [Fact]
     public async Task RegisterAsync_ShouldReturnSuccess_WhenNewUserIsCreated()
@@ -68,7 +68,7 @@ public class IdentityServiceTests
         _userManagerMock.Verify(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>()), Times.Once);
         _userManagerMock.Verify(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), Roles.User), Times.Once);
     }
-    
+
     /// <summary>
     ///     Tests that RegisterAsync method returns failure with correct error when creation status is failed.
     /// </summary>
@@ -76,7 +76,7 @@ public class IdentityServiceTests
     public async Task RegisterAsync_ShouldReturnFailureWithCorrectError_WhenCreationStatusIsFailed()
     {
         // Arrange
-        var identityError = new IdentityError()
+        var identityError = new IdentityError
         {
             Code = "test",
             Description = "test"
@@ -193,7 +193,7 @@ public class IdentityServiceTests
     {
         // Arrange
         var user = new ApplicationUser { Email = "test@test.com" };
-        var jwtSettings = new JwtSettings()
+        var jwtSettings = new JwtSettings
         {
             Secret = ""
         };

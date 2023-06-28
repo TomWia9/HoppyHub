@@ -36,6 +36,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Beer> Beers => Set<Beer>();
 
     /// <summary>
+    ///     The beer images.
+    /// </summary>
+    public DbSet<BeerImage> BeerImages => Set<BeerImage>();
+
+    /// <summary>
     ///     The breweries.
     /// </summary>
     public DbSet<Brewery> Breweries => Set<Brewery>();
@@ -61,14 +66,23 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     public DbSet<Favorite> Favorites => Set<Favorite>();
 
     /// <summary>
+    ///     Saves changes asynchronously.
+    /// </summary>
+    /// <param name="cancellationToken">The cancellation token</param>
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+
+    /// <summary>
     ///     OnModelCreating override.
     /// </summary>
-    /// <param name="modelBuilder">The ModelBuilder</param>
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    /// <param name="builder">The ModelBuilder</param>
+    protected override void OnModelCreating(ModelBuilder builder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(builder);
     }
 
     /// <summary>
@@ -78,14 +92,5 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
-    }
-
-    /// <summary>
-    ///     Saves changes asynchronously.
-    /// </summary>
-    /// <param name="cancellationToken">The cancellation token</param>
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-    {
-        return await base.SaveChangesAsync(cancellationToken);
     }
 }

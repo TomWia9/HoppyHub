@@ -136,6 +136,30 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Beers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.BeerImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BeerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUri")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TempImage")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BeerId")
+                        .IsUnique();
+
+                    b.ToTable("BeerImages");
+                });
+
             modelBuilder.Entity("Domain.Entities.BeerStyle", b =>
                 {
                     b.Property<Guid>("Id")
@@ -280,6 +304,10 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUri")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime?>("LastModified")
                         .IsRequired()
@@ -528,6 +556,17 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Brewery");
                 });
 
+            modelBuilder.Entity("Domain.Entities.BeerImage", b =>
+                {
+                    b.HasOne("Domain.Entities.Beer", "Beer")
+                        .WithOne("BeerImage")
+                        .HasForeignKey("Domain.Entities.BeerImage", "BeerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Beer");
+                });
+
             modelBuilder.Entity("Domain.Entities.Favorite", b =>
                 {
                     b.HasOne("Domain.Entities.Beer", "Beer")
@@ -603,6 +642,8 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Beer", b =>
                 {
+                    b.Navigation("BeerImage");
+
                     b.Navigation("Favorites");
 
                     b.Navigation("Opinions");

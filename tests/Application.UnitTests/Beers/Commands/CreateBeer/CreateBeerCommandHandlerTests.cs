@@ -11,11 +11,16 @@ using Moq;
 namespace Application.UnitTests.Beers.Commands.CreateBeer;
 
 /// <summary>
-///     Unit tests for the <see cref="CreateBeerCommandHandler"/> class.
+///     Unit tests for the <see cref="CreateBeerCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class CreateBeerCommandHandlerTests
 {
+    /// <summary>
+    ///     The beers images service mock.
+    /// </summary>
+    private readonly Mock<IBeersImagesService> _beersImagesServiceMock;
+
     /// <summary>
     ///     The database context mock.
     /// </summary>
@@ -32,9 +37,10 @@ public class CreateBeerCommandHandlerTests
     public CreateBeerCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
+        _beersImagesServiceMock = new Mock<IBeersImagesService>();
         var configurationProvider = new MapperConfiguration(cfg => { cfg.AddProfile<MappingProfile>(); });
         var mapper = configurationProvider.CreateMapper();
-        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper);
+        _handler = new CreateBeerCommandHandler(_contextMock.Object, mapper, _beersImagesServiceMock.Object);
     }
 
     /// <summary>
@@ -44,6 +50,7 @@ public class CreateBeerCommandHandlerTests
     public async Task Handle_ShouldCreateBeerAndReturnCorrectBeerDto()
     {
         // Arrange
+        const string tempImageUri = "test.com";
         var breweryId = Guid.NewGuid();
         var beerStyleId = Guid.NewGuid();
         var request = new CreateBeerCommand
@@ -68,6 +75,7 @@ public class CreateBeerCommandHandlerTests
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
+        _beersImagesServiceMock.Setup(x => x.GetTempBeerImageUri()).Returns(tempImageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -82,6 +90,7 @@ public class CreateBeerCommandHandlerTests
         result.Blg.Should().Be(request.Blg);
         result.Ibu.Should().Be(request.Ibu);
         result.ReleaseDate.Should().Be(request.ReleaseDate);
+        result.ImageUri.Should().NotBeNull();
 
         _contextMock.Verify(x => x.Beers.AddAsync(It.IsAny<Beer>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
@@ -144,7 +153,7 @@ public class CreateBeerCommandHandlerTests
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerStyles = Enumerable.Empty<BeerStyle>();
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
-        
+
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
 

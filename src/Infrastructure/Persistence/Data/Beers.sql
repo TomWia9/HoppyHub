@@ -293,3 +293,10 @@ VALUES (NEWID(), 'Weizenbock', 8.5, 18, 30, 'Weizenbock to mocniejsza wersja nie
        (NEWID(), 'Leffe Brune', 6.5, 17, 20, N'Belgian Dubbel ale brewed by Spółdzielczy brewery.',
         @BrowarSpółdzielczyId, @AbbeyDubbelStyleId, 'Water, malted barley, hops, yeast.',
         DATEADD(day, ABS(CHECKSUM(NEWID())) % 8646, '2000-01-01'));
+
+-- Beer images
+DECLARE @ImageUri VARCHAR(100) = 'https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg'
+
+INSERT INTO BeerImages (Id, ImageUri, TempImage, BeerId)
+SELECT NEWID(), @ImageUri, 1, Id
+FROM Beers

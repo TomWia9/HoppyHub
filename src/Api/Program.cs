@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Application.Common.Interfaces;
+using Azure.Identity;
 using Infrastructure;
 using Serilog;
 
@@ -26,6 +27,12 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
+else
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
+}
 
 app.UseSerilogRequestLogging();
 
@@ -37,14 +44,18 @@ app.MapControllers();
 try
 {
     Log.Information("Starting Hoppy Hub");
-    
+
     using (var scope = app.Services.CreateScope())
     {
         var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
         await initializer.InitializeAsync();
-        await initializer.SeedAsync();
+
+        if (app.Environment.IsDevelopment())
+        {
+            await initializer.SeedAsync();
+        }
     }
-    
+
     app.Run();
 }
 catch (Exception e)

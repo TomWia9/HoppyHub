@@ -5,7 +5,7 @@ using FluentValidation.TestHelper;
 namespace Application.UnitTests.Common.Abstractions;
 
 /// <summary>
-///     Tests for the <see cref="QueryValidator{T}"/> class.
+///     Tests for the <see cref="QueryValidator{T}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class QueryValidatorTests

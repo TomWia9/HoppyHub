@@ -6,26 +6,11 @@ using Moq;
 namespace Application.UnitTests.Breweries.Commands.Common;
 
 /// <summary>
-///     Unit tests for the <see cref="BaseBreweryCommandValidator{TCommand}"/> class.
+///     Unit tests for the <see cref="BaseBreweryCommandValidator{TCommand}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class BaseBreweryCommandValidatorTests
 {
-    /// <summary>
-    ///     The TestBaseBrewery command.
-    /// </summary>
-    private record TestBaseBreweryCommand : BaseBreweryCommand;
-
-    /// <summary>
-    ///     The TestBaseBreweryCommand validator.
-    /// </summary>
-    private class TestBaseBreweryCommandValidator : BaseBreweryCommandValidator<TestBaseBreweryCommand>
-    {
-        public TestBaseBreweryCommandValidator(IDateTime dateTime) : base(dateTime)
-        {
-        }
-    }
-
     /// <summary>
     ///     The TestBaseBreweryCommand validator instance.
     /// </summary>
@@ -68,7 +53,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Description = new string('x', 5001)
         };
@@ -87,7 +72,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForDescription_WhenDescriptionIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Description = string.Empty
         };
@@ -204,7 +189,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForStreet_WhenStreetIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Street = "Test Street"
         };
@@ -223,7 +208,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForStreet_WhenStreetExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Street = new string('x', 201)
         };
@@ -242,7 +227,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForStreet_WhenStreetIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Street = string.Empty
         };
@@ -261,7 +246,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForNumber_WhenNumberIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Number = "2D"
         };
@@ -280,7 +265,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForNumber_WhenNumberExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Number = new string('x', 11)
         };
@@ -299,7 +284,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForNumber_WhenNumberIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Number = string.Empty
         };
@@ -318,7 +303,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForPostCode_WhenPostCodeIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             PostCode = "12-345"
         };
@@ -337,7 +322,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForPostCode_WhenPostCodeIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             PostCode = string.Empty
         };
@@ -360,7 +345,7 @@ public class BaseBreweryCommandValidatorTests
         string postCode)
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             PostCode = postCode
         };
@@ -379,7 +364,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForCity_WhenCityIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             City = "Test City"
         };
@@ -398,7 +383,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForCity_WhenCityExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             City = new string('x', 51)
         };
@@ -417,7 +402,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForCity_WhenCityIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             City = string.Empty
         };
@@ -436,7 +421,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForState_WhenStateIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             State = "Test City"
         };
@@ -455,7 +440,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForState_WhenStateExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             State = new string('x', 51)
         };
@@ -474,7 +459,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForState_WhenStateIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             State = string.Empty
         };
@@ -493,7 +478,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForCountry_WhenCountryIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Country = "Test Country"
         };
@@ -512,7 +497,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForCountry_WhenCountryExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Country = new string('x', 51)
         };
@@ -531,7 +516,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForCountry_WhenCountryIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Country = string.Empty
         };
@@ -550,7 +535,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldNotHaveValidationErrorForName_WhenNameIsValid()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Name = "Test Name"
         };
@@ -569,7 +554,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForName_WhenNameExceedsMaximumLength()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Name = new string('x', 501)
         };
@@ -588,7 +573,7 @@ public class BaseBreweryCommandValidatorTests
     public void BaseBreweryCommand_ShouldHaveValidationErrorForName_WhenNameIsEmpty()
     {
         // Arrange
-        var command = new TestBaseBreweryCommand()
+        var command = new TestBaseBreweryCommand
         {
             Name = string.Empty
         };
@@ -598,5 +583,20 @@ public class BaseBreweryCommandValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
+    }
+
+    /// <summary>
+    ///     The TestBaseBrewery command.
+    /// </summary>
+    private record TestBaseBreweryCommand : BaseBreweryCommand;
+
+    /// <summary>
+    ///     The TestBaseBreweryCommand validator.
+    /// </summary>
+    private class TestBaseBreweryCommandValidator : BaseBreweryCommandValidator<TestBaseBreweryCommand>
+    {
+        public TestBaseBreweryCommandValidator(IDateTime dateTime) : base(dateTime)
+        {
+        }
     }
 }

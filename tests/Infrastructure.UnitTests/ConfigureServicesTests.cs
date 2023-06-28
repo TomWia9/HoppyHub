@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.AzureServices;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Options;
 namespace Infrastructure.UnitTests;
 
 /// <summary>
-///     Tests for the <see cref="ConfigureServices"/> class.
+///     Tests for the <see cref="ConfigureServices" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ConfigureServicesTests
@@ -67,9 +68,10 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
-    
+
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContextInitializer to the service collection.
+    ///     Tests that the AddInfrastructureServices method adds the IApplicationDbContextInitializer to the service
+    ///     collection.
     /// </summary>
     [Fact]
     public void AddInfrastructureServices_Should_AddIApplicationDbContextInitializer()
@@ -146,5 +148,44 @@ public class ConfigureServicesTests
 
         // Assert
         requireUniqueEmail.Should().BeTrue();
+    }
+
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the AzureStorageService
+    ///     to the service collection as IAzureStorageService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ShouldAddAzureStorageService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IAzureStorageService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(AzureStorageService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Singleton);
+    }
+
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the BeersImagesService
+    ///     to the service collection as IBeersImagesService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ShouldAddBeersImagesService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IBeersImagesService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(BeersImagesService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the OpinionsImagesService
+    ///     to the service collection as IOpinionsImagesService.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_ShouldAddOpinionsImagesService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IOpinionsImagesService));
+        _services.Should().Contain(s => s.ImplementationType == typeof(OpinionsImagesService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 }

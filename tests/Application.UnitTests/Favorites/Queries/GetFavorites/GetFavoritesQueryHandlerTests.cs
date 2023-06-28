@@ -13,7 +13,7 @@ using Moq;
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 
 /// <summary>
-///     Unit tests for the <see cref="GetFavoritesQueryHandler"/> class.
+///     Unit tests for the <see cref="GetFavoritesQueryHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class GetFavoritesQueryHandlerTests
@@ -24,14 +24,14 @@ public class GetFavoritesQueryHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The QueryService mock.
-    /// </summary>
-    private readonly Mock<IQueryService<Favorite>> _queryServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly GetFavoritesQueryHandler _handler;
+
+    /// <summary>
+    ///     The QueryService mock.
+    /// </summary>
+    private readonly Mock<IQueryService<Favorite>> _queryServiceMock;
 
     /// <summary>
     ///     Setups GetFavoritesQueryHandlerTests.
@@ -44,7 +44,8 @@ public class GetFavoritesQueryHandlerTests
         Mock<IFilteringHelper<Favorite, GetFavoritesQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Favorite>>();
-        _handler = new GetFavoritesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper, filteringHelperMock.Object);
+        _handler = new GetFavoritesQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
+            filteringHelperMock.Object);
     }
 
     /// <summary>
@@ -54,6 +55,7 @@ public class GetFavoritesQueryHandlerTests
     public async Task Handle_ShouldReturnFavoritesListDto()
     {
         // Arrange
+        const string imageUri = "https://test.com/test.jpg";
         var userId = Guid.NewGuid();
         var beerId = Guid.NewGuid();
         var request = new GetFavoritesQuery { PageNumber = 1, PageSize = 10, UserId = userId };
@@ -64,14 +66,15 @@ public class GetFavoritesQueryHandlerTests
                 Id = beerId,
                 Name = "Test beer",
                 AlcoholByVolume = 6,
-                Blg = 15
+                Blg = 15,
+                BeerImage = new BeerImage { ImageUri = imageUri }
             }
         };
         var favorites = new List<Favorite>
         {
             new()
             {
-                Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId,
+                Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId
             }
         };
         var favoritesDbSetMock = favorites.AsQueryable().BuildMockDbSet();
@@ -80,7 +83,8 @@ public class GetFavoritesQueryHandlerTests
             Id = x.Id,
             Name = x.Name,
             AlcoholByVolume = x.AlcoholByVolume,
-            Blg = x.Blg
+            Blg = x.Blg,
+            ImageUri = x.BeerImage?.ImageUri
         }), 1, 10);
 
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);

@@ -21,9 +21,11 @@ public class MockDatabaseFacade : DatabaseFacade
     }
 
     /// <summary>
-    ///     BeginTransactionAsync mock override. 
+    ///     BeginTransactionAsync mock override.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token</param>
-    public override Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default) =>
-        Task.FromResult(Mock.Of<IDbContextTransaction>());
+    public override Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(Mock.Of<IDbContextTransaction>());
+    }
 }

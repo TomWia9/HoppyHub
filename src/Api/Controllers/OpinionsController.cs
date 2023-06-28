@@ -43,7 +43,7 @@ public class OpinionsController : ApiControllerBase
 
         return Ok(result);
     }
-    
+
     /// <summary>
     ///     Creates the opinion.
     /// </summary>
@@ -51,7 +51,7 @@ public class OpinionsController : ApiControllerBase
     /// <returns>An ActionResult of type OpinionDto</returns>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPost]
-    public async Task<ActionResult<BeerStyleDto>> CreateOpinion([FromBody] CreateOpinionCommand command)
+    public async Task<ActionResult<BeerStyleDto>> CreateOpinion([FromForm] CreateOpinionCommand command)
     {
         var result = await Mediator.Send(command);
 
@@ -66,7 +66,7 @@ public class OpinionsController : ApiControllerBase
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateOpinion(Guid id, [FromBody] UpdateOpinionCommand command)
+    public async Task<IActionResult> UpdateOpinion(Guid id, [FromForm] UpdateOpinionCommand command)
     {
         if (id != command.Id)
         {

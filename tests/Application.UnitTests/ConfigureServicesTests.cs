@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Application.UnitTests;
 
 /// <summary>
-///     Unit tests for the <see cref="ConfigureServices"/> class.
+///     Unit tests for the <see cref="ConfigureServices" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ConfigureServicesTests

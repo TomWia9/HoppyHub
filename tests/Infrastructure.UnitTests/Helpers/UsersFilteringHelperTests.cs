@@ -4,7 +4,7 @@ using Infrastructure.Helpers;
 namespace Infrastructure.UnitTests.Helpers;
 
 /// <summary>
-///     Tests for the <see cref="UsersFilteringHelper"/> class.
+///     Tests for the <see cref="UsersFilteringHelper" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class UsersFilteringHelperTests

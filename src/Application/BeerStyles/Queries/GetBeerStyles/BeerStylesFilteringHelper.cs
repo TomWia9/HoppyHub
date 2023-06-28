@@ -10,13 +10,6 @@ namespace Application.BeerStyles.Queries.GetBeerStyles;
 public class BeerStylesFilteringHelper : FilteringHelperBase<BeerStyle, GetBeerStylesQuery>
 {
     /// <summary>
-    ///     Initializes BeerStylesFilteringHelper.
-    /// </summary>
-    public BeerStylesFilteringHelper() : base(SortingColumns)
-    {
-    }
-
-    /// <summary>
     ///     Beer styles sorting columns.
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<BeerStyle, object>>> SortingColumns = new()
@@ -24,6 +17,13 @@ public class BeerStylesFilteringHelper : FilteringHelperBase<BeerStyle, GetBeerS
         { nameof(BeerStyle.Name).ToUpper(), x => x.Name ?? string.Empty },
         { nameof(BeerStyle.CountryOfOrigin).ToUpper(), x => x.CountryOfOrigin ?? string.Empty }
     };
+
+    /// <summary>
+    ///     Initializes BeerStylesFilteringHelper.
+    /// </summary>
+    public BeerStylesFilteringHelper() : base(SortingColumns)
+    {
+    }
 
     /// <summary>
     ///     Gets filtering and searching delegates.

@@ -6,7 +6,7 @@ using Application.Common.Services;
 namespace Application.UnitTests.Common.Services;
 
 /// <summary>
-///     Tests for the <see cref="QueryService{T}"/> class.
+///     Tests for the <see cref="QueryService{T}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class QueryServiceTests

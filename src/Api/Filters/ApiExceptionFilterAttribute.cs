@@ -26,6 +26,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
             { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             { typeof(BadRequestException), HandleBadRequestException },
+            { typeof(RemoteServiceConnectionException), HandleRemoteServiceConnectionException }
         };
     }
 
@@ -86,7 +87,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
     {
         var exception = (NotFoundException)context.Exception;
 
-        var details = new ProblemDetails()
+        var details = new ProblemDetails
         {
             Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4",
             Title = "The specified resource was not found.",
@@ -139,7 +140,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.ExceptionHandled = true;
     }
-    
+
     /// <summary>
     ///     Handles bad request exception.
     /// </summary>
@@ -154,7 +155,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             Title = "Server cannot process the request.",
             Detail = exception?.Message
         };
-        
+
         context.Result = new BadRequestObjectResult(details);
         context.ExceptionHandled = true;
     }
@@ -171,6 +172,29 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new BadRequestObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+
+    /// <summary>
+    ///     Handles remote service connection exception.
+    /// </summary>
+    /// <param name="context">The exception context</param>
+    private static void HandleRemoteServiceConnectionException(ExceptionContext context)
+    {
+        var exception = context.Exception as RemoteServiceConnectionException;
+
+        var details = new ProblemDetails
+        {
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
+            Title = "Cannot connect to the remote service.",
+            Detail = exception?.Message
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status500InternalServerError
+        };
 
         context.ExceptionHandled = true;
     }

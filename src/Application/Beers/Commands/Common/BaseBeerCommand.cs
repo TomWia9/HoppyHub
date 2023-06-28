@@ -24,7 +24,7 @@ public abstract record BaseBeerCommand
     ///     The beer description.
     /// </summary>
     public string? Description { get; init; }
-    
+
     /// <summary>
     ///     The beer composition.
     /// </summary>
@@ -44,7 +44,7 @@ public abstract record BaseBeerCommand
     ///     The International Bitterness Units.
     /// </summary>
     public int? Ibu { get; init; }
-    
+
     /// <summary>
     ///     The beer release date.
     /// </summary>

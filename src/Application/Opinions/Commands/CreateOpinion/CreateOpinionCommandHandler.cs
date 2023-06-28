@@ -4,7 +4,6 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -13,6 +12,11 @@ namespace Application.Opinions.Commands.CreateOpinion;
 /// </summary>
 public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand, OpinionDto>
 {
+    /// <summary>
+    ///     The beers service.
+    /// </summary>
+    private readonly IBeersService _beersService;
+
     /// <summary>
     ///     The database context.
     /// </summary>
@@ -24,14 +28,14 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IMapper _mapper;
 
     /// <summary>
+    ///     The opinions images service.
+    /// </summary>
+    private readonly IOpinionsImagesService _opinionsImagesService;
+
+    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
-
-    /// <summary>
-    ///     The beers service.
-    /// </summary>
-    private readonly IBeersService _beersService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
@@ -40,13 +44,15 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="mapper">The mapper</param>
     /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
+    /// <param name="opinionsImagesService">The opinions images service</param>
     public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService)
+        IBeersService beersService, IOpinionsImagesService opinionsImagesService)
     {
         _context = context;
         _mapper = mapper;
         _usersService = usersService;
         _beersService = beersService;
+        _opinionsImagesService = opinionsImagesService;
     }
 
     /// <summary>
@@ -56,7 +62,10 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Beers.AnyAsync(x => x.Id == request.BeerId, cancellationToken))
+        var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
+            cancellationToken);
+
+        if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
@@ -74,6 +83,17 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         {
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+
+            if (request.Image is not null)
+            {
+                var imagePath =
+                    _opinionsImagesService.CreateImagePath(request.Image!, beer.BreweryId, beer.Id, entity.Id);
+
+                entity.ImageUri = await _opinionsImagesService.UploadImageAsync(imagePath, request.Image!);
+
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
             await _beersService.CalculateBeerRatingAsync(request.BeerId);
             await _context.SaveChangesAsync(cancellationToken);
             await transaction.CommitAsync(cancellationToken);
@@ -85,7 +105,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
-        opinionDto.Username = await _usersService.GetUsernameAsync(opinionDto.CreatedBy!.Value);
+        opinionDto.Username = opinionDto.CreatedBy is null
+            ? null
+            : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
 
         return opinionDto;
     }
