@@ -35,12 +35,6 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
 }
-else
-{
-    builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-        new DefaultAzureCredential());
-}
 
 app.UseSerilogRequestLogging();
 
