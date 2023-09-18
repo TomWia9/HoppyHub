@@ -1,4 +1,8 @@
 ﻿using System.Text;
+using Application.Common.Interfaces;
+using Application.Common.Models;
+using Infrastructure.Identity;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,57 +25,57 @@ public static class ConfigureServices
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
-        // services.AddDbContext<ApplicationDbContext>(options =>
-        //     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-        //         builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        //
-        // services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-        // services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
-        //
-        // services.AddTransient<IIdentityService, IdentityService>();
-        // services.AddTransient<IUsersService, UsersService>();
-        //
-        // var jwtSettings = new JwtSettings();
-        // configuration.Bind(nameof(JwtSettings), jwtSettings);
-        // services.AddSingleton(jwtSettings);
-        //
-        // services.AddIdentityCore<ApplicationUser>()
-        //     .AddRoles<IdentityRole<Guid>>()
-        //     .AddEntityFrameworkStores<ApplicationDbContext>();
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+                builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
+        
+        services.AddTransient<IIdentityService, IdentityService>();
+        //services.AddTransient<IUsersService, UsersService>();
+        
+        var jwtSettings = new JwtSettings();
+        configuration.Bind(nameof(JwtSettings), jwtSettings);
+        services.AddSingleton(jwtSettings);
+        
+        services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
 
-        // services.AddAuthentication(options =>
-        //     {
-        //         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        //         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        //     })
-        //     .AddJwtBearer(jwtOptions =>
-        //     {
-        //         jwtOptions.SaveToken = true;
-        //         jwtOptions.TokenValidationParameters = new TokenValidationParameters
-        //         {
-        //             ValidateIssuerSigningKey = true,
-        //             IssuerSigningKey =
-        //                 new SymmetricSecurityKey(
-        //                     Encoding.ASCII.GetBytes(jwtSettings.Secret ?? throw new InvalidOperationException())),
-        //             ValidateIssuer = false,
-        //             ValidateAudience = false,
-        //             RequireExpirationTime = true,
-        //             ValidateLifetime = true
-        //         };
-        //     });
-        //
-        // services.AddAuthorization(options =>
-        // {
-        //     options.AddPolicy(Policies.UserAccess,
-        //         policy => policy.RequireAssertion(context =>
-        //             context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)));
-        //
-        //     options.AddPolicy(Policies.AdministratorAccess,
-        //         policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
-        // });
+        services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwtOptions =>
+            {
+                jwtOptions.SaveToken = true;
+                jwtOptions.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(
+                            Encoding.ASCII.GetBytes(jwtSettings.Secret ?? throw new InvalidOperationException())),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true
+                };
+            });
+        
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy(Policies.UserAccess,
+                policy => policy.RequireAssertion(context =>
+                    context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)));
+        
+            options.AddPolicy(Policies.AdministratorAccess,
+                policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
+        });
 
-        // services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
+        services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
 
         return services;
     }

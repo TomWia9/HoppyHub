@@ -1,5 +1,6 @@
 using Api;
 using Application;
+using Application.Common.Interfaces;
 using Infrastructure;
 using Serilog;
 
@@ -36,16 +37,16 @@ try
 {
     Log.Information("Starting HoppyHub - UserManagement service");
 
-    // using (var scope = app.Services.CreateScope())
-    // {
-    //     var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
-    //     await initializer.InitializeAsync();
-    //
-    //     if (app.Environment.IsDevelopment())
-    //     {
-    //         await initializer.SeedAsync();
-    //     }
-    // }
+    using (var scope = app.Services.CreateScope())
+    {
+        var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
+        await initializer.InitializeAsync();
+    
+        if (app.Environment.IsDevelopment())
+        {
+            await initializer.SeedAsync();
+        }
+    }
 
     app.Run();
 }
