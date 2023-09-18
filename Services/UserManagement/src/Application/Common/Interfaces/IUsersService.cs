@@ -24,11 +24,6 @@ public interface IUsersService
     Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request);
 
     /// <summary>
-    ///     Gets users dictionary with id as a key and username as a value.
-    /// </summary>
-    Task<Dictionary<Guid, string?>> GetUsersAsync();
-
-    /// <summary>
     ///     Gets username by user id.
     /// </summary>
     /// <param name="userId">The user id</param>
