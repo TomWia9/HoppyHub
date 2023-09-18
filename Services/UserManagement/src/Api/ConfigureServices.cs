@@ -1,4 +1,7 @@
 ﻿using System.Reflection;
+using Api.Filters;
+using Api.Services;
+using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
@@ -16,9 +19,8 @@ public static class ConfigureServices
     /// <param name="services">The services</param>
     public static IServiceCollection AddApiServices(this IServiceCollection services)
     {
-        //services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddControllers();
-        //services.AddControllers(options => { options.Filters.Add<ApiExceptionFilterAttribute>(); });
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddControllers(options => { options.Filters.Add<ApiExceptionFilterAttribute>(); });
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();
         services.AddFluentValidationClientsideAdapters();

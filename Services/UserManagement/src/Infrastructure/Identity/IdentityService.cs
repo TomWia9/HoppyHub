@@ -1,9 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
-using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -47,8 +47,7 @@ public class IdentityService : IIdentityService
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(username) ||
             string.IsNullOrWhiteSpace(password))
         {
-            //TODO replace this with custom exception
-            throw new ValidationException("One or more validation failures have occurred.");
+            throw new ValidationException();
         }
 
         var newUser = new ApplicationUser
@@ -77,8 +76,7 @@ public class IdentityService : IIdentityService
     {
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
-            //TODO replace this with custom exception
-            throw new ValidationException("One or more validation failures have occurred.");
+            throw new ValidationException();
         }
 
         var user = await _userManager.FindByEmailAsync(email);

@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
         
         services.AddTransient<IIdentityService, IdentityService>();
-        //services.AddTransient<IUsersService, UsersService>();
+        services.AddTransient<IUsersService, UsersService>();
         
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
