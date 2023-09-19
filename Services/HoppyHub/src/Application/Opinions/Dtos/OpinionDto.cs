@@ -61,6 +61,6 @@ public record OpinionDto : IMapFrom<Opinion>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Opinion, OpinionDto>()
-            .ForMember(x => x.Username, opt => opt.Ignore());
+            .ForMember(x => x.Username, opt => opt.MapFrom(x => x.User!.Username));
     }
 }

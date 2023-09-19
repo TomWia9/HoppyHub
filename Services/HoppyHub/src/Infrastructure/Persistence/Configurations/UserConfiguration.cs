@@ -20,5 +20,13 @@ public class UserConfiguration : BaseConfiguration<User>
         builder.Property(x => x.Role).IsRequired().HasMaxLength(15);
         builder.Property(x => x.Created).IsRequired();
         builder.Property(x => x.LastModified).IsRequired();
+
+        builder.HasMany(x => x.Opinions)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.CreatedBy);
+        
+        builder.HasMany(x => x.Favorites)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.CreatedBy);
     }
 }

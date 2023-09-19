@@ -16,4 +16,14 @@ public class User : BaseAuditableEntity
     ///     The user role.
     /// </summary>
     public string? Role { get; set; }
+
+    /// <summary>
+    ///     The user beer opinions.
+    /// </summary>
+    public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
+
+    /// <summary>
+    ///     The user favorite beers.
+    /// </summary>
+    public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 }

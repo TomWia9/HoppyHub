@@ -16,4 +16,9 @@ public class Favorite : BaseAuditableEntity
     ///     The beer.
     /// </summary>
     public Beer? Beer { get; set; }
+    
+    /// <summary>
+    ///     The user.
+    /// </summary>
+    public User? User { get; set; }
 }

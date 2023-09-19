@@ -4,6 +4,7 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -32,11 +33,6 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// </summary>
     private readonly IOpinionsImagesService _opinionsImagesService;
 
-    // /// <summary>
-    // ///     The users service.
-    // /// </summary>
-    // private readonly IUsersService _usersService;
-
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
@@ -49,7 +45,6 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     {
         _context = context;
         _mapper = mapper;
-        //_usersService = usersService;
         _beersService = beersService;
         _opinionsImagesService = opinionsImagesService;
     }
@@ -103,11 +98,10 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             throw;
         }
 
+        // Need to load user after entity save, because of nullable user property needed for username map
+        await _context.Opinions.Entry(entity).Reference(x => x.User).LoadAsync(cancellationToken);
+
         var opinionDto = _mapper.Map<OpinionDto>(entity);
-        //TODO fix this
-        // opinionDto.Username = opinionDto.CreatedBy is null
-        //     ? null
-        //     : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
 
         return opinionDto;
     }

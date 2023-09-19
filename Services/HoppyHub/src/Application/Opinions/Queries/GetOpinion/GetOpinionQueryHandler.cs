@@ -4,6 +4,7 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Queries.GetOpinion;
 
@@ -46,8 +47,8 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(GetOpinionQuery request, CancellationToken cancellationToken)
     {
-        var opinion = await _context.Opinions
-            .FindAsync(new object?[] { request.Id }, cancellationToken);
+        var opinion = await _context.Opinions.Include(x => x.User)
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (opinion is null)
         {
@@ -55,16 +56,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(opinion);
-
-        if (opinion.CreatedBy is null)
-        {
-            return opinionDto;
-        }
         
-        //TODO fix this
-        // var username = await _usersService.GetUsernameAsync(opinion.CreatedBy.Value);
-        // opinionDto.Username = username;
-
         return opinionDto;
     }
 }
