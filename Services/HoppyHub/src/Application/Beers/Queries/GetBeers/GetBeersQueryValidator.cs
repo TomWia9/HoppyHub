@@ -26,9 +26,9 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
             .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxIbu).InclusiveBetween(0, 200).GreaterThanOrEqualTo(x => x.MinIbu)
             .WithMessage(MaxValueMessage);
-        RuleFor(x => x.MinRating).InclusiveBetween(1, 10).LessThanOrEqualTo(x => x.MaxRating)
+        RuleFor(x => x.MinRating).InclusiveBetween(0, 10).LessThanOrEqualTo(x => x.MaxRating)
             .WithMessage(MinValueMessage);
-        RuleFor(x => x.MaxRating).InclusiveBetween(1, 10).GreaterThanOrEqualTo(x => x.MinRating)
+        RuleFor(x => x.MaxRating).InclusiveBetween(0, 10).GreaterThanOrEqualTo(x => x.MinRating)
             .WithMessage(MaxValueMessage);
         RuleFor(x => x.MinOpinionsCount).GreaterThanOrEqualTo(0).LessThanOrEqualTo(x => x.MaxOpinionsCount)
             .WithMessage(MinValueMessage);

@@ -462,7 +462,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MinRating when MinRating is out of range.
     /// </summary>
     [Theory]
-    [InlineData(0)]
+    [InlineData(-1)]
     [InlineData(11)]
     public void GetBeersQuery_ShouldHaveValidationErrorForMinRating_WhenMinRatingIsOutOfRange(
         double minRating)
@@ -524,7 +524,7 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should have error for MaxRating when MaxRating is out of range.
     /// </summary>
     [Theory]
-    [InlineData(0)]
+    [InlineData(-1)]
     [InlineData(11)]
     public void GetBeersQuery_ShouldHaveValidationErrorForMaxRating_WhenMaxRatingIsOutOfRange(
         double maxRating)
