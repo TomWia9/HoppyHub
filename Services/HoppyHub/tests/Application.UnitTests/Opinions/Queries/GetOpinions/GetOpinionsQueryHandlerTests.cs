@@ -69,20 +69,22 @@ public class GetOpinionsQueryHandlerTests
             new()
             {
                 Id = Guid.NewGuid(), Rating = 4, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
+                User = new User { Id = userId, Username = username }
             },
             new()
             {
                 Id = Guid.NewGuid(), Rating = 6, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
+                User = new User { Id = userId, Username = username }
             },
             new()
             {
                 Id = Guid.NewGuid(), Rating = 8, Comment = "Sample comment", BeerId = Guid.NewGuid(),
-                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now
+                CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
+                User = new User { Id = userId, Username = username }
             }
         };
-        var users = new Dictionary<Guid, string?> { { userId, username } };
         var expectedResult = PaginatedList<OpinionDto>.Create(opinions.Select(x => new OpinionDto
         {
             Id = x.Id,
@@ -92,7 +94,7 @@ public class GetOpinionsQueryHandlerTests
             CreatedBy = x.CreatedBy,
             Created = x.Created,
             LastModified = x.LastModified,
-            Username = username
+            Username = x.User?.Username
         }), 1, 10);
 
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
@@ -105,7 +107,6 @@ public class GetOpinionsQueryHandlerTests
                 x.Sort(It.IsAny<IQueryable<Opinion>>(), It.IsAny<Expression<Func<Opinion, object>>>(),
                     It.IsAny<SortDirection>()))
             .Returns(opinionsDbSetMock.Object);
-        //_usersServiceMock.Setup(x => x.GetUsersAsync()).ReturnsAsync(users);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

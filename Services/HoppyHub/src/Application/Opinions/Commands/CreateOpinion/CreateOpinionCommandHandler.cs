@@ -4,7 +4,6 @@ using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -97,9 +96,9 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             await transaction.RollbackAsync(cancellationToken);
             throw;
         }
-
-        // Need to load user after entity save, because of nullable user property needed for username map
-        await _context.Opinions.Entry(entity).Reference(x => x.User).LoadAsync(cancellationToken);
+        
+        entity.User = await _context.Users.FindAsync(new object?[] { entity.CreatedBy },
+            cancellationToken);
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
 

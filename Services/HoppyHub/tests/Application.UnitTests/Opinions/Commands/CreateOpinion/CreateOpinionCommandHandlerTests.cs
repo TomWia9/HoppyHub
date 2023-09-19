@@ -1,4 +1,5 @@
-﻿using Application.Common.Exceptions;
+﻿using System.Linq.Expressions;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Opinions.Commands.CreateOpinion;
@@ -7,6 +8,8 @@ using Application.UnitTests.TestHelpers;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using MockQueryable.Moq;
 using Moq;
 
@@ -69,6 +72,7 @@ public class CreateOpinionCommandHandlerTests
         Handle_ShouldCreateOpinionAndCalculateBeerRatingAndUploadImageAndReturnCorrectOpinionDto_WhenOpinionContainsImage()
     {
         // Arrange
+        const string username = "testUser";
         const string imagePath = "Opinions/test.jpg";
         const string imageUri = "blob.com/opinions/test.jpg";
 
@@ -87,7 +91,11 @@ public class CreateOpinionCommandHandlerTests
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = imageUri,
-            Username = null
+            Username = username
+        };
+        var user = new User
+        {
+            Username = username
         };
         var beer = new Beer { Id = beerId, BreweryId = breweryId };
         var opinions = Enumerable.Empty<Opinion>();
@@ -102,6 +110,8 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
+        _contextMock.Setup(x => x.Users.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _beersServiceMock.Setup(s => s.CalculateBeerRatingAsync(request.BeerId)).Returns(Task.CompletedTask);
 
@@ -129,6 +139,7 @@ public class CreateOpinionCommandHandlerTests
         Handle_ShouldCreateOpinionAndCalculateBeerRatingAndReturnCorrectOpinionDto_WhenOpinionDoesNotContainImage()
     {
         // Arrange
+        const string username = "testUser";
         var beerId = Guid.NewGuid();
         var request = new CreateOpinionCommand
         {
@@ -136,13 +147,17 @@ public class CreateOpinionCommandHandlerTests
             Comment = "Sample comment",
             BeerId = beerId
         };
+        var user = new User
+        {
+            Username = username
+        };
         var expectedOpinionDto = new OpinionDto
         {
             BeerId = beerId,
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = null,
-            Username = null
+            Username = username
         };
         var beer = new Beer { Id = beerId };
         var opinions = Enumerable.Empty<Opinion>();
@@ -151,6 +166,8 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
+        _contextMock.Setup(x => x.Users.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(user);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
         _beersServiceMock.Setup(s => s.CalculateBeerRatingAsync(request.BeerId)).Returns(Task.CompletedTask);
 

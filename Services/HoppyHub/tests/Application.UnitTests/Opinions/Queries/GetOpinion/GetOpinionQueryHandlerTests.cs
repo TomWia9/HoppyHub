@@ -52,13 +52,13 @@ public class GetOpinionQueryHandlerTests
         // Arrange
         const string username = "testUser";
         var opinionId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, Rating = 8, CreatedBy = Guid.NewGuid() };
-
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(opinion);
-        //_usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
-
+        var opinion = new Opinion
+            { Id = opinionId, Rating = 8, CreatedBy = Guid.NewGuid(), User = new User { Username = username } };
+        var opinions = new List<Opinion> { opinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
         var query = new GetOpinionQuery { Id = opinionId };
+
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
@@ -79,11 +79,11 @@ public class GetOpinionQueryHandlerTests
         // Arrange
         var opinionId = Guid.NewGuid();
         var opinion = new Opinion { Id = opinionId, Rating = 8 };
-
-        _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(opinion);
-
+        var opinions = new List<Opinion> { opinion };
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
         var query = new GetOpinionQuery { Id = opinionId };
+
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
 
         // Act
         var result = await _handler.Handle(query, CancellationToken.None);
