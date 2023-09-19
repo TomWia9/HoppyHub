@@ -33,11 +33,6 @@ public class GetOpinionsQueryHandlerTests
     /// </summary>
     private readonly Mock<IQueryService<Opinion>> _queryServiceMock;
 
-    // /// <summary>
-    // ///     The UsersService mock.
-    // /// </summary>
-    // private readonly Mock<IUsersService> _usersServiceMock;
-
     /// <summary>
     ///     Setups GetOpinionsQueryHandlerTests.
     /// </summary>
@@ -49,7 +44,6 @@ public class GetOpinionsQueryHandlerTests
         Mock<IFilteringHelper<Opinion, GetOpinionsQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Opinion>>();
-        //_usersServiceMock = new Mock<IUsersService>();
         _handler = new GetOpinionsQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
             filteringHelperMock.Object);
     }

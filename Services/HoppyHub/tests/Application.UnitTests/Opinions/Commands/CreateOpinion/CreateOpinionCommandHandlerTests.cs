@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Application.Common.Exceptions;
+﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Opinions.Commands.CreateOpinion;
@@ -8,8 +7,6 @@ using Application.UnitTests.TestHelpers;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using MockQueryable.Moq;
 using Moq;
 

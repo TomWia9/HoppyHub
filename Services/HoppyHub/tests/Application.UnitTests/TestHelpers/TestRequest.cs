@@ -6,6 +6,4 @@ namespace Application.UnitTests.TestHelpers;
 ///     TestRequest record.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public record TestRequest : IRequest<TestResponse>
-{
-}
+public record TestRequest : IRequest<TestResponse>;

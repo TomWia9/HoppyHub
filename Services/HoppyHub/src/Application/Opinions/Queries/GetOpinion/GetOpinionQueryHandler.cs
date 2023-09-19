@@ -22,11 +22,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     ///     The mapper.
     /// </summary>
     private readonly IMapper _mapper;
-
-    // /// <summary>
-    // ///     The users service.
-    // /// </summary>
-    // private readonly IUsersService _usersService;
+    
 
     /// <summary>
     ///     Initializes GetOpinionQueryHandler.
@@ -37,7 +33,6 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     {
         _context = context;
         _mapper = mapper;
-        //_usersService = usersService;
     }
 
     /// <summary>

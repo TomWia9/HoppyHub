@@ -4,6 +4,4 @@
 ///     TestResponse class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public record TestResponse
-{
-}
+public record TestResponse;

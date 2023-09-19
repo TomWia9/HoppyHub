@@ -34,11 +34,6 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     /// </summary>
     private readonly IQueryService<Opinion> _queryService;
 
-    // /// <summary>
-    // ///     The users service.
-    // /// </summary>
-    // private readonly IUsersService _usersService;
-
     /// <summary>
     ///     Initializes GetOpinionsQueryHandler.
     /// </summary>
@@ -52,7 +47,6 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
-        //_usersService = usersService;
         _filteringHelper = filteringHelper;
     }
 

@@ -25,11 +25,6 @@ public class GetOpinionQueryHandlerTests
     /// </summary>
     private readonly GetOpinionQueryHandler _handler;
 
-    // /// <summary>
-    // ///     The UsersService mock.
-    // /// </summary>
-    // private readonly Mock<IUsersService> _usersServiceMock;
-
     /// <summary>
     ///     Setups GetBeerQueryHandlerTests.
     /// </summary>
@@ -39,7 +34,6 @@ public class GetOpinionQueryHandlerTests
         var mapper = configurationProvider.CreateMapper();
 
         _contextMock = new Mock<IApplicationDbContext>();
-        //_usersServiceMock = new Mock<IUsersService>();
         _handler = new GetOpinionQueryHandler(_contextMock.Object, mapper);
     }
 

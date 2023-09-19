@@ -1,7 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models;
-using Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
