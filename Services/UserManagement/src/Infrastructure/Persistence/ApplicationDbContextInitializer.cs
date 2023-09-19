@@ -109,12 +109,14 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
     {
         var administrator = new ApplicationUser
         {
+            Id = new Guid("D21A5205-6122-4F76-9F5D-DE586CC42DB0"),
             UserName = "administrator@localhost",
             Email = "administrator@localhost"
         };
 
         var user = new ApplicationUser
         {
+            Id = new Guid("2E5990D2-DADF-417B-9499-4A7B7ACFE9F0"),
             UserName = "user@localhost",
             Email = "user@localhost"
         };

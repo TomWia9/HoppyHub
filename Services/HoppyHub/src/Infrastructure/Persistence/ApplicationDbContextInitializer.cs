@@ -53,7 +53,8 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
         try
         {
             Log.Logger.Information("Seeding database started");
-            
+
+            await SeedUsersAsync();
             await SeedBreweriesAsync();
             await SeedBeerStylesAsync();
             await SeedBeersAsync();
@@ -66,6 +67,19 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
         {
             Log.Logger.Error("An error occurred while seeding the database. {E}", e.Message);
             throw;
+        }
+    }
+    
+    /// <summary>
+    ///     Seeds users asynchronously.
+    /// </summary>
+    private async Task SeedUsersAsync()
+    {
+        if (!await _context.Users.AnyAsync())
+        {
+            const string tableName = nameof(_context.Users);
+
+            await SeedDatabaseFromSql(tableName);
         }
     }
     
