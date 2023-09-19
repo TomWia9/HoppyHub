@@ -87,7 +87,7 @@ public class UsersService : IUsersService
         {
             usersCollection = usersCollection.Where(@delegate);
         }
-
+        
         usersCollection = request.SortDirection == SortDirection.Asc
             ? usersCollection.OrderBy(sortingColumn)
             : usersCollection.OrderByDescending(sortingColumn);

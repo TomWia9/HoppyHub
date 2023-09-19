@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using Application.Common.Enums;
+﻿using Application.Common.Enums;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
@@ -188,22 +187,16 @@ public class UsersServiceTests
 
         var users = new List<ApplicationUser>
         {
-            new() { Id = Guid.NewGuid(), Email = "user1@example.com", UserName = "user1" },
-            new() { Id = Guid.NewGuid(), Email = "user112@example.com", UserName = "user112" },
-            new() { Id = Guid.NewGuid(), Email = "user1113@example.com", UserName = "user1113" },
-            new() { Id = Guid.NewGuid(), Email = "user11114@example.com", UserName = "user11114" }
+            new() { Id = Guid.NewGuid(), Email = "user1@example.com", UserName = "userA" },
+            new() { Id = Guid.NewGuid(), Email = "user112@example.com", UserName = "userB" },
+            new() { Id = Guid.NewGuid(), Email = "user1113@example.com", UserName = "userC" },
+            new() { Id = Guid.NewGuid(), Email = "user11114@example.com", UserName = "userD" }
         };
 
         _userManagerMock.Setup(x => x.Users).Returns(users.AsQueryable());
         _userManagerMock.Setup(x => x.GetUsersInRoleAsync(query.Role)).ReturnsAsync(users.ToList());
         _userManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<string> { Roles.User });
-        // _queryServiceMock.Setup(x => x.Filter(It.IsAny<IQueryable<ApplicationUser>>(),
-        //         It.IsAny<List<Expression<Func<ApplicationUser, bool>>>>()))
-        //     .Returns(new List<ApplicationUser> { users[2], users[3] }.AsQueryable());
-        // _queryServiceMock.Setup(x => x.Sort(It.IsAny<IQueryable<ApplicationUser>>(),
-        //         It.IsAny<Expression<Func<ApplicationUser, object>>>(), It.IsAny<SortDirection>()))
-        //     .Returns(new List<ApplicationUser> { users[3], users[2] }.AsQueryable());
 
         // Act
         var result = await _usersService.GetUsersAsync(query);
@@ -211,8 +204,8 @@ public class UsersServiceTests
         // Assert
         result.Should().BeAssignableTo<PaginatedList<UserDto>>();
         result.Should().HaveCount(2);
-        result[0].Username.Should().Be("user11114");
-        result[1].Username.Should().Be("user1113");
+        result[0].Username.Should().Be("userD");
+        result[1].Username.Should().Be("userC");
     }
 
     /// <summary>
