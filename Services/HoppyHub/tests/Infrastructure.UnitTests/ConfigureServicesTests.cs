@@ -96,32 +96,6 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the IdentityService
-    ///     to the service collection as IIdentityService.
-    /// </summary>
-    [Fact]
-    public void AddInfrastructureServices_ShouldAddIdentityService()
-    {
-        // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IIdentityService));
-        _services.Should().Contain(s => s.ImplementationType == typeof(IdentityService));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-    }
-
-    /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the UsersService
-    ///     to the service collection as IUsersService.
-    /// </summary>
-    [Fact]
-    public void AddInfrastructureServices_ShouldAddUsersService()
-    {
-        // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IUsersService));
-        _services.Should().Contain(s => s.ImplementationType == typeof(UsersService));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-    }
-
-    /// <summary>
     ///     Tests that the AddInfrastructureServices method adds the JwtSettings
     ///     to the service collection as JwtSettings.
     /// </summary>
@@ -131,23 +105,6 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
         _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Singleton);
-    }
-
-    /// <summary>
-    ///     Tests that AddInfrastructureServices method configures IdentityOptions with RequireUniqueEmail option.
-    /// </summary>
-    [Fact]
-    public void AddInfrastructureServices_ShouldConfigureIdentityOptionsWithRequireUniqueEmail()
-    {
-        // Arrange
-        var serviceProvider = _services.BuildServiceProvider();
-        var options = serviceProvider.GetRequiredService<IOptions<IdentityOptions>>();
-
-        // Act
-        var requireUniqueEmail = options.Value.User.RequireUniqueEmail;
-
-        // Assert
-        requireUniqueEmail.Should().BeTrue();
     }
 
     /// <summary>

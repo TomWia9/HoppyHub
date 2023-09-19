@@ -52,13 +52,12 @@ public class CreateOpinionCommandHandlerTests
         var mapper = configurationProvider.CreateMapper();
 
         _contextMock = new Mock<IApplicationDbContext>();
-        Mock<IUsersService> usersServiceMock = new();
         _beersServiceMock = new Mock<IBeersService>();
         _opinionsImagesServiceMock = new Mock<IOpinionsImagesService>();
         _formFileMock = new Mock<IFormFile>();
 
-        _handler = new CreateOpinionCommandHandler(_contextMock.Object, mapper, usersServiceMock.Object,
-            _beersServiceMock.Object, _opinionsImagesServiceMock.Object);
+        _handler = new CreateOpinionCommandHandler(_contextMock.Object, mapper, _beersServiceMock.Object,
+            _opinionsImagesServiceMock.Object);
     }
 
     /// <summary>

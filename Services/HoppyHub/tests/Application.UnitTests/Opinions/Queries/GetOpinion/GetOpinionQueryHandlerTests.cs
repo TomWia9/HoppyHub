@@ -25,10 +25,10 @@ public class GetOpinionQueryHandlerTests
     /// </summary>
     private readonly GetOpinionQueryHandler _handler;
 
-    /// <summary>
-    ///     The UsersService mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
+    // /// <summary>
+    // ///     The UsersService mock.
+    // /// </summary>
+    // private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups GetBeerQueryHandlerTests.
@@ -39,8 +39,8 @@ public class GetOpinionQueryHandlerTests
         var mapper = configurationProvider.CreateMapper();
 
         _contextMock = new Mock<IApplicationDbContext>();
-        _usersServiceMock = new Mock<IUsersService>();
-        _handler = new GetOpinionQueryHandler(_contextMock.Object, mapper, _usersServiceMock.Object);
+        //_usersServiceMock = new Mock<IUsersService>();
+        _handler = new GetOpinionQueryHandler(_contextMock.Object, mapper);
     }
 
     /// <summary>
@@ -56,7 +56,7 @@ public class GetOpinionQueryHandlerTests
 
         _contextMock.Setup(x => x.Opinions.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(opinion);
-        _usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
+        //_usersServiceMock.Setup(x => x.GetUsernameAsync(It.IsAny<Guid>())).ReturnsAsync(username);
 
         var query = new GetOpinionQuery { Id = opinionId };
 

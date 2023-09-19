@@ -34,10 +34,10 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     /// </summary>
     private readonly IQueryService<Opinion> _queryService;
 
-    /// <summary>
-    ///     The users service.
-    /// </summary>
-    private readonly IUsersService _usersService;
+    // /// <summary>
+    // ///     The users service.
+    // /// </summary>
+    // private readonly IUsersService _usersService;
 
     /// <summary>
     ///     Initializes GetOpinionsQueryHandler.
@@ -45,15 +45,14 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
     /// <param name="queryService">The query service</param>
-    /// <param name="usersService">The users service</param>
     /// <param name="filteringHelper">The opinions filtering helper</param>
     public GetOpinionsQueryHandler(IApplicationDbContext context, IQueryService<Opinion> queryService, IMapper mapper,
-        IUsersService usersService, IFilteringHelper<Opinion, GetOpinionsQuery> filteringHelper)
+        IFilteringHelper<Opinion, GetOpinionsQuery> filteringHelper)
     {
         _context = context;
         _queryService = queryService;
         _mapper = mapper;
-        _usersService = usersService;
+        //_usersService = usersService;
         _filteringHelper = filteringHelper;
     }
 
@@ -75,15 +74,16 @@ public class GetOpinionsQueryHandler : IRequestHandler<GetOpinionsQuery, Paginat
         var opinions = await opinionsCollection.ProjectTo<OpinionDto>(_mapper.ConfigurationProvider)
             .ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
-        var users = await _usersService.GetUsersAsync();
-
-        foreach (var opinion in opinions.Where(opinion => opinion.CreatedBy.HasValue))
-        {
-            if (users.TryGetValue(opinion.CreatedBy!.Value, out var username))
-            {
-                opinion.Username = username;
-            }
-        }
+        // TODO fix this
+        // var users = await _usersService.GetUsersAsync();
+        //
+        // foreach (var opinion in opinions.Where(opinion => opinion.CreatedBy.HasValue))
+        // {
+        //     if (users.TryGetValue(opinion.CreatedBy!.Value, out var username))
+        //     {
+        //         opinion.Username = username;
+        //     }
+        // }
 
         return opinions;
     }

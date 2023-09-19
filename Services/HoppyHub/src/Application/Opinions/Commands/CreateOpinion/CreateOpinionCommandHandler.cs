@@ -32,25 +32,24 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// </summary>
     private readonly IOpinionsImagesService _opinionsImagesService;
 
-    /// <summary>
-    ///     The users service.
-    /// </summary>
-    private readonly IUsersService _usersService;
+    // /// <summary>
+    // ///     The users service.
+    // /// </summary>
+    // private readonly IUsersService _usersService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="usersService">The users service</param>
     /// <param name="beersService">The beers service</param>
     /// <param name="opinionsImagesService">The opinions images service</param>
-    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService,
-        IBeersService beersService, IOpinionsImagesService opinionsImagesService)
+    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IBeersService beersService,
+        IOpinionsImagesService opinionsImagesService)
     {
         _context = context;
         _mapper = mapper;
-        _usersService = usersService;
+        //_usersService = usersService;
         _beersService = beersService;
         _opinionsImagesService = opinionsImagesService;
     }
@@ -105,9 +104,10 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);
-        opinionDto.Username = opinionDto.CreatedBy is null
-            ? null
-            : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
+        //TODO fix this
+        // opinionDto.Username = opinionDto.CreatedBy is null
+        //     ? null
+        //     : await _usersService.GetUsernameAsync(opinionDto.CreatedBy.Value);
 
         return opinionDto;
     }

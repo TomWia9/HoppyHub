@@ -1,10 +1,7 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using Infrastructure.Identity;
 using Infrastructure.Persistence.Interceptors;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
@@ -12,7 +9,7 @@ namespace Infrastructure.Persistence;
 /// <summary>
 ///     ApplicationDbContext class.
 /// </summary>
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>, IApplicationDbContext
+public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
     /// <summary>
     ///     The auditable entity save changes interceptor.

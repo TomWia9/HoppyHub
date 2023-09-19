@@ -22,22 +22,21 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     /// </summary>
     private readonly IMapper _mapper;
 
-    /// <summary>
-    ///     The users service.
-    /// </summary>
-    private readonly IUsersService _usersService;
+    // /// <summary>
+    // ///     The users service.
+    // /// </summary>
+    // private readonly IUsersService _usersService;
 
     /// <summary>
     ///     Initializes GetOpinionQueryHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="usersService">The users service</param>
-    public GetOpinionQueryHandler(IApplicationDbContext context, IMapper mapper, IUsersService usersService)
+    public GetOpinionQueryHandler(IApplicationDbContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
-        _usersService = usersService;
+        //_usersService = usersService;
     }
 
     /// <summary>
@@ -61,9 +60,10 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
         {
             return opinionDto;
         }
-
-        var username = await _usersService.GetUsernameAsync(opinion.CreatedBy.Value);
-        opinionDto.Username = username;
+        
+        //TODO fix this
+        // var username = await _usersService.GetUsernameAsync(opinion.CreatedBy.Value);
+        // opinionDto.Username = username;
 
         return opinionDto;
     }

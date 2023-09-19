@@ -33,10 +33,10 @@ public class GetOpinionsQueryHandlerTests
     /// </summary>
     private readonly Mock<IQueryService<Opinion>> _queryServiceMock;
 
-    /// <summary>
-    ///     The UsersService mock.
-    /// </summary>
-    private readonly Mock<IUsersService> _usersServiceMock;
+    // /// <summary>
+    // ///     The UsersService mock.
+    // /// </summary>
+    // private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
     ///     Setups GetOpinionsQueryHandlerTests.
@@ -49,9 +49,9 @@ public class GetOpinionsQueryHandlerTests
         Mock<IFilteringHelper<Opinion, GetOpinionsQuery>> filteringHelperMock = new();
         _contextMock = new Mock<IApplicationDbContext>();
         _queryServiceMock = new Mock<IQueryService<Opinion>>();
-        _usersServiceMock = new Mock<IUsersService>();
+        //_usersServiceMock = new Mock<IUsersService>();
         _handler = new GetOpinionsQueryHandler(_contextMock.Object, _queryServiceMock.Object, mapper,
-            _usersServiceMock.Object, filteringHelperMock.Object);
+            filteringHelperMock.Object);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class GetOpinionsQueryHandlerTests
                 x.Sort(It.IsAny<IQueryable<Opinion>>(), It.IsAny<Expression<Func<Opinion, object>>>(),
                     It.IsAny<SortDirection>()))
             .Returns(opinionsDbSetMock.Object);
-        _usersServiceMock.Setup(x => x.GetUsersAsync()).ReturnsAsync(users);
+        //_usersServiceMock.Setup(x => x.GetUsersAsync()).ReturnsAsync(users);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);

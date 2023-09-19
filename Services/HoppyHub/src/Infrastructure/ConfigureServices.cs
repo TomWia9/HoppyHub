@@ -40,8 +40,6 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
 
         services.AddTransient<IDateTime, DateTimeService>();
-        services.AddTransient<IIdentityService, IdentityService>();
-        services.AddTransient<IUsersService, UsersService>();
         services.AddTransient<IBeersImagesService, BeersImagesService>();
         services.AddTransient<IOpinionsImagesService, OpinionsImagesService>();
         services.AddSingleton<IAzureStorageService, AzureStorageService>();
@@ -50,10 +48,6 @@ public static class ConfigureServices
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
         services.AddSingleton(jwtSettings);
-
-        services.AddIdentityCore<ApplicationUser>()
-            .AddRoles<IdentityRole<Guid>>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
 
         services.AddAuthentication(options =>
             {
@@ -86,9 +80,7 @@ public static class ConfigureServices
             options.AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
         });
-
-        services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
-
+        
         return services;
     }
 
