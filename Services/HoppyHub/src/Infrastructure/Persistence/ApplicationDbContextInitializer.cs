@@ -55,8 +55,8 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedBreweriesAsync();
             await SeedBeerStylesAsync();
             await SeedBeersAsync();
-            //await SeedOpinionsAsync();
-            //await SeedFavoritesAsync();
+            await SeedOpinionsAsync();
+            await SeedFavoritesAsync();
 
             Log.Logger.Information("Seeding database completed");
         }

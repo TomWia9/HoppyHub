@@ -6,7 +6,7 @@ SET @OpinionsPerBeer = 20
 
 -- Select Id for "user@localhost" user
 SELECT @UserId = Id
-FROM AspNetUsers
+FROM Users
 WHERE Username = 'user@localhost'
 
 -- Generate @OpinionsPerBeer opinions for each beer

@@ -2,7 +2,7 @@
 
 -- Select Id for "user@localhost" user
 SELECT @UserId = Id
-FROM AspNetUsers
+FROM Users
 WHERE Username = 'user@localhost'
 
 -- Generate 10 favorites adds for user@localhost user.
