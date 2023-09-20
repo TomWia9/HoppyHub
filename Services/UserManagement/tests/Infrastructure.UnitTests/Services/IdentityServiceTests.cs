@@ -1,9 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Models;
+﻿using Application.Common.Interfaces;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Models;
 
 namespace Infrastructure.UnitTests.Services;
 

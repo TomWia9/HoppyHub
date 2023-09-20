@@ -1,11 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Models;
 
 namespace Infrastructure.Identity;
 

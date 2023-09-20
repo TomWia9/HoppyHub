@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models;
 using Application.Users.Dtos;
 using MediatR;
+using SharedUtilities.Models;
 
 namespace Application.Users.Queries.GetUsers;
 

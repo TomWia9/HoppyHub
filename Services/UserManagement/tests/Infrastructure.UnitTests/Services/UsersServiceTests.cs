@@ -1,7 +1,4 @@
-﻿using Application.Common.Enums;
-using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Models;
+﻿using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
@@ -10,6 +7,10 @@ using Infrastructure.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Moq;
+using SharedUtilities.Enums;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Models;
 
 namespace Infrastructure.UnitTests.Services;
 

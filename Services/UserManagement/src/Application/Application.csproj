@@ -18,4 +18,8 @@
       <Folder Include="Users\Validators\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\Common\SharedUtilities\SharedUtilities\SharedUtilities.csproj" />
+    </ItemGroup>
+
 </Project>

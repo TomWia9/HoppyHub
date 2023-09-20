@@ -1,15 +1,16 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Enums;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
-using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using SharedUtilities.Enums;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Mappings;
+using SharedUtilities.Models;
 
 namespace Infrastructure.Services;
 

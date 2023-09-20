@@ -1,8 +1,8 @@
 ﻿using Application.Common.Interfaces;
-using Application.Common.Models;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Moq;
+using SharedUtilities.Models;
 
 namespace Application.UnitTests.Users.Queries.GetUser;
 

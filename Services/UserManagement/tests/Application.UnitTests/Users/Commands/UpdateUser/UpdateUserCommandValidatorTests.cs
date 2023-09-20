@@ -1,7 +1,7 @@
-﻿using Application.Common.Interfaces;
-using Application.Users.Commands.UpdateUser;
+﻿using Application.Users.Commands.UpdateUser;
 using FluentValidation.TestHelper;
 using Moq;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Users.Commands.UpdateUser;
 

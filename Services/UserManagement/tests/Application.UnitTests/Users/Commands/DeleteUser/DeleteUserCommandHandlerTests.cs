@@ -1,7 +1,8 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Users.Commands.DeleteUser;
 

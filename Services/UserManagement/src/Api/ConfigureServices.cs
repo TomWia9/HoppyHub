@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
 using Api.Filters;
-using Api.Services;
-using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services.Services;
 
 namespace Api;
 

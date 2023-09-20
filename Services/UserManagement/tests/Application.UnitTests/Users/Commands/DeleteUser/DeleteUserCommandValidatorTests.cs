@@ -1,7 +1,7 @@
-﻿using Application.Common.Interfaces;
-using Application.Users.Commands.DeleteUser;
+﻿using Application.Users.Commands.DeleteUser;
 using FluentValidation.TestHelper;
 using Moq;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Users.Commands.DeleteUser;
 

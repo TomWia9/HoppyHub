@@ -1,11 +1,11 @@
-﻿using Application.Common.Models;
-using Application.Users.Commands.DeleteUser;
+﻿using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedUtilities.Models;
 
 namespace Api.Controllers;
 

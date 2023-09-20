@@ -1,7 +1,7 @@
-﻿using Application.Common.Abstractions;
-using Application.Common.Models;
-using Application.Users.Dtos;
+﻿using Application.Users.Dtos;
 using MediatR;
+using SharedUtilities.Abstractions;
+using SharedUtilities.Models;
 
 namespace Application.Users.Queries.GetUsers;
 

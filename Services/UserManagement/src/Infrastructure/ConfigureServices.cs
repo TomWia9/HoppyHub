@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
@@ -10,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SharedUtilities.Models;
 
 namespace Infrastructure;
 

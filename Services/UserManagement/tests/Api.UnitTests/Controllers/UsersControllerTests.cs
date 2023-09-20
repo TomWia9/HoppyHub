@@ -1,6 +1,4 @@
 ﻿using Api.Controllers;
-using Application.Common.Mappings;
-using Application.Common.Models;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUser;
 using Application.Users.Dtos;
@@ -8,6 +6,8 @@ using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SharedUtilities.Mappings;
+using SharedUtilities.Models;
 
 namespace Api.UnitTests.Controllers;
 

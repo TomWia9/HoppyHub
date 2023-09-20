@@ -1,6 +1,6 @@
-﻿using Application.Common.Abstractions;
-using Application.Users.Dtos;
+﻿using Application.Users.Dtos;
 using FluentValidation;
+using SharedUtilities.Abstractions;
 
 namespace Application.Users.Queries.GetUsers;
 

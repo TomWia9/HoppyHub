@@ -27,4 +27,10 @@
         <ProjectReference Include="..\..\src\Infrastructure\Infrastructure.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="SharedUtilities">
+        <HintPath>..\..\..\..\Common\SharedUtilities\SharedUtilities\bin\Debug\net7.0\SharedUtilities.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

@@ -1,6 +1,7 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using MediatR;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.Users.Commands.UpdateUser;
 

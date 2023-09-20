@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces;
-using FluentValidation;
+﻿using FluentValidation;
+using SharedUtilities.Interfaces;
 
 namespace Application.Users.Commands.UpdateUser;
 
