@@ -1,6 +1,6 @@
-﻿using Application.Common.Abstractions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using FluentValidation;
+using SharedUtilities.Abstractions;
 
 namespace Application.Breweries.Queries.GetBreweries;
 

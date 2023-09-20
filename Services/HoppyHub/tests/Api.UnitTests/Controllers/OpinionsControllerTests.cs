@@ -1,5 +1,4 @@
 ﻿using Api.Controllers;
-using Application.Common.Models;
 using Application.Opinions.Commands.CreateOpinion;
 using Application.Opinions.Commands.DeleteOpinion;
 using Application.Opinions.Commands.UpdateOpinion;
@@ -8,6 +7,7 @@ using Application.Opinions.Queries.GetOpinion;
 using Application.Opinions.Queries.GetOpinions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SharedUtilities.Models;
 
 namespace Api.UnitTests.Controllers;
 

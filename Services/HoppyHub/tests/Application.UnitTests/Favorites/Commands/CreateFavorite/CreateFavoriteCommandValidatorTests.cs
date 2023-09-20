@@ -4,6 +4,7 @@ using Domain.Entities;
 using FluentValidation.TestHelper;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Favorites.Commands.CreateFavorite;
 

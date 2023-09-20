@@ -1,9 +1,10 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Favorites.Commands.DeleteFavorite;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Favorites.Commands.DeleteFavorite;
 

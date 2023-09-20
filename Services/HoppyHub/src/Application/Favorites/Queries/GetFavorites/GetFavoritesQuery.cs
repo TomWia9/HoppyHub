@@ -1,7 +1,7 @@
 ﻿using Application.Beers.Dtos;
-using Application.Common.Abstractions;
-using Application.Common.Models;
 using MediatR;
+using SharedUtilities.Abstractions;
+using SharedUtilities.Models;
 
 namespace Application.Favorites.Queries.GetFavorites;
 

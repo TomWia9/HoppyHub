@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SharedUtilities.Interfaces;
 
 namespace Application.Favorites.Commands.CreateFavorite;
 

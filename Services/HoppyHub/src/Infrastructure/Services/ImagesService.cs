@@ -1,6 +1,6 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
+using SharedUtilities.Exceptions;
 
 namespace Infrastructure.Services;
 

@@ -4,9 +4,9 @@ using Application.BeerStyles.Commands.UpdateBeerStyle;
 using Application.BeerStyles.Dtos;
 using Application.BeerStyles.Queries.GetBeerStyle;
 using Application.BeerStyles.Queries.GetBeerStyles;
-using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedUtilities.Models;
 
 namespace Api.Controllers;
 

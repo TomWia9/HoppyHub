@@ -4,9 +4,9 @@ using Application.Breweries.Commands.UpdateBrewery;
 using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Breweries.Queries.GetBrewery;
-using Application.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedUtilities.Models;
 
 namespace Api.Controllers;
 

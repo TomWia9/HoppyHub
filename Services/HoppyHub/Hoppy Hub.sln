@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.UnitTests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.UnitTests", "tests\Api.UnitTests\Api.UnitTests.csproj", "{7951C45E-B775-474A-8DBB-EE06093F8CD0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedUtilities", "..\..\Common\SharedUtilities\SharedUtilities\SharedUtilities.csproj", "{3178A6F0-CDCE-4AB9-90E3-D87E9216CE9C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,5 +63,9 @@ Global
 		{7951C45E-B775-474A-8DBB-EE06093F8CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7951C45E-B775-474A-8DBB-EE06093F8CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7951C45E-B775-474A-8DBB-EE06093F8CD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3178A6F0-CDCE-4AB9-90E3-D87E9216CE9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3178A6F0-CDCE-4AB9-90E3-D87E9216CE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3178A6F0-CDCE-4AB9-90E3-D87E9216CE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3178A6F0-CDCE-4AB9-90E3-D87E9216CE9C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

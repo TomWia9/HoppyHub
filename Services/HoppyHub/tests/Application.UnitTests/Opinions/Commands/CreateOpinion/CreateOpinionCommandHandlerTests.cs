@@ -1,6 +1,4 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Mappings;
+﻿using Application.Common.Interfaces;
 using Application.Opinions.Commands.CreateOpinion;
 using Application.Opinions.Dtos;
 using Application.UnitTests.TestHelpers;
@@ -9,6 +7,8 @@ using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Opinions.Commands.CreateOpinion;
 

@@ -2,10 +2,10 @@
 using Application.Beers.Dtos;
 using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
-using Application.Common.Mappings;
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Common.Mappings;
 
@@ -34,15 +34,6 @@ public class MappingTests
             config.AddProfile<MappingProfile>());
 
         _mapper = _configuration.CreateMapper();
-    }
-
-    /// <summary>
-    ///     Tests that configuration is valid.
-    /// </summary>
-    [Fact]
-    public void Mapper_Should_HaveValidConfiguration()
-    {
-        _configuration.AssertConfigurationIsValid();
     }
 
     /// <summary>

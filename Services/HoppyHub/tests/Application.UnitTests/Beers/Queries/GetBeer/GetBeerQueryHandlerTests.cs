@@ -1,11 +1,11 @@
 ﻿using Application.Beers.Queries.GetBeer;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Beers.Queries.GetBeer;
 

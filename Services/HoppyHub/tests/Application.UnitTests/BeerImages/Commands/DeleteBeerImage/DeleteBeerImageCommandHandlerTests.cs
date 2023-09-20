@@ -1,10 +1,10 @@
 ﻿using Application.BeerImages.Commands.DeleteBeerImage;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.BeerImages.Commands.DeleteBeerImage;
 

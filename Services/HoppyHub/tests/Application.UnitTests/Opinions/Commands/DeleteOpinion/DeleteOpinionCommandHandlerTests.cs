@@ -1,9 +1,10 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Opinions.Commands.DeleteOpinion;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Opinions.Commands.DeleteOpinion;
 

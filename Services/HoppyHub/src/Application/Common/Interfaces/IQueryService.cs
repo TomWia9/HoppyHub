@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Enums;
+using SharedUtilities.Enums;
 
 namespace Application.Common.Interfaces;
 

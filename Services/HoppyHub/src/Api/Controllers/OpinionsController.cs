@@ -1,5 +1,4 @@
 ﻿using Application.BeerStyles.Dtos;
-using Application.Common.Models;
 using Application.Opinions.Commands.CreateOpinion;
 using Application.Opinions.Commands.DeleteOpinion;
 using Application.Opinions.Commands.UpdateOpinion;
@@ -8,6 +7,7 @@ using Application.Opinions.Queries.GetOpinion;
 using Application.Opinions.Queries.GetOpinions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedUtilities.Models;
 
 namespace Api.Controllers;
 

@@ -3,7 +3,6 @@ using Application.Beers.Queries.GetBeers;
 using Application.Beers.Services;
 using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
-using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Favorites.Queries.GetFavorites;
@@ -12,6 +11,7 @@ using Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using SharedUtilities.Behaviors;
 
 namespace Application;
 

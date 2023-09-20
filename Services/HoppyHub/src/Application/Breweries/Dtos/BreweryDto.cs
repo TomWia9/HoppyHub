@@ -1,5 +1,5 @@
-﻿using Application.Common.Mappings;
-using Domain.Entities;
+﻿using Domain.Entities;
+using SharedUtilities.Mappings;
 
 namespace Application.Breweries.Dtos;
 

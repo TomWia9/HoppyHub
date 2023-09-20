@@ -1,9 +1,9 @@
 ﻿using Application.BeerStyles.Dtos;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using SharedUtilities.Exceptions;
 
 namespace Application.BeerStyles.Queries.GetBeerStyle;
 

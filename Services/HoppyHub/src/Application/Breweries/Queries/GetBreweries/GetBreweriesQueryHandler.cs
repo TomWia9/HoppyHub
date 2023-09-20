@@ -1,11 +1,11 @@
 ﻿using Application.Breweries.Dtos;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
-using Application.Common.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using MediatR;
+using SharedUtilities.Mappings;
+using SharedUtilities.Models;
 
 namespace Application.Breweries.Queries.GetBreweries;
 

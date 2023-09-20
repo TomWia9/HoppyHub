@@ -1,7 +1,5 @@
 ﻿using System.Text;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Models;
 using Azure.Storage.Blobs;
 using Infrastructure.AzureServices;
 using Infrastructure.Identity;
@@ -14,6 +12,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Models;
 
 namespace Infrastructure;
 

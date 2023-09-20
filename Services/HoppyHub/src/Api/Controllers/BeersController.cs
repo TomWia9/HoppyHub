@@ -6,12 +6,12 @@ using Application.Beers.Commands.UpdateBeer;
 using Application.Beers.Dtos;
 using Application.Beers.Queries.GetBeer;
 using Application.Beers.Queries.GetBeers;
-using Application.Common.Models;
 using Application.Favorites.Commands.CreateFavorite;
 using Application.Favorites.Commands.DeleteFavorite;
 using Application.Favorites.Queries.GetFavorites;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SharedUtilities.Models;
 
 namespace Api.Controllers;
 

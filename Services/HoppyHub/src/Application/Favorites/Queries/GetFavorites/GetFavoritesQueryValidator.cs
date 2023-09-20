@@ -1,5 +1,5 @@
-﻿using Application.Common.Abstractions;
-using FluentValidation;
+﻿using FluentValidation;
+using SharedUtilities.Abstractions;
 
 namespace Application.Favorites.Queries.GetFavorites;
 

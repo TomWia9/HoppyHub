@@ -1,7 +1,7 @@
-﻿using Api.Services;
-using Application.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services.Services;
 
 namespace Api.UnitTests;
 

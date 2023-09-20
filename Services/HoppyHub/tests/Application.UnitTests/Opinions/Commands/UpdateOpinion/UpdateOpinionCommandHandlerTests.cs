@@ -1,11 +1,12 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Opinions.Commands.UpdateOpinion;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Opinions.Commands.UpdateOpinion;
 

@@ -1,7 +1,7 @@
-﻿using Application.Common.Abstractions;
-using Application.Common.Models;
-using Application.Opinions.Dtos;
+﻿using Application.Opinions.Dtos;
 using MediatR;
+using SharedUtilities.Abstractions;
+using SharedUtilities.Models;
 
 namespace Application.Opinions.Queries.GetOpinions;
 

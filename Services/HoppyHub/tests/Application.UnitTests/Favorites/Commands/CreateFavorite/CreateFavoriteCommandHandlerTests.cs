@@ -1,9 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Favorites.Commands.CreateFavorite;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Favorites.Commands.CreateFavorite;
 

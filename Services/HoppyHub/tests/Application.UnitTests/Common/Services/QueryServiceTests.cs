@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Enums;
 using Application.Common.Interfaces;
 using Application.Common.Services;
+using SharedUtilities.Enums;
 
 namespace Application.UnitTests.Common.Services;
 

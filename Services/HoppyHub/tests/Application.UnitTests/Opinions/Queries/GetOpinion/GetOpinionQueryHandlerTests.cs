@@ -1,11 +1,11 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Mappings;
+﻿using Application.Common.Interfaces;
 using Application.Opinions.Queries.GetOpinion;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Opinions.Queries.GetOpinion;
 

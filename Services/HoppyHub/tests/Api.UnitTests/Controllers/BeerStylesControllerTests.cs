@@ -5,9 +5,9 @@ using Application.BeerStyles.Commands.UpdateBeerStyle;
 using Application.BeerStyles.Dtos;
 using Application.BeerStyles.Queries.GetBeerStyle;
 using Application.BeerStyles.Queries.GetBeerStyles;
-using Application.Common.Models;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using SharedUtilities.Models;
 
 namespace Api.UnitTests.Controllers;
 

@@ -1,11 +1,11 @@
 ﻿using Application.Breweries.Commands.CreateBrewery;
 using Application.Breweries.Dtos;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Breweries.Commands.CreateBrewery;
 

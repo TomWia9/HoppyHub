@@ -1,8 +1,8 @@
 ﻿using Application.BeerStyles.Commands.UpdateBeerStyle;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.BeerStyles.Commands.UpdateBeerStyle;
 

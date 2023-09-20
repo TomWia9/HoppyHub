@@ -1,9 +1,9 @@
 ﻿using Application.Beers.Commands.UpdateBeer;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Beers.Commands.UpdateBeer;
 

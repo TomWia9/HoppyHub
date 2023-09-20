@@ -1,8 +1,8 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedUtilities.Exceptions;
 
 namespace Application.Breweries.Commands.UpdateBrewery;
 

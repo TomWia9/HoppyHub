@@ -1,9 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using SharedUtilities.Exceptions;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 

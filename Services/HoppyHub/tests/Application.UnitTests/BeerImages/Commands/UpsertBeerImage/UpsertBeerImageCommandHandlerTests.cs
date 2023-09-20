@@ -1,11 +1,11 @@
 ﻿using Application.BeerImages.Commands.UpsertBeerImage;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 

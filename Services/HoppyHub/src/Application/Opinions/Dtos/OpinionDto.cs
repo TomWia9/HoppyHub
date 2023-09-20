@@ -1,6 +1,6 @@
-﻿using Application.Common.Mappings;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
+using SharedUtilities.Mappings;
 
 namespace Application.Opinions.Dtos;
 

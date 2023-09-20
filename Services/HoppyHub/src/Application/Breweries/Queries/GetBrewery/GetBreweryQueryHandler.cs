@@ -1,10 +1,10 @@
 ﻿using Application.Breweries.Dtos;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedUtilities.Exceptions;
 
 namespace Application.Breweries.Queries.GetBrewery;
 

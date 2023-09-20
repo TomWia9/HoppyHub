@@ -3,6 +3,7 @@ using Domain.Common;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using SharedUtilities.Interfaces;
 
 namespace Infrastructure.Persistence.Interceptors;
 

@@ -1,8 +1,8 @@
 ﻿using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
-using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
+using SharedUtilities.Mappings;
 
 namespace Application.Beers.Dtos;
 

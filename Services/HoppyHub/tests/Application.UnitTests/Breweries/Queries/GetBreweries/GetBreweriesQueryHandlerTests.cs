@@ -1,14 +1,14 @@
 ﻿using System.Linq.Expressions;
 using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
-using Application.Common.Enums;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
-using Application.Common.Models;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Enums;
+using SharedUtilities.Mappings;
+using SharedUtilities.Models;
 
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 

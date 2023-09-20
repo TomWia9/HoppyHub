@@ -1,9 +1,9 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Application.Common.Models.BlobContainer;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Infrastructure.UnitTests.Services;
 

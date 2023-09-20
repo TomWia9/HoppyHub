@@ -1,11 +1,11 @@
 ﻿using Application.BeerStyles.Commands.CreateBeerStyle;
 using Application.BeerStyles.Dtos;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.BeerStyles.Commands.CreateBeerStyle;
 

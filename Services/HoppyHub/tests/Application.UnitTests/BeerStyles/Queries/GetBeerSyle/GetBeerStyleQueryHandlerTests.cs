@@ -1,10 +1,10 @@
 ﻿using Application.BeerStyles.Queries.GetBeerStyle;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
-using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using Moq;
+using SharedUtilities.Exceptions;
+using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerSyle;
 

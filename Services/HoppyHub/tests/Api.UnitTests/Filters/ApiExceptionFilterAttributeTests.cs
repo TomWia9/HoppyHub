@@ -1,11 +1,11 @@
 ﻿using Api.Filters;
-using Application.Common.Exceptions;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
+using SharedUtilities.Exceptions;
 
 namespace Api.UnitTests.Filters;
 

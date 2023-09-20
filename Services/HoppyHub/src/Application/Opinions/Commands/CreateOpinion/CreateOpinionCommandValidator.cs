@@ -2,6 +2,7 @@
 using Application.Opinions.Commands.Common;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using SharedUtilities.Interfaces;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 

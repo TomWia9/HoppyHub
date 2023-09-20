@@ -1,9 +1,9 @@
 ﻿using Application.Breweries.Commands.DeleteBrewery;
-using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using Moq;
+using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Breweries.Commands.DeleteBrewery;
 
