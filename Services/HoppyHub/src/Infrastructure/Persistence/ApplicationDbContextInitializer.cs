@@ -66,7 +66,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             throw;
         }
     }
-    
+
     /// <summary>
     ///     Seeds users asynchronously.
     /// </summary>
@@ -79,7 +79,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
             await SeedDatabaseFromSql(tableName);
         }
     }
-    
+
     /// <summary>
     ///     Seeds breweries asynchronously.
     /// </summary>

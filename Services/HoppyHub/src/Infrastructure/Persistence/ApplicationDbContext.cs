@@ -61,7 +61,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     ///     The favorites.
     /// </summary>
     public DbSet<Favorite> Favorites => Set<Favorite>();
-    
+
     /// <summary>
     ///     The users.
     /// </summary>

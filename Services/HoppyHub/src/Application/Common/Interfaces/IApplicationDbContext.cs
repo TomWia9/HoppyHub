@@ -43,7 +43,7 @@ public interface IApplicationDbContext
     ///     The favorites.
     /// </summary>
     DbSet<Favorite> Favorites { get; }
-    
+
     /// <summary>
     ///     The users.
     /// </summary>

@@ -22,7 +22,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     ///     The mapper.
     /// </summary>
     private readonly IMapper _mapper;
-    
+
 
     /// <summary>
     ///     Initializes GetOpinionQueryHandler.
@@ -43,7 +43,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
     public async Task<OpinionDto> Handle(GetOpinionQuery request, CancellationToken cancellationToken)
     {
         var opinion = await _context.Opinions.Include(x => x.User)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (opinion is null)
         {
@@ -51,7 +51,7 @@ public class GetOpinionQueryHandler : IRequestHandler<GetOpinionQuery, OpinionDt
         }
 
         var opinionDto = _mapper.Map<OpinionDto>(opinion);
-        
+
         return opinionDto;
     }
 }

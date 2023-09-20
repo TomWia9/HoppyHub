@@ -96,7 +96,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             await transaction.RollbackAsync(cancellationToken);
             throw;
         }
-        
+
         entity.User = await _context.Users.FindAsync(new object?[] { entity.CreatedBy },
             cancellationToken);
 

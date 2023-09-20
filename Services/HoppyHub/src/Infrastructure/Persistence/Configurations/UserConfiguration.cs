@@ -24,7 +24,7 @@ public class UserConfiguration : BaseConfiguration<User>
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.CreatedBy);
-        
+
         builder.HasMany(x => x.Favorites)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.CreatedBy);
