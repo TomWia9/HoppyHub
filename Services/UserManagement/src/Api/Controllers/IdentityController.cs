@@ -2,7 +2,6 @@
 using Application.Identity.Commands.LoginUser;
 using Application.Identity.Commands.RegisterUser;
 using Microsoft.AspNetCore.Mvc;
-using Api.Controllers;
 
 namespace Api.Controllers;
 

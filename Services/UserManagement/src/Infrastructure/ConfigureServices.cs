@@ -29,17 +29,17 @@ public static class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        
+
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
-        
+
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
-        
+
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);
         services.AddSingleton(jwtSettings);
-        
+
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -65,13 +65,13 @@ public static class ConfigureServices
                     ValidateLifetime = true
                 };
             });
-        
+
         services.AddAuthorization(options =>
         {
             options.AddPolicy(Policies.UserAccess,
                 policy => policy.RequireAssertion(context =>
                     context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)));
-        
+
             options.AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
         });

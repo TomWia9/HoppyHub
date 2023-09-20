@@ -41,7 +41,7 @@ try
     {
         var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
         await initializer.InitializeAsync();
-    
+
         if (app.Environment.IsDevelopment())
         {
             await initializer.SeedAsync();

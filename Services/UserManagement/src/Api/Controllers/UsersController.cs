@@ -34,9 +34,9 @@ public class UsersController : ApiControllerBase
     public async Task<ActionResult<UserDto>> GetUsers([FromQuery] GetUsersQuery query)
     {
         var result = await Mediator.Send(query);
-    
+
         Response.Headers.Add("X-Pagination", result.GetMetadata());
-    
+
         return Ok(result);
     }
 
