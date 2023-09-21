@@ -20,19 +20,19 @@ jobs:
       - name: Restore dependencies
         run: |
           dotnet restore Common/SharedUtilities/SharedUtilities.sln
-          dotnet restore Services/HoppyHub/HoppyHub.sln
+          dotnet restore Services/HoppyHub/Hoppy Hub.sln
           dotnet restore Services/UserManagement/UserManagement.sln
 
       - name: Build solutions
         run:  |
           dotnet build Common/SharedUtilities/SharedUtilities.sln --no-restore
-          dotnet build Services/HoppyHub/HoppyHub.sln --no-restore
+          dotnet build Services/HoppyHub/Hoppy Hub.sln --no-restore
           dotnet build Services/UserManagement/UserManagement.sln --no-restore
 
       - name: Test solutions
         run: |
           dotnet test Common/SharedUtilities/SharedUtilities.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-          dotnet test Services/HoppyHub/HoppyHub.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test Services/HoppyHub/Hoppy Hub.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/UserManagement/UserManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
       - name: Upload coverage reports to Codecov
