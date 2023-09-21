@@ -18,13 +18,22 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: |
+          dotnet restore Common/SharedUtilities/SharedUtilities.sln
+          dotnet restore Services/HoppyHub/HoppyHub.sln
+          dotnet restore Services/UserManagement/UserManagement.sln
 
-      - name: Build
-        run: dotnet build --no-restore
+      - name: Build solutions
+        run:  |
+          dotnet build Common/SharedUtilities/SharedUtilities.sln --no-restore
+          dotnet build Services/HoppyHub/HoppyHub.sln --no-restore
+          dotnet build Services/UserManagement/UserManagement.sln --no-restore
 
-      - name: Test
-        run: dotnet test --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      - name: Test solutions
+        run: |
+          dotnet test Common/SharedUtilities/SharedUtilities.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test Services/HoppyHub/HoppyHub.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test Services/UserManagement/UserManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
