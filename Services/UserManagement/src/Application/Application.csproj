@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="MediatR" Version="12.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Users\Validators\"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\Common\SharedUtilities\SharedUtilities\SharedUtilities.csproj"/>
+    </ItemGroup>
+
+</Project>
