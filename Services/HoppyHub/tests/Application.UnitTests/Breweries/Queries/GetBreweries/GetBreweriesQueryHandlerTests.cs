@@ -2,6 +2,7 @@
 using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;

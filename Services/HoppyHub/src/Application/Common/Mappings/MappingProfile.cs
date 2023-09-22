@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 using AutoMapper;
+using SharedUtilities.Mappings;
 
-namespace SharedUtilities.Mappings;
+namespace Application.Common.Mappings;
 
 /// <summary>
 ///     MappingProfile class.

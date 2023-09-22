@@ -1,6 +1,7 @@
 ﻿using Application.Beers.Commands.CreateBeer;
 using Application.Beers.Dtos;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;

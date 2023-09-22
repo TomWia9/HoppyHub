@@ -1,5 +1,6 @@
 ﻿using Application.BeerStyles.Queries.GetBeerStyle;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using Moq;

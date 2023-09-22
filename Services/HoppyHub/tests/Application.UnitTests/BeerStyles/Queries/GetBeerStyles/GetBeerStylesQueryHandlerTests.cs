@@ -2,6 +2,7 @@
 using Application.BeerStyles.Dtos;
 using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;

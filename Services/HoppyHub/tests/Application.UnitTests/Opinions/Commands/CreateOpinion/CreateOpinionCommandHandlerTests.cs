@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Opinions.Commands.CreateOpinion;
 using Application.Opinions.Dtos;
 using Application.UnitTests.TestHelpers;

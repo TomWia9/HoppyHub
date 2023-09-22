@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Application.Beers.Dtos;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Favorites.Queries.GetFavorites;
 using AutoMapper;
 using Domain.Entities;

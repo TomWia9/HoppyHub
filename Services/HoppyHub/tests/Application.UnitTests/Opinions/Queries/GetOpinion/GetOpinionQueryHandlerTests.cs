@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Opinions.Queries.GetOpinion;
 using AutoMapper;
 using Domain.Entities;

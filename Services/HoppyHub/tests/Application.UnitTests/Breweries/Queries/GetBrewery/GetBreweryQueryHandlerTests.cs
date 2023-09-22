@@ -1,5 +1,6 @@
 ﻿using Application.Breweries.Queries.GetBrewery;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;

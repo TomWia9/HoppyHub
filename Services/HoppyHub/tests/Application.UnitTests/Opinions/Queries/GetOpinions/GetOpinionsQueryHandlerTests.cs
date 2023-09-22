@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Application.Common.Interfaces;
+using Application.Common.Mappings;
 using Application.Opinions.Dtos;
 using Application.Opinions.Queries.GetOpinions;
 using AutoMapper;

@@ -2,6 +2,7 @@
 using Application.Beers.Dtos;
 using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
+using Application.Common.Mappings;
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
