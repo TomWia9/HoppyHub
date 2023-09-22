@@ -155,14 +155,7 @@ public class UsersServiceTests
             .Returns(users);
         _userManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<string> { Roles.User });
-        // _queryServiceMock.Setup(x => x.Filter(It.IsAny<IQueryable<ApplicationUser>>(),
-        //         It.IsAny<IEnumerable<Expression<Func<ApplicationUser, bool>>>>()))
-        //     .Returns(users);
-        // _queryServiceMock.Setup(x =>
-        //         x.Sort(It.IsAny<IQueryable<ApplicationUser>>(), It.IsAny<Expression<Func<ApplicationUser, object>>>(),
-        //             It.IsAny<SortDirection>()))
-        //     .Returns(users);
-
+       
         // Act
         var result = await _usersService.GetUsersAsync(query);
 
@@ -221,12 +214,7 @@ public class UsersServiceTests
 
         _userManagerMock.Setup(x => x.Users).Returns(users.AsQueryable());
         _userManagerMock.Setup(x => x.GetUsersInRoleAsync(query.Role)).ReturnsAsync(users);
-        // _queryServiceMock.Setup(x => x.Filter(It.IsAny<IQueryable<ApplicationUser>>(),
-        //     It.IsAny<List<Expression<Func<ApplicationUser, bool>>>>())).Returns(users.AsQueryable());
-        // _queryServiceMock.Setup(x => x.Sort(It.IsAny<IQueryable<ApplicationUser>>(),
-        //         It.IsAny<Expression<Func<ApplicationUser, object>>>(), It.IsAny<SortDirection>()))
-        //     .Returns(users.AsQueryable());
-
+        
         // Act
         var result = await _usersService.GetUsersAsync(query);
 

@@ -10,6 +10,7 @@ using Application.Opinions.Queries.GetOpinions;
 using Domain.Entities;
 using FluentValidation;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities.Behaviors;
 
@@ -28,7 +29,7 @@ public static class ConfigureServices
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-
+        services.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggingBehavior<>));
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());

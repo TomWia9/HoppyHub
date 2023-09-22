@@ -9,7 +9,9 @@ using Application.Opinions.Queries.GetOpinions;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
+using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
+using SharedUtilities.Behaviors;
 
 namespace Application.UnitTests;
 
@@ -42,6 +44,18 @@ public class ConfigureServicesTests
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IMediator));
+    }
+
+    /// <summary>
+    ///     Tests that the AddApplicationServices method registers LoggingBehavior.
+    /// </summary>
+    [Fact]
+    public void AddApplicationServices_ShouldRegisterLoggingBehavior()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IRequestPreProcessor<>));
+        _services.Should().Contain(x => x.ImplementationType == typeof(LoggingBehavior<>));
+        _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Transient);
     }
 
     /// <summary>
