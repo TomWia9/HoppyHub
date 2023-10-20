@@ -1,6 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using MassTransit;
 using MediatR;
+using SharedEvents;
+using SharedUtilities.Models;
 
 namespace Application.Identity.Commands.RegisterUser;
 
@@ -15,12 +18,19 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     private readonly IIdentityService _identityService;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+    
+    /// <summary>
     ///     Initializes RegisterUserCommandHandler
     /// </summary>
     /// <param name="identityService">The identity service</param>
-    public RegisterUserCommandHandler(IIdentityService identityService)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public RegisterUserCommandHandler(IIdentityService identityService, IPublishEndpoint publishEndpoint)
     {
         _identityService = identityService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -30,6 +40,20 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<AuthenticationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        return await _identityService.RegisterAsync(request.Email, request.Username, request.Password);
+        var authenticationResult = await _identityService.RegisterAsync(request.Email, request.Username, request.Password);
+        
+        if (authenticationResult.Succeeded)
+        {
+            //TODO Replace NewGuid with real id, we can get it from token, same for role
+            await _publishEndpoint.Publish<UserCreated>(new
+            {
+                Id = Guid.NewGuid(),
+                Email = request.Email,
+                Username = request.Username,
+                Role = Roles.User
+            }, cancellationToken);
+        }
+
+        return authenticationResult;
     }
 }

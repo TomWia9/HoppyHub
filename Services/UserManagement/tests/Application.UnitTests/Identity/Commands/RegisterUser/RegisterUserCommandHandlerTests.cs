@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Identity.Commands.RegisterUser;
+using MassTransit;
 using Moq;
 
 namespace Application.UnitTests.Identity.Commands.RegisterUser;
@@ -11,8 +12,20 @@ namespace Application.UnitTests.Identity.Commands.RegisterUser;
 [ExcludeFromCodeCoverage]
 public class RegisterUserCommandHandlerTests
 {
-    private readonly RegisterUserCommandHandler _handler;
+    /// <summary>
+    ///     The identity service mock.
+    /// </summary>
     private readonly Mock<IIdentityService> _identityServiceMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+    
+    /// <summary>
+    ///     The register user command handler.
+    /// </summary>
+    private readonly RegisterUserCommandHandler _handler;
 
     /// <summary>
     ///     Setups RegisterUserCommandHandlerTests.
@@ -20,7 +33,9 @@ public class RegisterUserCommandHandlerTests
     public RegisterUserCommandHandlerTests()
     {
         _identityServiceMock = new Mock<IIdentityService>();
-        _handler = new RegisterUserCommandHandler(_identityServiceMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        
+        _handler = new RegisterUserCommandHandler(_identityServiceMock.Object, _publishEndpointMock.Object);
     }
 
     /// <summary>
