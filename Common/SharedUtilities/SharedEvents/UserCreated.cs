@@ -11,11 +11,6 @@ public record UserCreated
     public Guid Id { get; set; }
 
     /// <summary>
-    ///     The email.
-    /// </summary>
-    public string? Email { get; set; }
-
-    /// <summary>
     ///     The username.
     /// </summary>
     public string? Username { get; set; }

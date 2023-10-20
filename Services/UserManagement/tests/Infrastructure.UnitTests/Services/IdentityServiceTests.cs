@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Identity;
+using Infrastructure.UnitTests.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using SharedUtilities.Exceptions;
@@ -32,15 +33,7 @@ public class IdentityServiceTests
         {
             Secret = "test_secret_12345"
         };
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+        _userManagerMock = UserManagerMockFactory.CreateUserManagerMock();
         _identityService = new IdentityService(_userManagerMock.Object, jwtSettings);
     }
 

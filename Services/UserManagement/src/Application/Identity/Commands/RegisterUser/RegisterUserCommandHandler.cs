@@ -42,13 +42,18 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     {
         var authenticationResult = await _identityService.RegisterAsync(request.Email, request.Username, request.Password);
         
-        if (authenticationResult.Succeeded)
+        if (!authenticationResult.Succeeded || string.IsNullOrEmpty(authenticationResult.Token))
         {
-            //TODO Replace NewGuid with real id, we can get it from token, same for role
+            return authenticationResult;
+        }
+
+        var newUserId = _identityService.GetUserIdFromJwt(authenticationResult.Token);
+
+        if (!string.IsNullOrEmpty(newUserId))
+        {
             await _publishEndpoint.Publish<UserCreated>(new
             {
                 Id = Guid.NewGuid(),
-                Email = request.Email,
                 Username = request.Username,
                 Role = Roles.User
             }, cancellationToken);
