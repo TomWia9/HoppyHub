@@ -39,9 +39,10 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
-        services.AddMassTransit(cfg =>
+        services.AddMassTransit(x =>
         {
-            cfg.UsingRabbitMq();
+            x.AddConsumers(Assembly.GetExecutingAssembly());
+            x.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
         });
 
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
