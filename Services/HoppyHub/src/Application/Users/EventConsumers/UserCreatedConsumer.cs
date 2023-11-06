@@ -40,7 +40,6 @@ public class UserCreatedConsumer : IConsumer<UserCreated>
             Role = message.Role
         };
 
-        //TODO user validation
         if (!await _context.Users.AnyAsync(x => x.Id == user.Id))
         {
             await _context.Users.AddAsync(user);
