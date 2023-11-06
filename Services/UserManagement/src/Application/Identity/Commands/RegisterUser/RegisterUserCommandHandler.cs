@@ -53,7 +53,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
         {
             await _publishEndpoint.Publish<UserCreated>(new
             {
-                Id = Guid.NewGuid(),
+                Id = newUserId,
                 Username = request.Username,
                 Role = Roles.User
             }, cancellationToken);
