@@ -51,12 +51,14 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
 
         if (!string.IsNullOrEmpty(newUserId))
         {
-            await _publishEndpoint.Publish<UserCreated>(new
+            var userCreatedEvent = new UserCreated
             {
-                Id = newUserId,
+                Id = Guid.Parse(newUserId),
                 Username = request.Username,
                 Role = Roles.User
-            }, cancellationToken);
+            };
+            
+            await _publishEndpoint.Publish(userCreatedEvent, cancellationToken);
         }
 
         return authenticationResult;

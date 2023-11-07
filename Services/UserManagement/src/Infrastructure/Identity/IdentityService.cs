@@ -102,14 +102,13 @@ public class IdentityService : IIdentityService
     /// <param name="claimType">The claim type</param>
     public string GetClaimValueFromJwt(string jwtToken, string claimType)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.ReadJwtToken(jwtToken);
-
-        if (token == null)
+        if (string.IsNullOrEmpty(jwtToken))
         {
             throw new ArgumentException("Invalid JWT token.");
         }
 
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.ReadJwtToken(jwtToken);
         var claims = token.Claims;
         var claim = claims.FirstOrDefault(x => x.Type == claimType);
 
