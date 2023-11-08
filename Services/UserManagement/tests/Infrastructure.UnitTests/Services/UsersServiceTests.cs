@@ -5,6 +5,7 @@ using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
 using Infrastructure.Services;
+using Infrastructure.UnitTests.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using SharedUtilities.Enums;
@@ -40,9 +41,7 @@ public class UsersServiceTests
     /// </summary>
     public UsersServiceTests()
     {
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(
-            Mock.Of<IUserStore<ApplicationUser>>(),
-            null, null, null, null, null, null, null, null);
+        _userManagerMock = UserManagerMockFactory.CreateUserManagerMock();
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _usersService = new UsersService(_userManagerMock.Object, _currentUserServiceMock.Object);
     }

@@ -96,6 +96,40 @@ public class IdentityService : IIdentityService
     }
 
     /// <summary>
+    ///     Gets specified claim value from jwt token.
+    /// </summary>
+    /// <param name="jwtToken">Json web token</param>
+    /// <param name="claimType">The claim type</param>
+    public string GetClaimValueFromJwt(string jwtToken, string claimType)
+    {
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            throw new ArgumentException("Invalid JWT token.");
+        }
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var token = tokenHandler.ReadJwtToken(jwtToken);
+        var claims = token.Claims;
+        var claim = claims.FirstOrDefault(x => x.Type == claimType);
+
+        if (claim == null)
+        {
+            throw new ArgumentException($"Claim '{claimType}' does not exist in JWT token");
+        }
+
+        return claim.Value;
+    }
+
+    /// <summary>
+    ///     Gets user id from jwt token.
+    /// </summary>
+    /// <param name="jwtToken">Json web token</param>
+    public string GetUserIdFromJwt(string jwtToken)
+    {
+        return GetClaimValueFromJwt(jwtToken, JwtRegisteredClaimNames.Sub);
+    }
+
+    /// <summary>
     ///     Generates authentication result.
     /// </summary>
     /// <param name="user">The user</param>

@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.Identity;
+using Infrastructure.UnitTests.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using SharedUtilities.Exceptions;
@@ -32,15 +33,7 @@ public class IdentityServiceTests
         {
             Secret = "test_secret_12345"
         };
-        _userManagerMock = new Mock<UserManager<ApplicationUser>>(Mock.Of<IUserStore<ApplicationUser>>(),
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+        _userManagerMock = UserManagerMockFactory.CreateUserManagerMock();
         _identityService = new IdentityService(_userManagerMock.Object, jwtSettings);
     }
 
@@ -230,5 +223,71 @@ public class IdentityServiceTests
     {
         // Act & Assert
         await Assert.ThrowsAsync<ValidationException>(() => _identityService.LoginAsync(email, password));
+    }
+
+    /// <summary>
+    ///     Tests that GetClaimValueFromJwt method returns valid claim value when token and claim type are valid.
+    /// </summary>
+    [Fact]
+    public void GetClaimValueFromJwt_ShouldReturnClaimValue_WhenTokenAndClaimTypeAreValid()
+    {
+        // Arrange
+        const string jwtToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        const string claimType = "sub";
+        const string claimValue = "1234567890";
+
+        // Act
+        var result = _identityService.GetClaimValueFromJwt(jwtToken, claimType);
+
+        // Assert
+        result.Should().Be(claimValue);
+    }
+
+    /// <summary>
+    ///     Tests that GetClaimValueFromJwt method throws argument exception when token is ivalid.
+    /// </summary>
+    [Theory]
+    [InlineData("")]
+    [InlineData(null)]
+    public void GetClaimValueFromJwt_InvalidToken_ThrowsArgumentException(string jwtToken)
+    {
+        // Arrange
+        const string claimType = "sub";
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => _identityService.GetClaimValueFromJwt(jwtToken, claimType))
+            .Message.Should().Contain("Invalid JWT token");
+    }
+
+    [Fact]
+    public void GetClaimValueFromJwt_ClaimNotFound_ThrowsArgumentException()
+    {
+        // Arrange
+        const string jwtToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        const string claimType = "non-existing-claim-type";
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => _identityService.GetClaimValueFromJwt(jwtToken, claimType))
+            .Message.Should().Contain($"Claim '{claimType}' does not exist in JWT token");
+    }
+    
+    /// <summary>
+    ///     Tests that GetUserIdFromJwt method returns valid user id when token is valid.
+    /// </summary>
+    [Fact]
+    public void GetUserIdFromJwt_ShouldReturnUserId_WhenTokenIsValid()
+    {
+        // Arrange
+        const string jwtToken =
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+        const string claimValue = "1234567890";
+
+        // Act
+        var result = _identityService.GetUserIdFromJwt(jwtToken);
+
+        // Assert
+        result.Should().Be(claimValue);
     }
 }

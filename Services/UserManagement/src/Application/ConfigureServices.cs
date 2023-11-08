@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
+using MassTransit;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,10 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+        });
+        services.AddMassTransit(cfg =>
+        {
+            cfg.UsingRabbitMq();
         });
 
         return services;

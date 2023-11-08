@@ -1,9 +1,9 @@
-﻿using Application.UnitTests.TestHelpers;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Interfaces;
+using SharedUtilities.UnitTests.TestHelpers;
 
 namespace SharedUtilities.UnitTests.Behaviors;
 

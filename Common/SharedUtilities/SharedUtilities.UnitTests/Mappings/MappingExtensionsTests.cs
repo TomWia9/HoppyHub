@@ -1,5 +1,5 @@
-﻿using Application.UnitTests.TestHelpers;
-using SharedUtilities.Mappings;
+﻿using SharedUtilities.Mappings;
+using SharedUtilities.UnitTests.TestHelpers;
 
 namespace SharedUtilities.UnitTests.Mappings;
 

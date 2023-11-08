@@ -20,6 +20,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\Common\SharedUtilities\SharedUtilities\SharedUtilities.csproj"/>
+        <ProjectReference Include="..\..\..\..\Common\SharedUtilities\SharedEvents\SharedEvents.csproj"/>
     </ItemGroup>
 
 </Project>
