@@ -38,8 +38,8 @@ public class MessageValidationFilter<T> : IFilter<ConsumeContext<T>> where T : c
                     v.ValidateAsync(validationContext)));
 
             var failures = validationResults
-                .Where(r => r.Errors.Any())
-                .SelectMany(r => r.Errors)
+                .Where(x => x.Errors.Any())
+                .SelectMany(x => x.Errors)
                 .ToList();
 
             if (failures.Any())

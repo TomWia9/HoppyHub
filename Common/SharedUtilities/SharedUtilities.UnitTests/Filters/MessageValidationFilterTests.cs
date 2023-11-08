@@ -59,13 +59,13 @@ public class MessageValidationFilterTests
     {
         // Arrange
         var message = new TestEvent();
-        _consumeContextMock.Setup(c => c.Message).Returns(message);
+        _consumeContextMock.Setup(x => x.Message).Returns(message);
 
         // Act
         await _messageValidationFilter.Send(_consumeContextMock.Object, _nextMock.Object);
 
         // Assert
-        _nextMock.Verify(p => p.Send(_consumeContextMock.Object), Times.Once);
+        _nextMock.Verify(x => x.Send(_consumeContextMock.Object), Times.Once);
     }
 
     /// <summary>
