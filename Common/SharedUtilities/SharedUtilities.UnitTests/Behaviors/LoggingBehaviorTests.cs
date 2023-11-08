@@ -1,8 +1,8 @@
-﻿using Application.UnitTests.TestHelpers;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Moq;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Interfaces;
+using SharedUtilities.UnitTests.TestHelpers;
 
 namespace SharedUtilities.UnitTests.Behaviors;
 

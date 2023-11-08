@@ -1,4 +1,4 @@
-﻿namespace Application.UnitTests.TestHelpers;
+﻿namespace SharedUtilities.UnitTests.TestHelpers;
 
 /// <summary>
 ///     TestObject class.

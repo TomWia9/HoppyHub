@@ -1,9 +1,9 @@
-﻿using Application.UnitTests.TestHelpers;
-using FluentValidation;
+﻿using FluentValidation;
 using FluentValidation.Results;
 using MediatR;
 using Moq;
 using SharedUtilities.Behaviors;
+using SharedUtilities.UnitTests.TestHelpers;
 using ValidationException = SharedUtilities.Exceptions.ValidationException;
 
 namespace SharedUtilities.UnitTests.Behaviors;

@@ -1,7 +1,7 @@
 ﻿namespace SharedUtilities.UnitTests.TestHelpers;
 
 /// <summary>
-///     TestResponse class.
+///     Test event.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public record TestResponse;
+public record TestEvent;
