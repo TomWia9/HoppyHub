@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
+using MassTransit;
 using MediatR;
+using SharedEvents;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -16,6 +18,11 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
@@ -25,10 +32,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     /// </summary>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="usersService">The users service</param>
-    public UpdateUserCommandHandler(ICurrentUserService currentUserService, IUsersService usersService)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public UpdateUserCommandHandler(ICurrentUserService currentUserService, IUsersService usersService,
+        IPublishEndpoint publishEndpoint)
     {
         _currentUserService = currentUserService;
         _usersService = usersService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -44,5 +54,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
             throw new ForbiddenAccessException();
 
         await _usersService.UpdateUserAsync(request);
+
+        var userUpdatedEvent = new UserUpdated
+        {
+            Id = request.UserId,
+            Username = request.Username
+        };
+
+        await _publishEndpoint.Publish(userUpdatedEvent, cancellationToken);
     }
 }
