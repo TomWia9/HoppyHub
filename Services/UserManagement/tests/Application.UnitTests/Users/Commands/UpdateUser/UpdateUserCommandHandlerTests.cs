@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.Users.Commands.UpdateUser;
+using MassTransit;
 using Moq;
+using SharedEvents;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -23,6 +25,11 @@ public class UpdateUserCommandHandlerTests
     private readonly UpdateUserCommandHandler _handler;
 
     /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
     ///     The users service mock.
     /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
@@ -34,7 +41,9 @@ public class UpdateUserCommandHandlerTests
     {
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _usersServiceMock = new Mock<IUsersService>();
-        _handler = new UpdateUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new UpdateUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>
@@ -62,11 +71,12 @@ public class UpdateUserCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method calls UpdateUserAsync when user is administrator
+    ///     Tests that Handle method calls UpdateUserAsync and publishes UserUpdated event when user is administrator
     ///     and trying to update another user.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCallUpdateUserAsync_WhenUserIsAdminAndTryingToUpdateAnotherUser()
+    public async Task
+        Handle_ShouldCallUpdateUserAsyncAndPublishUserUpdatedEvent_WhenUserIsAdminAndTryingToUpdateAnotherUser()
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
@@ -82,14 +92,15 @@ public class UpdateUserCommandHandlerTests
 
         // Assert
         _usersServiceMock.Verify(x => x.UpdateUserAsync(command), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<UserUpdated>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>
-    ///     Tests that Handle method calls UpdateUserAsync when user is trying
+    ///     Tests that Handle method calls UpdateUserAsync and publishes UserUpdated event when user is trying
     ///     to update self.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCallUpdateUserAsync_WhenUserIsTryingToUpdateSelf()
+    public async Task Handle_ShouldCallUpdateUserAsyncAndPublishUserUpdatedEvent_WhenUserIsTryingToUpdateSelf()
     {
         // Arrange
         var currentUserId = Guid.NewGuid();
@@ -105,5 +116,6 @@ public class UpdateUserCommandHandlerTests
 
         // Assert
         _usersServiceMock.Verify(x => x.UpdateUserAsync(command), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<UserUpdated>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 }
