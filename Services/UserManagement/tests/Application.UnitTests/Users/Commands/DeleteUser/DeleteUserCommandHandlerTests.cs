@@ -47,7 +47,7 @@ public class DeleteUserCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method calls DeleteUserAsync method when request is valid.
+    ///     Tests that Handle method calls DeleteUserAsync method and publishes UserDeleted event when request is valid.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldCallDeleteUserAsyncAndPublishUserDeletedEvent_WhenRequestIsValid()
