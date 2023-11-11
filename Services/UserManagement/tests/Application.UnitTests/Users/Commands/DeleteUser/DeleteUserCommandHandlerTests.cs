@@ -2,6 +2,7 @@
 using Application.Users.Commands.DeleteUser;
 using MassTransit;
 using Moq;
+using SharedEvents;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -49,7 +50,7 @@ public class DeleteUserCommandHandlerTests
     ///     Tests that Handle method calls DeleteUserAsync method when request is valid.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCallDeleteUserAsync_WhenRequestIsValid()
+    public async Task Handle_ShouldCallDeleteUserAsyncAndPublishUserDeletedEvent_WhenRequestIsValid()
     {
         // Arrange
         var request = new DeleteUserCommand
@@ -64,6 +65,7 @@ public class DeleteUserCommandHandlerTests
 
         // Assert
         _usersServiceMock.Verify(x => x.DeleteUserAsync(request), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<UserDeleted>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>
