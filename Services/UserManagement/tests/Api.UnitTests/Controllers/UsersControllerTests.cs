@@ -110,12 +110,16 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     {
         // Arrange
         var userId = Guid.NewGuid();
+        var deleteUserCommand = new DeleteUserCommand
+        {
+            UserId = userId
+        };
 
         MediatorMock.Setup(m => m.Send(It.IsAny<DeleteUserCommand>(), default))
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await Controller.DeleteUser(userId);
+        var result = await Controller.DeleteUser(userId, deleteUserCommand);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
