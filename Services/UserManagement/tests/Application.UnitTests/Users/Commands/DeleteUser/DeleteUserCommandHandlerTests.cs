@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
+using MassTransit;
 using Moq;
+using SharedEvents;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -18,14 +20,19 @@ public class DeleteUserCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The handler.
-    /// </summary>
-    private readonly DeleteUserCommandHandler _handler;
-
-    /// <summary>
     ///     The users service mock.
     /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
+    ///     The handler.
+    /// </summary>
+    private readonly DeleteUserCommandHandler _handler;
 
     /// <summary>
     ///     Setups DeleteUserCommandHandlerTests.
@@ -34,14 +41,16 @@ public class DeleteUserCommandHandlerTests
     {
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _usersServiceMock = new Mock<IUsersService>();
-        _handler = new DeleteUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new DeleteUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method calls DeleteUserAsync method when request is valid.
+    ///     Tests that Handle method calls DeleteUserAsync method and publishes UserDeleted event when request is valid.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCallDeleteUserAsync_WhenRequestIsValid()
+    public async Task Handle_ShouldCallDeleteUserAsyncAndPublishUserDeletedEvent_WhenRequestIsValid()
     {
         // Arrange
         var request = new DeleteUserCommand
@@ -56,6 +65,7 @@ public class DeleteUserCommandHandlerTests
 
         // Assert
         _usersServiceMock.Verify(x => x.DeleteUserAsync(request), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<UserDeleted>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>

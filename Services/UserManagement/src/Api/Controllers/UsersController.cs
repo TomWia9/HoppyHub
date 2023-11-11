@@ -63,11 +63,17 @@ public class UsersController : ApiControllerBase
     ///     Deletes user.
     /// </summary>
     /// <param name="id">The user id</param>
+    /// <param name="command">The DeleteUserCommand</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> DeleteUser(Guid id)
+    public async Task<IActionResult> DeleteUser(Guid id, [FromBody] DeleteUserCommand command)
     {
-        await Mediator.Send(new DeleteUserCommand { UserId = id });
+        if (id != command.UserId)
+        {
+            return BadRequest(InvalidIdMessage);
+        }
+
+        await Mediator.Send(command);
 
         return NoContent();
     }
