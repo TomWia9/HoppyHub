@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
+using MassTransit;
 using Moq;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
@@ -18,14 +19,19 @@ public class DeleteUserCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The handler.
-    /// </summary>
-    private readonly DeleteUserCommandHandler _handler;
-
-    /// <summary>
     ///     The users service mock.
     /// </summary>
     private readonly Mock<IUsersService> _usersServiceMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
+    ///     The handler.
+    /// </summary>
+    private readonly DeleteUserCommandHandler _handler;
 
     /// <summary>
     ///     Setups DeleteUserCommandHandlerTests.
@@ -34,7 +40,9 @@ public class DeleteUserCommandHandlerTests
     {
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _usersServiceMock = new Mock<IUsersService>();
-        _handler = new DeleteUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new DeleteUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>

@@ -1,5 +1,7 @@
 ﻿using Application.Common.Interfaces;
+using MassTransit;
 using MediatR;
+using SharedEvents;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -21,14 +23,22 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
     private readonly IUsersService _usersService;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes DeleteUserCommandHandler.
     /// </summary>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="usersService">The users service</param>
-    public DeleteUserCommandHandler(ICurrentUserService currentUserService, IUsersService usersService)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public DeleteUserCommandHandler(ICurrentUserService currentUserService, IUsersService usersService,
+        IPublishEndpoint publishEndpoint)
     {
         _currentUserService = currentUserService;
         _usersService = usersService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -46,5 +56,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
         }
 
         await _usersService.DeleteUserAsync(request);
+
+        var userDeletedEvent = new UserDeleted
+        {
+            Id = request.UserId
+        };
+
+        await _publishEndpoint.Publish(userDeletedEvent, cancellationToken);
     }
 }
