@@ -28,10 +28,10 @@ public static class ConfigureServices
         services.AddSwaggerGen(setupAction =>
         {
             setupAction.SwaggerDoc(
-                "HoppyHubSpecification",
+                "BeerManagementSpecification",
                 new OpenApiInfo
                 {
-                    Title = "HoppyHub - BeersManagement",
+                    Title = "HoppyHub - BeerManagement",
                     Version = "1",
                     Contact = new OpenApiContact
                     {

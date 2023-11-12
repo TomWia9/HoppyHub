@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("swagger/BeersManagementSpecification/swagger.json", "HoppyHub - Beers Management");
+        c.SwaggerEndpoint("swagger/BeerManagementSpecification/swagger.json", "HoppyHub - Beers Management");
         c.RoutePrefix = string.Empty;
     });
 }
