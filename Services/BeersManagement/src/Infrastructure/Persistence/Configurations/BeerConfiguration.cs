@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Infrastructure.Converters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
