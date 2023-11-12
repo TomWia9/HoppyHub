@@ -8,9 +8,9 @@ using SharedUtilities.Exceptions;
 namespace Application.BeerImages.EventConsumers;
 
 /// <summary>
-///     BeerImageUploaded consumer.
+///     BeerImageUploadedToBlobStorage consumer.
 /// </summary>
-public class BeerImageUploadedConsumer : IConsumer<BeerImageUploaded>
+public class BeerImageUploadedToBlobStorageConsumer : IConsumer<BeerImageUploadedToBlobStorage>
 {
     /// <summary>
     ///     The database context.
@@ -21,16 +21,16 @@ public class BeerImageUploadedConsumer : IConsumer<BeerImageUploaded>
     ///     Initializes BeerImageUploadedConsumer.
     /// </summary>
     /// <param name="context">The database context</param>
-    public BeerImageUploadedConsumer(IApplicationDbContext context)
+    public BeerImageUploadedToBlobStorageConsumer(IApplicationDbContext context)
     {
         _context = context;
     }
 
     /// <summary>
-    ///     Consumes BeerImageUploaded event.
+    ///     Consumes BeerImageUploadedToBlobStorage event.
     /// </summary>
     /// <param name="context">The consume context</param>
-    public async Task Consume(ConsumeContext<BeerImageUploaded> context)
+    public async Task Consume(ConsumeContext<BeerImageUploadedToBlobStorage> context)
     {
         var message = context.Message;
 

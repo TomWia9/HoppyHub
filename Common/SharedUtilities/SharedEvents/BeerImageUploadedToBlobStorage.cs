@@ -1,9 +1,9 @@
 ﻿namespace SharedEvents;
 
 /// <summary>
-///     The beer image uploaded event.
+///     The beer image uploaded to blob storage event.
 /// </summary>
-public record BeerImageUploaded
+public record BeerImageUploadedToBlobStorage
 {
     /// <summary>
     ///     The beer id.

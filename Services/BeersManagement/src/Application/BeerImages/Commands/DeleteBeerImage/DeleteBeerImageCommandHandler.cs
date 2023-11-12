@@ -17,28 +17,21 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-    
+
     /// <summary>
     ///     The publish endpoint.
     /// </summary>
     private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
-    ///     The app configuration.
-    /// </summary>
-    private readonly IAppConfiguration _appConfiguration;
-
-    /// <summary>
     ///     Initializes DeleteBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="publishEndpoint">The publish endpoint</param>
-    /// <param name="appConfiguration">The app configuration</param>
-    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint, IAppConfiguration appConfiguration)
+    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _publishEndpoint = publishEndpoint;
-        _appConfiguration = appConfiguration;
     }
 
     /// <summary>
@@ -58,31 +51,12 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
         if (beer.BeerImage is { TempImage: false, ImageUri: not null })
         {
-            var beerImageUri = beer.BeerImage.ImageUri;
-
-            await using var transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
-
-            try
+            var beerImageDeletedEvent = new BeerImageDeleted
             {
-                beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
-                beer.BeerImage.TempImage = true;
-                await _context.SaveChangesAsync(cancellationToken);
+                ImageUri = beer.BeerImage.ImageUri
+            };
 
-                var beerImageDeletedEvent = new BeerImageDeleted
-                {
-                    ImageUri = beerImageUri
-                };
-
-                //TODO: Ensure that images microservice successfully consumed this event.
-                await _publishEndpoint.Publish(beerImageDeletedEvent, cancellationToken);
-
-                await transaction.CommitAsync(cancellationToken);
-            }
-            catch
-            {
-                await transaction.RollbackAsync(cancellationToken);
-                throw;
-            }
+            await _publishEndpoint.Publish(beerImageDeletedEvent, cancellationToken);
         }
     }
 }
