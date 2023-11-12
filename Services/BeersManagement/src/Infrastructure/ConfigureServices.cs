@@ -30,6 +30,8 @@ public static class ConfigureServices
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
+        services.AddSingleton<IAppConfiguration, AppConfiguration>();
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
