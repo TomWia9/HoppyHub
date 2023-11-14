@@ -42,11 +42,11 @@ public class DeleteBeerImageCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method publishes ImagesDeleted event when beer and
+    ///     Tests that Handle method publishes BeerImageDeleted event when beer and
     ///     beer image exists.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldPublishImagesDeletedEvent_WhenBeerAndBeerImageExists()
+    public async Task Handle_ShouldPublishBeerImageDeletedEvent_WhenBeerAndBeerImageExists()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -55,12 +55,10 @@ public class DeleteBeerImageCommandHandlerTests
         var beers = new List<Beer> { beer };
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
         var command = new DeleteBeerImageCommand { BeerId = beerId };
-        var expectedEvent = new ImagesDeleted
+        var expectedEvent = new BeerImageDeleted
         {
-            Paths = new List<string>
-            {
-                $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
-            }
+            BeerId = beerId,
+            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
         };
 
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
@@ -69,9 +67,8 @@ public class DeleteBeerImageCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _publishEndpointMock.Verify(x => x.Publish(It.Is<ImagesDeleted>(y =>
-            y.Paths!.Count() == expectedEvent.Paths.Count() &&
-            y.Paths!.All(expectedEvent.Paths.Contains)), It.IsAny<CancellationToken>()), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.Is<BeerImageDeleted>(y =>
+            y.Path == expectedEvent.Path), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>
