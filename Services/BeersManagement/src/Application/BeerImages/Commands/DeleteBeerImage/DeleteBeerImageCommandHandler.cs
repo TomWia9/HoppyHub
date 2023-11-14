@@ -51,12 +51,15 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
         if (beer.BeerImage is { TempImage: false, ImageUri: not null })
         {
-            var beerImageDeletedEvent = new BeerImageDeleted
+            var imagesDeletedEvent = new ImagesDeleted
             {
-                ImageUri = beer.BeerImage.ImageUri
+                Paths = new List<string>
+                {
+                    $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
+                }
             };
 
-            await _publishEndpoint.Publish(beerImageDeletedEvent, cancellationToken);
+            await _publishEndpoint.Publish(imagesDeletedEvent, cancellationToken);
         }
     }
 }

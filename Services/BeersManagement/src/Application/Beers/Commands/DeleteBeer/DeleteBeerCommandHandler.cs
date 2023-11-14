@@ -16,7 +16,7 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-    
+
     /// <summary>
     ///     The publish endpoint.
     /// </summary>
@@ -54,18 +54,19 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
             _context.Beers.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var beerDeletedEvent = new BeerDeleted
+            var imagesDeletedEvent = new ImagesDeleted
             {
-                Id = request.Id
+                Paths = new List<string>
+                {
+                    $"Opinions/{entity.BreweryId}/{entity.Id}",
+                    $"Beers/{entity.BreweryId}/{entity.Id}"
+                }
             };
 
             // TODO: Ensure that event is successfully consumed by images microservice (Saga pattern?)
             //this should be consumed by images microservice which should delete all beer related images from blob container.
-            await _publishEndpoint.Publish(beerDeletedEvent, cancellationToken);
+            await _publishEndpoint.Publish(imagesDeletedEvent, cancellationToken);
             //something like this:
-            // var beerOpinionImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
-            // var beerImagesPath = $"Beers/{entity.BreweryId}/{entity.Id}";
-            //
             // await _azureStorageService.DeleteInPath(beerOpinionImagesPath);
             // await _azureStorageService.DeleteInPath(beerImagesPath);
 

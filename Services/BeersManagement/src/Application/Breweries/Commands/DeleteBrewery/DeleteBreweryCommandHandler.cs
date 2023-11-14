@@ -55,18 +55,19 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             _context.Breweries.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var breweryDeletedEvent = new BreweryDeleted
+            var imagesDeletedEvent = new ImagesDeleted
             {
-                Id = request.Id
+                Paths = new List<string>
+                {
+                    $"Opinions/{entity.Id}",
+                    $"Beers/{entity.Id}"
+                }
             };
 
             // TODO: Ensure that event is successfully consumed by images microservice (Saga pattern?)
             //this should be consumed by images microservice which should delete all brewery related images from blob container.
-            await _publishEndpoint.Publish(breweryDeletedEvent, cancellationToken);
+            await _publishEndpoint.Publish(imagesDeletedEvent, cancellationToken);
             //something like this:
-            // var breweryBeersOpinionImagesPath = $"Opinions/{entity.Id}";
-            // var breweryBeerImagesPath = $"Beers/{entity.Id}";
-            //
             // await _azureStorageService.DeleteInPath(breweryBeersOpinionImagesPath);
             // await _azureStorageService.DeleteInPath(breweryBeerImagesPath);
 
