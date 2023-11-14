@@ -3,7 +3,7 @@
 namespace SharedEvents;
 
 /// <summary>
-///     The beer created event.
+///     The beer image created event.
 /// </summary>
 public record BeerImageCreated
 {
@@ -13,9 +13,9 @@ public record BeerImageCreated
     public Guid BeerId { get; init; }
     
     /// <summary>
-    ///     The brewery id.
+    ///     The image path.
     /// </summary>
-    public Guid BreweryId { get; init; }
+    public string? Path { get; init; }
 
     /// <summary>
     ///     The beer image.

@@ -51,7 +51,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
         var beerImageCreatedEvent = new BeerImageCreated
         {
             BeerId = beer.Id,
-            BreweryId = beer.BreweryId,
+            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
             Image = request.Image
         };
 
