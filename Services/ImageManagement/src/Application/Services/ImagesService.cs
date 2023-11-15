@@ -54,4 +54,13 @@ public class ImagesService : IImagesService
                 "Failed to delete the image.");
         }
     }
+
+    /// <summary>
+    ///     Deletes all images in given path.
+    /// </summary>
+    /// <param name="path">The path</param>
+    public async Task DeleteAllImagesInPathAsync(string path)
+    {
+        await _blobStorageService.DeleteInPathAsync(path);
+    }
 }

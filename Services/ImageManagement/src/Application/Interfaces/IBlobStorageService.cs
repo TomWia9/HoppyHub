@@ -34,5 +34,5 @@ public interface IBlobStorageService
     ///     Deletes all blobs in given path.
     /// </summary>
     /// <param name="path">The path</param>
-    Task DeleteInPath(string path);
+    Task DeleteInPathAsync(string path);
 }

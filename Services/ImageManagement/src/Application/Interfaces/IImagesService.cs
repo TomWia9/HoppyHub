@@ -19,4 +19,10 @@ public interface IImagesService
     /// </summary>
     /// <param name="imageUri">The image uri</param>
     Task DeleteImageAsync(string imageUri);
+
+    /// <summary>
+    ///     Deletes all images in given path.
+    /// </summary>
+    /// <param name="path">The path</param>
+    Task DeleteAllImagesInPathAsync(string path);
 }

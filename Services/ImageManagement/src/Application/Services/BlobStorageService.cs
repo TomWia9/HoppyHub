@@ -110,7 +110,7 @@ public class BlobStorageService : IBlobStorageService
     ///     Deletes all blobs in given path.
     /// </summary>
     /// <param name="path">The path</param>
-    public async Task DeleteInPath(string path)
+    public async Task DeleteInPathAsync(string path)
     {
         foreach (var blobItem in _blobContainerClient.GetBlobsByHierarchy(prefix: path))
         {
