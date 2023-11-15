@@ -1,5 +1,4 @@
 ﻿using Application.Interfaces;
-using Microsoft.AspNetCore.Http;
 using SharedUtilities.Exceptions;
 
 namespace Application.Services;
