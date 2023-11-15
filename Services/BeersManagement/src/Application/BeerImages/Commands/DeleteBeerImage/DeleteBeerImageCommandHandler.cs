@@ -24,14 +24,22 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
+    ///     The app configuration.
+    /// </summary>
+    private readonly IAppConfiguration _appConfiguration;
+
+    /// <summary>
     ///     Initializes DeleteBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="publishEndpoint">The publish endpoint</param>
-    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
+    /// <param name="appConfiguration">The app configuration</param>
+    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint,
+        IAppConfiguration appConfiguration)
     {
         _context = context;
         _publishEndpoint = publishEndpoint;
+        _appConfiguration = appConfiguration;
     }
 
     /// <summary>
@@ -51,13 +59,22 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
         if (beer.BeerImage is { TempImage: false, ImageUri: not null })
         {
-            var beerImageDeleted = new BeerImageDeleted
+            var beerImageDeleted = new ImagesDeleted
             {
-                BeerId = beer.Id,
-                Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
+                Paths = new List<string>
+                {
+                    $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
+                }
             };
 
             await _publishEndpoint.Publish(beerImageDeleted, cancellationToken);
+
+            //TODO: Ensure that image deleted and update entity.
+
+            beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
+            beer.BeerImage.TempImage = true;
+
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
     }
 }

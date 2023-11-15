@@ -2,6 +2,7 @@
 using Domain.Entities;
 using MassTransit;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SharedEvents;
 using SharedUtilities.Exceptions;
 
@@ -47,14 +48,37 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
-
-        var beerImageCreatedEvent = new BeerImageCreated
+        
+        var imageCreatedEvent = new ImageCreated
         {
-            BeerId = beer.Id,
             Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
             Image = request.Image
         };
 
-        await _publishEndpoint.Publish(beerImageCreatedEvent, cancellationToken);
+        await _publishEndpoint.Publish(imageCreatedEvent, cancellationToken);
+        
+        //TODO: Ensure that image uploaded and add/update entity
+
+        // var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
+        //     cancellationToken: cancellationToken);
+        //
+        // if (entity is null)
+        // {
+        //     entity = new BeerImage
+        //     {
+        //         BeerId = message.BeerId,
+        //         ImageUri = message.ImageUri,
+        //         TempImage = false
+        //     };
+        //
+        //     await _context.BeerImages.AddAsync(entity);
+        // }
+        // else
+        // {
+        //     entity.ImageUri = message.ImageUri;
+        //     entity.TempImage = false;
+        // }
+        //
+        // await _context.SaveChangesAsync(CancellationToken.None);
     }
 }

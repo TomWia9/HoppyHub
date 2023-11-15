@@ -3,10 +3,10 @@
 /// <summary>
 ///     The beer image deleted from blob storage event.
 /// </summary>
-public record BeerImageDeletedFromBlobStorage
+public record ImageDeletedFromBlobStorage
 {
     /// <summary>
-    ///     The beer id.
+    ///     Indicates whether operation succeed.
     /// </summary>
-    public Guid BeerId { get; set; }
+    public bool Success { get; set; }
 }

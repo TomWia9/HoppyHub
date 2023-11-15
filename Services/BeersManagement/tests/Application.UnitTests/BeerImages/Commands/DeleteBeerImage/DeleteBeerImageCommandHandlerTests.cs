@@ -26,6 +26,11 @@ public class DeleteBeerImageCommandHandlerTests
     private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
+    ///     The app configuration mock.
+    /// </summary>
+    private readonly Mock<IAppConfiguration> _appConfigurationMock;
+
+    /// <summary>
     ///     The DeleteBeerImageCommand handler.
     /// </summary>
     private readonly DeleteBeerImageCommandHandler _handler;
@@ -37,8 +42,10 @@ public class DeleteBeerImageCommandHandlerTests
     {
         _contextMock = new Mock<IApplicationDbContext>();
         _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _appConfigurationMock = new Mock<IAppConfiguration>();
 
-        _handler = new DeleteBeerImageCommandHandler(_contextMock.Object, _publishEndpointMock.Object);
+        _handler = new DeleteBeerImageCommandHandler(_contextMock.Object, _publishEndpointMock.Object,
+            _appConfigurationMock.Object);
     }
 
     /// <summary>
@@ -55,10 +62,12 @@ public class DeleteBeerImageCommandHandlerTests
         var beers = new List<Beer> { beer };
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
         var command = new DeleteBeerImageCommand { BeerId = beerId };
-        var expectedEvent = new BeerImageDeleted
+        var expectedEvent = new ImagesDeleted
         {
-            BeerId = beerId,
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
+            Paths = new List<string>
+            {
+                $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
+            }
         };
 
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
@@ -67,8 +76,8 @@ public class DeleteBeerImageCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _publishEndpointMock.Verify(x => x.Publish(It.Is<BeerImageDeleted>(y =>
-            y.Path == expectedEvent.Path), It.IsAny<CancellationToken>()), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.Is<ImagesDeleted>(y =>
+            y.Paths!.All(expectedEvent.Paths.Contains)), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>

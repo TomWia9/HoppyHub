@@ -19,7 +19,7 @@ public class UpsertBeerImageCommandHandlerTests
     ///     The database context mock.
     /// </summary>
     private readonly Mock<IApplicationDbContext> _contextMock;
-    
+
     /// <summary>
     ///     The publish endpoint mock.
     /// </summary>
@@ -66,9 +66,8 @@ public class UpsertBeerImageCommandHandlerTests
             Id = beerId,
             BreweryId = breweryId
         };
-        var expectedEvent = new BeerImageCreated
+        var expectedEvent = new ImageCreated
         {
-            BeerId = beerId,
             Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
             Image = request.Image
         };
@@ -81,8 +80,8 @@ public class UpsertBeerImageCommandHandlerTests
         await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        _publishEndpointMock.Verify(x => x.Publish(It.Is<BeerImageCreated>(y =>
-                y.BeerId == expectedEvent.BeerId && y.Path == expectedEvent.Path && y.Image == expectedEvent.Image),
+        _publishEndpointMock.Verify(x => x.Publish(It.Is<ImageCreated>(y =>
+                y.Path == expectedEvent.Path && y.Image == expectedEvent.Image),
             It.IsAny<CancellationToken>()), Times.Once);
     }
 
