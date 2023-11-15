@@ -5,6 +5,7 @@ using Azure.Storage.Blobs;
 using FluentValidation;
 using MassTransit;
 using Serilog;
+using SharedUtilities;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Filters;
 
@@ -29,6 +30,7 @@ public static class ConfigureServices
         services.AddTransient<IImagesService, ImagesService>();
 
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(SharedUtilitiesAssemblyMarker)));
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());

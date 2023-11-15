@@ -1,7 +1,7 @@
 ﻿namespace SharedEvents;
 
 /// <summary>
-///     The beer image deleted from blob storage event.
+///     The image deleted from blob storage event.
 /// </summary>
 public record ImageDeletedFromBlobStorage
 {

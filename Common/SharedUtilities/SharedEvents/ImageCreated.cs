@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace SharedEvents;
+﻿namespace SharedEvents;
 
 /// <summary>
 ///     The image created event.
