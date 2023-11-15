@@ -1,7 +1,7 @@
 ﻿namespace SharedEvents;
 
 /// <summary>
-///     The beer deleted event.
+///     The images deleted event.
 /// </summary>
 public record ImagesDeleted
 {

@@ -59,22 +59,19 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
         if (beer.BeerImage is { TempImage: false, ImageUri: not null })
         {
-            var beerImageDeleted = new ImagesDeleted
+            var beerImageDeleted = new ImageDeleted
             {
-                Paths = new List<string>
-                {
-                    $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
-                }
+                Uri = beer.BeerImage.ImageUri
             };
 
             await _publishEndpoint.Publish(beerImageDeleted, cancellationToken);
 
             //TODO: Ensure that image deleted and update entity.
 
-            beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
-            beer.BeerImage.TempImage = true;
-
-            await _context.SaveChangesAsync(CancellationToken.None);
+            // beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
+            // beer.BeerImage.TempImage = true;
+            //
+            // await _context.SaveChangesAsync(CancellationToken.None);
         }
     }
 }
