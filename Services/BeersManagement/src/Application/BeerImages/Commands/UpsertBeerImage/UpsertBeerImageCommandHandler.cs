@@ -3,7 +3,6 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using SharedEvents;
 using SharedUtilities.Exceptions;
 
@@ -52,7 +51,8 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
 
         var imageCreatedEvent = new ImageCreated
         {
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
+            Path =
+                $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}{Path.GetExtension(request.Image!.FileName)}",
             Image = await request.Image!.GetBytes()
         };
 
