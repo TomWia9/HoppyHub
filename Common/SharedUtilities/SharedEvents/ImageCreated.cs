@@ -15,5 +15,5 @@ public record ImageCreated
     /// <summary>
     ///     The beer image.
     /// </summary>
-    public IFormFile? Image { get; init; }
+    public byte[]? Image { get; init; }
 }

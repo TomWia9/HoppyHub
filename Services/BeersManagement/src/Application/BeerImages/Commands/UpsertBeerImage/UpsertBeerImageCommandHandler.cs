@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Extensions;
+using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
 using MediatR;
@@ -48,15 +49,15 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
-        
+
         var imageCreatedEvent = new ImageCreated
         {
             Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = request.Image
+            Image = await request.Image!.GetBytes()
         };
 
         await _publishEndpoint.Publish(imageCreatedEvent, cancellationToken);
-        
+
         //TODO: Ensure that image uploaded and add/update entity
 
         // var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,

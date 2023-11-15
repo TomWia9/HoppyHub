@@ -1,4 +1,5 @@
 ﻿using Application.BeerImages.Commands.UpsertBeerImage;
+using Application.Common.Extensions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
@@ -69,7 +70,7 @@ public class UpsertBeerImageCommandHandlerTests
         var expectedEvent = new ImageCreated
         {
             Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = request.Image
+            Image = await request.Image.GetBytes()
         };
 
         _contextMock
