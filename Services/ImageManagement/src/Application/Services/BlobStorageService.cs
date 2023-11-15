@@ -81,13 +81,17 @@ public class BlobStorageService : IBlobStorageService
 
         try
         {
-            await file.DeleteAsync();
+            var blobDeleted = await file.DeleteIfExistsAsync();
+
+            if (!blobDeleted)
+            {
+                return new BlobResponseDto { Error = true, Status = $"File with name {path} not found." };
+            }
         }
-        catch (RequestFailedException ex)
-            when (ex.ErrorCode == BlobErrorCode.BlobNotFound)
+        catch (RequestFailedException)
         {
-            _logger.LogError("File {Path} was not found", path);
-            return new BlobResponseDto { Error = true, Status = $"File with name {path} not found." };
+            _logger.LogError("A problem occurred while deleting a {Path} file", path);
+            return new BlobResponseDto { Error = true, Status = $"A problem occurred while deleting a {path} file." };
         }
 
         return new BlobResponseDto { Error = false, Status = $"File: {path} has been successfully deleted." };

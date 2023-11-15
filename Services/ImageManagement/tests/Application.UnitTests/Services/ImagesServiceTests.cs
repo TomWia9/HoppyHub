@@ -48,7 +48,7 @@ public class ImagesServiceTests
             {
                 Error = false,
                 Status = "ok",
-                Blob = new BlobDto { Uri = expectedUri, ContentType = "test" }
+                Blob = new BlobDto { Uri = expectedUri }
             });
 
         // Act

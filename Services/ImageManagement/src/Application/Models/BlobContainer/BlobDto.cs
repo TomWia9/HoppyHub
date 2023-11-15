@@ -14,14 +14,4 @@ public class BlobDto
     ///     The blob name.
     /// </summary>
     public string? Name { get; set; }
-
-    /// <summary>
-    ///     The content type.
-    /// </summary>
-    public string? ContentType { get; set; }
-
-    /// <summary>
-    ///     The content.
-    /// </summary>
-    public Stream? Content { get; set; }
 }

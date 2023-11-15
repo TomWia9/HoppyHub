@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces;
 using Application.Services;
+using Azure.Storage.Blobs;
+using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,11 +29,11 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the BlobStorageService
+    ///     Tests that the AddApplicationServices method adds the BlobStorageService
     ///     to the service collection as IBlobStorageService.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_ShouldAddBlobStorageService()
+    public void AddApplicationServices_ShouldAddBlobStorageService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IBlobStorageService));
@@ -40,15 +42,26 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the ImagesService
+    ///     Tests that the AddApplicationServices method adds the ImagesService
     ///     to the service collection as IImagesService.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_ShouldAddBeersImagesService()
+    public void AddApplicationServices_ShouldAddBeersImagesService()
     {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IImagesService));
         _services.Should().Contain(s => s.ImplementationType == typeof(ImagesService));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
+    /// <summary>
+    ///     Tests that the AddApplicationServices method adds the BusControl
+    ///     to the service collection as IBusControl.
+    /// </summary>
+    [Fact]
+    public void AddApplicationServices_ShouldAddConsumersFromAssembly()
+    {        
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IBusControl));
     }
 }
