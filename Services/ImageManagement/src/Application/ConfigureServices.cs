@@ -1,6 +1,11 @@
 ﻿using System.Reflection;
+using Application.Interfaces;
+using Application.Services;
+using Azure.Storage.Blobs;
 using FluentValidation;
 using MassTransit;
+using Serilog;
+using SharedUtilities.Exceptions;
 using SharedUtilities.Filters;
 
 namespace Application;
@@ -18,6 +23,11 @@ public static class ConfigureServices
     public static IServiceCollection AddApplicationServices(this IServiceCollection services,
         IConfiguration configuration)
     {
+        services.AddSingleton<IBlobStorageService, BlobStorageService>();
+        services.AddSingleton(_ => CreateBlobContainerClient(configuration));
+
+        services.AddTransient<IImagesService, ImagesService>();
+
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMassTransit(x =>
         {
@@ -30,5 +40,35 @@ public static class ConfigureServices
         });
 
         return services;
+    }
+
+    /// <summary>
+    ///     Creates blob container client.
+    /// </summary>
+    /// <param name="configuration">The configuration</param>
+    private static BlobContainerClient CreateBlobContainerClient(IConfiguration configuration)
+    {
+        var blobConnectionString = configuration.GetValue<string>("BlobContainerSettings:BlobConnectionString");
+        var blobContainerName = configuration.GetValue<string>("BlobContainerSettings:BlobContainerName");
+
+        if (string.IsNullOrEmpty(blobConnectionString))
+        {
+            throw new RemoteServiceConnectionException("The blob storage connection string is null");
+        }
+
+        if (string.IsNullOrEmpty(blobContainerName))
+        {
+            throw new RemoteServiceConnectionException("The blob storage container name is null");
+        }
+
+        try
+        {
+            return new BlobContainerClient(blobConnectionString, blobContainerName);
+        }
+        catch (Exception e)
+        {
+            Log.Logger.Error("Cannot connect to te blob container. Exception message: {ExMessage}", e.Message);
+            throw new RemoteServiceConnectionException(e.Message);
+        }
     }
 }

@@ -3,10 +3,8 @@ using Application.Models.BlobContainer;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
-namespace Infrastructure.Services;
+namespace Application.Services;
 
 /// <summary>
 ///     The BlobStorageService service.
@@ -40,7 +38,7 @@ public class BlobStorageService : IBlobStorageService
     /// <param name="path">The blob path</param>
     /// <param name="blob">The blob for upload</param>
     /// <returns>BlobResponseDto with status</returns>
-    public async Task<BlobResponseDto> UploadAsync(string path, IFormFile blob)
+    public async Task<BlobResponseDto> UploadAsync(string path, byte[] blob)
     {
         BlobResponseDto response = new();
 
@@ -48,12 +46,12 @@ public class BlobStorageService : IBlobStorageService
         {
             var client = _blobContainerClient.GetBlobClient(path);
 
-            await using (var data = blob.OpenReadStream())
+            await using (var stream = new MemoryStream(blob))
             {
-                await client.UploadAsync(data, true);
+                await client.UploadAsync(stream, true);
             }
 
-            response.Status = $"File {blob.FileName} Uploaded Successfully";
+            response.Status = $"File uploaded successfully";
             response.Error = false;
             response.Blob.Uri = client.Uri.AbsoluteUri;
             response.Blob.Name = client.Name;

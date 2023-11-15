@@ -14,7 +14,7 @@ public interface IBlobStorageService
     /// <param name="path">The blob path</param>
     /// <param name="blob">The blob for upload</param>
     /// <returns>BlobResponseDto with status</returns>
-    Task<BlobResponseDto> UploadAsync(string path, IFormFile blob);
+    Task<BlobResponseDto> UploadAsync(string path, byte[] blob);
 
     /// <summary>
     ///     Deletes a blob on a given path.

@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using SharedUtilities.Exceptions;
 
-namespace Infrastructure.Services;
+namespace Application.Services;
 
 /// <summary>
 ///     Images service.
 /// </summary>
-public abstract class ImagesService : IImagesService
+public class ImagesService : IImagesService
 {
     /// <summary>
     ///     The azure storage service.
@@ -18,7 +18,7 @@ public abstract class ImagesService : IImagesService
     ///     Initializes ImagesService.
     /// </summary>
     /// <param name="blobStorageService">The azure storage service</param>
-    protected ImagesService(IBlobStorageService blobStorageService)
+    public ImagesService(IBlobStorageService blobStorageService)
     {
         _blobStorageService = blobStorageService;
     }
@@ -28,7 +28,7 @@ public abstract class ImagesService : IImagesService
     /// </summary>
     /// <param name="path">The image path</param>
     /// <param name="image">The image</param>
-    public async Task<string> UploadImageAsync(string path, IFormFile image)
+    public async Task<string> UploadImageAsync(string path, byte[] image)
     {
         var blobResponse = await _blobStorageService.UploadAsync(path, image);
 

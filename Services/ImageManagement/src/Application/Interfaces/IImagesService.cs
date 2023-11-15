@@ -12,7 +12,7 @@ public interface IImagesService
     /// </summary>
     /// <param name="path">The image path</param>
     /// <param name="image">The image</param>
-    Task<string> UploadImageAsync(string path, IFormFile image);
+    Task<string> UploadImageAsync(string path, byte[] image);
 
     /// <summary>
     ///     Deletes image from blob.
