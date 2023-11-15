@@ -62,12 +62,9 @@ public class DeleteBeerImageCommandHandlerTests
         var beers = new List<Beer> { beer };
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
         var command = new DeleteBeerImageCommand { BeerId = beerId };
-        var expectedEvent = new ImagesDeleted
+        var expectedEvent = new ImageDeleted
         {
-            Paths = new List<string>
-            {
-                $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}"
-            }
+            Uri = beer.BeerImage.ImageUri
         };
 
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
@@ -76,8 +73,8 @@ public class DeleteBeerImageCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
-        _publishEndpointMock.Verify(x => x.Publish(It.Is<ImagesDeleted>(y =>
-            y.Paths!.All(expectedEvent.Paths.Contains)), It.IsAny<CancellationToken>()), Times.Once);
+        _publishEndpointMock.Verify(x => x.Publish(It.Is<ImageDeleted>(y =>
+            y.Uri == expectedEvent.Uri), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>
