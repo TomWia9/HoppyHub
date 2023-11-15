@@ -13,11 +13,6 @@ namespace Application.UnitTests.EventConsumers;
 public class ImageCreatedConsumerTests
 {
     /// <summary>
-    ///     The ImagesService mock.
-    /// </summary>
-    private readonly Mock<IImagesService> _imagesServiceMock;
-
-    /// <summary>
     ///     The consume context mock.
     /// </summary>
     private readonly Mock<ConsumeContext<ImageCreated>> _consumeContextMock;
@@ -26,6 +21,11 @@ public class ImageCreatedConsumerTests
     ///     The ImageCreated consumer.
     /// </summary>
     private readonly ImageCreatedConsumer _consumer;
+
+    /// <summary>
+    ///     The ImagesService mock.
+    /// </summary>
+    private readonly Mock<IImagesService> _imagesServiceMock;
 
     /// <summary>
     ///     Setups ImageCreatedConsumerTests.

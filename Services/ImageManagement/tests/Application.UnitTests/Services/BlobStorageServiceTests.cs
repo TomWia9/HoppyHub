@@ -15,14 +15,14 @@ namespace Application.UnitTests.Services;
 public class BlobStorageServiceTests
 {
     /// <summary>
+    ///     The blob client mock.
+    /// </summary>
+    private readonly Mock<BlobClient> _blobClientMock;
+
+    /// <summary>
     ///     The blob container client mock.
     /// </summary>
     private readonly Mock<BlobContainerClient> _blobContainerClientMock;
-
-    /// <summary>
-    /// The blob client mock.
-    /// </summary>
-    private readonly Mock<BlobClient> _blobClientMock;
 
     /// <summary>
     ///     The azure storage service.
@@ -145,7 +145,8 @@ public class BlobStorageServiceTests
     }
 
     /// <summary>
-    ///     Tests that DeleteAsync returns BlobResponseDto with error and correct status when RequestFailed exception was thrown.
+    ///     Tests that DeleteAsync returns BlobResponseDto with error and correct status when RequestFailed exception was
+    ///     thrown.
     /// </summary>
     [Fact]
     public async Task

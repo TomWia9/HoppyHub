@@ -13,11 +13,6 @@ namespace Application.UnitTests.EventConsumers;
 public class ImageDeletedConsumerTests
 {
     /// <summary>
-    ///     The ImagesService mock.
-    /// </summary>
-    private readonly Mock<IImagesService> _imagesServiceMock;
-
-    /// <summary>
     ///     The consume context mock.
     /// </summary>
     private readonly Mock<ConsumeContext<ImageDeleted>> _consumeContextMock;
@@ -26,6 +21,11 @@ public class ImageDeletedConsumerTests
     ///     The ImageDeleted consumer.
     /// </summary>
     private readonly ImageDeletedConsumer _consumer;
+
+    /// <summary>
+    ///     The ImagesService mock.
+    /// </summary>
+    private readonly Mock<IImagesService> _imagesServiceMock;
 
     /// <summary>
     ///     Setups ImageDeletedConsumerTests.
@@ -46,7 +46,7 @@ public class ImageDeletedConsumerTests
         // Arrange
         var message = new ImageDeleted
         {
-            Uri = "https://test.com/test.jpg",
+            Uri = "https://test.com/test.jpg"
         };
         _consumeContextMock.Setup(x => x.Message).Returns(message);
 

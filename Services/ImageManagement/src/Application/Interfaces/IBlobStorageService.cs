@@ -1,5 +1,4 @@
 ﻿using Application.Models.BlobContainer;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.Interfaces;
 

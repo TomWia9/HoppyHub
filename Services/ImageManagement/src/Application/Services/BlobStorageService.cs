@@ -51,7 +51,7 @@ public class BlobStorageService : IBlobStorageService
                 await client.UploadAsync(stream, true);
             }
 
-            response.Status = $"File uploaded successfully";
+            response.Status = "File uploaded successfully";
             response.Error = false;
             response.Blob.Uri = client.Uri.AbsoluteUri;
             response.Blob.Name = client.Name;

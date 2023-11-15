@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Application.Interfaces;
+﻿namespace Application.Interfaces;
 
 /// <summary>
 ///     The images service interface.

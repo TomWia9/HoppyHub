@@ -21,7 +21,7 @@ public class MessageValidationFilter<T> : IFilter<ConsumeContext<T>> where T : c
     {
         _validators = validators;
     }
-    
+
     /// <summary>
     ///     Validates and sends the message.
     /// </summary>

@@ -1,6 +1,5 @@
 ﻿using Application.Interfaces;
 using Application.Services;
-using Azure.Storage.Blobs;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -60,7 +59,7 @@ public class ConfigureServicesTests
     /// </summary>
     [Fact]
     public void AddApplicationServices_ShouldAddConsumersFromAssembly()
-    {        
+    {
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(IBusControl));
     }
