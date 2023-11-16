@@ -1,5 +1,5 @@
 ﻿using FluentValidation.TestHelper;
-using SharedEvents;
+using SharedEvents.Responses;
 using SharedUtilities.EventValidators.Images;
 
 namespace SharedUtilities.UnitTests.EventValidators.Images;

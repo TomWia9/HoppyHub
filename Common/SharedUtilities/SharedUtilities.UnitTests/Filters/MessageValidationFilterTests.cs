@@ -30,14 +30,14 @@ public class MessageValidationFilterTests
     private readonly Mock<IValidator<TestEvent>> _validatorMock;
 
     /// <summary>
-    ///     The validators.
-    /// </summary>
-    private IEnumerable<IValidator<TestEvent>> _validators;
-
-    /// <summary>
     ///     The message validation filter.
     /// </summary>
     private MessageValidationFilter<TestEvent> _messageValidationFilter;
+
+    /// <summary>
+    ///     The validators.
+    /// </summary>
+    private IEnumerable<IValidator<TestEvent>> _validators;
 
     /// <summary>
     ///     Setups MessageValidationFilterTests.
