@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using MassTransit;
 using MediatR;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 

@@ -4,7 +4,7 @@ using Domain.Entities;
 using MassTransit;
 using MockQueryable.Moq;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Models;
 
 namespace Application.UnitTests.Users.EventConsumers;

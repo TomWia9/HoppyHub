@@ -28,10 +28,7 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
-        services.AddMassTransit(cfg =>
-        {
-            cfg.UsingRabbitMq();
-        });
+        services.AddMassTransit(cfg => { cfg.UsingRabbitMq(); });
 
         return services;
     }

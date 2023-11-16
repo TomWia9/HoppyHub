@@ -1,9 +1,9 @@
-﻿namespace SharedEvents;
+﻿namespace SharedEvents.Events;
 
 /// <summary>
-///     The user created event.
+///     The user updated event.
 /// </summary>
-public record UserCreated
+public record UserUpdated
 {
     /// <summary>
     ///     The user id.
@@ -14,9 +14,4 @@ public record UserCreated
     ///     The username.
     /// </summary>
     public string? Username { get; set; }
-
-    /// <summary>
-    ///     The role.
-    /// </summary>
-    public string? Role { get; set; }
 }

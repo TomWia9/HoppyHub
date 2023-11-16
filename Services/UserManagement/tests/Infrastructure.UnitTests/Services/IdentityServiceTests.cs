@@ -272,7 +272,7 @@ public class IdentityServiceTests
         Assert.Throws<ArgumentException>(() => _identityService.GetClaimValueFromJwt(jwtToken, claimType))
             .Message.Should().Contain($"Claim '{claimType}' does not exist in JWT token");
     }
-    
+
     /// <summary>
     ///     Tests that GetUserIdFromJwt method returns valid user id when token is valid.
     /// </summary>

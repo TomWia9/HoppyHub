@@ -1,5 +1,5 @@
 ﻿using FluentValidation.TestHelper;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.EventValidators.Users;
 using SharedUtilities.Models;
 

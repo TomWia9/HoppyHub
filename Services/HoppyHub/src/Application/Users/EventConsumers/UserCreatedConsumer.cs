@@ -2,7 +2,7 @@
 using Domain.Entities;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using SharedEvents;
+using SharedEvents.Events;
 
 namespace Application.Users.EventConsumers;
 

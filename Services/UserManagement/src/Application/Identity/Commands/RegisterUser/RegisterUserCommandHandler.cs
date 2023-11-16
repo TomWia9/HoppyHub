@@ -2,7 +2,7 @@
 using Application.Common.Models;
 using MassTransit;
 using MediatR;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Models;
 
 namespace Application.Identity.Commands.RegisterUser;
@@ -21,7 +21,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     ///     The publish endpoint.
     /// </summary>
     private readonly IPublishEndpoint _publishEndpoint;
-    
+
     /// <summary>
     ///     Initializes RegisterUserCommandHandler
     /// </summary>
@@ -40,8 +40,9 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<AuthenticationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var authenticationResult = await _identityService.RegisterAsync(request.Email, request.Username, request.Password);
-        
+        var authenticationResult =
+            await _identityService.RegisterAsync(request.Email, request.Username, request.Password);
+
         if (!authenticationResult.Succeeded || string.IsNullOrEmpty(authenticationResult.Token))
         {
             return authenticationResult;
@@ -57,7 +58,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, A
                 Username = request.Username,
                 Role = Roles.User
             };
-            
+
             await _publishEndpoint.Publish(userCreatedEvent, cancellationToken);
         }
 

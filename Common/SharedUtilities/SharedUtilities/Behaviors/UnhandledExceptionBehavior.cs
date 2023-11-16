@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MediatR;
 using Microsoft.Extensions.Logging;
 using SharedUtilities.Exceptions;
 
@@ -18,7 +19,9 @@ public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior
         typeof(NotFoundException),
         typeof(UnauthorizedAccessException),
         typeof(ForbiddenAccessException),
-        typeof(BadRequestException)
+        typeof(BadRequestException),
+        typeof(RemoteServiceConnectionException),
+        typeof(RequestTimeoutException)
     };
 
     /// <summary>

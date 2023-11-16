@@ -9,6 +9,7 @@ namespace Infrastructure.UnitTests.Helpers;
 /// <summary>
 ///     The UserManager mock factory
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class UserManagerMockFactory
 {
     /// <summary>
