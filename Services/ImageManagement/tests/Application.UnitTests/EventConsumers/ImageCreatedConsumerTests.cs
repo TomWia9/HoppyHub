@@ -3,6 +3,7 @@ using Application.Interfaces;
 using MassTransit;
 using Moq;
 using SharedEvents.Events;
+using SharedEvents.Responds;
 
 namespace Application.UnitTests.EventConsumers;
 
@@ -41,15 +42,18 @@ public class ImageCreatedConsumerTests
     ///     Tests that Consume method calls UploadImageAsync method when message is valid.
     /// </summary>
     [Fact]
-    public async Task Consume_ShouldCallUploadImageAsyncMethod_WhenMessageIsValid()
+    public async Task Consume_ShouldCallUploadImageAsyncMethodAndReturnImageUri_WhenMessageIsValid()
     {
         // Arrange
+        const string imageUri = "https://test.com/test.jpg";
         var message = new ImageCreated
         {
             Path = "test/test",
             Image = new byte[1]
         };
         _consumeContextMock.Setup(x => x.Message).Returns(message);
+        _imagesServiceMock.Setup(x => x.UploadImageAsync(It.IsAny<string>(), It.IsAny<byte[]>()))
+            .ReturnsAsync(imageUri);
 
         // Act
         await _consumer.Consume(_consumeContextMock.Object);
@@ -57,5 +61,6 @@ public class ImageCreatedConsumerTests
         // Assert
         _imagesServiceMock.Verify(x =>
             x.UploadImageAsync(message.Path, message.Image), Times.Once());
+        _consumeContextMock.Verify(x => x.RespondAsync(It.Is<ImageUploaded>(y => y.Uri == imageUri)), Times.Once);
     }
 }
