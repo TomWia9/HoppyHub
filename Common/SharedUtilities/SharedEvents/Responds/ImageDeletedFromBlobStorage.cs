@@ -1,4 +1,4 @@
-﻿namespace SharedEvents;
+﻿namespace SharedEvents.Responds;
 
 /// <summary>
 ///     The image deleted from blob storage event.

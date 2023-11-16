@@ -4,7 +4,7 @@ using Application.UnitTests.TestHelpers;
 using Domain.Entities;
 using MassTransit;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Beers.Commands.DeleteBeer;

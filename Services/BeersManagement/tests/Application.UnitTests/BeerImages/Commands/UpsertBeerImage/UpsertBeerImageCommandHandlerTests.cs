@@ -5,7 +5,7 @@ using Domain.Entities;
 using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;

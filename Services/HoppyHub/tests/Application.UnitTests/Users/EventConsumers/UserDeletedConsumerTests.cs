@@ -3,7 +3,7 @@ using Application.Users.EventConsumers;
 using Domain.Entities;
 using MassTransit;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 
 namespace Application.UnitTests.Users.EventConsumers;
 

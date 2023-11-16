@@ -1,4 +1,4 @@
-﻿namespace SharedEvents;
+﻿namespace SharedEvents.Events;
 
 /// <summary>
 ///     The images deleted event.

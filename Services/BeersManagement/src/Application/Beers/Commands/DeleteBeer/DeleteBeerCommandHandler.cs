@@ -2,7 +2,7 @@
 using Domain.Entities;
 using MassTransit;
 using MediatR;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.Beers.Commands.DeleteBeer;

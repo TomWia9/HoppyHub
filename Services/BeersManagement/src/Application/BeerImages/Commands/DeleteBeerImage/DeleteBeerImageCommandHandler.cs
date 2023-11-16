@@ -3,7 +3,7 @@ using Domain.Entities;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.BeerImages.Commands.DeleteBeerImage;

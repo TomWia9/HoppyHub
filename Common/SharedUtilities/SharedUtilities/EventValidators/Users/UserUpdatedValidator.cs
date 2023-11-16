@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SharedEvents;
+using SharedEvents.Events;
 
 namespace SharedUtilities.EventValidators.Users;
 

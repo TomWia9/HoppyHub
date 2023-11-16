@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SharedEvents;
+using SharedEvents.Responds;
 
 namespace SharedUtilities.EventValidators.Images;
 

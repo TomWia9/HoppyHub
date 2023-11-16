@@ -7,7 +7,7 @@ using Domain.Entities;
 using MassTransit;
 using MockQueryable.Moq;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Beers.Commands.CreateBeer;

@@ -10,6 +10,7 @@ using MassTransit;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
+using SharedEvents.Events;
 using SharedUtilities;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Filters;
@@ -41,6 +42,7 @@ public static class ConfigureServices
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());
+            //x.AddRequestClient<ImageCreated>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.ConfigureEndpoints(context);
