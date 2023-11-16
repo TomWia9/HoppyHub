@@ -18,14 +18,14 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     The users service.
-    /// </summary>
-    private readonly IUsersService _usersService;
-
-    /// <summary>
     ///     The publish endpoint.
     /// </summary>
     private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
+    ///     The users service.
+    /// </summary>
+    private readonly IUsersService _usersService;
 
     /// <summary>
     ///     Initializes DeleteUserCommandHandler.

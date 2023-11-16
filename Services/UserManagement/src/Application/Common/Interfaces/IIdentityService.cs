@@ -23,14 +23,14 @@ public interface IIdentityService
     /// <param name="password">The password</param>
     /// <returns>An AuthenticationResult</returns>
     Task<AuthenticationResult> LoginAsync(string? email, string? password);
-    
+
     /// <summary>
     ///     Gets specified claim value from jwt token.
     /// </summary>
     /// <param name="jwtToken">Json web token</param>
     /// <param name="claimType">The claim type</param>
     string GetClaimValueFromJwt(string jwtToken, string claimType);
-    
+
     /// <summary>
     ///     Gets user id from jwt token.
     /// </summary>

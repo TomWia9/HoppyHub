@@ -14,6 +14,11 @@ namespace Application.UnitTests.Identity.Commands.RegisterUser;
 public class RegisterUserCommandHandlerTests
 {
     /// <summary>
+    ///     The register user command handler.
+    /// </summary>
+    private readonly RegisterUserCommandHandler _handler;
+
+    /// <summary>
     ///     The identity service mock.
     /// </summary>
     private readonly Mock<IIdentityService> _identityServiceMock;
@@ -22,11 +27,6 @@ public class RegisterUserCommandHandlerTests
     ///     The publish endpoint mock.
     /// </summary>
     private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
-    ///     The register user command handler.
-    /// </summary>
-    private readonly RegisterUserCommandHandler _handler;
 
     /// <summary>
     ///     Setups RegisterUserCommandHandlerTests.
@@ -40,7 +40,8 @@ public class RegisterUserCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that the Handle method calls the RegisterAsync method with the correct arguments and publishes UserCreated event.
+    ///     Tests that the Handle method calls the RegisterAsync method with the correct arguments and publishes UserCreated
+    ///     event.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldCallRegisterAsyncAndPublishUserCreatedEvent()
@@ -97,7 +98,8 @@ public class RegisterUserCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that the Handle method returns an AuthenticationResult object with failed status and not publishes UserCreated event.
+    ///     Tests that the Handle method returns an AuthenticationResult object with failed status and not publishes
+    ///     UserCreated event.
     /// </summary>
     [Fact]
     public async Task Handle_ShouldReturnAuthenticationResultWithFailedStatusAndShouldNotPublishUserCreatedEvent()
@@ -119,7 +121,7 @@ public class RegisterUserCommandHandlerTests
 
         // Assert
         actual.Should().BeEquivalentTo(expected);
-        _publishEndpointMock.Verify(x => x.Publish<UserCreated>(It.IsAny<UserCreated>(), It.IsAny<CancellationToken>()),
+        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<UserCreated>(), It.IsAny<CancellationToken>()),
             Times.Never);
     }
 }

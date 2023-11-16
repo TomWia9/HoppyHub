@@ -154,7 +154,7 @@ public class UsersServiceTests
             .Returns(users);
         _userManagerMock.Setup(x => x.GetRolesAsync(It.IsAny<ApplicationUser>()))
             .ReturnsAsync(new List<string> { Roles.User });
-       
+
         // Act
         var result = await _usersService.GetUsersAsync(query);
 
@@ -213,7 +213,7 @@ public class UsersServiceTests
 
         _userManagerMock.Setup(x => x.Users).Returns(users.AsQueryable());
         _userManagerMock.Setup(x => x.GetUsersInRoleAsync(query.Role)).ReturnsAsync(users);
-        
+
         // Act
         var result = await _usersService.GetUsersAsync(query);
 
