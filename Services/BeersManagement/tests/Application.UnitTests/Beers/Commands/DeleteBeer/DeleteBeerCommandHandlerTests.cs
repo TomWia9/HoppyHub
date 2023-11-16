@@ -128,14 +128,6 @@ public class DeleteBeerCommandHandlerTests
         var breweryId = Guid.NewGuid();
         var beer = new Beer { Id = beerId, BreweryId = breweryId };
         var command = new DeleteBeerCommand { Id = beerId };
-        var imagesDeletedEvent = new ImagesDeleted
-        {
-            Paths = new List<string>
-            {
-                $"Opinions/{beer.BreweryId}/{beer.Id}",
-                $"Beers/{beer.BreweryId}/{beer.Id}"
-            }
-        };
         var imagesDeletedFromBlobStorageResponse = new ImagesDeletedFromBlobStorage
         {
             Success = false
