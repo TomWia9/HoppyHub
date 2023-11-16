@@ -22,14 +22,14 @@ public class DeleteBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The ImagesDeleted request client mock.
-    /// </summary>
-    private readonly Mock<IRequestClient<ImagesDeleted>> _imagesDeletedRequestClientMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteBeerCommandHandler _handler;
+
+    /// <summary>
+    ///     The ImagesDeleted request client mock.
+    /// </summary>
+    private readonly Mock<IRequestClient<ImagesDeleted>> _imagesDeletedRequestClientMock;
 
     /// <summary>
     ///     Setups DeleteBeerCommandHandlerTests.
@@ -42,7 +42,8 @@ public class DeleteBeerCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes beer from database and gets ImagesDeletedFromBlobStorage response without error when beer exists.
+    ///     Tests that Handle method removes beer from database and gets ImagesDeletedFromBlobStorage response without error
+    ///     when beer exists.
     /// </summary>
     [Fact]
     public async Task
@@ -116,7 +117,8 @@ public class DeleteBeerCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method throws RemoteServiceConnectionException when ImagesDeletedFromBlobStorage response has an error.
+    ///     Tests that Handle method throws RemoteServiceConnectionException when ImagesDeletedFromBlobStorage response has an
+    ///     error.
     /// </summary>
     [Fact]
     public async Task

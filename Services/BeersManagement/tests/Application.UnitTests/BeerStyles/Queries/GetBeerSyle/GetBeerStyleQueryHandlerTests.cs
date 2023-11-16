@@ -5,7 +5,6 @@ using AutoMapper;
 using Domain.Entities;
 using Moq;
 using SharedUtilities.Exceptions;
-using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerSyle;
 

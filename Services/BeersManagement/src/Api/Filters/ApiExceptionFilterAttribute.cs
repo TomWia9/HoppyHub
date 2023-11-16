@@ -28,7 +28,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             { typeof(BadRequestException), HandleBadRequestException },
             { typeof(RemoteServiceConnectionException), HandleRemoteServiceConnectionException },
-            { typeof(RequestTimeoutException), HandleRequestTimeoutException}
+            { typeof(RequestTimeoutException), HandleRequestTimeoutException }
         };
     }
 
@@ -177,7 +177,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.ExceptionHandled = true;
     }
-    
+
     /// <summary>
     ///     Handles remote service connection exception.
     /// </summary>
@@ -200,7 +200,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
 
         context.ExceptionHandled = true;
     }
-    
+
     /// <summary>
     ///     Handles request timeout exception.
     /// </summary>

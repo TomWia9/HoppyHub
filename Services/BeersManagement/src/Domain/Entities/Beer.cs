@@ -56,12 +56,12 @@ public class Beer : BaseAuditableEntity
     ///     The beer average rating.
     /// </summary>
     public double Rating { get; set; }
-    
+
     /// <summary>
     ///     The beer opinions count.
     /// </summary>
     public int OpinionsCount { get; set; }
-    
+
     /// <summary>
     ///     The beer favorites count.
     /// </summary>
@@ -76,7 +76,7 @@ public class Beer : BaseAuditableEntity
     ///     The brewery.
     /// </summary>
     public Brewery? Brewery { get; set; }
-    
+
     /// <summary>
     ///     The beer image.
     /// </summary>

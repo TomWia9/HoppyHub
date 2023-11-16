@@ -19,24 +19,24 @@ namespace Application.UnitTests.Beers.Commands.CreateBeer;
 public class CreateBeerCommandHandlerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The app configuration mock.
     /// </summary>
     private readonly Mock<IAppConfiguration> _appConfigurationMock;
 
     /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateBeerCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups CreateBeerCommandHandlerTests.

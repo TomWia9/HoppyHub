@@ -15,7 +15,6 @@ public class UpsertBeerImageCommandValidator : AbstractValidator<UpsertBeerImage
     {
         RuleFor(x => x.BeerId).NotEmpty();
         RuleFor(x => x.Image)
-            
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .Must(BeAValidFile)

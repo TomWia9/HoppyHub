@@ -24,11 +24,6 @@ public class UpsertBeerImageCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IRequestClient<ImageCreated>> _imageCreatedRequestClientMock;
-
-    /// <summary>
     ///     The form file mock.
     /// </summary>
     private readonly Mock<IFormFile> _formFileMock;
@@ -37,6 +32,11 @@ public class UpsertBeerImageCommandHandlerTests
     ///     The UpsertBeerImageCommand handler.
     /// </summary>
     private readonly UpsertBeerImageCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IRequestClient<ImageCreated>> _imageCreatedRequestClientMock;
 
     /// <summary>
     ///     Setups UpsertBeerImageCommandHandlerTests.
@@ -51,7 +51,8 @@ public class UpsertBeerImageCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method gets ImageUploaded response and add BeerImage to database when beer exists and beer image does not exists.
+    ///     Tests that Handle method gets ImageUploaded response and add BeerImage to database when beer exists and beer image
+    ///     does not exists.
     /// </summary>
     [Fact]
     public async Task

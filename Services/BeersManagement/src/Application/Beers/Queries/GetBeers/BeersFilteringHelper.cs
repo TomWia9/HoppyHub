@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using Application.Beers.Dtos;
 using Application.Common.Abstractions;
 using Domain.Entities;
 

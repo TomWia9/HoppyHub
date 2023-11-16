@@ -16,14 +16,14 @@ namespace Application.Beers.Commands.CreateBeer;
 public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerDto>
 {
     /// <summary>
+    ///     The app configuration.
+    /// </summary>
+    private readonly IAppConfiguration _appConfiguration;
+
+    /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-
-    /// <summary>
-    ///     The publish endpoint.
-    /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
     ///     The mapper.
@@ -31,9 +31,9 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The app configuration.
+    ///     The publish endpoint.
     /// </summary>
-    private readonly IAppConfiguration _appConfiguration;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
     ///     Initializes CreateBeerCommandHandler.
@@ -42,7 +42,8 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <param name="mapper">The mapper</param>
     /// <param name="publishEndpoint">The publish endpoint</param>
     /// <param name="appConfiguration">The app configuration</param>
-    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint, IAppConfiguration appConfiguration)
+    public CreateBeerCommandHandler(IApplicationDbContext context, IMapper mapper, IPublishEndpoint publishEndpoint,
+        IAppConfiguration appConfiguration)
     {
         _context = context;
         _mapper = mapper;

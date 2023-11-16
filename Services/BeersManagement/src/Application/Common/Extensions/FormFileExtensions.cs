@@ -15,7 +15,7 @@ public static class FormFileExtensions
     {
         await using var memoryStream = new MemoryStream();
         await formFile.CopyToAsync(memoryStream);
-        
+
         return memoryStream.ToArray();
     }
 }

@@ -6,7 +6,6 @@ using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
 using SharedUtilities.Exceptions;
-using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Beers.Queries.GetBeer;
 

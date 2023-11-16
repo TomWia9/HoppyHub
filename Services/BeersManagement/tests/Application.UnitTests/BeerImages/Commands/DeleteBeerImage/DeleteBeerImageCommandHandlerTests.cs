@@ -17,24 +17,24 @@ namespace Application.UnitTests.BeerImages.Commands.DeleteBeerImage;
 public class DeleteBeerImageCommandHandlerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
-    ///     The ImageDeleted request client.
-    /// </summary>
-    private readonly Mock<IRequestClient<ImageDeleted>> _imageDeletedRequestClientMock;
-
-    /// <summary>
     ///     The app configuration mock.
     /// </summary>
     private readonly Mock<IAppConfiguration> _appConfigurationMock;
 
     /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
+
+    /// <summary>
     ///     The DeleteBeerImageCommand handler.
     /// </summary>
     private readonly DeleteBeerImageCommandHandler _handler;
+
+    /// <summary>
+    ///     The ImageDeleted request client.
+    /// </summary>
+    private readonly Mock<IRequestClient<ImageDeleted>> _imageDeletedRequestClientMock;
 
     /// <summary>
     ///     Setups DeleteBeerImageCommandHandlerTests.
@@ -50,7 +50,8 @@ public class DeleteBeerImageCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method gets ImageDeletedFromBlobStorage response and change beer image to temp when beer and beer image exists.
+    ///     Tests that Handle method gets ImageDeletedFromBlobStorage response and change beer image to temp when beer and beer
+    ///     image exists.
     /// </summary>
     [Fact]
     public async Task

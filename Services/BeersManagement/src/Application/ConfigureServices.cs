@@ -10,7 +10,6 @@ using MassTransit;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
-using SharedEvents.Events;
 using SharedUtilities;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Filters;

@@ -6,7 +6,6 @@ using AutoMapper;
 using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
-using SharedUtilities.Mappings;
 
 namespace Application.UnitTests.Breweries.Commands.CreateBrewery;
 

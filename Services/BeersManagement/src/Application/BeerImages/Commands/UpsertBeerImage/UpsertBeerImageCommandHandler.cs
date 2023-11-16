@@ -23,7 +23,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     /// <summary>
     ///     The image created request client.
     /// </summary>
-    readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
+    private readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
 
     /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
@@ -70,7 +70,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
         }
 
         var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         if (entity is null)
         {
