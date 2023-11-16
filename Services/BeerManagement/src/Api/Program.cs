@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("swagger/BeerManagementSpecification/swagger.json", "HoppyHub - Beers Management");
+        c.SwaggerEndpoint("swagger/BeerManagementSpecification/swagger.json", "HoppyHub - Beer Management");
         c.RoutePrefix = string.Empty;
     });
 }
@@ -35,7 +35,7 @@ app.MapControllers();
 
 try
 {
-    Log.Information("Starting HoppyHub - BeersManagement service");
+    Log.Information("Starting HoppyHub - BeerManagement service");
 
     using (var scope = app.Services.CreateScope())
     {
@@ -52,7 +52,7 @@ try
 }
 catch (Exception e)
 {
-    Log.Fatal(e, "HoppyHub - BeersManagement service terminated unexpectedly");
+    Log.Fatal(e, "HoppyHub - BeerManagement service terminated unexpectedly");
 }
 finally
 {
