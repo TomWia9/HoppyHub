@@ -2,7 +2,7 @@
 using Application.Common.Models;
 using MassTransit;
 using MediatR;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Models;
 
 namespace Application.Identity.Commands.RegisterUser;

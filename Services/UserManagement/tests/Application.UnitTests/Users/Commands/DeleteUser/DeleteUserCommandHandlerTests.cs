@@ -2,7 +2,7 @@
 using Application.Users.Commands.DeleteUser;
 using MassTransit;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 

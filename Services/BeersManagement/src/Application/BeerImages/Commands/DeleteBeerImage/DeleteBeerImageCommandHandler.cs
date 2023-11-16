@@ -4,7 +4,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedEvents.Events;
-using SharedEvents.Responds;
+using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
 
 namespace Application.BeerImages.Commands.DeleteBeerImage;

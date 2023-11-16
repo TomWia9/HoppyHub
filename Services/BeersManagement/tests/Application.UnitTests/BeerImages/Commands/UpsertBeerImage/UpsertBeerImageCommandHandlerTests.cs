@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
 using SharedEvents.Events;
-using SharedEvents.Responds;
+using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;

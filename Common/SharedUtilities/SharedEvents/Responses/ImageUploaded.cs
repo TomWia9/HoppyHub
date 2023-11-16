@@ -1,4 +1,4 @@
-﻿namespace SharedEvents.Responds;
+﻿namespace SharedEvents.Responses;
 
 /// <summary>
 ///     The image uploaded event.

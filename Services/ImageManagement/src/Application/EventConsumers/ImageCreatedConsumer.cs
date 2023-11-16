@@ -1,7 +1,7 @@
 ﻿using Application.Interfaces;
 using MassTransit;
 using SharedEvents.Events;
-using SharedEvents.Responds;
+using SharedEvents.Responses;
 
 namespace Application.EventConsumers;
 

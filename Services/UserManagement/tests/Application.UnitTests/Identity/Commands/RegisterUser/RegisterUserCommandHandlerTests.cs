@@ -3,7 +3,7 @@ using Application.Common.Models;
 using Application.Identity.Commands.RegisterUser;
 using MassTransit;
 using Moq;
-using SharedEvents;
+using SharedEvents.Events;
 
 namespace Application.UnitTests.Identity.Commands.RegisterUser;
 
