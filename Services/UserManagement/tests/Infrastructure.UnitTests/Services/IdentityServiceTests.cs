@@ -31,7 +31,7 @@ public class IdentityServiceTests
     {
         var jwtSettings = new JwtSettings
         {
-            Secret = "test_secret_12345"
+            Secret = Enumerable.Repeat("a", 257).ToString()
         };
         _userManagerMock = UserManagerMockFactory.CreateUserManagerMock();
         _identityService = new IdentityService(_userManagerMock.Object, jwtSettings);
