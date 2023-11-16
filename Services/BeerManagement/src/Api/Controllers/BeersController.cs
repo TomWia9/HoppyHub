@@ -27,7 +27,7 @@ public class BeersController : ApiControllerBase
     {
         var result = await Mediator.Send(query);
 
-        Response.Headers.Add("X-Pagination", result.GetMetadata());
+        Response.Headers.Append("X-Pagination", result.GetMetadata());
 
         return Ok(result);
     }
