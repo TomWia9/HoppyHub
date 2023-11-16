@@ -6,7 +6,7 @@ namespace Application.BeerImages.Commands.UpsertBeerImage;
 /// <summary>
 ///     UpsertBeerImage command.
 /// </summary>
-public record UpsertBeerImageCommand : IRequest
+public record UpsertBeerImageCommand : IRequest<string>
 {
     /// <summary>
     ///     The beer id.

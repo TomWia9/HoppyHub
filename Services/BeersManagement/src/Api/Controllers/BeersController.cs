@@ -101,16 +101,16 @@ public class BeersController : ApiControllerBase
     /// <returns>An ActionResult of string with beer image uri</returns>
     [Authorize(Policy = Policies.AdministratorAccess)]
     [HttpPost("{beerId:guid}/upsertImage")]
-    public async Task<IActionResult> UpsertBeerImage(Guid beerId, [FromForm] UpsertBeerImageCommand command)
+    public async Task<ActionResult<string>> UpsertBeerImage(Guid beerId, [FromForm] UpsertBeerImageCommand command)
     {
         if (beerId != command.BeerId)
         {
             return BadRequest(InvalidIdMessage);
         }
 
-        await Mediator.Send(command);
+        var result = await Mediator.Send(command);
 
-        return Accepted();
+        return CreatedAtAction("GetBeer", new { id = beerId }, result);
     }
 
     /// <summary>

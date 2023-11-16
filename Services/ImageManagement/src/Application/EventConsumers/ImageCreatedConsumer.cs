@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using MassTransit;
-using SharedEvents;
+using SharedEvents.Events;
+using SharedEvents.Responds;
 
 namespace Application.EventConsumers;
 
@@ -33,7 +34,14 @@ public class ImageCreatedConsumer : IConsumer<ImageCreated>
 
         if (!string.IsNullOrEmpty(message.Path) && message.Image is not null)
         {
-            await _imagesService.UploadImageAsync(message.Path, message.Image);
+            var imageUri = await _imagesService.UploadImageAsync(message.Path, message.Image);
+
+            var imageUploadedEvent = new ImageUploaded
+            {
+                Uri = imageUri
+            };
+
+            await context.RespondAsync(imageUploadedEvent);
         }
     }
 }

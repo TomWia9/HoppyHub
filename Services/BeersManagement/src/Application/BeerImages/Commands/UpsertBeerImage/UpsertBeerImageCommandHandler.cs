@@ -3,7 +3,9 @@ using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
 using MediatR;
-using SharedEvents;
+using Microsoft.EntityFrameworkCore;
+using SharedEvents.Events;
+using SharedEvents.Responds;
 using SharedUtilities.Exceptions;
 
 namespace Application.BeerImages.Commands.UpsertBeerImage;
@@ -11,27 +13,28 @@ namespace Application.BeerImages.Commands.UpsertBeerImage;
 /// <summary>
 ///     UpsertBeerImageCommand handler.
 /// </summary>
-public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageCommand>
+public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageCommand, string>
 {
     /// <summary>
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-
+    
     /// <summary>
-    ///     The publish endpoint.
+    ///     The image created request client.
     /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
+    readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
 
     /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
-    public UpsertBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
+    /// <param name="imageCreatedRequestClient">The image created request client</param>
+    public UpsertBeerImageCommandHandler(IApplicationDbContext context,
+        IRequestClient<ImageCreated> imageCreatedRequestClient)
     {
         _context = context;
-        _publishEndpoint = publishEndpoint;
+        _imageCreatedRequestClient = imageCreatedRequestClient;
     }
 
     /// <summary>
@@ -39,7 +42,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task Handle(UpsertBeerImageCommand request, CancellationToken cancellationToken)
+    public async Task<string> Handle(UpsertBeerImageCommand request, CancellationToken cancellationToken)
     {
         var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
             cancellationToken);
@@ -55,31 +58,38 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
                 $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}{Path.GetExtension(request.Image!.FileName)}",
             Image = await request.Image!.GetBytes()
         };
-
-        await _publishEndpoint.Publish(imageCreatedEvent, cancellationToken);
-
-        //TODO: Ensure that image uploaded and add/update entity
-
-        // var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
-        //     cancellationToken: cancellationToken);
-        //
-        // if (entity is null)
-        // {
-        //     entity = new BeerImage
-        //     {
-        //         BeerId = message.BeerId,
-        //         ImageUri = message.ImageUri,
-        //         TempImage = false
-        //     };
-        //
-        //     await _context.BeerImages.AddAsync(entity);
-        // }
-        // else
-        // {
-        //     entity.ImageUri = message.ImageUri;
-        //     entity.TempImage = false;
-        // }
-        //
-        // await _context.SaveChangesAsync(CancellationToken.None);
+        
+        var imageUploadResult =
+            await _imageCreatedRequestClient.GetResponse<ImageUploaded>(imageCreatedEvent, cancellationToken);
+        var imageUri = imageUploadResult.Message.Uri;
+        
+        if (string.IsNullOrEmpty(imageUri))
+        {
+            throw new RemoteServiceConnectionException("test");
+        }
+        
+        var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
+            cancellationToken: cancellationToken);
+        
+        if (entity is null)
+        {
+            entity = new BeerImage
+            {
+                BeerId = beer.Id,
+                ImageUri = imageUri,
+                TempImage = false
+            };
+        
+            await _context.BeerImages.AddAsync(entity, cancellationToken);
+        }
+        else
+        {
+            entity.ImageUri = imageUri;
+            entity.TempImage = false;
+        }
+        
+        await _context.SaveChangesAsync(CancellationToken.None);
+        
+        return imageUri;
     }
 }
