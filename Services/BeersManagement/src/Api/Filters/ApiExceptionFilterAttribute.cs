@@ -212,7 +212,7 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         var details = new ProblemDetails
         {
             Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.5",
-            Title = "Gateway Timeout",
+            Title = "Gateway Timeout.",
             Detail = exception?.Message
         };
 

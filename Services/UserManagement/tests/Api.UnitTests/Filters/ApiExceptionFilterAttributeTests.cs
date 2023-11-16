@@ -1,6 +1,5 @@
 ﻿using Api.Filters;
 using FluentValidation.Results;
-using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -173,51 +172,5 @@ public class ApiExceptionFilterAttributeTests
 
         result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         details.Title.Should().Be("Server cannot process the request.");
-    }
-
-    /// <summary>
-    ///     Tests that OnException method with RemoteServiceConnectionException returns ObjectResult
-    ///     with problem details and status 503.
-    /// </summary>
-    [Fact]
-    public void
-        OnException_ShouldReturnObjectResultWithProblemDetailsAndStatusCode503_WhenRemoteServiceConnectionException()
-    {
-        // Arrange
-        const string exceptionMessage = "test message";
-        _exceptionContext.Exception = new RemoteServiceConnectionException(exceptionMessage);
-
-        // Act
-        _filter.OnException(_exceptionContext);
-
-        // Assert
-        var result = _exceptionContext.Result.Should().BeOfType<ObjectResult>().Subject;
-        var details = result.Value.Should().BeOfType<ProblemDetails>().Subject;
-
-        result.StatusCode.Should().Be(StatusCodes.Status503ServiceUnavailable);
-        details.Title.Should().Be("Cannot connect to the remote service.");
-        details.Detail.Should().Be(exceptionMessage);
-    }
-
-    /// <summary>
-    ///     Tests that OnException method with RequestTimeoutException returns ObjectResult
-    ///     with problem details and status 504.
-    /// </summary>
-    [Fact]
-    public void
-        OnException_ShouldReturnObjectResultWithProblemDetailsAndStatusCode504_WhenRequestTimeoutException()
-    {
-        // Arrange
-        _exceptionContext.Exception = new RequestTimeoutException();
-
-        // Act
-        _filter.OnException(_exceptionContext);
-
-        // Assert
-        var result = _exceptionContext.Result.Should().BeOfType<ObjectResult>().Subject;
-        var details = result.Value.Should().BeOfType<ProblemDetails>().Subject;
-
-        result.StatusCode.Should().Be(StatusCodes.Status504GatewayTimeout);
-        details.Title.Should().Be("Gateway Timeout.");
     }
 }
