@@ -144,21 +144,22 @@ public class BeersControllerTests : ControllerSetup<BeersController>
     }
 
     /// <summary>
-    ///     Tests that UpsertBeerImage method returns Accepted when beer id is valid.
+    ///     Tests that UpsertBeerImage method returns CreatedAtAction when beer id is valid.
     /// </summary>
     [Fact]
-    public async Task UpsertBeerImage_ShouldReturnAccepted_WhenBeerIdIsValid()
+    public async Task UpsertBeerImage_ShouldReturnCreatedAtAction_WhenBeerIdIsValid()
     {
         // Arrange
+        const string imageUri = "https://test.com/test.jpg";
         var beerId = Guid.NewGuid();
         var command = new UpsertBeerImageCommand { BeerId = beerId };
-        //MediatorMock.Setup(m => m.Send(command, CancellationToken.None)).Returns(Task.CompletedTask);
+        MediatorMock.Setup(m => m.Send(command, CancellationToken.None)).ReturnsAsync(imageUri);
 
         // Act
         var response = await Controller.UpsertBeerImage(beerId, command);
 
         // Assert
-        response.Should().BeOfType<AcceptedResult>();
+        response.Result.Should().BeOfType<CreatedAtActionResult>().Which.Value.Should().Be(imageUri);
     }
 
     /// <summary>
@@ -175,7 +176,7 @@ public class BeersControllerTests : ControllerSetup<BeersController>
         var response = await Controller.UpsertBeerImage(beerId, command);
 
         // Assert
-        response.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
+        response.Result.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
     }
 
     /// <summary>
