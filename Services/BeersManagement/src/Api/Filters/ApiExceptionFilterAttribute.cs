@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using SharedUtilities.Exceptions;
 
@@ -25,7 +26,9 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
             { typeof(NotFoundException), HandleNotFoundException },
             { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
             { typeof(ForbiddenAccessException), HandleForbiddenAccessException },
-            { typeof(BadRequestException), HandleBadRequestException }
+            { typeof(BadRequestException), HandleBadRequestException },
+            { typeof(RemoteServiceConnectionException), HandleRemoteServiceConnectionException },
+            { typeof(RequestTimeoutException), HandleRequestTimeoutException}
         };
     }
 
@@ -171,6 +174,52 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         };
 
         context.Result = new BadRequestObjectResult(details);
+
+        context.ExceptionHandled = true;
+    }
+    
+    /// <summary>
+    ///     Handles remote service connection exception.
+    /// </summary>
+    /// <param name="context">The exception context</param>
+    private static void HandleRemoteServiceConnectionException(ExceptionContext context)
+    {
+        var exception = context.Exception as RemoteServiceConnectionException;
+
+        var details = new ProblemDetails
+        {
+            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.4",
+            Title = "Cannot connect to the remote service.",
+            Detail = exception?.Message
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status503ServiceUnavailable
+        };
+
+        context.ExceptionHandled = true;
+    }
+    
+    /// <summary>
+    ///     Handles request timeout exception.
+    /// </summary>
+    /// <param name="context">The exception context</param>
+    private static void HandleRequestTimeoutException(ExceptionContext context)
+    {
+        var exception = context.Exception as RequestTimeoutException;
+
+        var details = new ProblemDetails
+        {
+            Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.5",
+            Title = "Gateway Timeout",
+            Detail = exception?.Message
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status504GatewayTimeout
+        };
 
         context.ExceptionHandled = true;
     }

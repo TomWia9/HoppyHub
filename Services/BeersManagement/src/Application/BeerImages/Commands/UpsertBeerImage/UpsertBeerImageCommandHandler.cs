@@ -19,7 +19,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     ///     The database context.
     /// </summary>
     private readonly IApplicationDbContext _context;
-    
+
     /// <summary>
     ///     The image created request client.
     /// </summary>
@@ -58,19 +58,20 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
                 $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}{Path.GetExtension(request.Image!.FileName)}",
             Image = await request.Image!.GetBytes()
         };
-        
+
         var imageUploadResult =
             await _imageCreatedRequestClient.GetResponse<ImageUploaded>(imageCreatedEvent, cancellationToken);
+
         var imageUri = imageUploadResult.Message.Uri;
-        
+
         if (string.IsNullOrEmpty(imageUri))
         {
-            throw new RemoteServiceConnectionException("test");
+            throw new RemoteServiceConnectionException("Failed to sent image.");
         }
-        
+
         var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,
             cancellationToken: cancellationToken);
-        
+
         if (entity is null)
         {
             entity = new BeerImage
@@ -79,7 +80,7 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
                 ImageUri = imageUri,
                 TempImage = false
             };
-        
+
             await _context.BeerImages.AddAsync(entity, cancellationToken);
         }
         else
@@ -87,9 +88,9 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
             entity.ImageUri = imageUri;
             entity.TempImage = false;
         }
-        
+
         await _context.SaveChangesAsync(CancellationToken.None);
-        
+
         return imageUri;
     }
 }
