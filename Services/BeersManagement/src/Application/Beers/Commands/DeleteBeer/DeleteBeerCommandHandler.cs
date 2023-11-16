@@ -3,6 +3,7 @@ using Domain.Entities;
 using MassTransit;
 using MediatR;
 using SharedEvents.Events;
+using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
 
 namespace Application.Beers.Commands.DeleteBeer;
@@ -18,19 +19,20 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The publish endpoint.
+    ///     The ImagesDeleted request client.
     /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IRequestClient<ImagesDeleted> _imagesDeletedRequestClient;
 
     /// <summary>
     ///     Initializes DeleteBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
-    public DeleteBeerCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
+    /// <param name="imagesDeletedRequestClient">The ImagesDeleted request client</param>
+    public DeleteBeerCommandHandler(IApplicationDbContext context,
+        IRequestClient<ImagesDeleted> imagesDeletedRequestClient)
     {
         _context = context;
-        _publishEndpoint = publishEndpoint;
+        _imagesDeletedRequestClient = imagesDeletedRequestClient;
     }
 
     /// <summary>
@@ -62,13 +64,15 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
                     $"Beers/{entity.BreweryId}/{entity.Id}"
                 }
             };
+            var result =
+                await _imagesDeletedRequestClient.GetResponse<ImagesDeletedFromBlobStorage>(imagesDeletedEvent,
+                    cancellationToken);
+            var imagesDeletedSuccessfully = result.Message.Success;
 
-            // TODO: Ensure that event is successfully consumed by images microservice (Saga pattern?)
-            //this should be consumed by images microservice which should delete all beer related images from blob container.
-            await _publishEndpoint.Publish(imagesDeletedEvent, cancellationToken);
-            //something like this:
-            // await _azureStorageService.DeleteInPath(beerOpinionImagesPath);
-            // await _azureStorageService.DeleteInPath(beerImagesPath);
+            if (!imagesDeletedSuccessfully)
+            {
+                throw new RemoteServiceConnectionException("There was a problem deleting the images.");
+            }
 
             await transaction.CommitAsync(cancellationToken);
         }
