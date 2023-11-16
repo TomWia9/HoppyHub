@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces;
 using MassTransit;
 using SharedEvents.Events;
+using SharedEvents.Responds;
 
 namespace Application.EventConsumers;
 
@@ -34,6 +35,13 @@ public class ImageDeletedConsumer : IConsumer<ImageDeleted>
         if (!string.IsNullOrEmpty(message.Uri))
         {
             await _imagesService.DeleteImageAsync(message.Uri);
+
+            var imageDeletedFromBlobStorageResponse = new ImageDeletedFromBlobStorage
+            {
+                Success = true
+            };
+
+            await context.RespondAsync(imageDeletedFromBlobStorageResponse);
         }
     }
 }

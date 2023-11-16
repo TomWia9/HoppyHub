@@ -4,6 +4,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SharedEvents.Events;
+using SharedEvents.Responds;
 using SharedUtilities.Exceptions;
 
 namespace Application.BeerImages.Commands.DeleteBeerImage;
@@ -19,9 +20,9 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The publish endpoint.
+    ///     The image deleted request client.
     /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IRequestClient<ImageDeleted> _imageDeletedRequestClient;
 
     /// <summary>
     ///     The app configuration.
@@ -32,13 +33,14 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     ///     Initializes DeleteBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
+    /// <param name="imageDeletedRequestClient">The image deleted request client</param>
     /// <param name="appConfiguration">The app configuration</param>
-    public DeleteBeerImageCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint,
+    public DeleteBeerImageCommandHandler(IApplicationDbContext context,
+        IRequestClient<ImageDeleted> imageDeletedRequestClient,
         IAppConfiguration appConfiguration)
     {
         _context = context;
-        _publishEndpoint = publishEndpoint;
+        _imageDeletedRequestClient = imageDeletedRequestClient;
         _appConfiguration = appConfiguration;
     }
 
@@ -64,14 +66,25 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
                 Uri = beer.BeerImage.ImageUri
             };
 
-            await _publishEndpoint.Publish(beerImageDeleted, cancellationToken);
+            var response =
+                await _imageDeletedRequestClient.GetResponse<ImageDeletedFromBlobStorage>(beerImageDeleted,
+                    cancellationToken);
+            var imageDeletedSuccessfully = response.Message.Success;
+            if (imageDeletedSuccessfully)
+            {
+                beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
+                beer.BeerImage.TempImage = true;
 
-            //TODO: Ensure that image deleted and update entity.
-
-            // beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
-            // beer.BeerImage.TempImage = true;
-            //
-            // await _context.SaveChangesAsync(CancellationToken.None);
+                await _context.SaveChangesAsync(CancellationToken.None);
+            }
+            else
+            {
+                throw new RemoteServiceConnectionException("There was a problem deleting the image.");
+            }
+        }
+        else
+        {
+            throw new BadRequestException("Image already deleted.");
         }
     }
 }

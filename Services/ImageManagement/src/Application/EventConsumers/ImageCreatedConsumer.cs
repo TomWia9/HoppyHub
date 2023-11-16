@@ -36,12 +36,12 @@ public class ImageCreatedConsumer : IConsumer<ImageCreated>
         {
             var imageUri = await _imagesService.UploadImageAsync(message.Path, message.Image);
 
-            var imageUploadedEvent = new ImageUploaded
+            var imageUploadedResponse = new ImageUploaded
             {
                 Uri = imageUri
             };
 
-            await context.RespondAsync(imageUploadedEvent);
+            await context.RespondAsync(imageUploadedResponse);
         }
     }
 }

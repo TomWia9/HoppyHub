@@ -124,6 +124,6 @@ public class BeersController : ApiControllerBase
     {
         await Mediator.Send(new DeleteBeerImageCommand { BeerId = beerId });
 
-        return Accepted();
+        return NoContent();
     }
 }
