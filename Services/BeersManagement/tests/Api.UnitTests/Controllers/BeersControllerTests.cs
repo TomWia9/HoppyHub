@@ -180,10 +180,10 @@ public class BeersControllerTests : ControllerSetup<BeersController>
     }
 
     /// <summary>
-    ///     Tests that DeleteBeerImage method returns Accepted.
+    ///     Tests that DeleteBeerImage method returns NoContent.
     /// </summary>
     [Fact]
-    public async Task DeleteBeerImage_ShouldReturnAccepted()
+    public async Task DeleteBeerImage_ShouldReturnNoContent()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -194,6 +194,6 @@ public class BeersControllerTests : ControllerSetup<BeersController>
         var response = await Controller.DeleteBeerImage(beerId);
 
         // Assert
-        response.Should().BeOfType<AcceptedResult>();
+        response.Should().BeOfType<NoContentResult>();
     }
 }

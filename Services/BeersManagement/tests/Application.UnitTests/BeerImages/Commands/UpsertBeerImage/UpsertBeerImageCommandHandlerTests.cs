@@ -78,7 +78,7 @@ public class UpsertBeerImageCommandHandlerTests
             Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
             Image = await request.Image.GetBytes()
         };
-        var imageUploadedEvent = new ImageUploaded
+        var imageUploadedResponse = new ImageUploaded
         {
             Uri = imageUri
         };
@@ -88,7 +88,7 @@ public class UpsertBeerImageCommandHandlerTests
             .Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.BeerImages).Returns(beerImagesDbSetMock.Object);
-        responseMock.SetupGet(x => x.Message).Returns(imageUploadedEvent);
+        responseMock.SetupGet(x => x.Message).Returns(imageUploadedResponse);
         _imageCreatedRequestClientMock
             .Setup(x => x.GetResponse<ImageUploaded>(imageCreatedEvent, It.IsAny<CancellationToken>(),
                 It.IsAny<RequestTimeout>()))
