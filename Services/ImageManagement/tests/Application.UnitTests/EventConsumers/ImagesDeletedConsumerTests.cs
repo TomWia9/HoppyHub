@@ -3,6 +3,7 @@ using Application.Interfaces;
 using MassTransit;
 using Moq;
 using SharedEvents.Events;
+using SharedEvents.Responses;
 
 namespace Application.UnitTests.EventConsumers;
 
@@ -59,5 +60,7 @@ public class ImagesDeletedConsumerTests
         // Assert
         _imagesServiceMock.Verify(x =>
             x.DeleteAllImagesInPathAsync(It.IsAny<string>()), Times.Exactly(pathsNumber));
+        _consumeContextMock.Verify(x => x.RespondAsync(It.Is<ImagesDeletedFromBlobStorage>(y => y.Success == true)),
+            Times.Once);
     }
 }

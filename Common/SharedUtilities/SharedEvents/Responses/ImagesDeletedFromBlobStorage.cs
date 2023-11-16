@@ -1,9 +1,9 @@
 ﻿namespace SharedEvents.Responses;
 
 /// <summary>
-///     The image deleted from blob storage event.
+///     The images deleted from blob storage event.
 /// </summary>
-public record ImageDeletedFromBlobStorage
+public record ImagesDeletedFromBlobStorage
 {
     /// <summary>
     ///     Indicates whether operation succeed.
