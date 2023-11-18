@@ -58,7 +58,10 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
-        if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken))
+        var beerBrewery = await _context.Breweries.FindAsync(new object?[] { request.BreweryId },
+            cancellationToken: cancellationToken);
+
+        if (beerBrewery is null)
         {
             throw new NotFoundException(nameof(Brewery), request.BreweryId);
         }
@@ -91,7 +94,9 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
 
         var beerCreatedEvent = new BeerCreated
         {
-            Id = entity.Id
+            Id = entity.Id,
+            Name = entity.Name,
+            BreweryName = beerBrewery.Name
         };
 
         await _publishEndpoint.Publish(beerCreatedEvent, cancellationToken);
