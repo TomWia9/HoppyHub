@@ -9,7 +9,17 @@ public class Beer
     ///     The entity id
     /// </summary>
     public Guid Id { get; set; }
-    
+
+    /// <summary>
+    ///     The beer name.
+    /// </summary>
+    public string? Name { get; set; }
+
+    /// <summary>
+    ///     The beer brewery name.
+    /// </summary>
+    public string? BreweryName { get; set; }
+
     /// <summary>
     ///     The favorites.
     /// </summary>
