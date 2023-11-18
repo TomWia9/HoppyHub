@@ -33,6 +33,16 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<Beer> Beers => Set<Beer>();
 
     /// <summary>
+    ///     The favorites.
+    /// </summary>
+    public DbSet<Favorite> Favorites => Set<Favorite>();
+
+    /// <summary>
+    ///     The users.
+    /// </summary>
+    public DbSet<User> Users => Set<User>();
+
+    /// <summary>
     ///     Saves changes asynchronously.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token</param>

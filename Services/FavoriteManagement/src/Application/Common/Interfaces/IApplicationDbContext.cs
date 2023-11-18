@@ -13,6 +13,16 @@ public interface IApplicationDbContext
     ///     The beers.
     /// </summary>
     DbSet<Beer> Beers { get; }
+    
+    /// <summary>
+    ///     The favorites.
+    /// </summary>
+    DbSet<Favorite> Favorites { get; }
+    
+    /// <summary>
+    ///     The users.
+    /// </summary>
+    DbSet<User> Users { get; }
 
     /// <summary>
     ///     Provides access to database related information and operations for this context.
