@@ -1,10 +1,6 @@
 ﻿using System.Reflection;
-using Application.Beers.Queries.GetBeers;
-using Application.BeerStyles.Queries.GetBeerStyles;
-using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
 using Application.Common.Services;
-using Domain.Entities;
 using FluentValidation;
 using MassTransit;
 using MediatR;
@@ -49,9 +45,6 @@ public static class ConfigureServices
         });
 
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
-        services.AddTransient<IFilteringHelper<Brewery, GetBreweriesQuery>, BreweriesFilteringHelper>();
-        services.AddTransient<IFilteringHelper<Beer, GetBeersQuery>, BeersFilteringHelper>();
-        services.AddTransient<IFilteringHelper<BeerStyle, GetBeerStylesQuery>, BeerStylesFilteringHelper>();
 
         return services;
     }
