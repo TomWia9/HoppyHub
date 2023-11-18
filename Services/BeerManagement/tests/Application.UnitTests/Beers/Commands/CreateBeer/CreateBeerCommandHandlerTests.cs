@@ -60,11 +60,13 @@ public class CreateBeerCommandHandlerTests
     {
         // Arrange
         const string tempImageUri = "test.com";
+        const string beerName = "beer name";
+        const string breweryName = "brewery name";
         var breweryId = Guid.NewGuid();
         var beerStyleId = Guid.NewGuid();
         var request = new CreateBeerCommand
         {
-            Name = "Test beer",
+            Name = beerName,
             BreweryId = breweryId,
             AlcoholByVolume = 5.0,
             Description = "Test description",
@@ -76,13 +78,13 @@ public class CreateBeerCommandHandlerTests
         };
         var beers = Enumerable.Empty<Beer>();
         var beerDbSetMock = beers.AsQueryable().BuildMockDbSet();
-        var breweries = new List<Brewery> { new() { Id = breweryId } };
-        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        var brewery = new Brewery { Id = breweryId, Name = breweryName };
         var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Beers).Returns(beerDbSetMock.Object);
-        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(brewery);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
         _appConfigurationMock.Setup(x => x.TempBeerImageUri).Returns(tempImageUri);
 
@@ -103,7 +105,9 @@ public class CreateBeerCommandHandlerTests
 
         _contextMock.Verify(x => x.Beers.AddAsync(It.IsAny<Beer>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
-        _publishEndpointMock.Verify(x => x.Publish(It.IsAny<BeerCreated>(), It.IsAny<CancellationToken>()));
+        _publishEndpointMock.Verify(x =>
+            x.Publish(It.Is<BeerCreated>(y => y.Name == beerName && y.BreweryName == breweryName),
+                It.IsAny<CancellationToken>()));
     }
 
     /// <summary>
@@ -126,10 +130,9 @@ public class CreateBeerCommandHandlerTests
             Ibu = 30,
             ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
         };
-        var breweries = Enumerable.Empty<Brewery>();
-        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync((Brewery?)null);
 
         var expectedMessage = $"Entity \"{nameof(Brewery)}\" ({breweryId}) was not found.";
 
@@ -159,12 +162,12 @@ public class CreateBeerCommandHandlerTests
             Ibu = 30,
             ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
         };
-        var breweries = new List<Brewery> { new() { Id = breweryId } };
-        var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
+        var brewery = new Brewery { Id = breweryId, Name = "Test name" };
         var beerStyles = Enumerable.Empty<BeerStyle>();
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
 
-        _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
+        _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(brewery);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
 
         var expectedMessage = $"Entity \"{nameof(BeerStyle)}\" ({beerStyleId}) was not found.";

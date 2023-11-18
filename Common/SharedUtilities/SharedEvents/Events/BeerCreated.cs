@@ -13,10 +13,10 @@ public record BeerCreated
     /// <summary>
     ///     The beer name.
     /// </summary>
-    public string? Name { get; set; }
+    public string? Name { get; init; }
 
     /// <summary>
     ///     The beer brewery name.
     /// </summary>
-    public string? BreweryName { get; set; }
+    public string? BreweryName { get; init; }
 }
