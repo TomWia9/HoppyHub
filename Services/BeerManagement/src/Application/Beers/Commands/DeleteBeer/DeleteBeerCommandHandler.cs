@@ -24,15 +24,22 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
     private readonly IRequestClient<ImagesDeleted> _imagesDeletedRequestClient;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes DeleteBeerCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="imagesDeletedRequestClient">The ImagesDeleted request client</param>
+    /// <param name="publishEndpoint">The publish endpoint</param>
     public DeleteBeerCommandHandler(IApplicationDbContext context,
-        IRequestClient<ImagesDeleted> imagesDeletedRequestClient)
+        IRequestClient<ImagesDeleted> imagesDeletedRequestClient, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _imagesDeletedRequestClient = imagesDeletedRequestClient;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -75,6 +82,13 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
             }
 
             await transaction.CommitAsync(cancellationToken);
+
+            var beerDeletedEvent = new BeerDeleted
+            {
+                Id = entity.Id
+            };
+
+            await _publishEndpoint.Publish(beerDeletedEvent, cancellationToken);
         }
         catch
         {

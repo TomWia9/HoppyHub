@@ -22,6 +22,11 @@ public class DeleteBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteBeerCommandHandler _handler;
@@ -38,16 +43,18 @@ public class DeleteBeerCommandHandlerTests
     {
         _contextMock = new Mock<IApplicationDbContext>();
         _imagesDeletedRequestClientMock = new Mock<IRequestClient<ImagesDeleted>>();
-        _handler = new DeleteBeerCommandHandler(_contextMock.Object, _imagesDeletedRequestClientMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new DeleteBeerCommandHandler(_contextMock.Object, _imagesDeletedRequestClientMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>
     ///     Tests that Handle method removes beer from database and gets ImagesDeletedFromBlobStorage response without error
-    ///     when beer exists.
+    ///     and publish BeerDeleted event when beer exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveBeerFromDatabaseAndGetImagesDeletedFromBlobStorageResponseWithoutError_WhenBeerExists()
+        Handle_ShouldRemoveBeerFromDatabaseAndGetImagesDeletedFromBlobStorageResponseWithoutErrorAndPublishBeerDeletedEvent_WhenBeerExists()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -89,6 +96,8 @@ public class DeleteBeerCommandHandlerTests
                     y.Paths!.Count() == imagesDeletedEvent.Paths.Count() &&
                     y.Paths!.All(imagesDeletedEvent.Paths.Contains)), It.IsAny<CancellationToken>(),
             It.IsAny<RequestTimeout>()), Times.Once);
+        _publishEndpointMock.Verify(x =>
+            x.Publish(It.Is<BeerDeleted>(y => y.Id == beerId), It.IsAny<CancellationToken>()));
     }
 
     /// <summary>
