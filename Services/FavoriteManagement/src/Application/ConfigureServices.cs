@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Application.Common.Interfaces;
 using Application.Common.Services;
+using Application.Favorites.Queries.GetFavorites;
+using Domain.Entities;
 using FluentValidation;
 using MassTransit;
 using MediatR;
@@ -45,6 +47,7 @@ public static class ConfigureServices
         });
 
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
+        services.AddTransient<IFilteringHelper<Favorite, GetFavoritesQuery>, FavoritesFilteringHelper>();
 
         return services;
     }
