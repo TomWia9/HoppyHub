@@ -5,7 +5,6 @@ using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
 using Application.Common.Services;
-using Application.Favorites.Queries.GetFavorites;
 using Application.Opinions.Queries.GetOpinions;
 using Domain.Entities;
 using FluentValidation;
@@ -57,7 +56,6 @@ public static class ConfigureServices
         services.AddTransient<IFilteringHelper<Brewery, GetBreweriesQuery>, BreweriesFilteringHelper>();
         services.AddTransient<IFilteringHelper<Beer, GetBeersQuery>, BeersFilteringHelper>();
         services.AddTransient<IFilteringHelper<BeerStyle, GetBeerStylesQuery>, BeerStylesFilteringHelper>();
-        services.AddTransient<IFilteringHelper<Favorite, GetFavoritesQuery>, FavoritesFilteringHelper>();
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
 
         services.AddTransient<IBeersService, BeersService>();

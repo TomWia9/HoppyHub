@@ -4,7 +4,6 @@ using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Interfaces;
 using Application.Common.Services;
-using Application.Favorites.Queries.GetFavorites;
 using Application.Opinions.Queries.GetOpinions;
 using AutoMapper;
 using Domain.Entities;
@@ -114,11 +113,7 @@ public class ConfigureServicesTests
         _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Brewery, GetBreweriesQuery>));
         _services.Should().Contain(s => s.ImplementationType == typeof(BreweriesFilteringHelper));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-
-        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Favorite, GetFavoritesQuery>));
-        _services.Should().Contain(s => s.ImplementationType == typeof(FavoritesFilteringHelper));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-
+        
         _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Opinion, GetOpinionsQuery>));
         _services.Should().Contain(s => s.ImplementationType == typeof(OpinionsFilteringHelper));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
