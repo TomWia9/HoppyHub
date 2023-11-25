@@ -1,7 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.Favorites.Commands.CreateFavorite;
@@ -17,12 +19,19 @@ public class CreateFavoriteCommandHandler : IRequestHandler<CreateFavoriteComman
     private readonly IApplicationDbContext _context;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    public CreateFavoriteCommandHandler(IApplicationDbContext context)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public CreateFavoriteCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
     {
         _context = context;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -44,5 +53,16 @@ public class CreateFavoriteCommandHandler : IRequestHandler<CreateFavoriteComman
 
         await _context.Favorites.AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+
+        var newBeerFavoritesCount =
+            await _context.Favorites.CountAsync(x => x.BeerId == request.BeerId, cancellationToken: cancellationToken);
+
+        var favoritesCountChangedEvent = new FavoritesCountChanged
+        {
+            BeerId = request.BeerId,
+            FavoritesCount = newBeerFavoritesCount
+        };
+
+        await _publishEndpoint.Publish(favoritesCountChangedEvent, cancellationToken);
     }
 }

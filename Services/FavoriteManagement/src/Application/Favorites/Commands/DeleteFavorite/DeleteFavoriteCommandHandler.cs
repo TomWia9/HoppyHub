@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -22,14 +24,22 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes DeleteFavoriteCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
-    public DeleteFavoriteCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public DeleteFavoriteCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
+        IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _currentUserService = currentUserService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -52,5 +62,16 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
 
         _context.Favorites.Remove(entity);
         await _context.SaveChangesAsync(cancellationToken);
+
+        var newBeerFavoritesCount =
+            await _context.Favorites.CountAsync(x => x.BeerId == request.BeerId, cancellationToken: cancellationToken);
+
+        var favoritesCountChangedEvent = new FavoritesCountChanged
+        {
+            BeerId = request.BeerId,
+            FavoritesCount = newBeerFavoritesCount
+        };
+
+        await _publishEndpoint.Publish(favoritesCountChangedEvent, cancellationToken);
     }
 }
