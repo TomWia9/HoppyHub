@@ -124,14 +124,14 @@ public class OpinionsService : IOpinionsService
                 cancellationToken: cancellationToken);
         var newBeerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
             .AverageAsync(x => x.Rating, cancellationToken: cancellationToken);
-        var opinionChanged = new OpinionChanged
+        var beerOpinionChanged = new BeerOpinionChanged
         {
             BeerId = beerId,
             OpinionsCount = newBeerOpinionsCount,
             NewBeerRating = Math.Round(newBeerRating, 2)
         };
 
-        await _publishEndpoint.Publish(opinionChanged, cancellationToken);
+        await _publishEndpoint.Publish(beerOpinionChanged, cancellationToken);
     }
 
     private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName) =>

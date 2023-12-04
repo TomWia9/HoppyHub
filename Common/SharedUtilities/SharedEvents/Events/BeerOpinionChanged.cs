@@ -1,9 +1,9 @@
 ﻿namespace SharedEvents.Events;
 
 /// <summary>
-///     The opinion changed event.
+///     The beer opinion changed event.
 /// </summary>
-public record OpinionChanged
+public record BeerOpinionChanged
 {
     /// <summary>
     ///     The beer id.
