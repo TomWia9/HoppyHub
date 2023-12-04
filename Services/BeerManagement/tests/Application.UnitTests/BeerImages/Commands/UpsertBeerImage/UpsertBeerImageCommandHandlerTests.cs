@@ -1,5 +1,4 @@
 ﻿using Application.BeerImages.Commands.UpsertBeerImage;
-using Application.Common.Extensions;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
@@ -9,6 +8,7 @@ using Moq;
 using SharedEvents.Events;
 using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Extensions;
 
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 
