@@ -8,7 +8,6 @@ using Domain.Entities;
 using MockQueryable.Moq;
 using Moq;
 using SharedUtilities.Enums;
-using SharedUtilities.Mappings;
 using SharedUtilities.Models;
 
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;

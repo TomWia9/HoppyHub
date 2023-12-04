@@ -9,7 +9,7 @@ public record BeerUpdated
     ///     The beer id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The beer name.
     /// </summary>

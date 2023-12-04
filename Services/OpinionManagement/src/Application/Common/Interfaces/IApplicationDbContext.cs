@@ -13,12 +13,12 @@ public interface IApplicationDbContext
     ///     The beers.
     /// </summary>
     DbSet<Beer> Beers { get; }
-    
+
     /// <summary>
     ///     The beer opinions.
     /// </summary>
     DbSet<Opinion> Opinions { get; }
-    
+
     /// <summary>
     ///     The users.
     /// </summary>

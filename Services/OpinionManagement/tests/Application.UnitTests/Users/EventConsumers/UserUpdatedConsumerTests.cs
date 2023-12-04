@@ -14,19 +14,19 @@ namespace Application.UnitTests.Users.EventConsumers;
 public class UserUpdatedConsumerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The consume context mock.
     /// </summary>
     private readonly Mock<ConsumeContext<UserUpdated>> _consumeContextMock;
 
     /// <summary>
-    ///     The UserUpdated consumer. 
+    ///     The UserUpdated consumer.
     /// </summary>
     private readonly UserUpdatedConsumer _consumer;
+
+    /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups UserUpdatedConsumerTests.

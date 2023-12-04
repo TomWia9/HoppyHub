@@ -31,7 +31,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     ///     The beers.
     /// </summary>
     public DbSet<Beer> Beers => Set<Beer>();
-    
+
     /// <summary>
     ///     The beer opinions.
     /// </summary>

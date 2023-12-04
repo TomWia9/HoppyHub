@@ -50,7 +50,7 @@ public class ApplicationDbContextInitializer : IApplicationDbContextInitializer
         try
         {
             Log.Logger.Information("Seeding database started");
-            
+
             //await SeedOpinionsAsync();
 
             Log.Logger.Information("Seeding database completed");

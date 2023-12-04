@@ -19,7 +19,7 @@ public class Beer
     ///     The beer brewery id
     /// </summary>
     public Guid BreweryId { get; set; }
-    
+
     /// <summary>
     ///     The beer brewery name.
     /// </summary>

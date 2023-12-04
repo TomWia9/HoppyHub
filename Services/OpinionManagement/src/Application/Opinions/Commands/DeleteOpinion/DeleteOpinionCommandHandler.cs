@@ -1,10 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using MassTransit;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 

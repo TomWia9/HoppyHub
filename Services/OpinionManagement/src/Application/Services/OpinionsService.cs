@@ -21,11 +21,6 @@ public class OpinionsService : IOpinionsService
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The publish endpoint.
-    /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
-
-    /// <summary>
     ///     The image created request client.
     /// </summary>
     private readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
@@ -34,6 +29,11 @@ public class OpinionsService : IOpinionsService
     ///     The image deleted request client.
     /// </summary>
     private readonly IRequestClient<ImageDeleted> _imageDeletedRequestClient;
+
+    /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
     ///     Initializes OpinionsService.
@@ -121,9 +121,9 @@ public class OpinionsService : IOpinionsService
     {
         var newBeerOpinionsCount =
             await _context.Opinions.CountAsync(x => x.BeerId == beerId,
-                cancellationToken: cancellationToken);
+                cancellationToken);
         var newBeerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
-            .AverageAsync(x => x.Rating, cancellationToken: cancellationToken);
+            .AverageAsync(x => x.Rating, cancellationToken);
         var beerOpinionChanged = new BeerOpinionChanged
         {
             BeerId = beerId,
@@ -134,6 +134,9 @@ public class OpinionsService : IOpinionsService
         await _publishEndpoint.Publish(beerOpinionChanged, cancellationToken);
     }
 
-    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName) =>
-        $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
+    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName)
+    {
+        return
+            $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
+    }
 }
