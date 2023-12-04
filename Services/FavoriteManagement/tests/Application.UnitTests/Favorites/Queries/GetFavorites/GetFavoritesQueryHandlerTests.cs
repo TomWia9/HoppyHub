@@ -71,7 +71,13 @@ public class GetFavoritesQueryHandlerTests
         {
             new()
             {
-                Id = Guid.NewGuid(), BeerId = Guid.NewGuid(), Beer = beers[0], CreatedBy = userId
+                Id = Guid.NewGuid(),
+                BeerId = Guid.NewGuid(),
+                Beer = beers[0],
+                CreatedBy = userId,
+                Created = DateTime.Now,
+                LastModified = DateTime.Now,
+                LastModifiedBy = userId
             }
         };
         var favoritesDbSetMock = favorites.AsQueryable().BuildMockDbSet();
