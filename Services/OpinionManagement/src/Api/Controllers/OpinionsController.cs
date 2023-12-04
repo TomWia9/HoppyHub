@@ -16,7 +16,7 @@ namespace Api.Controllers;
 public class OpinionsController : ApiControllerBase
 {
     /// <summary>
-    ///     Gets opinions.
+    ///     Gets the opinions.
     /// </summary>
     /// <param name="query">The GetOpinionsQuery</param>
     /// <returns>An ActionResult of type PaginatedList of OpinionDto</returns>

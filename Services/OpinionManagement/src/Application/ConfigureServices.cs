@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Opinions.Queries.GetOpinions;
+using Application.Services;
 using Domain.Entities;
 using FluentValidation;
 using MassTransit;
@@ -47,9 +48,10 @@ public static class ConfigureServices
             });
         });
 
+        services.AddTransient<IOpinionsService, OpinionsService>(); //TODO: Add unit test
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
-        
+
         return services;
     }
 }
