@@ -24,6 +24,7 @@ jobs:
           dotnet restore Services/UserManagement/UserManagement.sln
           dotnet restore Services/BeerManagement/BeerManagement.sln
           dotnet restore Services/ImageManagement/ImageManagement.sln
+          dotnet restore Services/FavoriteManagement/FavoriteManagement.sln
 
       - name: Build solutions
         run:  |
@@ -32,6 +33,7 @@ jobs:
           dotnet build Services/UserManagement/UserManagement.sln --no-restore
           dotnet build Services/BeerManagement/BeerManagement.sln --no-restore
           dotnet build Services/ImageManagement/ImageManagement.sln --no-restore
+          dotnet build Services/FavoriteManagement/FavoriteManagement.sln --no-restore
 
       - name: Test solutions
         run: |
@@ -40,6 +42,7 @@ jobs:
           dotnet test Services/UserManagement/UserManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/BeerManagement/BeerManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/ImageManagement/ImageManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+          dotnet test Services/FavoriteManagement/FavoriteManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3

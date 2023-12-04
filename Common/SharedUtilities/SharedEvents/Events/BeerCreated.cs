@@ -9,4 +9,14 @@ public record BeerCreated
     ///     The beer id.
     /// </summary>
     public Guid Id { get; set; }
+    
+    /// <summary>
+    ///     The beer name.
+    /// </summary>
+    public string? Name { get; init; }
+
+    /// <summary>
+    ///     The beer brewery name.
+    /// </summary>
+    public string? BreweryName { get; init; }
 }

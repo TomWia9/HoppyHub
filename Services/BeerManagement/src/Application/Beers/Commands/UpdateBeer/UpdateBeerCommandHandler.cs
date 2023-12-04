@@ -1,7 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.Beers.Commands.UpdateBeer;
@@ -17,12 +19,19 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes the UpdateBeerCommandHandler.
     /// </summary>
     /// <param name="context"></param>
-    public UpdateBeerCommandHandler(IApplicationDbContext context)
+    /// <param name="publishEndpoint">The publish endpoint</param>
+    public UpdateBeerCommandHandler(IApplicationDbContext context, IPublishEndpoint publishEndpoint)
     {
         _context = context;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -42,12 +51,8 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
             throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
         }
 
-        if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
-        {
-            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
-        }
-
-        var entity = await _context.Beers.FindAsync(new object?[] { request.Id }, cancellationToken);
+        var entity = await _context.Beers.Include(x => x.Brewery)
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (entity is null)
         {
@@ -65,5 +70,14 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         entity.ReleaseDate = request.ReleaseDate;
 
         await _context.SaveChangesAsync(cancellationToken);
+
+        var beerUpdatedEvent = new BeerUpdated
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            BreweryName = entity.Brewery!.Name
+        };
+
+        await _publishEndpoint.Publish(beerUpdatedEvent, cancellationToken);
     }
 }

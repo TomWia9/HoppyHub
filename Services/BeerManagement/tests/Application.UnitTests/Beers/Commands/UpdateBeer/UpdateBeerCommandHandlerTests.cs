@@ -1,8 +1,10 @@
 ﻿using Application.Beers.Commands.UpdateBeer;
 using Application.Common.Interfaces;
 using Domain.Entities;
+using MassTransit;
 using MockQueryable.Moq;
 using Moq;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 
 namespace Application.UnitTests.Beers.Commands.UpdateBeer;
@@ -19,6 +21,11 @@ public class UpdateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateBeerCommandHandler _handler;
@@ -29,29 +36,36 @@ public class UpdateBeerCommandHandlerTests
     public UpdateBeerCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _handler = new UpdateBeerCommandHandler(_contextMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new UpdateBeerCommandHandler(_contextMock.Object, _publishEndpointMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method updates beer when beer exists.
+    ///     Tests that Handle method updates beer and publishes BeerUpdated event when beer exists.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldUpdateBeer_WhenBeerExists()
+    public async Task Handle_ShouldUpdateBeerAndPublishBeerUpdatedEvent_WhenBeerExists()
     {
         // Arrange
         var breweryId = Guid.NewGuid();
         var beerStyleId = Guid.NewGuid();
-        var breweries = new List<Brewery> { new() { Id = breweryId } };
+        var brewery = new Brewery
+        {
+            Id = breweryId,
+            Name = "Brewery name"
+        };
+        var breweries = new List<Brewery> { brewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
         var beerId = Guid.NewGuid();
-        var existingBeer = new Beer { Id = beerId, Name = "Old Name" };
+        var existingBeer = new Beer { Id = beerId, Name = "Old Name", Brewery = brewery };
+        var beers = new List<Beer> { existingBeer };
+        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
-        _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(existingBeer);
+        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
 
         var command = new UpdateBeerCommand
         {
@@ -67,6 +81,8 @@ public class UpdateBeerCommandHandlerTests
 
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
+        _publishEndpointMock.Verify(x =>
+            x.Publish(It.Is<BeerUpdated>(y => y.Name == command.Name), It.IsAny<CancellationToken>()));
     }
 
     /// <summary>
@@ -83,11 +99,12 @@ public class UpdateBeerCommandHandlerTests
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
+        var beers = Enumerable.Empty<Beer>();
+        var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
         _contextMock.Setup(x => x.BeerStyles).Returns(beerStylesDbSetMock.Object);
-        _contextMock.Setup(x => x.Beers.FindAsync(new object[] { 1 }, CancellationToken.None))
-            .ReturnsAsync((Beer?)null);
+        _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);
 
         var command = new UpdateBeerCommand
             { Id = beerId, Name = "New Name", BreweryId = breweryId, BeerStyleId = beerStyleId };

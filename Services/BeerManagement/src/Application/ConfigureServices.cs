@@ -41,7 +41,6 @@ public static class ConfigureServices
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());
-            //x.AddRequestClient<ImageCreated>();
             x.UsingRabbitMq((context, cfg) =>
             {
                 cfg.ConfigureEndpoints(context);
