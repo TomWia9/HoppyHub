@@ -26,29 +26,22 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     The image deleted request client.
+    ///     The opinions service.
     /// </summary>
-    private readonly IRequestClient<ImageDeleted> _imageDeletedRequestClient;
-
-    /// <summary>
-    ///     The publish endpoint.
-    /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IOpinionsService _opinionsService;
 
     /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
-    /// <param name="imageDeletedRequestClient">The image deleted request client</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
+    /// <param name="opinionsService">TThe opinions service</param>
     public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IRequestClient<ImageDeleted> imageDeletedRequestClient, IPublishEndpoint publishEndpoint)
+        IOpinionsService opinionsService)
     {
         _context = context;
         _currentUserService = currentUserService;
-        _imageDeletedRequestClient = imageDeletedRequestClient;
-        _publishEndpoint = publishEndpoint;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -78,10 +71,10 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
         {
             _context.Opinions.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
-            
-            await DeleteImageAsync(entity.ImageUri, cancellationToken);
-            await SendOpinionChangedEventAsync(entity.BeerId, cancellationToken);
-            
+
+            await _opinionsService.DeleteImageAsync(entity.ImageUri, cancellationToken);
+            await _opinionsService.SendOpinionChangedEventAsync(entity.BeerId, cancellationToken);
+
             await transaction.CommitAsync(cancellationToken);
         }
         catch
@@ -89,54 +82,5 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             await transaction.RollbackAsync(cancellationToken);
             throw;
         }
-    }
-
-    //TODO: Move to separate service.
-    /// <summary>
-    ///     Deletes the image.
-    /// </summary>
-    /// <param name="uri">The image uri</param>
-    /// <param name="cancellationToken">The cancellation token</param>
-    private async Task DeleteImageAsync(string? uri, CancellationToken cancellationToken)
-    {
-        if (!string.IsNullOrEmpty(uri))
-        {
-            var imageDeletedEvent = new ImageDeleted
-            {
-                Uri = uri
-            };
-
-            var imageDeletionResult =
-                await _imageDeletedRequestClient.GetResponse<ImageDeletedFromBlobStorage>(imageDeletedEvent,
-                    cancellationToken);
-
-            if (!imageDeletionResult.Message.Success)
-            {
-                throw new RemoteServiceConnectionException("Failed to delete the image.");
-            }
-        }
-    }
-
-    //TODO: Move to separate service.
-    /// <summary>
-    ///     Sends OpinionChanged event
-    /// </summary>
-    /// <param name="beerId">The beer id</param>
-    /// <param name="cancellationToken">The cancellation token</param>
-    private async Task SendOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
-    {
-        var newBeerOpinionsCount =
-            await _context.Opinions.CountAsync(x => x.BeerId == beerId,
-                cancellationToken: cancellationToken);
-        var newBeerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
-            .AverageAsync(x => x.Rating, cancellationToken: cancellationToken);
-        var opinionChanged = new OpinionChanged
-        {
-            BeerId = beerId,
-            OpinionsCount = newBeerOpinionsCount,
-            NewBeerRating = Math.Round(newBeerRating, 2)
-        };
-
-        await _publishEndpoint.Publish(opinionChanged, cancellationToken);
     }
 }

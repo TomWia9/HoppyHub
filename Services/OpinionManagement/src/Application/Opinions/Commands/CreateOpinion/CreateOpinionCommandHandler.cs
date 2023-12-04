@@ -2,14 +2,8 @@
 using Application.Opinions.Dtos;
 using AutoMapper;
 using Domain.Entities;
-using MassTransit;
 using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
-using SharedUtilities.Extensions;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -29,29 +23,21 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IMapper _mapper;
 
     /// <summary>
-    ///     The image created request client.
+    ///     The opinions service.
     /// </summary>
-    private readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
-
-    /// <summary>
-    ///     The publish endpoint.
-    /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IOpinionsService _opinionsService;
 
     /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
-    /// <param name="imageCreatedRequestClient">The image created request client</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
-    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper,
-        IRequestClient<ImageCreated> imageCreatedRequestClient, IPublishEndpoint publishEndpoint)
+    /// <param name="opinionsService">TThe opinions service</param>
+    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IOpinionsService opinionsService)
     {
         _context = context;
         _mapper = mapper;
-        _imageCreatedRequestClient = imageCreatedRequestClient;
-        _publishEndpoint = publishEndpoint;
+        _opinionsService = opinionsService;
     }
 
     /// <summary>
@@ -82,9 +68,10 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         {
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
-            
-            await UploadImageAsync(entity, request.Image, beer.BreweryId, beer.Id, entity.Id, cancellationToken);
-            await SendOpinionChangedEventAsync(beer.Id, cancellationToken);
+
+            await _opinionsService.UploadImageAsync(entity, request.Image, beer.BreweryId, beer.Id, entity.Id,
+                cancellationToken);
+            await _opinionsService.SendOpinionChangedEventAsync(beer.Id, cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
         }
@@ -100,67 +87,5 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
         var opinionDto = _mapper.Map<OpinionDto>(entity);
 
         return opinionDto;
-    }
-
-    //TODO: Move to separate service.
-    /// <summary>
-    ///     Uploads image.
-    /// </summary>
-    /// <param name="entity">The opinion entity</param>
-    /// <param name="image">The image</param>
-    /// <param name="breweryId">The brewery id</param>
-    /// <param name="beerId">The beer id</param>
-    /// <param name="opinionId">The opinion id</param>
-    /// <param name="cancellationToken">The cancellation token</param>
-    private async Task UploadImageAsync(Opinion entity, IFormFile? image, Guid breweryId, Guid beerId, Guid opinionId,
-        CancellationToken cancellationToken)
-    {
-        if (image is not null)
-        {
-            var imageCreatedEvent = new ImageCreated
-            {
-                //TODO: Move to GetImagePath method in new service
-                Path =
-                    $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(image.FileName)}",
-                Image = await image.GetBytes()
-            };
-
-            var imageUploadResult =
-                await _imageCreatedRequestClient.GetResponse<ImageUploaded>(imageCreatedEvent, cancellationToken);
-
-            var imageUri = imageUploadResult.Message.Uri;
-
-            if (string.IsNullOrEmpty(imageUri))
-            {
-                throw new RemoteServiceConnectionException("Failed to sent image.");
-            }
-
-            entity.ImageUri = imageUri;
-
-            await _context.SaveChangesAsync(cancellationToken);
-        }
-    }
-
-    //TODO: Move to separate service.
-    /// <summary>
-    ///     Sends OpinionChanged event
-    /// </summary>
-    /// <param name="beerId">The beer id</param>
-    /// <param name="cancellationToken">The cancellation token</param>
-    private async Task SendOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
-    {
-        var newBeerOpinionsCount =
-            await _context.Opinions.CountAsync(x => x.BeerId == beerId,
-                cancellationToken: cancellationToken);
-        var newBeerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
-            .AverageAsync(x => x.Rating, cancellationToken: cancellationToken);
-        var opinionChanged = new OpinionChanged
-        {
-            BeerId = beerId,
-            OpinionsCount = newBeerOpinionsCount,
-            NewBeerRating = Math.Round(newBeerRating, 2)
-        };
-
-        await _publishEndpoint.Publish(opinionChanged, cancellationToken);
     }
 }
