@@ -69,7 +69,7 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             await _context.SaveChangesAsync(cancellationToken);
 
             await _opinionsService.DeleteImageAsync(entity.ImageUri, cancellationToken);
-            await _opinionsService.SendOpinionChangedEventAsync(entity.BeerId, cancellationToken);
+            await _opinionsService.PublishOpinionChangedEventAsync(entity.BeerId, cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
         }

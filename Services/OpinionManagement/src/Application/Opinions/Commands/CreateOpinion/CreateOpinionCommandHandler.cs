@@ -71,7 +71,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
 
             await _opinionsService.UploadImageAsync(entity, request.Image, beer.BreweryId, beer.Id, entity.Id,
                 cancellationToken);
-            await _opinionsService.SendOpinionChangedEventAsync(beer.Id, cancellationToken);
+            await _opinionsService.PublishOpinionChangedEventAsync(beer.Id, cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
         }

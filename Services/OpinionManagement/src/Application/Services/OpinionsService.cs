@@ -113,11 +113,11 @@ public class OpinionsService : IOpinionsService
     }
 
     /// <summary>
-    ///     Sends OpinionChanged event
+    ///     Publishes OpinionChanged event
     /// </summary>
     /// <param name="beerId">The beer id</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task SendOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
+    public async Task PublishOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
     {
         var beerOpinions = _context.Opinions.Where(x => x.BeerId == beerId);
         var newBeerOpinionsCount = await beerOpinions.CountAsync(cancellationToken: cancellationToken);

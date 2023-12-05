@@ -26,7 +26,7 @@ public class Beer
     public string? BreweryName { get; set; }
 
     /// <summary>
-    ///     The favorites.
+    ///     The opinions.
     /// </summary>
     public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
 }

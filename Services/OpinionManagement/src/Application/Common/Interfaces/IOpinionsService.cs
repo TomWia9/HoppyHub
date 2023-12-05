@@ -28,9 +28,9 @@ public interface IOpinionsService
     Task DeleteImageAsync(string? uri, CancellationToken cancellationToken);
 
     /// <summary>
-    ///     Sends OpinionChanged event
+    ///     Publishes OpinionChanged event
     /// </summary>
     /// <param name="beerId">The beer id</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    Task SendOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken);
+    Task PublishOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken);
 }

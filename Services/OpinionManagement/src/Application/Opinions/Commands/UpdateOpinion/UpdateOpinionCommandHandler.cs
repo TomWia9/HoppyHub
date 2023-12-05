@@ -87,7 +87,7 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
             entity.Comment = request.Comment;
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _opinionsService.SendOpinionChangedEventAsync(entity.BeerId, cancellationToken);
+            await _opinionsService.PublishOpinionChangedEventAsync(entity.BeerId, cancellationToken);
 
             await transaction.CommitAsync(cancellationToken);
         }
