@@ -13,11 +13,6 @@ namespace Application.UnitTests.Common.Mappings;
 public class MappingTests
 {
     /// <summary>
-    ///     The configuration.
-    /// </summary>
-    private readonly IConfigurationProvider _configuration;
-
-    /// <summary>
     ///     The mapper.
     /// </summary>
     private readonly IMapper _mapper;
@@ -27,10 +22,10 @@ public class MappingTests
     /// </summary>
     public MappingTests()
     {
-        _configuration = new MapperConfiguration(config =>
+        var configuration = new MapperConfiguration(config =>
             config.AddProfile<MappingProfile>());
 
-        _mapper = _configuration.CreateMapper();
+        _mapper = configuration.CreateMapper();
     }
 
     /// <summary>

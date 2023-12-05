@@ -39,10 +39,10 @@ public class UserDeletedConsumerTests
     }
 
     /// <summary>
-    ///     Tests that Consume method deletes user when user exists.
+    ///     Tests that Consume method sets delete flag to true when user exists.
     /// </summary>
     [Fact]
-    public async Task Consume_ShouldDeleteUser_WhenUserExists()
+    public async Task Consume_ShouldSetDeletedFlagToTrue_WhenUserExists()
     {
         // Arrange
         var userId = Guid.NewGuid();
@@ -62,7 +62,7 @@ public class UserDeletedConsumerTests
         await _consumer.Consume(_consumeContextMock.Object);
 
         // Assert
-        _contextMock.Verify(x => x.Users.Remove(It.IsAny<User>()), Times.Once);
+        existingUser.Deleted.Should().BeTrue();
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 

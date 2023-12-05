@@ -48,7 +48,7 @@ public static class ConfigureServices
             });
         });
 
-        services.AddTransient<IOpinionsService, OpinionsService>(); //TODO: Add unit test
+        services.AddTransient<IOpinionsService, OpinionsService>();
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
 

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Opinions.Queries.GetOpinions;
+using Application.Services;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
@@ -88,5 +89,17 @@ public class ConfigureServicesTests
         _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Opinion, GetOpinionsQuery>));
         _services.Should().Contain(s => s.ImplementationType == typeof(OpinionsFilteringHelper));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+    }
+
+    /// <summary>
+    ///     Tests that the AddApiServices method registers the OpinionsService as a transient service.
+    /// </summary>
+    [Fact]
+    public void AddApiServices_ShouldOpinionsServiceAsTransient()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IOpinionsService) &&
+                                        x.ImplementationType == typeof(OpinionsService) &&
+                                        x.Lifetime == ServiceLifetime.Transient);
     }
 }
