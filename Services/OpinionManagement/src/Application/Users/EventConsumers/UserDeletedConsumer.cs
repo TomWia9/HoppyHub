@@ -34,7 +34,7 @@ public class UserDeletedConsumer : IConsumer<UserDeleted>
 
         if (user != null)
         {
-            _context.Users.Remove(user);
+            user.Deleted = true;
             await _context.SaveChangesAsync(CancellationToken.None);
         }
     }
