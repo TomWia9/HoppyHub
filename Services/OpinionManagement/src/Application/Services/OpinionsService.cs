@@ -119,11 +119,11 @@ public class OpinionsService : IOpinionsService
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task SendOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
     {
-        var newBeerOpinionsCount =
-            await _context.Opinions.CountAsync(x => x.BeerId == beerId,
-                cancellationToken);
-        var newBeerRating = await _context.Opinions.Where(x => x.BeerId == beerId)
-            .AverageAsync(x => x.Rating, cancellationToken);
+        var beerOpinions = _context.Opinions.Where(x => x.BeerId == beerId);
+        var newBeerOpinionsCount = await beerOpinions.CountAsync(cancellationToken: cancellationToken);
+        var newBeerRating = !await beerOpinions.AnyAsync(cancellationToken: cancellationToken)
+            ? 0
+            : await beerOpinions.AverageAsync(x => x.Rating, cancellationToken);
         var beerOpinionChanged = new BeerOpinionChanged
         {
             BeerId = beerId,

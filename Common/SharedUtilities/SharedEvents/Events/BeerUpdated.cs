@@ -16,6 +16,11 @@ public record BeerUpdated
     public string? Name { get; init; }
 
     /// <summary>
+    ///     The beer brewery id.
+    /// </summary>
+    public Guid BreweryId { get; set; }
+
+    /// <summary>
     ///     The beer brewery name.
     /// </summary>
     public string? BreweryName { get; init; }
