@@ -18,6 +18,7 @@ public class UserConfiguration : BaseConfiguration<User>
 
         builder.Property(x => x.Username).IsRequired().HasMaxLength(256);
         builder.Property(x => x.Role).IsRequired().HasMaxLength(15);
+        builder.Property(x => x.Deleted).IsRequired();
         builder.Property(x => x.Created).IsRequired();
         builder.Property(x => x.LastModified).IsRequired();
 

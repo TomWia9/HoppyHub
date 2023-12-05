@@ -18,6 +18,11 @@ public class User : BaseAuditableEntity
     public string? Role { get; set; }
 
     /// <summary>
+    ///     Indicates whether user is deleted.
+    /// </summary>
+    public bool Deleted { get; set; }
+
+    /// <summary>
     ///     The user beer opinions.
     /// </summary>
     public ICollection<Opinion> Opinions { get; set; } = new List<Opinion>();
