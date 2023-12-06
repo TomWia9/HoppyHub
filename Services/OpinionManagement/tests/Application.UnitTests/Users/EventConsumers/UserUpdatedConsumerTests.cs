@@ -4,6 +4,7 @@ using Domain.Entities;
 using MassTransit;
 using Moq;
 using SharedEvents.Events;
+using SharedUtilities.Models;
 
 namespace Application.UnitTests.Users.EventConsumers;
 
@@ -51,7 +52,9 @@ public class UserUpdatedConsumerTests
         var existingUser = new User
         {
             Id = userId,
-            Username = existingUsername
+            Username = existingUsername,
+            Role = Roles.User,
+            Opinions = new List<Opinion>()
         };
         var message = new UserUpdated
         {
