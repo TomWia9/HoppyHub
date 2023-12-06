@@ -23,9 +23,9 @@ public class OpinionsServiceTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
+    ///     The form file mock.
     /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+    private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
     ///     The image created request client mock.
@@ -38,9 +38,9 @@ public class OpinionsServiceTests
     private readonly Mock<IRequestClient<ImageDeleted>> _imageDeletedRequestClientMock;
 
     /// <summary>
-    ///     The form file mock.
+    ///     The ImageDeleted response mock.
     /// </summary>
-    private readonly Mock<IFormFile> _formFileMock;
+    private readonly Mock<Response<ImageDeletedFromBlobStorage>> _imageDeletedResponseMock;
 
     /// <summary>
     ///     The ImageUploaded response mock.
@@ -48,14 +48,14 @@ public class OpinionsServiceTests
     private readonly Mock<Response<ImageUploaded>> _imageUploadedResponseMock;
 
     /// <summary>
-    ///     The ImageDeleted response mock.
-    /// </summary>
-    private readonly Mock<Response<ImageDeletedFromBlobStorage>> _imageDeletedResponseMock;
-
-    /// <summary>
     ///     The opinions service.
     /// </summary>
     private readonly IOpinionsService _opinionsService;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups OpinionsServiceTests.
@@ -92,7 +92,7 @@ public class OpinionsServiceTests
         };
         var imageUploadedResponse = new ImageUploaded
         {
-            Uri = uri,
+            Uri = uri
         };
 
         _imageUploadedResponseMock.SetupGet(x => x.Message).Returns(imageUploadedResponse);

@@ -120,8 +120,8 @@ public class OpinionsService : IOpinionsService
     public async Task PublishOpinionChangedEventAsync(Guid beerId, CancellationToken cancellationToken)
     {
         var beerOpinions = _context.Opinions.Where(x => x.BeerId == beerId);
-        var newBeerOpinionsCount = await beerOpinions.CountAsync(cancellationToken: cancellationToken);
-        var newBeerRating = !await beerOpinions.AnyAsync(cancellationToken: cancellationToken)
+        var newBeerOpinionsCount = await beerOpinions.CountAsync(cancellationToken);
+        var newBeerRating = !await beerOpinions.AnyAsync(cancellationToken)
             ? 0
             : await beerOpinions.AverageAsync(x => x.Rating, cancellationToken);
         var beerOpinionChanged = new BeerOpinionChanged
@@ -134,6 +134,9 @@ public class OpinionsService : IOpinionsService
         await _publishEndpoint.Publish(beerOpinionChanged, cancellationToken);
     }
 
-    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName) =>
-        $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
+    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName)
+    {
+        return
+            $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
+    }
 }

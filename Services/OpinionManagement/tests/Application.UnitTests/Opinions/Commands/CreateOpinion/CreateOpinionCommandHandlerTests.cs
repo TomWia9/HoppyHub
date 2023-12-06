@@ -29,14 +29,14 @@ public class CreateOpinionCommandHandlerTests
     private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
-    ///     The opinions service mock.
-    /// </summary>
-    private readonly Mock<IOpinionsService> _opinionsServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly CreateOpinionCommandHandler _handler;
+
+    /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
 
     /// <summary>
     ///     Setups CreateOpinionCommandHandlerTests.
@@ -226,12 +226,12 @@ public class CreateOpinionCommandHandlerTests
             Comment = "Sample comment",
             BeerId = beerId
         };
-    
+
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((Beer?)null);
-    
+
         var expectedMessage = $"Entity \"{nameof(Beer)}\" ({beerId}) was not found.";
-    
+
         // Act & Assert
         await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
             .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);

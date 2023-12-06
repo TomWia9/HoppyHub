@@ -32,14 +32,14 @@ public class UpdateOpinionCommandHandlerTests
     private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
-    ///     The opinions service mock.
-    /// </summary>
-    private readonly Mock<IOpinionsService> _opinionsServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateOpinionCommandHandler _handler;
+
+    /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
 
     /// <summary>
     ///     Setups UpdateOpinionCommandHandlerTests.

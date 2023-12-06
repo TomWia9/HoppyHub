@@ -25,14 +25,14 @@ public class DeleteOpinionCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The opinions service mock.
-    /// </summary>
-    private readonly Mock<IOpinionsService> _opinionsServiceMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteOpinionCommandHandler _handler;
+
+    /// <summary>
+    ///     The opinions service mock.
+    /// </summary>
+    private readonly Mock<IOpinionsService> _opinionsServiceMock;
 
     /// <summary>
     ///     Setups DeleteOpinionCommandHandlerTests.
