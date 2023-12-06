@@ -75,6 +75,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         {
             Id = entity.Id,
             Name = entity.Name,
+            BreweryId = entity.BreweryId,
             BreweryName = entity.Brewery!.Name
         };
 

@@ -96,6 +96,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
         {
             Id = entity.Id,
             Name = entity.Name,
+            BreweryId = beerBrewery.Id,
             BreweryName = beerBrewery.Name
         };
 

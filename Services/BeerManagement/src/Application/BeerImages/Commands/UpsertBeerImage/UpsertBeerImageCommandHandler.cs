@@ -1,5 +1,4 @@
-﻿using Application.Common.Extensions;
-using Application.Common.Interfaces;
+﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
 using MediatR;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using SharedEvents.Events;
 using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Extensions;
 
 namespace Application.BeerImages.Commands.UpsertBeerImage;
 
