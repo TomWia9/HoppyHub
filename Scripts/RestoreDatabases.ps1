@@ -20,7 +20,8 @@ foreach ($solution in $solutionsWithDatabases) {
     # Change to the solution directory
     Set-Location -Path $solutionDirectory
     
-    # Execute dotnet ef database update
+    # Clean the database (drop and recreate)
+    dotnet ef database drop --force --project src/api
     dotnet ef database update --project src/api
     
     # Return to the initial directory
