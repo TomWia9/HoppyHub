@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Opinions.Queries.GetOpinions;
-using Application.Services;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;

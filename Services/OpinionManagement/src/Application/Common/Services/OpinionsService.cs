@@ -8,7 +8,7 @@ using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Extensions;
 
-namespace Application.Services;
+namespace Application.Common.Services;
 
 /// <summary>
 ///     The opinions service.
@@ -78,7 +78,7 @@ public class OpinionsService : IOpinionsService
 
             if (string.IsNullOrEmpty(imageUri))
             {
-                throw new RemoteServiceConnectionException("Failed to sent image.");
+                throw new RemoteServiceConnectionException("Failed to upload image.");
             }
 
             entity.ImageUri = imageUri;
@@ -134,9 +134,6 @@ public class OpinionsService : IOpinionsService
         await _publishEndpoint.Publish(beerOpinionChanged, cancellationToken);
     }
 
-    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName)
-    {
-        return
-            $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
-    }
+    private static string CreateOpinionImagePath(Guid breweryId, Guid beerId, Guid opinionId, string imageName) =>
+        $"Opinions/{breweryId.ToString()}/{beerId.ToString()}/{opinionId.ToString()}{Path.GetExtension(imageName)}";
 }
