@@ -52,8 +52,8 @@ function Restore-UserManagement {
     $solution = "UserManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
-    # Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
-    # Initialize-Database -name "Users" -Database $solution
+    Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
+    Initialize-Database -name "Users" -Database $solution
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
