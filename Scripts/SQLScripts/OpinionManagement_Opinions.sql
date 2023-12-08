@@ -7,7 +7,7 @@ SET @OpinionsPerBeer = 20
 -- Select Id for "user@localhost" user
 SELECT @UserId = Id
 FROM Users
-WHERE Username = 'user@localhost'
+WHERE UserName = 'user@localhost'
 
 -- Generate @OpinionsPerBeer opinions for each beer
 INSERT INTO Opinions (Id, Rating, Comment, BeerId, Created, CreatedBy, LastModified, LastModifiedBy)
@@ -26,10 +26,12 @@ FROM Beers
                      FROM sys.all_columns) AS BeerOpinions
 ORDER BY Beers.Id
 
--- Update beers ratings
-UPDATE Beers
-SET Rating = ISNULL(Opinions.AverageRating, 0)
-FROM Beers
+-- Update beers ratings and opinions count in BeerManagement database
+UPDATE BeerManagement.dbo.Beers
+SET 
+Rating = ISNULL(Opinions.AverageRating, 0),
+OpinionsCount = @OpinionsPerBeer
+FROM BeerManagement.dbo.Beers
          LEFT JOIN (SELECT BeerId, ROUND(AVG(CAST(Rating AS FLOAT)), 2) AS AverageRating
                     FROM Opinions
-                    GROUP BY BeerId) AS Opinions ON Beers.Id = Opinions.BeerId
+                    GROUP BY BeerId) AS Opinions ON BeerManagement.dbo.Beers.Id = Opinions.BeerId

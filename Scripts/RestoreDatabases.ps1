@@ -42,9 +42,9 @@ function Restore-BeerManagement {
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
     Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
-    Initialize-Database -name "Breweries" -Database $solution
-    Initialize-Database -name "BeerStyles" -Database $solution
-    Initialize-Database -name "Beers" -Database $solution
+    Initialize-Database -name "BeerManagement_Breweries" -Database $solution
+    Initialize-Database -name "BeerManagement_BeerStyles" -Database $solution
+    Initialize-Database -name "BeerManagement_Beers" -Database $solution
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
@@ -53,7 +53,7 @@ function Restore-UserManagement {
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
     Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
-    Initialize-Database -name "Users" -Database $solution
+    Initialize-Database -name "UserManagement_Users" -Database $solution
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
@@ -61,10 +61,10 @@ function Restore-OpinionManagement {
     $solution = "OpinionManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
-    # Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
-    # Initialize-Database -name "Users" -Database $solution
-    # Initialize-Database -name "Beers" -Database $solution
-    # Initialize-Database -name "Opinions" -Database $solution
+    Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
+    Initialize-Database -name "OpinionManagement_Users" -Database $solution
+    Initialize-Database -name "OpinionManagement_Beers" -Database $solution
+    Initialize-Database -name "OpinionManagement_Opinions" -Database $solution
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
@@ -73,9 +73,9 @@ function Restore-FavoriteManagement {
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
     # Write-Host "Seeding $solution..." -ForegroundColor DarkMagenta
-    # Initialize-Database -name "Users" -Database $solution
-    # Initialize-Database -name "Beers" -Database $solution
-    # Initialize-Database -name "Favorites" -Database $solution
+    # Initialize-Database -name "FavoriteManagement_Users" -Database $solution
+    # Initialize-Database -name "FavoriteManagement_Beers" -Database $solution
+    # Initialize-Database -name "FavoriteManagement_Favorites" -Database $solution
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
