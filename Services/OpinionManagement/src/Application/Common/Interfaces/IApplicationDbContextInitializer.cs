@@ -6,9 +6,4 @@ public interface IApplicationDbContextInitializer
     ///     Initializes database asynchronously.
     /// </summary>
     public Task InitializeAsync();
-
-    /// <summary>
-    ///     Seed database asynchronously.
-    /// </summary>
-    public Task SeedAsync();
 }
