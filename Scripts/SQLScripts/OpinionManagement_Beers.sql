@@ -4,5 +4,5 @@ SELECT Beers.Id,
        Beers.BreweryId,
        Breweries.Name
 FROM BeerManagement.dbo.Beers
-INNER JOIN BeerManagement.dbo.Breweries ON Beers.BreweryId = Breweries.Id
+         INNER JOIN BeerManagement.dbo.Breweries ON Beers.BreweryId = Breweries.Id
 ORDER BY Beers.Id

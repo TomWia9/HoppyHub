@@ -7,7 +7,8 @@ param(
 # Get the current directory
 $initialDirectory = Convert-Path -Path "..\"
 
-function Restore-Database {
+function Restore-Database
+{
     param (
         [string]$solution
     )
@@ -26,7 +27,8 @@ function Restore-Database {
     dotnet ef database update --connection $connectionString --project src/api --no-build
 }
 
-function Initialize-Database {
+function Initialize-Database
+{
     param (
         [string]$scriptName,
         [string]$databaseName
@@ -37,7 +39,8 @@ function Initialize-Database {
     Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName
 }
 
-function Restore-BeerManagement {
+function Restore-BeerManagement
+{
     $solution = "BeerManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
@@ -47,7 +50,8 @@ function Restore-BeerManagement {
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
-function Restore-UserManagement {
+function Restore-UserManagement
+{
     $solution = "UserManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
@@ -55,7 +59,8 @@ function Restore-UserManagement {
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
-function Restore-OpinionManagement {
+function Restore-OpinionManagement
+{
     $solution = "OpinionManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution
@@ -65,7 +70,8 @@ function Restore-OpinionManagement {
     Write-Host "$solution restored successfully" -ForegroundColor Green
 }
 
-function Restore-FavoriteManagement {
+function Restore-FavoriteManagement
+{
     $solution = "FavoriteManagement"
     Write-Host "Restoring database for $solution" -ForegroundColor DarkMagenta
     Restore-Database -solution $solution

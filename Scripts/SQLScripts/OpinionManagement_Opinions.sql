@@ -28,9 +28,8 @@ ORDER BY Beers.Id
 
 -- Update beers ratings and opinions count in BeerManagement database
 UPDATE BeerManagement.dbo.Beers
-SET 
-Rating = ISNULL(Opinions.AverageRating, 0),
-OpinionsCount = @OpinionsPerBeer
+SET Rating        = ISNULL(Opinions.AverageRating, 0),
+    OpinionsCount = @OpinionsPerBeer
 FROM BeerManagement.dbo.Beers
          LEFT JOIN (SELECT BeerId, ROUND(AVG(CAST(Rating AS FLOAT)), 2) AS AverageRating
                     FROM Opinions

@@ -1,4 +1,4 @@
-﻿DECLARE @UserId          UNIQUEIDENTIFIER
+﻿DECLARE @UserId UNIQUEIDENTIFIER
 
 -- Select Id for "user@localhost" user
 SELECT @UserId = Id
@@ -14,8 +14,6 @@ FROM (SELECT TOP 10 Id, DATEADD(DAY, ABS(CHECKSUM(NEWID())) % 1460, '2020-01-01'
 
 -- Update favorites count in BeerManagement database
 UPDATE BeerManagement.dbo.Beers
-SET FavoritesCount = (
-    SELECT COUNT(*)
-    FROM Favorites
-    WHERE BeerId = BeerManagement.dbo.Beers.Id
-)
+SET FavoritesCount = (SELECT COUNT(*)
+                      FROM Favorites
+                      WHERE BeerId = BeerManagement.dbo.Beers.Id)
