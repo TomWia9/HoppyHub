@@ -1,5 +1,8 @@
 ﻿namespace Application.Common.Interfaces;
 
+/// <summary>
+///     ApplicationDbContextInitializer interface.
+/// </summary>
 public interface IApplicationDbContextInitializer
 {
     /// <summary>
