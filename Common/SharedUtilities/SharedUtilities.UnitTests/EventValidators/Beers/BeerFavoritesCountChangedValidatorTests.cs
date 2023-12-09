@@ -5,32 +5,32 @@ using SharedUtilities.EventValidators.Beers;
 namespace SharedUtilities.UnitTests.EventValidators.Beers;
 
 /// <summary>
-///     Unit tests for the <see cref="FavoritesCountChanged" /> class.
+///     Unit tests for the <see cref="BeerFavoritesCountChanged" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class FavoritesCountChangedValidatorTests
+public class BeerFavoritesCountChangedValidatorTests
 {
     /// <summary>
     ///     The validator.
     /// </summary>
-    private readonly FavoritesCountChangedValidator _validator;
+    private readonly BeerFavoritesCountChangedValidator _validator;
 
     /// <summary>
     ///     Setups FavoritesCountChangedValidatorTests.
     /// </summary>
-    public FavoritesCountChangedValidatorTests()
+    public BeerFavoritesCountChangedValidatorTests()
     {
-        _validator = new FavoritesCountChangedValidator();
+        _validator = new BeerFavoritesCountChangedValidator();
     }
 
     /// <summary>
     ///     Tests that validation should not have error for FavoritesCount when FavoritesCount is valid.
     /// </summary>
     [Fact]
-    public void FavoritesCountChanged_ShouldNotHaveValidationErrorForFavoritesCount_WhenFavoritesCountIsValid()
+    public void BeerFavoritesCountChanged_ShouldNotHaveValidationErrorForFavoritesCount_WhenFavoritesCountIsValid()
     {
         // Arrange
-        var favoritesCountChangedEvent = new FavoritesCountChanged
+        var favoritesCountChangedEvent = new BeerFavoritesCountChanged
         {
             FavoritesCount = 1
         };
@@ -47,10 +47,10 @@ public class FavoritesCountChangedValidatorTests
     /// </summary>
     [Fact]
     public void
-        FavoritesCountChanged_ShouldHaveValidationErrorForFavoritesCount_WhenFavoritesCountExceedsMaximumLength()
+        BeerFavoritesCountChanged_ShouldHaveValidationErrorForFavoritesCount_WhenFavoritesCountExceedsMaximumLength()
     {
         // Arrange
-        var favoritesCountChangedEvent = new FavoritesCountChanged
+        var favoritesCountChangedEvent = new BeerFavoritesCountChanged
         {
             FavoritesCount = -1
         };

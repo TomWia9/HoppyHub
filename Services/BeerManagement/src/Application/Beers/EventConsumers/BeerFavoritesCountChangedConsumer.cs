@@ -5,9 +5,9 @@ using SharedEvents.Events;
 namespace Application.Beers.EventConsumers;
 
 /// <summary>
-///     FavoritesCountChanged consumer.
+///     BeerFavoritesCountChanged consumer.
 /// </summary>
-public class FavoritesCountChangedConsumer : IConsumer<FavoritesCountChanged>
+public class BeerFavoritesCountChangedConsumer : IConsumer<BeerFavoritesCountChanged>
 {
     /// <summary>
     ///     The database context.
@@ -15,19 +15,19 @@ public class FavoritesCountChangedConsumer : IConsumer<FavoritesCountChanged>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     Initializes FavoritesCountChangedConsumer.
+    ///     Initializes BeerFavoritesCountChangedConsumer.
     /// </summary>
     /// <param name="context">The database context</param>
-    public FavoritesCountChangedConsumer(IApplicationDbContext context)
+    public BeerFavoritesCountChangedConsumer(IApplicationDbContext context)
     {
         _context = context;
     }
 
     /// <summary>
-    ///     Consumes FavoritesCountChanged event.
+    ///     Consumes BeerFavoritesCountChanged event.
     /// </summary>
     /// <param name="context">The consume context</param>
-    public async Task Consume(ConsumeContext<FavoritesCountChanged> context)
+    public async Task Consume(ConsumeContext<BeerFavoritesCountChanged> context)
     {
         var message = context.Message;
         var beer = await _context.Beers.FindAsync(message.BeerId);

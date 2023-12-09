@@ -1,9 +1,9 @@
 ﻿namespace SharedEvents.Events;
 
 /// <summary>
-///     The favorites count changed event.
+///     The beer favorites count changed event.
 /// </summary>
-public record FavoritesCountChanged
+public record BeerFavoritesCountChanged
 {
     /// <summary>
     ///     The beer id.

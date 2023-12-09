@@ -57,7 +57,7 @@ public class CreateFavoriteCommandHandler : IRequestHandler<CreateFavoriteComman
         var newBeerFavoritesCount =
             await _context.Favorites.CountAsync(x => x.BeerId == request.BeerId, cancellationToken: cancellationToken);
 
-        var favoritesCountChangedEvent = new FavoritesCountChanged
+        var favoritesCountChangedEvent = new BeerFavoritesCountChanged
         {
             BeerId = request.BeerId,
             FavoritesCount = newBeerFavoritesCount

@@ -41,10 +41,10 @@ public class CreateFavoriteCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method creates favorite and publishes FavoriteCountChanged event.
+    ///     Tests that Handle method creates favorite and publishes BeerFavoritesCountChanged event.
     /// </summary>
     [Fact]
-    public async Task Handle_ShouldCreateFavoriteAndPublishFavoriteCountChangedEvent()
+    public async Task Handle_ShouldCreateFavoriteAndPublishBeerFavoritesCountChangedEvent()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -68,7 +68,7 @@ public class CreateFavoriteCommandHandlerTests
         _contextMock.Verify(x => x.Favorites.AddAsync(It.IsAny<Favorite>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
         _publishEndpointMock.Verify(x =>
-            x.Publish(It.Is<FavoritesCountChanged>(y => y.BeerId == beerId),
+            x.Publish(It.Is<BeerFavoritesCountChanged>(y => y.BeerId == beerId),
                 It.IsAny<CancellationToken>()));
     }
 

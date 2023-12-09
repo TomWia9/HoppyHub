@@ -8,15 +8,15 @@ using SharedEvents.Events;
 namespace Application.UnitTests.Beers.EventConsumers;
 
 /// <summary>
-///     Tests for the <see cref="FavoritesCountChangedConsumer" /> class.
+///     Tests for the <see cref="BeerFavoritesCountChangedConsumer" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class FavoritesCountChangedConsumerTests
+public class BeerFavoritesCountChangedConsumerTests
 {
     /// <summary>
     ///     The consume context mock.
     /// </summary>
-    private readonly Mock<ConsumeContext<FavoritesCountChanged>> _consumeContextMock;
+    private readonly Mock<ConsumeContext<BeerFavoritesCountChanged>> _consumeContextMock;
 
     /// <summary>
     ///     The application db context mock.
@@ -26,19 +26,19 @@ public class FavoritesCountChangedConsumerTests
     /// <summary>
     ///     The FavoritesCountChanged consumer.
     /// </summary>
-    private readonly FavoritesCountChangedConsumer _consumer;
+    private readonly BeerFavoritesCountChangedConsumer _consumer;
 
     /// <summary>
     ///     Setups BeerCreatedConsumerTests.
     /// </summary>
-    public FavoritesCountChangedConsumerTests()
+    public BeerFavoritesCountChangedConsumerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _consumeContextMock = new Mock<ConsumeContext<FavoritesCountChanged>>();
+        _consumeContextMock = new Mock<ConsumeContext<BeerFavoritesCountChanged>>();
 
-        _consumer = new FavoritesCountChangedConsumer(_contextMock.Object);
+        _consumer = new BeerFavoritesCountChangedConsumer(_contextMock.Object);
     }
-    
+
     /// <summary>
     ///     Tests that Consume method updates beer FavoritesCount message is valid.
     /// </summary>
@@ -52,7 +52,7 @@ public class FavoritesCountChangedConsumerTests
             Id = beerId,
             FavoritesCount = 0
         };
-        var message = new FavoritesCountChanged
+        var message = new BeerFavoritesCountChanged
         {
             BeerId = beerId,
             FavoritesCount = 1

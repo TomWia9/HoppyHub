@@ -49,11 +49,11 @@ public class DeleteFavoriteCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes beer from favorites and publishes FavoritesCountChanged event when favorite beer exists.
+    ///     Tests that Handle method removes beer from favorites and publishes BeerFavoritesCountChanged event when favorite beer exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveFavoriteBeerFromDatabaseAndPublishFavoritesCountChanged_WhenFavoriteBeerExists()
+        Handle_ShouldRemoveFavoriteBeerFromDatabaseAndPublishBeerFavoritesCountChanged_WhenFavoriteBeerExists()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -71,7 +71,7 @@ public class DeleteFavoriteCommandHandlerTests
         _contextMock.Verify(x => x.Favorites.Remove(favorite), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _publishEndpointMock.Verify(x =>
-            x.Publish(It.Is<FavoritesCountChanged>(y => y.BeerId == beerId),
+            x.Publish(It.Is<BeerFavoritesCountChanged>(y => y.BeerId == beerId),
                 It.IsAny<CancellationToken>()));
     }
 
