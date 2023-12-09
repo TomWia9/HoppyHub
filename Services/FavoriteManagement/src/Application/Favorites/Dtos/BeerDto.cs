@@ -19,6 +19,11 @@ public record BeerDto : IMapFrom<Beer>
     public string? Name { get; set; }
 
     /// <summary>
+    ///     The brewery id.
+    /// </summary>
+    public Guid BreweryId { get; set; }
+
+    /// <summary>
     ///     The brewery name.
     /// </summary>
     public string? BreweryName { get; set; }

@@ -64,7 +64,8 @@ public class GetFavoritesQueryHandlerTests
             {
                 Id = beerId,
                 Name = "Test beer",
-                BreweryName = "Test brewery name"
+                BreweryName = "Test brewery name",
+                BreweryId = Guid.NewGuid()
             }
         };
         var favorites = new List<Favorite>
@@ -86,6 +87,7 @@ public class GetFavoritesQueryHandlerTests
             Id = x.Id,
             Name = x.Name,
             BreweryName = x.BreweryName,
+            BreweryId = x.BreweryId
         }), 1, 10);
 
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);

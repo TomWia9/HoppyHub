@@ -37,7 +37,8 @@ public class BeerCreatedConsumer : IConsumer<BeerCreated>
         {
             Id = message.Id,
             Name = message.Name,
-            BreweryName = message.BreweryName
+            BreweryName = message.BreweryName,
+            BreweryId = message.BreweryId
         };
 
         if (!await _context.Beers.AnyAsync(x => x.Id == beer.Id))
