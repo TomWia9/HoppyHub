@@ -17,7 +17,12 @@ public class IdentityServiceTests
     /// <summary>
     ///     Identity Service.
     /// </summary>
-    private readonly IIdentityService _identityService;
+    private readonly IdentityService _identityService;
+
+    /// <summary>
+    ///     The app configuration mock.
+    /// </summary>
+    private readonly Mock<IAppConfiguration> _appConfigurationMock;
 
     /// <summary>
     ///     User manager mock.
@@ -29,12 +34,11 @@ public class IdentityServiceTests
     /// </summary>
     public IdentityServiceTests()
     {
-        var jwtSettings = new JwtSettings
-        {
-            Secret = Enumerable.Repeat("a", 257).ToString()
-        };
+        _appConfigurationMock = new Mock<IAppConfiguration>();
+        _appConfigurationMock.SetupGet(x => x.JwtSecret)
+            .Returns(Enumerable.Repeat("a", 257).ToString() ?? string.Empty);
         _userManagerMock = UserManagerMockFactory.CreateUserManagerMock();
-        _identityService = new IdentityService(_userManagerMock.Object, jwtSettings);
+        _identityService = new IdentityService(_userManagerMock.Object, _appConfigurationMock.Object);
     }
 
     /// <summary>
@@ -186,11 +190,9 @@ public class IdentityServiceTests
     {
         // Arrange
         var user = new ApplicationUser { Email = "test@test.com" };
-        var jwtSettings = new JwtSettings
-        {
-            Secret = ""
-        };
-        var identityService = new IdentityService(_userManagerMock.Object, jwtSettings);
+        _appConfigurationMock.SetupGet(x => x.JwtSecret).Returns(string.Empty);
+
+        var identityService = new IdentityService(_userManagerMock.Object, _appConfigurationMock.Object);
 
         _userManagerMock.Setup(x => x.FindByEmailAsync(It.IsAny<string>()))
             .ReturnsAsync(user);

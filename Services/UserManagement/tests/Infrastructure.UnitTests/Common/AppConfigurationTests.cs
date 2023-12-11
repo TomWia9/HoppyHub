@@ -20,46 +20,6 @@ public class AppConfigurationTests
     private AppConfiguration? _appConfiguration;
 
     /// <summary>
-    ///     Tests that TempBeerImageUri returns correct value.
-    /// </summary>
-    [Fact]
-    public void TempBeerImageUri_ShouldReturnCorrectValue()
-    {
-        // Arrange
-        const string expectedTempBeerImageUri = "https://example.com/image.jpg";
-        SetupConfiguration(new Dictionary<string, string?>
-        {
-            { "TempBeerImageUri", expectedTempBeerImageUri }
-        });
-
-        // Act
-        var tempBeerImageUri = _appConfiguration!.TempBeerImageUri;
-
-        // Assert
-        tempBeerImageUri.Should().Be(expectedTempBeerImageUri);
-    }
-
-    /// <summary>
-    ///     Tests that TempBeerImageUri throws InvalidOperationException when TempBeerImage value is null.
-    /// </summary>
-    [Fact]
-    public void TempBeerImageUri_ShouldThrowInvalidOperationException_WhenTempBeerImageValueIsNull()
-    {
-        // Arrange
-        SetupConfiguration(new Dictionary<string, string?>
-        {
-            { "TempBeerImageUri", null }
-        });
-
-        // Act
-        var act = () => { _ = _appConfiguration!.TempBeerImageUri; };
-
-        // Assert
-        act.Should().Throw<InvalidOperationException>()
-            .WithMessage("Temp beer image uri does not exists.");
-    }
-
-    /// <summary>
     ///     Tests that JwtSecret returns correct value.
     /// </summary>
     [Fact]

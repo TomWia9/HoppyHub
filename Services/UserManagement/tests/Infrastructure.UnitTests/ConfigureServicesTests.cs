@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Infrastructure.Common;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
@@ -94,14 +95,15 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the JwtSettings
-    ///     to the service collection as JwtSettings.
+    ///     Tests that the AddInfrastructureServices method adds the AppConfiguration
+    ///     to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_ShouldAddJwtSettings()
+    public void AddInfrastructureServices_ShouldAddAppConfiguration()
     {
         // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
+        _services.Should().Contain(x => x.ServiceType == typeof(IAppConfiguration));
+        _services.Should().Contain(s => s.ImplementationType == typeof(AppConfiguration));
         _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Singleton);
     }
 
