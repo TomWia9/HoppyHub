@@ -1,5 +1,4 @@
 ﻿using Application.Common.Interfaces;
-using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.Extensions.Configuration;
@@ -88,17 +87,5 @@ public class ConfigureServicesTests
         // Assert
         _services.Should().Contain(x => x.ServiceType == typeof(TimeProvider));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-    }
-
-    /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the JwtSettings
-    ///     to the service collection as JwtSettings.
-    /// </summary>
-    [Fact]
-    public void AddInfrastructureServices_ShouldAddJwtSettings()
-    {
-        // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(JwtSettings));
-        _services.Should().Contain(x => x.Lifetime == ServiceLifetime.Singleton);
     }
 }

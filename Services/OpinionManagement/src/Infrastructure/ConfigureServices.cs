@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Application.Common.Interfaces;
-using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -34,10 +33,7 @@ public static class ConfigureServices
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
 
         services.AddSingleton(TimeProvider.System);
-        
-        var jwtSettings = new JwtSettings();
-        configuration.Bind(nameof(JwtSettings), jwtSettings);
-        services.AddSingleton(jwtSettings);
+
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -52,7 +48,9 @@ public static class ConfigureServices
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey =
                         new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(jwtSettings.Secret ?? throw new InvalidOperationException())),
+                            Encoding.ASCII.GetBytes(configuration.GetValue<string>("JwtSettings:Secret") ??
+                                                    throw new InvalidOperationException(
+                                                        "JWT token secret key does not exists."))),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     RequireExpirationTime = true,

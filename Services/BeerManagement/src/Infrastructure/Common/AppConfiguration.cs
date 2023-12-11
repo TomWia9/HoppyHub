@@ -11,13 +11,13 @@ public class AppConfiguration : IAppConfiguration
     /// <summary>
     ///     The configuration.
     /// </summary>
-    private readonly IConfiguration? _configuration;
+    private readonly IConfiguration _configuration;
 
     /// <summary>
     ///     Initializes AppConfiguration.
     /// </summary>
     /// <param name="configuration">The configuration</param>
-    public AppConfiguration(IConfiguration? configuration)
+    public AppConfiguration(IConfiguration configuration)
     {
         _configuration = configuration;
     }
