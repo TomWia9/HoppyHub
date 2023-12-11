@@ -92,24 +92,6 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset?>("Created")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset?>("LastModified")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasMaxLength(15)
