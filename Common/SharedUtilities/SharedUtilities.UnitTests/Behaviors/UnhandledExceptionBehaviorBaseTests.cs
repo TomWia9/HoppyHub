@@ -7,15 +7,15 @@ using SharedUtilities.UnitTests.TestHelpers;
 namespace SharedUtilities.UnitTests.Behaviors;
 
 /// <summary>
-///     Unit tests for the <see cref="UnhandledExceptionBehavior{TRequest,TResponse}" /> class.
+///     Unit tests for the <see cref="UnhandledExceptionBehaviorBase{TRequest,TResponse}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class UnhandledExceptionBehaviorTests
+public class UnhandledExceptionBehaviorBaseTests
 {
     /// <summary>
     ///     The logger mock.
     /// </summary>
-    private readonly Mock<ILogger<UnhandledExceptionBehavior<TestRequest, TestResponse>>> _loggerMock;
+    private readonly Mock<ILogger<UnhandledExceptionBehaviorBase<TestRequest, TestResponse>>> _loggerMock;
 
     /// <summary>
     ///     The request handler delegate mock.
@@ -25,16 +25,17 @@ public class UnhandledExceptionBehaviorTests
     /// <summary>
     ///     The performance behavior.
     /// </summary>
-    private readonly UnhandledExceptionBehavior<TestRequest, TestResponse> _unhandledExceptionBehavior;
+    private readonly UnhandledExceptionBehaviorBase<TestRequest, TestResponse> _unhandledExceptionBehavior;
 
     /// <summary>
-    ///     Setups UnhandledExceptionBehaviorTests.
+    ///     Setups UnhandledExceptionBehaviorBaseTests.
     /// </summary>
-    public UnhandledExceptionBehaviorTests()
+    public UnhandledExceptionBehaviorBaseTests()
     {
-        _loggerMock = new Mock<ILogger<UnhandledExceptionBehavior<TestRequest, TestResponse>>>();
+        _loggerMock = new Mock<ILogger<UnhandledExceptionBehaviorBase<TestRequest, TestResponse>>>();
         _requestHandlerDelegateMock = new Mock<RequestHandlerDelegate<TestResponse>>();
-        _unhandledExceptionBehavior = new UnhandledExceptionBehavior<TestRequest, TestResponse>(_loggerMock.Object);
+        _unhandledExceptionBehavior =
+            new UnhandledExceptionBehavior(_loggerMock.Object, Array.Empty<Type>());
     }
 
     /// <summary>
@@ -79,7 +80,10 @@ public class UnhandledExceptionBehaviorTests
             Times.Once);
     }
 
-    private class TestException : Exception
-    {
-    }
+    private class TestException : Exception;
+
+    private class UnhandledExceptionBehavior(
+        ILogger<UnhandledExceptionBehaviorBase<TestRequest, TestResponse>> logger,
+        IEnumerable<Type> handledExceptions)
+        : UnhandledExceptionBehaviorBase<TestRequest, TestResponse>(logger, handledExceptions);
 }

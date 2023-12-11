@@ -21,7 +21,7 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+    public static void AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -63,7 +63,5 @@ public static class ConfigureServices
                 context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)))
             .AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
-
-        return services;
     }
 }

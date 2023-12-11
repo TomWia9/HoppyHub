@@ -1,41 +1,36 @@
-﻿using MassTransit;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using SharedUtilities.Exceptions;
 
 namespace SharedUtilities.Behaviors;
 
 /// <summary>
-///     UnhandledExceptionBehavior class.
+///     UnhandledExceptionBehavior base class.
 /// </summary>
 /// <typeparam name="TRequest">The request</typeparam>
 /// <typeparam name="TResponse">The response</typeparam>
-public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+public abstract class UnhandledExceptionBehaviorBase<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly List<Type> _handledExceptions = new()
-    {
-        typeof(ValidationException),
-        typeof(NotFoundException),
-        typeof(UnauthorizedAccessException),
-        typeof(ForbiddenAccessException),
-        typeof(BadRequestException),
-        typeof(RemoteServiceConnectionException),
-        typeof(RequestTimeoutException)
-    };
+    /// <summary>
+    ///     The list of handled exceptions.
+    /// </summary>
+    private readonly List<Type> _handledExceptions;
 
     /// <summary>
     ///     The logger.
     /// </summary>
-    private readonly ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> _logger;
+    private readonly ILogger<UnhandledExceptionBehaviorBase<TRequest, TResponse>> _logger;
 
     /// <summary>
     ///     Initializes UnhandledExceptionBehavior.
     /// </summary>
     /// <param name="logger">The logger</param>
-    public UnhandledExceptionBehavior(ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger)
+    /// <param name="handledExceptions">The handled exceptions</param>
+    protected UnhandledExceptionBehaviorBase(ILogger<UnhandledExceptionBehaviorBase<TRequest, TResponse>> logger,
+        IEnumerable<Type> handledExceptions)
     {
         _logger = logger;
+        _handledExceptions = handledExceptions.ToList();
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 using Application.Beers.Queries.GetBeers;
 using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
+using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
 using Domain.Entities;
@@ -25,7 +26,7 @@ public static class ConfigureServices
     ///     Adds application project services.
     /// </summary>
     /// <param name="services">The services</param>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -52,7 +53,5 @@ public static class ConfigureServices
         services.AddTransient<IFilteringHelper<Brewery, GetBreweriesQuery>, BreweriesFilteringHelper>();
         services.AddTransient<IFilteringHelper<Beer, GetBeersQuery>, BeersFilteringHelper>();
         services.AddTransient<IFilteringHelper<BeerStyle, GetBeerStylesQuery>, BeerStylesFilteringHelper>();
-
-        return services;
     }
 }
