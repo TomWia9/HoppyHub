@@ -58,15 +58,11 @@ public static class ConfigureServices
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(Policies.UserAccess,
-                policy => policy.RequireAssertion(context =>
-                    context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)));
-
-            options.AddPolicy(Policies.AdministratorAccess,
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policies.UserAccess, policy => policy.RequireAssertion(context =>
+                context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)))
+            .AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
-        });
 
         return services;
     }
