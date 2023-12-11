@@ -47,12 +47,12 @@ public record OpinionDto : IMapFrom<Opinion>
     /// <summary>
     ///     Date of creation.
     /// </summary>
-    public DateTime? Created { get; init; }
+    public DateTimeOffset? Created { get; init; }
 
     /// <summary>
     ///     Date of modification.
     /// </summary>
-    public DateTime? LastModified { get; init; }
+    public DateTimeOffset? LastModified { get; init; }
 
     /// <summary>
     ///     Creates Opinion - OpinionDto map ignoring Username.
