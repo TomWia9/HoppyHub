@@ -80,16 +80,15 @@ public class ConfigureServicesTests
     }
 
     /// <summary>
-    ///     Tests that the AddInfrastructureServices method adds the DateTimeService
-    ///     to the service collection as IDateTime.
+    ///     Tests that the AddInfrastructureServices method adds the TimeProvider
+    ///     to the service collection.
     /// </summary>
     [Fact]
-    public void AddInfrastructureServices_ShouldAddDateTimeService()
+    public void AddInfrastructureServices_ShouldAddTimeProvider()
     {
         // Assert
-        _services.Should().Contain(x => x.ServiceType == typeof(IDateTime));
-        _services.Should().Contain(s => s.ImplementationType == typeof(DateTimeService));
-        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+        _services.Should().Contain(x => x.ServiceType == typeof(TimeProvider));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Singleton);
     }
 
     /// <summary>

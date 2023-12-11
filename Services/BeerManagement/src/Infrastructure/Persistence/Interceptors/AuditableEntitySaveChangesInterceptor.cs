@@ -1,5 +1,4 @@
-﻿using Application.Common.Interfaces;
-using Domain.Common;
+﻿using Domain.Common;
 using Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -8,29 +7,29 @@ using SharedUtilities.Interfaces;
 namespace Infrastructure.Persistence.Interceptors;
 
 /// <summary>
-///     The AuditableEntitySaveChangesInterceptor class
+///     The AuditableEntitySaveChangesInterceptor class.
 /// </summary>
 public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
 {
     /// <summary>
-    ///     Current user service
+    ///     Current user service.
     /// </summary>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     DateTime service
+    ///     The time provider.
     /// </summary>
-    private readonly IDateTime _dateTimeService;
+    private readonly TimeProvider _timeProvider;
 
     /// <summary>
-    ///     Initializes AuditableEntitySaveChangesInterceptor
+    ///     Initializes AuditableEntitySaveChangesInterceptor.
     /// </summary>
     /// <param name="currentUserService">Current user service</param>
-    /// <param name="dateTime">DateTime service</param>
-    public AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService, IDateTime dateTime)
+    /// <param name="timeProvider">The time provider</param>
+    public AuditableEntitySaveChangesInterceptor(ICurrentUserService currentUserService, TimeProvider timeProvider)
     {
         _currentUserService = currentUserService;
-        _dateTimeService = dateTime;
+        _timeProvider = timeProvider;
     }
 
     /// <summary>
@@ -74,14 +73,14 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedBy = _currentUserService.UserId;
-                entry.Entity.Created = _dateTimeService.Now;
+                entry.Entity.Created = _timeProvider.GetUtcNow();
             }
 
             if (entry.State is EntityState.Added or EntityState.Modified ||
                 entry.HasChangedOwnedEntities())
             {
                 entry.Entity.LastModifiedBy = _currentUserService.UserId;
-                entry.Entity.LastModified = _dateTimeService.Now;
+                entry.Entity.LastModified = _timeProvider.GetUtcNow();
             }
         }
     }

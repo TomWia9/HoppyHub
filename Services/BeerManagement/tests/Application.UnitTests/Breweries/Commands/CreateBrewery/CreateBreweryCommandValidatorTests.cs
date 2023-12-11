@@ -31,9 +31,9 @@ public class CreateBreweryCommandValidatorTests
         var breweriesDbSetMock = Enumerable.Empty<Brewery>().AsQueryable().BuildMockDbSet();
         _contextMock = new Mock<IApplicationDbContext>();
         _contextMock.Setup(x => x.Breweries).Returns(breweriesDbSetMock.Object);
-        Mock<IDateTime> dateTimeMock = new();
-        dateTimeMock.Setup(x => x.Now).Returns(new DateTime(2023, 3, 29));
-        _validator = new CreateBreweryCommandValidator(_contextMock.Object, dateTimeMock.Object);
+        Mock<TimeProvider> timeProviderMock = new();
+        timeProviderMock.Setup(x => x.GetUtcNow()).Returns(new DateTime(2023, 3, 29));
+        _validator = new CreateBreweryCommandValidator(_contextMock.Object, timeProviderMock.Object);
     }
 
     /// <summary>

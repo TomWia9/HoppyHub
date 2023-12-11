@@ -19,8 +19,8 @@ public class UpdateBreweryCommandValidator : BaseBreweryCommandValidator<UpdateB
     ///     Initializes CreateBreweryCommandValidator.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="dateTime">The date time service</param>
-    public UpdateBreweryCommandValidator(IApplicationDbContext context, IDateTime dateTime) : base(dateTime)
+    /// <param name="timeProvider">The time provider</param>
+    public UpdateBreweryCommandValidator(IApplicationDbContext context, TimeProvider timeProvider) : base(timeProvider)
     {
         _context = context;
 

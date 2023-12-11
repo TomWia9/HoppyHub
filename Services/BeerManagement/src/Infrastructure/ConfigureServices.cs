@@ -31,12 +31,11 @@ public static class ConfigureServices
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
         services.AddSingleton<IAppConfiguration, AppConfiguration>();
+        services.AddSingleton(TimeProvider.System);
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
-
-        services.AddTransient<IDateTime, DateTimeService>();
 
         var jwtSettings = new JwtSettings();
         configuration.Bind(nameof(JwtSettings), jwtSettings);

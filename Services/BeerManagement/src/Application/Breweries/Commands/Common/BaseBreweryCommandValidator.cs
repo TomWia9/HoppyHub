@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using Application.Common.Interfaces;
 using FluentValidation;
 
 namespace Application.Breweries.Commands.Common;
@@ -17,10 +16,10 @@ public abstract class BaseBreweryCommandValidator<TCommand> : AbstractValidator<
     /// <summary>
     ///     Initializes BaseBreweryCommandValidator.
     /// </summary>
-    protected BaseBreweryCommandValidator(IDateTime dateTime)
+    protected BaseBreweryCommandValidator(TimeProvider timeProvider)
     {
         RuleFor(x => x.Description).NotEmpty().MaximumLength(5000);
-        RuleFor(x => x.FoundationYear).NotEmpty().InclusiveBetween(0, dateTime.Now.Year);
+        RuleFor(x => x.FoundationYear).NotEmpty().InclusiveBetween(0, timeProvider.GetUtcNow().Year);
         RuleFor(x => x.WebsiteUrl).MaximumLength(200).Must(url => Uri.TryCreate(url, UriKind.Absolute, out _))
             .WithMessage(InvalidUrlErrorMessage);
         RuleFor(x => x.Street).NotEmpty().MaximumLength(200);

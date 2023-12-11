@@ -1,6 +1,5 @@
 ﻿using Application.Breweries.Dtos;
 using Application.Breweries.Queries.GetBreweries;
-using Application.Common.Interfaces;
 using FluentValidation.TestHelper;
 using Moq;
 
@@ -22,9 +21,9 @@ public class GetBreweriesQueryValidatorTests
     /// </summary>
     public GetBreweriesQueryValidatorTests()
     {
-        Mock<IDateTime> dateTimeMock = new();
-        dateTimeMock.Setup(x => x.Now).Returns(new DateTime(2023, 3, 26));
-        _validator = new GetBreweriesQueryValidator(dateTimeMock.Object);
+        Mock<TimeProvider> timeProviderMock = new();
+        timeProviderMock.Setup(x => x.GetUtcNow()).Returns(new DateTime(2023, 3, 26));
+        _validator = new GetBreweriesQueryValidator(timeProviderMock.Object);
     }
 
     /// <summary>

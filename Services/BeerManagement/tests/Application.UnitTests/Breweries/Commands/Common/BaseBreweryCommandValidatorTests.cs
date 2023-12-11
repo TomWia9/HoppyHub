@@ -1,5 +1,4 @@
 ﻿using Application.Breweries.Commands.Common;
-using Application.Common.Interfaces;
 using FluentValidation.TestHelper;
 using Moq;
 
@@ -21,10 +20,10 @@ public class BaseBreweryCommandValidatorTests
     /// </summary>
     public BaseBreweryCommandValidatorTests()
     {
-        Mock<IDateTime> dateTimeMock = new();
-        dateTimeMock.Setup(x => x.Now).Returns(new DateTime(2023, 3, 29));
+        Mock<TimeProvider> timeProviderMock = new();
+        timeProviderMock.Setup(x => x.GetUtcNow()).Returns(new DateTime(2023, 3, 29));
 
-        _validator = new TestBaseBreweryCommandValidator(dateTimeMock.Object);
+        _validator = new TestBaseBreweryCommandValidator(timeProviderMock.Object);
     }
 
     /// <summary>
@@ -593,10 +592,6 @@ public class BaseBreweryCommandValidatorTests
     /// <summary>
     ///     The TestBaseBreweryCommand validator.
     /// </summary>
-    private class TestBaseBreweryCommandValidator : BaseBreweryCommandValidator<TestBaseBreweryCommand>
-    {
-        public TestBaseBreweryCommandValidator(IDateTime dateTime) : base(dateTime)
-        {
-        }
-    }
+    private class TestBaseBreweryCommandValidator(TimeProvider timeProvider)
+        : BaseBreweryCommandValidator<TestBaseBreweryCommand>(timeProvider);
 }

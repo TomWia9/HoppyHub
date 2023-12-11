@@ -1,5 +1,4 @@
-﻿using Application.Common.Interfaces;
-using FluentValidation;
+﻿using FluentValidation;
 using SharedUtilities.Abstractions;
 
 namespace Application.Breweries.Queries.GetBreweries;
@@ -12,16 +11,16 @@ public class GetBreweriesQueryValidator : QueryValidator<GetBreweriesQuery>
     /// <summary>
     ///     Initializes GetBreweriesQueryValidator.
     /// </summary>
-    public GetBreweriesQueryValidator(IDateTime dateTime)
+    public GetBreweriesQueryValidator(TimeProvider timeProvider)
     {
         RuleFor(x => x.Name).MaximumLength(500);
         RuleFor(x => x.Country).MaximumLength(50);
         RuleFor(x => x.State).MaximumLength(50);
         RuleFor(x => x.City).MaximumLength(50);
-        RuleFor(x => x.MinFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
+        RuleFor(x => x.MinFoundationYear).InclusiveBetween(0, timeProvider.GetUtcNow().Year)
             .LessThanOrEqualTo(x => x.MaxFoundationYear)
             .WithMessage(MinValueMessage);
-        RuleFor(x => x.MaxFoundationYear).InclusiveBetween(0, dateTime.Now.Year)
+        RuleFor(x => x.MaxFoundationYear).InclusiveBetween(0, timeProvider.GetUtcNow().Year)
             .GreaterThanOrEqualTo(x => x.MinFoundationYear)
             .WithMessage(MaxValueMessage);
         RuleFor(x => x.SortBy)
