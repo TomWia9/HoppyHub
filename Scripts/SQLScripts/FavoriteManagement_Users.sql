@@ -6,5 +6,5 @@ SELECT @UserId = Id
 FROM UserManagement.dbo.AspNetUsers
 WHERE UserName = @UserName
 
-INSERT INTO Users (Id, Username, Role, Created, CreatedBy, LastModified, LastModifiedBy)
-VALUES (@UserId, @UserName, 'User', GETDATE(), @UserId, GETDATE(), @UserId)
+INSERT INTO Users (Id, Username, Role)
+VALUES (@UserId, @UserName, 'User')
