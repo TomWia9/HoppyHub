@@ -14,7 +14,7 @@ public class FavoritesFilteringHelper : FilteringHelperBase<Favorite, GetFavorit
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Favorite, object>>> SortingColumns = new()
     {
-        { nameof(Favorite.LastModified).ToUpper(), x => x.LastModified ?? new DateTime() },
+        { nameof(Favorite.LastModified).ToUpper(), x => x.LastModified ?? new DateTimeOffset() },
         { nameof(Favorite.Beer).ToUpper(), x => x.Beer!.Name ?? string.Empty }
     };
 
