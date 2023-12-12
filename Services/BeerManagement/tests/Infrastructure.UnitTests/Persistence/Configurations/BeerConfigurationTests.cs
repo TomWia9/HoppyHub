@@ -43,7 +43,7 @@ public class BeerConfigurationTests
         entity.FindProperty(nameof(Beer.Composition))!.GetMaxLength().Should().Be(300);
 
         var releaseDateProperty = entity.FindProperty(nameof(Beer.ReleaseDate))!;
-        //releaseDateProperty!.IsNullable.Should().BeFalse(); //TODO: Fix nullable
+        releaseDateProperty.IsNullable.Should().BeTrue();
         releaseDateProperty.GetValueConverter().Should().BeOfType<DateOnlyConverter>();
 
         entity.FindProperty(nameof(Beer.BreweryId))!.IsNullable.Should().BeFalse();
