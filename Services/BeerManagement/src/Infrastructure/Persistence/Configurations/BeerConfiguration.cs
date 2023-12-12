@@ -24,7 +24,7 @@ public class BeerConfiguration : BaseConfiguration<Beer>
         builder.Property(x => x.Description).HasMaxLength(3000);
         builder.Property(x => x.Composition).HasMaxLength(300);
         builder.Property(x => x.ReleaseDate).HasConversion<DateOnlyConverter>()
-            .HasColumnType("date");
+            .HasColumnType("date"); //TODO: Fix nullable
         builder.Property(x => x.BreweryId).IsRequired();
         builder.Property(x => x.Rating).IsRequired().HasDefaultValue(0);
         builder.Property(x => x.OpinionsCount).IsRequired().HasDefaultValue(0);
