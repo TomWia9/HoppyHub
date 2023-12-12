@@ -66,6 +66,8 @@ public class BeerOpinionChangedConsumerTests
         await _consumer.Consume(_consumeContextMock.Object);
 
         // Assert
+        beer.OpinionsCount.Should().Be(message.OpinionsCount);
+        beer.Rating.Should().Be(message.NewBeerRating);
         _contextMock.Verify(x => x.Beers.FindAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }

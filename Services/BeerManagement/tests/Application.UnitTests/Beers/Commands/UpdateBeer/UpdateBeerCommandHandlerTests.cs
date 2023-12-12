@@ -80,6 +80,10 @@ public class UpdateBeerCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
+        existingBeer.Name.Should().Be(command.Name);
+        existingBeer.BreweryId.Should().Be(command.BreweryId);
+        existingBeer.BeerStyleId.Should().Be(command.BeerStyleId);
+        existingBeer.ReleaseDate.Should().Be(command.ReleaseDate);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
         _publishEndpointMock.Verify(x =>
             x.Publish(It.Is<BeerUpdated>(y => y.Name == command.Name), It.IsAny<CancellationToken>()));

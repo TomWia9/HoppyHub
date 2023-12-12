@@ -64,6 +64,7 @@ public class BeerFavoritesCountChangedConsumerTests
         await _consumer.Consume(_consumeContextMock.Object);
 
         // Assert
+        beer.FavoritesCount.Should().Be(message.FavoritesCount);
         _contextMock.Verify(x => x.Beers.FindAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }

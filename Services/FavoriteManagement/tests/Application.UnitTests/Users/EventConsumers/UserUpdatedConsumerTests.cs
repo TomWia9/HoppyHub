@@ -66,6 +66,7 @@ public class UserUpdatedConsumerTests
         await _consumer.Consume(_consumeContextMock.Object);
 
         // Assert
+        existingUser.Username.Should().Be(message.Username);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 

@@ -40,18 +40,26 @@ public class UpdateBreweryCommandHandlerTests
     {
         // Arrange
         var breweryId = Guid.NewGuid();
-        var existingBrewery = new Brewery { Id = breweryId, Name = "Old Name", Address = new Address() };
+        var existingBrewery = new Brewery
+        {
+            Id = breweryId, Name = "Old Name", Description = "Old description", FoundationYear = 1999,
+            Address = new Address()
+        };
         var breweries = new List<Brewery> { existingBrewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Breweries)
             .Returns(breweriesDbSetMock.Object);
 
-        var command = new UpdateBreweryCommand { Id = breweryId, Name = "New Name" };
+        var command = new UpdateBreweryCommand
+            { Id = breweryId, Name = "New Name", Description = "New description", FoundationYear = 2010 };
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
+        existingBrewery.Name.Should().Be(command.Name);
+        existingBrewery.Description.Should().Be(command.Description);
+        existingBrewery.FoundationYear.Should().Be(command.FoundationYear);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 
