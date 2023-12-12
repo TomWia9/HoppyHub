@@ -7,6 +7,8 @@ using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities.Behaviors;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application.UnitTests;
 

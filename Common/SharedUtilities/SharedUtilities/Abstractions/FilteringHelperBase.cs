@@ -1,8 +1,13 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Interfaces;
+using SharedUtilities.Interfaces;
 
-namespace Application.Common.Abstractions;
+namespace SharedUtilities.Abstractions;
 
+/// <summary>
+///     The filtering helper base class.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <typeparam name="TRequest"></typeparam>
 public abstract class FilteringHelperBase<T, TRequest> : IFilteringHelper<T, TRequest>
 {
     /// <summary>

@@ -1,11 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Services;
-using AutoMapper;
-using Domain.Entities;
+﻿using AutoMapper;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities.Behaviors;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application.UnitTests;
 

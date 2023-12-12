@@ -4,7 +4,7 @@ using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using SharedUtilities.Interfaces;
-using SharedUtilities.Services.Services;
+using SharedUtilities.Services;
 
 namespace Api;
 

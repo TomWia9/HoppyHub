@@ -4,7 +4,6 @@ using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Behaviors;
 using Application.Common.Interfaces;
-using Application.Common.Services;
 using Domain.Entities;
 using FluentValidation;
 using MassTransit;
@@ -14,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Filters;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application;
 

@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Abstractions;
 using Domain.Entities;
+using SharedUtilities.Abstractions;
 
 namespace Application.Breweries.Queries.GetBreweries;
 

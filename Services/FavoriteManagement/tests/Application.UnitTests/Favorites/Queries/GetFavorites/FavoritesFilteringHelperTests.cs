@@ -1,6 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.Favorites.Queries.GetFavorites;
+﻿using Application.Favorites.Queries.GetFavorites;
 using Domain.Entities;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Favorites.Queries.GetFavorites;
 

@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Interfaces;
-using Application.Common.Services;
 using SharedUtilities.Enums;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
-namespace Application.UnitTests.Common.Services;
+namespace SharedUtilities.UnitTests.Services;
 
 /// <summary>
 ///     Tests for the <see cref="QueryService{T}" /> class.

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Models;
 
-namespace SharedUtilities.Services.Services;
+namespace SharedUtilities.Services;
 
 /// <summary>
 ///     Current user service class.

@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using SharedUtilities.Enums;
 
-namespace Application.Common.Interfaces;
+namespace SharedUtilities.Interfaces;
 
 /// <summary>
 ///     QueryService interface.

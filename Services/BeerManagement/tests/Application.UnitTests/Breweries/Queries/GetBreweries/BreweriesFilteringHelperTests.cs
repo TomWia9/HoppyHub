@@ -1,6 +1,6 @@
 ﻿using Application.Breweries.Queries.GetBreweries;
-using Application.Common.Interfaces;
 using Domain.Entities;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Breweries.Queries.GetBreweries;
 

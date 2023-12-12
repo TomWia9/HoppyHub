@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace Application.Common.Interfaces;
+namespace SharedUtilities.Interfaces;
 
 /// <summary>
 ///     The filtering helper interface.

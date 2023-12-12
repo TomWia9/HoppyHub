@@ -1,9 +1,13 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Interfaces;
 using SharedUtilities.Enums;
+using SharedUtilities.Interfaces;
 
-namespace Application.Common.Services;
+namespace SharedUtilities.Services;
 
+/// <summary>
+///     The query service.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class QueryService<T> : IQueryService<T> where T : class
 {
     /// <summary>
