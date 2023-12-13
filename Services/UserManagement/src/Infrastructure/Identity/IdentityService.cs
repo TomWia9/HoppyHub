@@ -16,9 +16,9 @@ namespace Infrastructure.Identity;
 public class IdentityService : IIdentityService
 {
     /// <summary>
-    ///     The json web token settings.
+    ///     The app configuration.
     /// </summary>
-    private readonly JwtSettings _jwtSettings;
+    private readonly IAppConfiguration _appConfiguration;
 
     /// <summary>
     ///     The user manager.
@@ -29,11 +29,11 @@ public class IdentityService : IIdentityService
     ///     Initializes IdentityService.
     /// </summary>
     /// <param name="userManager">The user manager</param>
-    /// <param name="jwtSettings">The json web token settings</param>
-    public IdentityService(UserManager<ApplicationUser> userManager, JwtSettings jwtSettings)
+    /// <param name="appConfiguration">The app configuration</param>
+    public IdentityService(UserManager<ApplicationUser> userManager, IAppConfiguration appConfiguration)
     {
         _userManager = userManager;
-        _jwtSettings = jwtSettings;
+        _appConfiguration = appConfiguration;
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public class IdentityService : IIdentityService
     /// <returns>An AuthenticationResult</returns>
     private async Task<AuthenticationResult> GenerateAuthenticationResult(ApplicationUser user)
     {
-        var secret = _jwtSettings.Secret;
+        var secret = _appConfiguration.JwtSecret;
 
         if (secret.IsNullOrEmpty())
         {
@@ -144,7 +144,7 @@ public class IdentityService : IIdentityService
         }
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(secret!);
+        var key = Encoding.ASCII.GetBytes(secret);
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),

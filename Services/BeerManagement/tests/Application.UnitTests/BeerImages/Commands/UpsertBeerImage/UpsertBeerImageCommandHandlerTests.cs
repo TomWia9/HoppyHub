@@ -112,7 +112,7 @@ public class UpsertBeerImageCommandHandlerTests
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldGetImageUploadedResponseAndUpdatesBeerImage_WhenBeerExitsAndBeerImageExists()
+        Handle_ShouldGetImageUploadedResponseAndUpdateBeerImage_WhenBeerExitsAndBeerImageExists()
     {
         // Arrange
         const string imageUri = "https://test.com/test.jpg";
@@ -130,7 +130,11 @@ public class UpsertBeerImageCommandHandlerTests
         };
         var beerImage = new BeerImage
         {
-            BeerId = beerId
+            Id = Guid.NewGuid(),
+            BeerId = beerId,
+            Beer = beer,
+            ImageUri = "https://test.com/oldimage.jpg",
+            TempImage = false
         };
         var beerImages = new List<BeerImage> { beerImage };
         var beerImagesDbSetMock = beerImages.AsQueryable().BuildMockDbSet();
@@ -159,6 +163,7 @@ public class UpsertBeerImageCommandHandlerTests
         await _handler.Handle(request, CancellationToken.None);
 
         // Assert
+        beerImage.ImageUri.Should().Be(imageUploadedEvent.Uri);
         _imageCreatedRequestClientMock.Verify(x => x.GetResponse<ImageUploaded>(It.Is<ImageCreated>(y =>
                 y.Path == imageCreatedEvent.Path && y.Image == imageCreatedEvent.Image),
             It.IsAny<CancellationToken>(), It.IsAny<RequestTimeout>()), Times.Once);
@@ -199,7 +204,7 @@ public class UpsertBeerImageCommandHandlerTests
     [InlineData(null)]
     [InlineData("")]
     public async Task Handle_ShouldThrowRemoteServiceConnectionException_WhenUploadedImageURiIsNullOrEmpty(
-        string imageUri)
+        string? imageUri)
     {
         // Arrange
         const string expectedMessage = "Failed to sent image.";

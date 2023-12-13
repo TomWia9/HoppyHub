@@ -6,7 +6,7 @@
 public class Beer
 {
     /// <summary>
-    ///     The entity id
+    ///     The entity id.
     /// </summary>
     public Guid Id { get; set; }
 
@@ -14,6 +14,11 @@ public class Beer
     ///     The beer name.
     /// </summary>
     public string? Name { get; set; }
+
+    /// <summary>
+    ///     The beer brewery id.
+    /// </summary>
+    public Guid BreweryId { get; set; }
 
     /// <summary>
     ///     The beer brewery name.

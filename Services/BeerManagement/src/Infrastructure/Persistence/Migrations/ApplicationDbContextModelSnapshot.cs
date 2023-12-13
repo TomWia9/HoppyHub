@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -93,9 +93,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTimeOffset?>("Created")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasMaxLength(40)
@@ -113,9 +113,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int?>("Ibu")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTimeOffset?>("LastModified")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasMaxLength(40)
@@ -182,9 +182,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTimeOffset?>("Created")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasMaxLength(40)
@@ -195,9 +195,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTimeOffset?>("LastModified")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasMaxLength(40)
@@ -219,9 +219,9 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTimeOffset?>("Created")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasMaxLength(40)
@@ -235,9 +235,9 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int>("FoundationYear")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTimeOffset?>("LastModified")
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .HasMaxLength(40)

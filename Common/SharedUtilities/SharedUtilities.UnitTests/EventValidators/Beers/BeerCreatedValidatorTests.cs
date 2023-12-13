@@ -136,4 +136,42 @@ public class BeerCreatedValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.BreweryName);
     }
+
+    /// <summary>
+    ///     Tests that validation should not have error for BreweryId when BreweryId is valid.
+    /// </summary>
+    [Fact]
+    public void BeerCreated_ShouldNotHaveValidationErrorForBreweryId_WhenBreweryIdIsValid()
+    {
+        // Arrange
+        var beerCreatedEvent = new BeerCreated
+        {
+            BreweryId = Guid.NewGuid()
+        };
+
+        // Act
+        var result = _validator.TestValidate(beerCreatedEvent);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.BreweryId);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for BreweryId when BreweryId is empty.
+    /// </summary>
+    [Fact]
+    public void BeerCreated_ShouldHaveValidationErrorForBreweryId_WhenBreweryIdIsEmpty()
+    {
+        // Arrange
+        var beerCreatedEvent = new BeerCreated
+        {
+            BreweryId = Guid.Empty
+        };
+
+        // Act
+        var result = _validator.TestValidate(beerCreatedEvent);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.BreweryId);
+    }
 }

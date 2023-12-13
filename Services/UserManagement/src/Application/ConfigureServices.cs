@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Application.Common.Behaviors;
 using FluentValidation;
 using MassTransit;
 using MediatR;
@@ -17,7 +18,7 @@ public static class ConfigureServices
     ///     Adds application project services.
     /// </summary>
     /// <param name="services">The services</param>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddTransient(typeof(IRequestPreProcessor<>), typeof(LoggingBehavior<>));
@@ -29,7 +30,5 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
         services.AddMassTransit(cfg => { cfg.UsingRabbitMq(); });
-
-        return services;
     }
 }

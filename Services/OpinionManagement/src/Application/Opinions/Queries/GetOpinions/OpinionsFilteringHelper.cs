@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
-using Application.Common.Abstractions;
 using Domain.Entities;
+using SharedUtilities.Abstractions;
 
 namespace Application.Opinions.Queries.GetOpinions;
 
@@ -14,7 +14,7 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
     /// </summary>
     public static readonly Dictionary<string, Expression<Func<Opinion, object>>> SortingColumns = new()
     {
-        { nameof(Opinion.LastModified).ToUpper(), x => x.LastModified ?? new DateTime() },
+        { nameof(Opinion.LastModified).ToUpper(), x => x.LastModified ?? new DateTimeOffset() },
         { nameof(Opinion.Rating).ToUpper(), x => x.Rating },
         { nameof(Opinion.Comment).ToUpper(), x => x.Comment ?? string.Empty }
     };

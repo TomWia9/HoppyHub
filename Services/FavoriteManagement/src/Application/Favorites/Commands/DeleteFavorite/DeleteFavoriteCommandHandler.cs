@@ -64,9 +64,9 @@ public class DeleteFavoriteCommandHandler : IRequestHandler<DeleteFavoriteComman
         await _context.SaveChangesAsync(cancellationToken);
 
         var newBeerFavoritesCount =
-            await _context.Favorites.CountAsync(x => x.BeerId == request.BeerId, cancellationToken: cancellationToken);
+            await _context.Favorites.CountAsync(x => x.BeerId == request.BeerId, cancellationToken);
 
-        var favoritesCountChangedEvent = new FavoritesCountChanged
+        var favoritesCountChangedEvent = new BeerFavoritesCountChanged
         {
             BeerId = request.BeerId,
             FavoritesCount = newBeerFavoritesCount

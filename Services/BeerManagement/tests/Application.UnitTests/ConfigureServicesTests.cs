@@ -1,14 +1,14 @@
 ﻿using Application.Beers.Queries.GetBeers;
 using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
-using Application.Common.Interfaces;
-using Application.Common.Services;
 using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities.Behaviors;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application.UnitTests;
 

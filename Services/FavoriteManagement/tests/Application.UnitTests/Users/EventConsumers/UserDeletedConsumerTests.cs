@@ -14,19 +14,19 @@ namespace Application.UnitTests.Users.EventConsumers;
 public class UserDeletedConsumerTests
 {
     /// <summary>
-    ///     The database context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The consume context mock.
     /// </summary>
     private readonly Mock<ConsumeContext<UserDeleted>> _consumeContextMock;
 
     /// <summary>
-    ///     The UserDeleted consumer. 
+    ///     The UserDeleted consumer.
     /// </summary>
     private readonly UserDeletedConsumer _consumer;
+
+    /// <summary>
+    ///     The database context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups UserDeletedConsumerTests.
@@ -48,7 +48,8 @@ public class UserDeletedConsumerTests
         var userId = Guid.NewGuid();
         var existingUser = new User
         {
-            Id = userId
+            Id = userId,
+            Favorites = new List<Favorite>()
         };
         var message = new UserDeleted
         {

@@ -1,11 +1,10 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.Services;
-using AutoMapper;
-using Domain.Entities;
+﻿using AutoMapper;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities.Behaviors;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application.UnitTests;
 
@@ -87,6 +86,5 @@ public class ConfigureServicesTests
         // _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Beer, GetBeersQuery>));
         // _services.Should().Contain(s => s.ImplementationType == typeof(BeersFilteringHelper));
         // _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-        
     }
 }

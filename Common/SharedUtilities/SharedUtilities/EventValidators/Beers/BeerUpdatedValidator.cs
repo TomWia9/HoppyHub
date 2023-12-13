@@ -20,5 +20,7 @@ public class BeerUpdatedValidator : AbstractValidator<BeerUpdated>
         RuleFor(x => x.BreweryName)
             .NotEmpty()
             .MaximumLength(500);
+
+        RuleFor(x => x.BreweryId).NotEmpty();
     }
 }

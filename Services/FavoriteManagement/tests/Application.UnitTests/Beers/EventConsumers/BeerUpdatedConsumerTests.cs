@@ -2,7 +2,6 @@
 using Application.Common.Interfaces;
 using Domain.Entities;
 using MassTransit;
-using MockQueryable.Moq;
 using Moq;
 using SharedEvents.Events;
 
@@ -20,14 +19,14 @@ public class BeerUpdatedConsumerTests
     private readonly Mock<ConsumeContext<BeerUpdated>> _consumeContextMock;
 
     /// <summary>
-    ///     The application db context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The BeerUpdated consumer.
     /// </summary>
     private readonly BeerUpdatedConsumer _consumer;
+
+    /// <summary>
+    ///     The application db context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups BeerUpdatedConsumerTests.
@@ -52,13 +51,15 @@ public class BeerUpdatedConsumerTests
         {
             Id = beerId,
             Name = "Old name",
-            BreweryName = "Old brewery name"
+            BreweryName = "Old brewery name",
+            BreweryId = Guid.NewGuid()
         };
         var message = new BeerUpdated
         {
             Id = beerId,
             Name = "new beer name",
-            BreweryName = "new brewery name"
+            BreweryName = "new brewery name",
+            BreweryId = Guid.NewGuid()
         };
         _consumeContextMock.Setup(x => x.Message).Returns(message);
         _contextMock.Setup(x => x.Beers.FindAsync(beerId)).ReturnsAsync(existingBeer);
@@ -68,5 +69,8 @@ public class BeerUpdatedConsumerTests
 
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        existingBeer.Name.Should().Be(message.Name);
+        existingBeer.BreweryName.Should().Be(message.BreweryName);
+        existingBeer.BreweryId.Should().Be(message.BreweryId);
     }
 }

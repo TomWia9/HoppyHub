@@ -13,7 +13,7 @@ public abstract class BaseAuditableEntity
     /// <summary>
     ///     The date of creation
     /// </summary>
-    public DateTime? Created { get; set; }
+    public DateTimeOffset? Created { get; set; }
 
     /// <summary>
     ///     The id of the creator
@@ -23,7 +23,7 @@ public abstract class BaseAuditableEntity
     /// <summary>
     ///     The date of last modification
     /// </summary>
-    public DateTime? LastModified { get; set; }
+    public DateTimeOffset? LastModified { get; set; }
 
     /// <summary>
     ///     The id of the last modificator

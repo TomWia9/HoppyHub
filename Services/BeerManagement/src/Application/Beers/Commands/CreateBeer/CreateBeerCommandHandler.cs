@@ -59,7 +59,7 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
     public async Task<BeerDto> Handle(CreateBeerCommand request, CancellationToken cancellationToken)
     {
         var beerBrewery = await _context.Breweries.FindAsync(new object?[] { request.BreweryId },
-            cancellationToken: cancellationToken);
+            cancellationToken);
 
         if (beerBrewery is null)
         {

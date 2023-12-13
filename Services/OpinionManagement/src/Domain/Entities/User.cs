@@ -1,12 +1,15 @@
-﻿using Domain.Common;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 /// <summary>
 ///     The user entity class.
 /// </summary>
-public class User : BaseAuditableEntity
+public class User
 {
+    /// <summary>
+    ///     The user id.
+    /// </summary>
+    public Guid Id { get; set; }
+
     /// <summary>
     ///     The username.
     /// </summary>

@@ -22,11 +22,6 @@ public class DeleteBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteBeerCommandHandler _handler;
@@ -35,6 +30,11 @@ public class DeleteBeerCommandHandlerTests
     ///     The ImagesDeleted request client mock.
     /// </summary>
     private readonly Mock<IRequestClient<ImagesDeleted>> _imagesDeletedRequestClientMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups DeleteBeerCommandHandlerTests.
@@ -59,7 +59,11 @@ public class DeleteBeerCommandHandlerTests
         // Arrange
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
-        var beer = new Beer { Id = beerId, BreweryId = breweryId };
+        var beer = new Beer
+        {
+            Id = beerId, BreweryId = breweryId, Created = new DateTimeOffset(), LastModified = new DateTimeOffset(),
+            CreatedBy = Guid.NewGuid(), LastModifiedBy = Guid.NewGuid()
+        };
         var command = new DeleteBeerCommand { Id = beerId };
         var imagesDeletedEvent = new ImagesDeleted
         {

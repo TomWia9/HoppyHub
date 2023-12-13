@@ -174,7 +174,7 @@ public class ApiExceptionFilterAttributeTests
         result.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         details.Title.Should().Be("Server cannot process the request.");
     }
-    
+
     /// <summary>
     ///     Tests that OnException method with RemoteServiceConnectionException returns ObjectResult
     ///     with problem details and status 503.

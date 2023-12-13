@@ -20,11 +20,6 @@
 
 
     <ItemGroup>
-        <Folder Include="Services\"/>
-    </ItemGroup>
-
-
-    <ItemGroup>
         <ProjectReference Include="..\SharedEvents\SharedEvents.csproj"/>
     </ItemGroup>
 

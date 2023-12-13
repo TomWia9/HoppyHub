@@ -4,7 +4,7 @@ using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using SharedUtilities.Interfaces;
-using SharedUtilities.Services.Services;
+using SharedUtilities.Services;
 
 namespace Api;
 
@@ -17,7 +17,7 @@ public static class ConfigureServices
     ///     Adds api project services.
     /// </summary>
     /// <param name="services">The services</param>
-    public static IServiceCollection AddApiServices(this IServiceCollection services)
+    public static void AddApiServices(this IServiceCollection services)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilterAttribute>(); });
@@ -85,7 +85,5 @@ public static class ConfigureServices
                 setupAction.IncludeXmlComments(d);
             }
         });
-
-        return services;
     }
 }

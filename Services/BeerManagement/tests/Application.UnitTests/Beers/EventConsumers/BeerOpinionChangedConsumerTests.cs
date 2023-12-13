@@ -19,14 +19,14 @@ public class BeerOpinionChangedConsumerTests
     private readonly Mock<ConsumeContext<BeerOpinionChanged>> _consumeContextMock;
 
     /// <summary>
-    ///     The application db context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The BeerOpinionChanged consumer.
     /// </summary>
     private readonly BeerOpinionChangedConsumer _consumer;
+
+    /// <summary>
+    ///     The application db context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups BeerOpinionChangedConsumerTests.
@@ -66,6 +66,8 @@ public class BeerOpinionChangedConsumerTests
         await _consumer.Consume(_consumeContextMock.Object);
 
         // Assert
+        beer.OpinionsCount.Should().Be(message.OpinionsCount);
+        beer.Rating.Should().Be(message.NewBeerRating);
         _contextMock.Verify(x => x.Beers.FindAsync(beerId), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }

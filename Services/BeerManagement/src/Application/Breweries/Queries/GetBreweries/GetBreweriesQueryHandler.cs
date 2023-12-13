@@ -4,6 +4,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using MediatR;
+using SharedUtilities.Interfaces;
 using SharedUtilities.Mappings;
 using SharedUtilities.Models;
 

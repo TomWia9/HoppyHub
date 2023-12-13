@@ -21,14 +21,14 @@ public class UpdateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateBeerCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups UpdateBeerCommandHandlerTests.
@@ -54,12 +54,17 @@ public class UpdateBeerCommandHandlerTests
             Id = breweryId,
             Name = "Brewery name"
         };
+        var beerStyle = new BeerStyle
+        {
+            Id = beerStyleId,
+            Name = "Beer style name"
+        };
         var breweries = new List<Brewery> { brewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
-        var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
+        var beerStyles = new List<BeerStyle> { beerStyle };
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
         var beerId = Guid.NewGuid();
-        var existingBeer = new Beer { Id = beerId, Name = "Old Name", Brewery = brewery };
+        var existingBeer = new Beer { Id = beerId, Name = "Old Name", Brewery = brewery, BeerStyle = beerStyle };
         var beers = new List<Beer> { existingBeer };
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
 
@@ -80,6 +85,10 @@ public class UpdateBeerCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
+        existingBeer.Name.Should().Be(command.Name);
+        existingBeer.BreweryId.Should().Be(command.BreweryId);
+        existingBeer.BeerStyleId.Should().Be(command.BeerStyleId);
+        existingBeer.ReleaseDate.Should().Be(command.ReleaseDate);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
         _publishEndpointMock.Verify(x =>
             x.Publish(It.Is<BeerUpdated>(y => y.Name == command.Name), It.IsAny<CancellationToken>()));

@@ -21,7 +21,7 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+    public static void AddApplicationServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddSingleton<IBlobStorageService, BlobStorageService>();
@@ -40,8 +40,6 @@ public static class ConfigureServices
                 cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
             });
         });
-
-        return services;
     }
 
     /// <summary>

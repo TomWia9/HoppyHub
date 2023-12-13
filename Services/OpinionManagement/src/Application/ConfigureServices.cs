@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Application.Common.Behaviors;
 using Application.Common.Interfaces;
 using Application.Common.Services;
 using Application.Opinions.Queries.GetOpinions;
@@ -11,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities;
 using SharedUtilities.Behaviors;
 using SharedUtilities.Filters;
+using SharedUtilities.Interfaces;
+using SharedUtilities.Services;
 
 namespace Application;
 
@@ -23,7 +26,7 @@ public static class ConfigureServices
     ///     Adds application project services.
     /// </summary>
     /// <param name="services">The services</param>
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
@@ -50,7 +53,5 @@ public static class ConfigureServices
         services.AddTransient<IOpinionsService, OpinionsService>();
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
-
-        return services;
     }
 }

@@ -1,7 +1,6 @@
 ﻿using FluentValidation.TestHelper;
 using SharedEvents.Events;
 using SharedUtilities.EventValidators.Beers;
-using SharedUtilities.Models;
 
 namespace SharedUtilities.UnitTests.EventValidators.Beers;
 

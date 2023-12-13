@@ -27,14 +27,14 @@ public class DeleteFavoriteCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteFavoriteCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups DeleteFavoriteCommandHandlerTests.
@@ -49,16 +49,18 @@ public class DeleteFavoriteCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes beer from favorites and publishes FavoritesCountChanged event when favorite beer exists.
+    ///     Tests that Handle method removes beer from favorites and publishes BeerFavoritesCountChanged event when favorite
+    ///     beer exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveFavoriteBeerFromDatabaseAndPublishFavoritesCountChanged_WhenFavoriteBeerExists()
+        Handle_ShouldRemoveFavoriteBeerFromDatabaseAndPublishBeerFavoritesCountChanged_WhenFavoriteBeerExists()
     {
         // Arrange
         var beerId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var favorite = new Favorite { Id = Guid.NewGuid(), BeerId = beerId, CreatedBy = userId };
+        var favorite = new Favorite
+            { Id = Guid.NewGuid(), BeerId = beerId, CreatedBy = userId, User = new User { Id = userId } };
         var favoritesDbSetMock = new List<Favorite> { favorite }.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);
@@ -71,7 +73,7 @@ public class DeleteFavoriteCommandHandlerTests
         _contextMock.Verify(x => x.Favorites.Remove(favorite), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         _publishEndpointMock.Verify(x =>
-            x.Publish(It.Is<FavoritesCountChanged>(y => y.BeerId == beerId),
+            x.Publish(It.Is<BeerFavoritesCountChanged>(y => y.BeerId == beerId),
                 It.IsAny<CancellationToken>()));
     }
 

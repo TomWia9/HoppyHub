@@ -1,6 +1,6 @@
 ﻿using Application.Beers.Queries.GetBeers;
-using Application.Common.Interfaces;
 using Domain.Entities;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Beers.Queries.GetBeers;
 

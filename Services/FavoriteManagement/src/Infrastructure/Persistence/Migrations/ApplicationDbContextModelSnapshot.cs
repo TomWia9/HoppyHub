@@ -30,6 +30,9 @@ namespace Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("BreweryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("BreweryName")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -54,20 +57,20 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<Guid>("BeerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTimeOffset?>("Created")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("CreatedBy")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime?>("LastModified")
+                    b.Property<DateTimeOffset?>("LastModified")
                         .IsRequired()
                         .HasMaxLength(50)
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid?>("LastModifiedBy")
                         .IsRequired()
@@ -87,24 +90,6 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("Created")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasMaxLength(40)
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastModified")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("LastModifiedBy")
-                        .HasMaxLength(40)
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Role")

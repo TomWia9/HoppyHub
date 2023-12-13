@@ -40,7 +40,10 @@ public class UpdateBeerStyleCommandHandlerTests
         // Arrange
         var beerStyleId = Guid.NewGuid();
         var existingBeerStyle = new BeerStyle
-            { Id = beerStyleId, Name = "Grodziskie", Description = "Old desc", CountryOfOrigin = "England" };
+        {
+            Id = beerStyleId, Name = "IPA", Description = "Old desc", CountryOfOrigin = "England",
+            Beers = new List<Beer>()
+        };
         _contextMock.Setup(x => x.BeerStyles.FindAsync(new object[] { beerStyleId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingBeerStyle);
 
@@ -51,6 +54,9 @@ public class UpdateBeerStyleCommandHandlerTests
         await _handler.Handle(command, CancellationToken.None);
 
         // Assert
+        existingBeerStyle.Name.Should().Be(command.Name);
+        existingBeerStyle.Description.Should().Be(command.Description);
+        existingBeerStyle.CountryOfOrigin.Should().Be(command.CountryOfOrigin);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
     }
 

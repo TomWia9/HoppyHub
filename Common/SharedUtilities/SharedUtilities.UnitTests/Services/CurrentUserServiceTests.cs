@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Models;
-using SharedUtilities.Services.Services;
+using SharedUtilities.Services;
 
 namespace SharedUtilities.UnitTests.Services;
 

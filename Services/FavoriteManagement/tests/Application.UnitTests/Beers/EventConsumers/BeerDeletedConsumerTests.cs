@@ -19,14 +19,14 @@ public class BeerDeletedConsumerTests
     private readonly Mock<ConsumeContext<BeerDeleted>> _consumeContextMock;
 
     /// <summary>
-    ///     The application db context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The BeerDeleted consumer.
     /// </summary>
     private readonly BeerDeletedConsumer _consumer;
+
+    /// <summary>
+    ///     The application db context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups BeerDeletedConsumerTests.
@@ -49,7 +49,8 @@ public class BeerDeletedConsumerTests
         var beerId = Guid.NewGuid();
         var existingBeer = new Beer
         {
-            Id = beerId
+            Id = beerId,
+            Favorites = new List<Favorite>()
         };
         var message = new BeerDeleted
         {

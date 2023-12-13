@@ -1,6 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Application.Opinions.Queries.GetOpinions;
+﻿using Application.Opinions.Queries.GetOpinions;
 using Domain.Entities;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Opinions.Queries.GetOpinions;
 

@@ -1,6 +1,6 @@
 ﻿using Application.BeerStyles.Queries.GetBeerStyles;
-using Application.Common.Interfaces;
 using Domain.Entities;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.BeerStyles.Queries.GetBeerStyles;
 

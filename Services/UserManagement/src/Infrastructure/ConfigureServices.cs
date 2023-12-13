@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Application.Common.Interfaces;
+using Infrastructure.Common;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
@@ -23,7 +24,7 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
+    public static void AddInfrastructureServices(this IServiceCollection services,
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
@@ -36,9 +37,7 @@ public static class ConfigureServices
         services.AddTransient<IIdentityService, IdentityService>();
         services.AddTransient<IUsersService, UsersService>();
 
-        var jwtSettings = new JwtSettings();
-        configuration.Bind(nameof(JwtSettings), jwtSettings);
-        services.AddSingleton(jwtSettings);
+        services.AddSingleton<IAppConfiguration, AppConfiguration>();
 
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole<Guid>>()
@@ -58,7 +57,9 @@ public static class ConfigureServices
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey =
                         new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(jwtSettings.Secret ?? throw new InvalidOperationException())),
+                            Encoding.ASCII.GetBytes(
+                                configuration.GetValue<string>("JwtSettings:Secret") ??
+                                throw new InvalidOperationException("JWT token secret key does not exists."))),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     RequireExpirationTime = true,
@@ -66,18 +67,12 @@ public static class ConfigureServices
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy(Policies.UserAccess,
-                policy => policy.RequireAssertion(context =>
-                    context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)));
-
-            options.AddPolicy(Policies.AdministratorAccess,
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policies.UserAccess, policy => policy.RequireAssertion(context =>
+                context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)))
+            .AddPolicy(Policies.AdministratorAccess,
                 policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
-        });
 
         services.Configure<IdentityOptions>(options => { options.User.RequireUniqueEmail = true; });
-
-        return services;
     }
 }
