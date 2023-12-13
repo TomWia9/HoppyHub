@@ -43,7 +43,7 @@ public class UpdateBreweryCommandHandlerTests
         var existingBrewery = new Brewery
         {
             Id = breweryId, Name = "Old Name", Description = "Old description", FoundationYear = 1999,
-            Address = new Address()
+            Address = new Address { BreweryId = breweryId }, Beers = new List<Beer>()
         };
         var breweries = new List<Brewery> { existingBrewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();

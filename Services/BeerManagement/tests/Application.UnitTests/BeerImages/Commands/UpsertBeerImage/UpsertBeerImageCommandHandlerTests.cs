@@ -130,7 +130,9 @@ public class UpsertBeerImageCommandHandlerTests
         };
         var beerImage = new BeerImage
         {
+            Id = Guid.NewGuid(),
             BeerId = beerId,
+            Beer = beer,
             ImageUri = "https://test.com/oldimage.jpg",
             TempImage = false
         };

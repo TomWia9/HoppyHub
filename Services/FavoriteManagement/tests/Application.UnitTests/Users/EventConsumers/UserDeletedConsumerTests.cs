@@ -48,7 +48,8 @@ public class UserDeletedConsumerTests
         var userId = Guid.NewGuid();
         var existingUser = new User
         {
-            Id = userId
+            Id = userId,
+            Favorites = new List<Favorite>()
         };
         var message = new UserDeleted
         {

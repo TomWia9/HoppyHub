@@ -40,7 +40,10 @@ public class UpdateBeerStyleCommandHandlerTests
         // Arrange
         var beerStyleId = Guid.NewGuid();
         var existingBeerStyle = new BeerStyle
-            { Id = beerStyleId, Name = "IPA", Description = "Old desc", CountryOfOrigin = "England" };
+        {
+            Id = beerStyleId, Name = "IPA", Description = "Old desc", CountryOfOrigin = "England",
+            Beers = new List<Beer>()
+        };
         _contextMock.Setup(x => x.BeerStyles.FindAsync(new object[] { beerStyleId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(existingBeerStyle);
 

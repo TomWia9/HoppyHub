@@ -49,7 +49,8 @@ public class BeerDeletedConsumerTests
         var beerId = Guid.NewGuid();
         var existingBeer = new Beer
         {
-            Id = beerId
+            Id = beerId,
+            Favorites = new List<Favorite>()
         };
         var message = new BeerDeleted
         {

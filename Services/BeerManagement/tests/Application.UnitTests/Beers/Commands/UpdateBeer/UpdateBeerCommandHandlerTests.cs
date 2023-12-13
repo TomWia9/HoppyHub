@@ -54,12 +54,17 @@ public class UpdateBeerCommandHandlerTests
             Id = breweryId,
             Name = "Brewery name"
         };
+        var beerStyle = new BeerStyle
+        {
+            Id = beerStyleId,
+            Name = "Beer style name"
+        };
         var breweries = new List<Brewery> { brewery };
         var breweriesDbSetMock = breweries.AsQueryable().BuildMockDbSet();
-        var beerStyles = new List<BeerStyle> { new() { Id = beerStyleId } };
+        var beerStyles = new List<BeerStyle> { beerStyle };
         var beerStylesDbSetMock = beerStyles.AsQueryable().BuildMockDbSet();
         var beerId = Guid.NewGuid();
-        var existingBeer = new Beer { Id = beerId, Name = "Old Name", Brewery = brewery };
+        var existingBeer = new Beer { Id = beerId, Name = "Old Name", Brewery = brewery, BeerStyle = beerStyle };
         var beers = new List<Beer> { existingBeer };
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
 

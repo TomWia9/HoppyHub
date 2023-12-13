@@ -59,7 +59,11 @@ public class DeleteBeerCommandHandlerTests
         // Arrange
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
-        var beer = new Beer { Id = beerId, BreweryId = breweryId };
+        var beer = new Beer
+        {
+            Id = beerId, BreweryId = breweryId, Created = new DateTimeOffset(), LastModified = new DateTimeOffset(),
+            CreatedBy = Guid.NewGuid(), LastModifiedBy = Guid.NewGuid()
+        };
         var command = new DeleteBeerCommand { Id = beerId };
         var imagesDeletedEvent = new ImagesDeleted
         {

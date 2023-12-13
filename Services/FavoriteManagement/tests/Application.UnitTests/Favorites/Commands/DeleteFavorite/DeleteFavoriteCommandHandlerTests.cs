@@ -58,7 +58,8 @@ public class DeleteFavoriteCommandHandlerTests
         // Arrange
         var beerId = Guid.NewGuid();
         var userId = Guid.NewGuid();
-        var favorite = new Favorite { Id = Guid.NewGuid(), BeerId = beerId, CreatedBy = userId };
+        var favorite = new Favorite
+            { Id = Guid.NewGuid(), BeerId = beerId, CreatedBy = userId, User = new User { Id = userId } };
         var favoritesDbSetMock = new List<Favorite> { favorite }.AsQueryable().BuildMockDbSet();
         _contextMock.Setup(x => x.Favorites).Returns(favoritesDbSetMock.Object);
         _currentUserServiceMock.Setup(x => x.UserId).Returns(userId);

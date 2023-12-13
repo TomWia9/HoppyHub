@@ -59,7 +59,11 @@ public class DeleteOpinionCommandHandlerTests
         var opinionId = Guid.NewGuid();
         var userId = Guid.NewGuid();
         var beerId = Guid.NewGuid();
-        var opinion = new Opinion { Id = opinionId, BeerId = beerId, CreatedBy = userId, ImageUri = "test.com" };
+        var opinion = new Opinion
+        {
+            Id = opinionId, BeerId = beerId, CreatedBy = userId, ImageUri = "test.com", Created = new DateTimeOffset(),
+            LastModified = new DateTimeOffset(), LastModifiedBy = userId
+        };
         var command = new DeleteOpinionCommand { Id = opinionId };
 
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
