@@ -821,7 +821,7 @@ public class GetBeersQueryValidatorTests
     [InlineData(nameof(BeerDto.FavoritesCount))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetBeersQuery

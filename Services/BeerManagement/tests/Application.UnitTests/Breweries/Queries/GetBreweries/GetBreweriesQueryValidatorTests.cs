@@ -314,7 +314,7 @@ public class GetBreweriesQueryValidatorTests
     [InlineData(nameof(BreweryDto.FoundationYear))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetBreweriesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetBreweriesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetBreweriesQuery

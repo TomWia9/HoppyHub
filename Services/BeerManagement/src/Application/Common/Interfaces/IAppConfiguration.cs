@@ -9,7 +9,7 @@ public interface IAppConfiguration
     ///     Temporary beer image uri.
     /// </summary>
     string TempBeerImageUri { get; }
-    
+
     /// <summary>
     ///     The token secret key.
     /// </summary>

@@ -86,6 +86,5 @@ public class ConfigureServicesTests
         // _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Beer, GetBeersQuery>));
         // _services.Should().Contain(s => s.ImplementationType == typeof(BeersFilteringHelper));
         // _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
-        
     }
 }

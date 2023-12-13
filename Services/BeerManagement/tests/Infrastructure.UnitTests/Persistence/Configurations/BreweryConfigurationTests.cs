@@ -48,7 +48,7 @@ public class BreweryConfigurationTests
         beersNavigation.IsCollection.Should().BeTrue();
         beersNavigation.ForeignKey.PrincipalEntityType.ClrType.Should().Be(typeof(Brewery));
         beersNavigation.ForeignKey.IsRequired.Should().BeTrue();
-        
+
         entity.FindProperty(nameof(BaseAuditableEntity.Created))!.GetMaxLength().Should().Be(50);
         entity.FindProperty(nameof(BaseAuditableEntity.CreatedBy))!.GetMaxLength().Should().Be(40);
         entity.FindProperty(nameof(BaseAuditableEntity.LastModified))!.GetMaxLength().Should().Be(50);

@@ -52,7 +52,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         }
 
         var entity = await _context.Beers.Include(x => x.Brewery)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (entity is null)
         {

@@ -69,7 +69,7 @@ public class GetBeerStylesQueryValidatorTests
     [InlineData(nameof(BeerStyleDto.CountryOfOrigin))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetBeerStylesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetBeerStylesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetBeerStylesQuery

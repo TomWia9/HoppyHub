@@ -69,7 +69,7 @@ public class GetFavoritesQueryValidatorTests
     [InlineData(nameof(Favorite.Beer))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetFavoritesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetFavoritesQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetFavoritesQuery

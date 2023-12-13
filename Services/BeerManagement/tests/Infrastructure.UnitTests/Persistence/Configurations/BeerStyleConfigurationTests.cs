@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Infrastructure.Converters;
 using Infrastructure.Persistence.Configurations;
 using Microsoft.EntityFrameworkCore;
 

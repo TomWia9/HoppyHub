@@ -22,11 +22,6 @@ public class DeleteBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteBeerCommandHandler _handler;
@@ -35,6 +30,11 @@ public class DeleteBeerCommandHandlerTests
     ///     The ImagesDeleted request client mock.
     /// </summary>
     private readonly Mock<IRequestClient<ImagesDeleted>> _imagesDeletedRequestClientMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups DeleteBeerCommandHandlerTests.

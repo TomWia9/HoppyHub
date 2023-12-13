@@ -11,16 +11,6 @@ namespace Infrastructure.UnitTests.Persistence.Configurations;
 public class BaseConfigurationTests
 {
     /// <summary>
-    ///     Test entity.
-    /// </summary>
-    private class TestEntity : BaseAuditableEntity;
-
-    /// <summary>
-    ///     Test entity configuration.
-    /// </summary>
-    private class TestEntityConfiguration : BaseConfiguration<TestEntity>;
-
-    /// <summary>
     ///     Tests that BaseConfiguration configures entity correctly.
     /// </summary>
     [Fact]
@@ -44,4 +34,14 @@ public class BaseConfigurationTests
         entity.FindProperty(nameof(BaseAuditableEntity.LastModified))!.GetMaxLength().Should().Be(50);
         entity.FindProperty(nameof(BaseAuditableEntity.LastModifiedBy))!.GetMaxLength().Should().Be(40);
     }
+
+    /// <summary>
+    ///     Test entity.
+    /// </summary>
+    private class TestEntity : BaseAuditableEntity;
+
+    /// <summary>
+    ///     Test entity configuration.
+    /// </summary>
+    private class TestEntityConfiguration : BaseConfiguration<TestEntity>;
 }

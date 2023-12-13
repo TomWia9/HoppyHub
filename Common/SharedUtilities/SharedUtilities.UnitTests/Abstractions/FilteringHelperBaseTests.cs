@@ -5,7 +5,7 @@ using SharedUtilities.Abstractions;
 namespace SharedUtilities.UnitTests.Abstractions;
 
 /// <summary>
-///     Tests for the <see cref="FilteringHelperBase{T, TRequest}" /> class.
+///     Tests for the <see cref="FilteringHelperBase{T,TRequest}" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class FilteringHelperBaseTests
@@ -23,7 +23,7 @@ public class FilteringHelperBaseTests
         var sortingColumns = new Dictionary<string, Expression<Func<object, object>>>
         {
             { "COLUMN1", x => x },
-            { "COLUMN2", x => x },
+            { "COLUMN2", x => x }
         };
         var filteringHelper = new Mock<FilteringHelperBase<object, object>>(sortingColumns)
             .Object;

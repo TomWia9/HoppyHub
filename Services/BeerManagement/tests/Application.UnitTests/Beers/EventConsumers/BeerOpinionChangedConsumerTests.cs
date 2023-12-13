@@ -19,14 +19,14 @@ public class BeerOpinionChangedConsumerTests
     private readonly Mock<ConsumeContext<BeerOpinionChanged>> _consumeContextMock;
 
     /// <summary>
-    ///     The application db context mock.
-    /// </summary>
-    private readonly Mock<IApplicationDbContext> _contextMock;
-
-    /// <summary>
     ///     The BeerOpinionChanged consumer.
     /// </summary>
     private readonly BeerOpinionChangedConsumer _consumer;
+
+    /// <summary>
+    ///     The application db context mock.
+    /// </summary>
+    private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
     ///     Setups BeerOpinionChangedConsumerTests.

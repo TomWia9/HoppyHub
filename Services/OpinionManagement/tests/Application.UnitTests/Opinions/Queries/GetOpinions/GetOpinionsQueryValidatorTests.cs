@@ -158,7 +158,7 @@ public class GetOpinionsQueryValidatorTests
     [InlineData(nameof(OpinionDto.Comment))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetOpinionsQuery

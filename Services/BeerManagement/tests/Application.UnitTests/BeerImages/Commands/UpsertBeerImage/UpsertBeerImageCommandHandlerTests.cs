@@ -204,7 +204,7 @@ public class UpsertBeerImageCommandHandlerTests
     [InlineData(null)]
     [InlineData("")]
     public async Task Handle_ShouldThrowRemoteServiceConnectionException_WhenUploadedImageURiIsNullOrEmpty(
-        string imageUri)
+        string? imageUri)
     {
         // Arrange
         const string expectedMessage = "Failed to sent image.";

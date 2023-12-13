@@ -1,4 +1,5 @@
-﻿using Application.Common.Behaviors;
+﻿using System.Reflection;
+using Application.Common.Behaviors;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -36,7 +37,7 @@ public class UnhandledExceptionBehaviorTests
 
         var handledExceptions = typeof(UnhandledExceptionBehavior<object, object>)
             .GetField("HandledExceptions",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                BindingFlags.NonPublic | BindingFlags.Static);
 
         var actualHandledExceptions = (List<Type>)handledExceptions!.GetValue(null)!;
 

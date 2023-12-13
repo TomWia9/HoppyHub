@@ -15,14 +15,14 @@ namespace Infrastructure.UnitTests.Services;
 public class IdentityServiceTests
 {
     /// <summary>
-    ///     Identity Service.
-    /// </summary>
-    private readonly IdentityService _identityService;
-
-    /// <summary>
     ///     The app configuration mock.
     /// </summary>
     private readonly Mock<IAppConfiguration> _appConfigurationMock;
+
+    /// <summary>
+    ///     Identity Service.
+    /// </summary>
+    private readonly IdentityService _identityService;
 
     /// <summary>
     ///     User manager mock.

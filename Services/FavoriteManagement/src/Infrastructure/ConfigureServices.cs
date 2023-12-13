@@ -27,13 +27,13 @@ public static class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
         services.AddScoped<IApplicationDbContextInitializer, ApplicationDbContextInitializer>();
 
         services.AddSingleton(TimeProvider.System);
-        
+
         services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -60,7 +60,8 @@ public static class ConfigureServices
 
         services.AddAuthorizationBuilder()
             .AddPolicy(Policies.UserAccess, policy => policy.RequireAssertion(context =>
-                    context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)))
-            .AddPolicy(Policies.AdministratorAccess, policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
+                context.User.IsInRole(Roles.User) || context.User.IsInRole(Roles.Administrator)))
+            .AddPolicy(Policies.AdministratorAccess,
+                policy => policy.RequireAssertion(context => context.User.IsInRole(Roles.Administrator)));
     }
 }

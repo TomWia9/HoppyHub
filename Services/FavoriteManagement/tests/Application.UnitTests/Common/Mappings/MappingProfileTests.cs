@@ -39,10 +39,10 @@ public class MappingTests
     {
         // Arrange
         var instance = GetInstanceOf(source);
-    
+
         // Act
         var dto = _mapper.Map(instance, source, destination);
-    
+
         // Assert
         dto.Should().BeOfType(destination);
     }

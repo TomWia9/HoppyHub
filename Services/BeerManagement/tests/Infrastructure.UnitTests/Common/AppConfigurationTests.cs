@@ -10,14 +10,14 @@ namespace Infrastructure.UnitTests.Common;
 public class AppConfigurationTests
 {
     /// <summary>
-    ///     The configuration.
-    /// </summary>
-    private IConfiguration? _configuration;
-
-    /// <summary>
     ///     The app configuration.
     /// </summary>
     private AppConfiguration? _appConfiguration;
+
+    /// <summary>
+    ///     The configuration.
+    /// </summary>
+    private IConfiguration? _configuration;
 
     /// <summary>
     ///     Tests that TempBeerImageUri returns correct value.

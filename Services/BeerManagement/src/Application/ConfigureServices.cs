@@ -3,7 +3,6 @@ using Application.Beers.Queries.GetBeers;
 using Application.BeerStyles.Queries.GetBeerStyles;
 using Application.Breweries.Queries.GetBreweries;
 using Application.Common.Behaviors;
-using Application.Common.Interfaces;
 using Domain.Entities;
 using FluentValidation;
 using MassTransit;

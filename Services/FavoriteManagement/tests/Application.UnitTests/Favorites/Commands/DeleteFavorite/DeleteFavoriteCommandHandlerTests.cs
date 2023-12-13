@@ -27,14 +27,14 @@ public class DeleteFavoriteCommandHandlerTests
     private readonly Mock<ICurrentUserService> _currentUserServiceMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly DeleteFavoriteCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups DeleteFavoriteCommandHandlerTests.
@@ -49,7 +49,8 @@ public class DeleteFavoriteCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes beer from favorites and publishes BeerFavoritesCountChanged event when favorite beer exists.
+    ///     Tests that Handle method removes beer from favorites and publishes BeerFavoritesCountChanged event when favorite
+    ///     beer exists.
     /// </summary>
     [Fact]
     public async Task

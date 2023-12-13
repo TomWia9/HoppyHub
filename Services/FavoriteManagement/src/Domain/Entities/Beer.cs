@@ -9,7 +9,7 @@ public class Beer
     ///     The entity id.
     /// </summary>
     public Guid Id { get; set; }
-    
+
     /// <summary>
     ///     The beer name.
     /// </summary>
@@ -19,7 +19,7 @@ public class Beer
     ///     The beer brewery id.
     /// </summary>
     public Guid BreweryId { get; set; }
-    
+
     /// <summary>
     ///     The beer brewery name.
     /// </summary>

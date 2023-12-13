@@ -21,14 +21,14 @@ public class UpdateBeerCommandHandlerTests
     private readonly Mock<IApplicationDbContext> _contextMock;
 
     /// <summary>
-    ///     The publish endpoint mock.
-    /// </summary>
-    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
-
-    /// <summary>
     ///     The handler.
     /// </summary>
     private readonly UpdateBeerCommandHandler _handler;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups UpdateBeerCommandHandlerTests.
