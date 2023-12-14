@@ -3,13 +3,11 @@ using Application.Common.Behaviors;
 using Application.Favorites.Queries.GetFavorites;
 using Domain.Entities;
 using FluentValidation;
-using MassTransit;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using SharedUtilities;
 using SharedUtilities.Behaviors;
-using SharedUtilities.Filters;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Services;
 
@@ -37,16 +35,7 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumers(Assembly.GetExecutingAssembly());
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.ConfigureEndpoints(context);
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
-        });
-
+        
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
         services.AddTransient<IFilteringHelper<Favorite, GetFavoritesQuery>, FavoritesFilteringHelper>();
     }

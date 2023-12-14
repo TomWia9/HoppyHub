@@ -1,12 +1,16 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
+using Application;
 using Application.Common.Interfaces;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SharedUtilities.Filters;
 using SharedUtilities.Models;
 
 namespace Infrastructure;
@@ -27,6 +31,22 @@ public static class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+        
+        services.AddMassTransit(x =>
+        {
+            x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
+            x.UsingRabbitMq((context, cfg) =>
+            {
+                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                {
+                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                });
+                
+                cfg.ConfigureEndpoints(context);
+                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+            });
+        });
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

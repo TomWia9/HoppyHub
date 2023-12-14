@@ -36,6 +36,12 @@ public static class ConfigureServices
             x.AddConsumers(Assembly.GetExecutingAssembly());
             x.UsingRabbitMq((context, cfg) =>
             {
+                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                {
+                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                });
+
                 cfg.ConfigureEndpoints(context);
                 cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
             });
