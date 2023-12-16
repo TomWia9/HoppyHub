@@ -1,0 +1,91 @@
+version: "3.9"
+
+services:
+  sql-server:
+    container_name: hoppyhub-sql-server
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=HoppyHub123!
+      - MSSQL_TCP_PORT=1433
+    ports:
+      - "1433:1433"
+
+  rabbitmq:
+      image: rabbitmq:3-management
+      container_name: rabbitmq-container
+      ports:
+        - "5672:5672"
+        - "15672:15672"
+      environment:
+        RABBITMQ_DEFAULT_USER: "rabbituser"
+        RABBITMQ_DEFAULT_PASS: "rabbituser"
+
+  beer-management:
+    container_name: beermanagement
+    build:
+      context: .
+      dockerfile: ./Services/BeerManagement/Dockerfile
+    env_file:
+      - ./Config/.env.common
+      - ./Config/.env.beermanagement
+    ports:
+      - "5000:5000"
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  user-management:
+      container_name: usermanagement
+      build:
+        context: .
+        dockerfile: ./Services/UserManagement/Dockerfile
+      env_file:
+      - ./Config/.env.common
+      - ./Config/.env.usermanagement
+      ports:
+        - "5001:5001"
+      depends_on:
+        - rabbitmq
+        - sql-server
+
+  favorite-management:
+    container_name: favoritemanagement
+    build:
+      context: .
+      dockerfile: ./Services/FavoriteManagement/Dockerfile
+    env_file:
+      - ./Config/.env.common
+      - ./Config/.env.favoritemanagement
+    ports:
+      - "5002:5002"
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  opinion-management:
+    container_name: opinionmanagement
+    build:
+      context: .
+      dockerfile: ./Services/OpinionManagement/Dockerfile
+    env_file:
+      - ./Config/.env.common
+      - ./Config/.env.opinionmanagement
+    ports:
+      - "5003:5003"
+    depends_on:
+      - rabbitmq
+      - sql-server
+
+  image-management:
+    container_name: imagemanagement
+    build:
+      context: .
+      dockerfile: ./Services/ImageManagement/Dockerfile
+    env_file:
+      - ./Config/.env.common
+      - ./Config/.env.imagemanagement
+    ports:
+      - "5004:5004"
+    depends_on:
+      - rabbitmq
