@@ -1,7 +1,6 @@
 using Api;
 using Application;
 using Application.Common.Interfaces;
-using Azure.Identity;
 using Infrastructure;
 using Serilog;
 
@@ -12,13 +11,6 @@ Log.Logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Host.UseSerilog();
-
-if (builder.Environment.IsProduction())
-{
-    builder.Configuration.AddAzureKeyVault(
-        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
-        new DefaultAzureCredential());
-}
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
@@ -37,11 +29,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseSerilogRequestLogging();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+app.UseHealthChecks("/health");
 
 try
 {
