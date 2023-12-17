@@ -41,9 +41,8 @@ function Initialize-Database
 
     # Execute SQL scripts to initialize the database.
     $scriptPath = Join-Path -Path $initialDirectory -ChildPath "Scripts\SQLScripts\$scriptName.sql"
-    Write-Host "Seeding $scriptName..." 
-    Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName
-
+    Write-Host "Seeding $scriptName..."
+    Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName -Username $user -Password $password
 }
 
 # Functions for specific databases to be restored and initialized:

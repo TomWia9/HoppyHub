@@ -32,6 +32,7 @@ app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseHealthChecks("/health");
 
 try
 {

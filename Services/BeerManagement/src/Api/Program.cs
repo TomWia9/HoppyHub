@@ -32,6 +32,7 @@ app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.UseHealthChecks("/health");
 
 try
 {
@@ -42,7 +43,7 @@ try
         var initializer = scope.ServiceProvider.GetRequiredService<IApplicationDbContextInitializer>();
         await initializer.InitializeAsync();
     }
-
+    
     app.Run();
 }
 catch (Exception e)

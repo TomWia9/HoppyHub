@@ -40,16 +40,6 @@ public static class ConfigureServices
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         });
 
-        services.AddMassTransit(x =>
-        {
-            x.AddConsumers(Assembly.GetExecutingAssembly());
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.ConfigureEndpoints(context);
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
-        });
-
         services.AddTransient<IOpinionsService, OpinionsService>();
         services.AddTransient(typeof(IQueryService<>), typeof(QueryService<>));
         services.AddTransient<IFilteringHelper<Opinion, GetOpinionsQuery>, OpinionsFilteringHelper>();
