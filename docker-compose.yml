@@ -27,8 +27,11 @@ services:
       context: .
       dockerfile: ./Services/BeerManagement/Dockerfile
     env_file:
-      - ./Config/.env.common
-      - ./Config/.env.beermanagement
+      - ./Config/.env
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=hoppyhub-sql-server;Database=BeerManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - TempBeerImageUri=https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg
+      - ASPNETCORE_URLS=http://*:5000
     ports:
       - "5000:5000"
     depends_on:
@@ -36,18 +39,20 @@ services:
       - sql-server
 
   user-management:
-      container_name: usermanagement
-      build:
-        context: .
-        dockerfile: ./Services/UserManagement/Dockerfile
-      env_file:
-      - ./Config/.env.common
-      - ./Config/.env.usermanagement
-      ports:
-        - "5001:5001"
-      depends_on:
-        - rabbitmq
-        - sql-server
+    container_name: usermanagement
+    build:
+      context: .
+      dockerfile: ./Services/UserManagement/Dockerfile
+    env_file:
+      - ./Config/.env
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=hoppyhub-sql-server;Database=UserManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - ASPNETCORE_URLS=http://*:5001
+    ports:
+      - "5001:5001"
+    depends_on:
+      - rabbitmq
+      - sql-server
 
   favorite-management:
     container_name: favoritemanagement
@@ -55,8 +60,10 @@ services:
       context: .
       dockerfile: ./Services/FavoriteManagement/Dockerfile
     env_file:
-      - ./Config/.env.common
-      - ./Config/.env.favoritemanagement
+      - ./Config/.env
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=hoppyhub-sql-server;Database=FavoriteManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - ASPNETCORE_URLS=http://*:5002
     ports:
       - "5002:5002"
     depends_on:
@@ -69,8 +76,10 @@ services:
       context: .
       dockerfile: ./Services/OpinionManagement/Dockerfile
     env_file:
-      - ./Config/.env.common
-      - ./Config/.env.opinionmanagement
+      - ./Config/.env
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=hoppyhub-sql-server;Database=OpinionManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - ASPNETCORE_URLS=http://*:5003
     ports:
       - "5003:5003"
     depends_on:
@@ -83,8 +92,11 @@ services:
       context: .
       dockerfile: ./Services/ImageManagement/Dockerfile
     env_file:
-      - ./Config/.env.common
-      - ./Config/.env.imagemanagement
+      - ./Config/.env
+    environment:
+      - BlobContainerSettings__BlobConnectionString=${BLOB_CONNECTION_STRING}
+      - BlobContainerSettings__BlobContainerName=hoppyhub-container
+      - ASPNETCORE_URLS=http://*:5004
     ports:
       - "5004:5004"
     depends_on:
