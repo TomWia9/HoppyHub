@@ -31,7 +31,7 @@ public static class ConfigureServices
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-        
+
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
@@ -42,8 +42,9 @@ public static class ConfigureServices
                     h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
                     h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
                 });
-                
-                cfg.ConfigureEndpoints(context);
+
+                cfg.ConfigureEndpoints(context,
+                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "OpinionManagement"));
                 cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
             });
         });
