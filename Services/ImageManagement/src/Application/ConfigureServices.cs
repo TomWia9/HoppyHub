@@ -42,7 +42,8 @@ public static class ConfigureServices
                     h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
                 });
 
-                cfg.ConfigureEndpoints(context);
+                cfg.ConfigureEndpoints(context,
+                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "ImageManagement"));
                 cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
             });
         });

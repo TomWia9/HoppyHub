@@ -3,11 +3,18 @@
 param(
     [string]$server = "localhost\SQLEXPRESS",
     [string]$user = "",
-    [string]$password = ""
+    [string]$password = "",
+    [switch]$docker
 )
 
 # Get the current directory and navigate back one level.
 $initialDirectory = Convert-Path -Path "..\"
+
+if ($docker) {
+	$server = "localhost,1433"
+    $user = "sa"
+    $password = "HoppyHub123!"
+}
 
 # A function to restore a specified database.
 function Restore-Database
@@ -42,7 +49,13 @@ function Initialize-Database
     # Execute SQL scripts to initialize the database.
     $scriptPath = Join-Path -Path $initialDirectory -ChildPath "Scripts\SQLScripts\$scriptName.sql"
     Write-Host "Seeding $scriptName..."
-    Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName -Username $user -Password $password
+
+    if ($docker) {
+        Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName -Username $user -Password $password
+    }
+    else {
+        Invoke-Sqlcmd -InputFile $scriptPath -ServerInstance $server -Database $databaseName
+    }
 }
 
 # Functions for specific databases to be restored and initialized:
