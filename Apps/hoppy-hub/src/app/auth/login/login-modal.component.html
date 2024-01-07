@@ -5,7 +5,97 @@
         ✕
       </button>
     </form>
-    <h3 class="text-lg font-bold">Login</h3>
+    <h3 class="mb-2 text-2xl font-bold">Sign in to the HoppyHub</h3>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="flex flex-col items-center">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Email:</span>
+          </div>
+          <input
+            type="text"
+            id="email"
+            formControlName="email"
+            placeholder="Your email"
+            class="input input-bordered input-primary w-full max-w-xs"
+            [ngClass]="{
+              'input-error':
+                loginForm.get('email')!.invalid &&
+                loginForm.get('email')!.touched
+            }" />
+          <div class="label flex flex-col">
+            @if (
+              loginForm.get('email')!.errors &&
+              loginForm.get('email')!.hasError('required') &&
+              loginForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt">Email is required</span>
+            }
+            @if (
+              loginForm.get('email')!.errors &&
+              loginForm.get('email')!.hasError('email') &&
+              loginForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt">Email is invalid</span>
+            }
+            @if (
+              loginForm.get('email')!.errors &&
+              loginForm.get('email')!.hasError('maxlength') &&
+              loginForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt"
+                >An email can contain a maximum of 256 characters</span
+              >
+            }
+          </div>
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Password:</span>
+          </div>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Your password"
+            class="input input-bordered input-primary w-full max-w-xs"
+            [ngClass]="{
+              'input-error':
+                loginForm.get('password')!.invalid &&
+                loginForm.get('password')!.touched
+            }" />
+          <div class="label flex flex-col">
+            @if (
+              loginForm.get('password')!.errors &&
+              loginForm.get('password')!.hasError('required') &&
+              loginForm.get('password')!.touched
+            ) {
+              <span class="label-text-alt">Password is required</span>
+            }
+            @if (
+              loginForm.get('password')!.errors &&
+              loginForm.get('password')!.hasError('minlength') &&
+              loginForm.get('password')!.touched
+            ) {
+              <span class="label-text-alt"
+                >The password must have at least 8 characters</span
+              >
+            }
+          </div>
+        </label>
+      </div>
+
+      <div class="mt-2 flex items-center justify-between">
+        <button type="submit" class="btn" [disabled]="!loginForm.valid">
+          Sign in
+        </button>
+        <div class="flex items-center">
+          <p>You don't have an account?</p>
+          <a class="link link-primary ml-2"> Sign Up </a>
+        </div>
+      </div>
+    </form>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>
