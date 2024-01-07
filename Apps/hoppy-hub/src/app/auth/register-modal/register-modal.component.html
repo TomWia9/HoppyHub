@@ -1,0 +1,138 @@
+<dialog #registerModal class="modal modal-middle">
+  <div class="modal-box">
+    <form method="dialog">
+      <button class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2">
+        ✕
+      </button>
+    </form>
+    <h3 class="mb-2 text-2xl font-bold">Sign up to the HoppyHub</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="flex flex-col items-center">
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Email:</span>
+          </div>
+          <input
+            type="text"
+            id="register_email"
+            formControlName="email"
+            placeholder="Your email"
+            class="input input-bordered input-primary w-full max-w-xs"
+            [ngClass]="{
+              'input-error':
+                registerForm.get('email')!.invalid &&
+                registerForm.get('email')!.touched
+            }" />
+          <div class="label flex flex-col">
+            @if (
+              registerForm.get('email')!.errors &&
+              registerForm.get('email')!.hasError('required') &&
+              registerForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt">Email is required</span>
+            }
+            @if (
+              registerForm.get('email')!.errors &&
+              registerForm.get('email')!.hasError('email') &&
+              registerForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt">Email is invalid</span>
+            }
+            @if (
+              registerForm.get('email')!.errors &&
+              registerForm.get('email')!.hasError('maxlength') &&
+              registerForm.get('email')!.touched
+            ) {
+              <span class="label-text-alt"
+                >An email can contain a maximum of 256 characters</span
+              >
+            }
+          </div>
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Username:</span>
+          </div>
+          <input
+            type="text"
+            id="register_username"
+            formControlName="username"
+            placeholder="Your username"
+            class="input input-bordered input-primary w-full max-w-xs"
+            [ngClass]="{
+              'input-error':
+                registerForm.get('username')!.invalid &&
+                registerForm.get('username')!.touched
+            }" />
+          <div class="label flex flex-col">
+            @if (
+              registerForm.get('username')!.errors &&
+              registerForm.get('username')!.hasError('required') &&
+              registerForm.get('username')!.touched
+            ) {
+              <span class="label-text-alt">Username is required</span>
+            }
+            @if (
+              registerForm.get('username')!.errors &&
+              registerForm.get('username')!.hasError('maxlength') &&
+              registerForm.get('username')!.touched
+            ) {
+              <span class="label-text-alt"
+                >The username can contain a maximum of 256 characters</span
+              >
+            }
+          </div>
+        </label>
+
+        <label class="form-control w-full max-w-xs">
+          <div class="label">
+            <span class="label-text">Password:</span>
+          </div>
+          <input
+            type="password"
+            id="register_password"
+            formControlName="password"
+            placeholder="Your password"
+            class="input input-bordered input-primary w-full max-w-xs"
+            [ngClass]="{
+              'input-error':
+                registerForm.get('password')!.invalid &&
+                registerForm.get('password')!.touched
+            }" />
+          <div class="label flex flex-col">
+            @if (
+              registerForm.get('password')!.errors &&
+              registerForm.get('password')!.hasError('required') &&
+              registerForm.get('password')!.touched
+            ) {
+              <span class="label-text-alt">Password is required</span>
+            }
+            @if (
+              registerForm.get('password')!.errors &&
+              registerForm.get('password')!.hasError('minlength') &&
+              registerForm.get('password')!.touched
+            ) {
+              <span class="label-text-alt"
+                >The password must have at least 8 characters</span
+              >
+            }
+          </div>
+        </label>
+      </div>
+
+      <div class="mt-2 flex items-center justify-between">
+        <button type="submit" class="btn" [disabled]="!registerForm.valid">
+          Sign up
+        </button>
+        <div class="flex items-center">
+          <p>You already have an account?</p>
+          <a class="link link-primary ml-2"> Sign In </a>
+        </div>
+      </div>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

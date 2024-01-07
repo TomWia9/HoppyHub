@@ -1,0 +1,75 @@
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { ModalService, ModalType } from '../../services/modal.service';
+
+@Component({
+  selector: 'app-register-modal',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './register-modal.component.html',
+  styleUrl: './register-modal.component.css'
+})
+export class RegisterModalComponent implements OnInit, OnDestroy {
+  private modalService = inject(ModalService);
+  @ViewChild('registerModal') myModalRef!: ElementRef;
+  modalOppenedSubscription!: Subscription;
+  registerForm!: FormGroup;
+  errorMessage = '';
+
+  ngOnInit(): void {
+    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
+      (modalType: ModalType) => {
+        this.showModal(modalType);
+      }
+    );
+    this.registerForm = new FormGroup({
+      email: new FormControl('', [
+        Validators.email,
+        Validators.required,
+        Validators.maxLength(256)
+      ]),
+      username: new FormControl('', [
+        Validators.required,
+        Validators.maxLength(256)
+      ]),
+      password: new FormControl('', [
+        Validators.minLength(8),
+        Validators.maxLength(64),
+        Validators.required
+        //TODO: Add regex for number, capital, special character
+      ])
+    });
+  }
+
+  onSubmit() {
+    if (this.registerForm.valid) {
+      console.log('Sign up data:', this.registerForm.value);
+    } else {
+      console.log('The form is invalid');
+    }
+  }
+
+  showModal(modalType: ModalType) {
+    if (modalType === ModalType.Register && this.myModalRef) {
+      (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.modalOppenedSubscription.unsubscribe();
+  }
+}

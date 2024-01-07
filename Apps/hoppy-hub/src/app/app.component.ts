@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginModalComponent } from './auth/login/login-modal.component';
+import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,8 @@ import { LoginModalComponent } from './auth/login/login-modal.component';
     RouterOutlet,
     HeaderComponent,
     FooterComponent,
-    LoginModalComponent
+    LoginModalComponent,
+    RegisterModalComponent
   ]
 })
 export class AppComponent {}

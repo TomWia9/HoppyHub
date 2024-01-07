@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LoginModalService } from '../auth/login/login-modal.service';
+import { ModalService, ModalType } from '../services/modal.service';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +10,14 @@ import { LoginModalService } from '../auth/login/login-modal.service';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  private loginModalService = inject(LoginModalService);
+  private modalService = inject(ModalService);
 
   isUserLoggedIn: boolean = false;
 
   openLoginModal() {
-    this.loginModalService.openModal();
+    this.modalService.openModal(ModalType.Login);
+  }
+  openRegisterModal() {
+    this.modalService.openModal(ModalType.Register);
   }
 }

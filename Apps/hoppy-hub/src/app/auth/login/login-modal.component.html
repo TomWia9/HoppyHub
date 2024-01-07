@@ -14,7 +14,7 @@
           </div>
           <input
             type="text"
-            id="email"
+            id="login_email"
             formControlName="email"
             placeholder="Your email"
             class="input input-bordered input-primary w-full max-w-xs"
@@ -56,7 +56,7 @@
           </div>
           <input
             type="password"
-            id="password"
+            id="login_password"
             formControlName="password"
             placeholder="Your password"
             class="input input-bordered input-primary w-full max-w-xs"
@@ -72,15 +72,6 @@
               loginForm.get('password')!.touched
             ) {
               <span class="label-text-alt">Password is required</span>
-            }
-            @if (
-              loginForm.get('password')!.errors &&
-              loginForm.get('password')!.hasError('minlength') &&
-              loginForm.get('password')!.touched
-            ) {
-              <span class="label-text-alt"
-                >The password must have at least 8 characters</span
-              >
             }
           </div>
         </label>

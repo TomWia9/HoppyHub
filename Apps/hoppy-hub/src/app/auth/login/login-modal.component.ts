@@ -7,7 +7,6 @@ import {
   ViewChild,
   inject
 } from '@angular/core';
-import { LoginModalService } from './login-modal.service';
 import { Subscription } from 'rxjs';
 import {
   FormControl,
@@ -15,6 +14,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { ModalService, ModalType } from '../../services/modal.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -24,28 +24,25 @@ import {
   styleUrl: './login-modal.component.css'
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
-  private loginModalService = inject(LoginModalService);
+  private modalService = inject(ModalService);
   @ViewChild('loginModal') myModalRef!: ElementRef;
-  loginModalOppenedSubscription!: Subscription;
+  modalOpenedSubscription!: Subscription;
   loginForm!: FormGroup;
   errorMessage = '';
 
   ngOnInit(): void {
-    this.loginModalOppenedSubscription =
-      this.loginModalService.modalOpened.subscribe(() => {
-        this.showModal();
-      });
+    this.modalOpenedSubscription = this.modalService.modalOpened.subscribe(
+      (modalType: ModalType) => {
+        this.showModal(modalType);
+      }
+    );
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.email,
         Validators.required,
         Validators.maxLength(256)
       ]),
-      password: new FormControl('', [
-        Validators.minLength(8),
-        Validators.maxLength(64),
-        Validators.required
-      ])
+      password: new FormControl('', [Validators.required])
     });
   }
 
@@ -57,13 +54,13 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  showModal() {
-    if (this.myModalRef) {
+  showModal(modalType: ModalType) {
+    if (modalType === ModalType.Login && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
   ngOnDestroy(): void {
-    this.loginModalOppenedSubscription.unsubscribe();
+    this.modalOpenedSubscription.unsubscribe();
   }
 }
