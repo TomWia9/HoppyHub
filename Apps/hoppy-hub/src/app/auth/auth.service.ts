@@ -74,4 +74,31 @@ export class AuthService {
 
     localStorage.setItem('userData', JSON.stringify(user));
   }
+
+  logout(): void {
+    this.user.next(null);
+    this.router.navigate(['/']);
+    localStorage.removeItem('userData');
+  }
+
+  autoLogin(): void {
+    const userData = localStorage.getItem('userData');
+
+    if (!userData) {
+      return;
+    }
+
+    const user = JSON.parse(userData);
+    const loadedUser = new User(
+      user.id,
+      user.email,
+      user.role,
+      user._token,
+      user._tokenExpirationDate
+    );
+
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+    }
+  }
 }
