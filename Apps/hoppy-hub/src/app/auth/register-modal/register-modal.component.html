@@ -145,7 +145,7 @@
               class="input input-bordered input-primary w-full max-w-xs"
               [ngClass]="{
                 'input-error':
-                  registerForm.get('passwords.confirmPassword')!.errors &&
+                  registerForm.get('passwords')!.errors &&
                   registerForm.get('passwords.confirmPassword')!.touched
               }" />
             <div class="label flex flex-col text-center">

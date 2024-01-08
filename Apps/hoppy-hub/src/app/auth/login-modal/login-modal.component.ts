@@ -16,7 +16,8 @@ import {
 } from '@angular/forms';
 import { ModalService, ModalType } from '../../services/modal.service';
 import { Router } from '@angular/router';
-import { AlertService } from '../../alert/alert.service';
+import { AlertService, AlertType } from '../../alert/alert.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -27,6 +28,7 @@ import { AlertService } from '../../alert/alert.service';
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
+  private authService = inject(AuthService);
   private alertService = inject(AlertService);
   private router: Router = inject(Router);
 
@@ -53,9 +55,17 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Sign in data:', this.loginForm.value);
-      //authService.login();
-      this.onFormReset();
-      this.router.navigate(['/']);
+      this.authService
+        .login(this.loginForm.value.email, this.loginForm.value.password)
+        .subscribe(
+          () => {
+            this.onFormReset();
+            this.router.navigate(['/']);
+          },
+          error => {
+            this.alertService.openAlert(AlertType.Error, error.error);
+          }
+        );
     }
   }
 
