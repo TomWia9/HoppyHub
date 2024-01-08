@@ -87,50 +87,78 @@
           </div>
         </label>
 
-        <label class="form-control w-full max-w-xs">
-          <div class="label">
-            <span class="label-text">Password:</span>
-          </div>
-          <input
-            type="password"
-            id="register_password"
-            formControlName="password"
-            placeholder="Your password"
-            class="input input-bordered input-primary w-full max-w-xs"
-            [ngClass]="{
-              'input-error':
-                registerForm.get('password')!.invalid &&
-                registerForm.get('password')!.touched
-            }" />
-          <div class="label flex flex-col text-center">
-            @if (
-              registerForm.get('password')!.errors &&
-              registerForm.get('password')!.hasError('required') &&
-              registerForm.get('password')!.touched
-            ) {
-              <span class="label-text-alt">Password is required</span>
-            }
-            @if (
-              registerForm.get('password')!.errors &&
-              registerForm.get('password')!.hasError('minlength') &&
-              registerForm.get('password')!.touched
-            ) {
-              <span class="label-text-alt"
-                >The password must have at least 8 characters</span
-              >
-            }
-            @if (
-              registerForm.get('password')!.errors &&
-              registerForm.get('password')!.hasError('pattern') &&
-              registerForm.get('password')!.touched
-            ) {
-              <span class="label-text-alt"
-                >The password must have at least one non alphanumeric character,
-                one digit and one uppercase</span
-              >
-            }
-          </div>
-        </label>
+        <div formGroupName="passwords" class="w-full max-w-xs">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Password:</span>
+            </div>
+            <input
+              type="password"
+              id="register_password"
+              formControlName="password"
+              placeholder="Your password"
+              class="input input-bordered input-primary w-full max-w-xs"
+              [ngClass]="{
+                'input-error':
+                  registerForm.get('passwords.password')!.invalid &&
+                  registerForm.get('passwords.password')!.touched
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                registerForm.get('passwords.password')!.errors &&
+                registerForm.get('passwords.password')!.hasError('required') &&
+                registerForm.get('passwords.password')!.touched
+              ) {
+                <span class="label-text-alt">Password is required</span>
+              }
+              @if (
+                registerForm.get('passwords.password')!.errors &&
+                registerForm.get('passwords.password')!.hasError('minlength') &&
+                registerForm.get('passwords.password')!.touched
+              ) {
+                <span class="label-text-alt"
+                  >The password must have at least 8 characters</span
+                >
+              }
+              @if (
+                registerForm.get('passwords.password')!.errors &&
+                registerForm.get('passwords.password')!.hasError('pattern') &&
+                registerForm.get('passwords.password')!.touched
+              ) {
+                <span class="label-text-alt"
+                  >The password must have at least one non alphanumeric
+                  character, one digit and one uppercase</span
+                >
+              }
+            </div>
+          </label>
+
+          <label class="form-control w-full max-w-xs">
+            <div class="label">
+              <span class="label-text">Confirm Password:</span>
+            </div>
+            <input
+              type="password"
+              id="register_confirm_password"
+              formControlName="confirmPassword"
+              placeholder="Confirm password"
+              class="input input-bordered input-primary w-full max-w-xs"
+              [ngClass]="{
+                'input-error':
+                  registerForm.get('passwords.confirmPassword')!.errors &&
+                  registerForm.get('passwords.confirmPassword')!.touched
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                registerForm.get('passwords')!.errors &&
+                registerForm.get('passwords')!.hasError('passwordMismatch') &&
+                registerForm.get('passwords.confirmPassword')!.touched
+              ) {
+                <span class="label-text-alt">Passwords doesn't match!</span>
+              }
+            </div>
+          </label>
+        </div>
       </div>
 
       <div class="mt-2 flex items-center justify-between">

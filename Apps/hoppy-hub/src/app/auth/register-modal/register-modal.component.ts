@@ -16,6 +16,7 @@ import {
 import { Subscription } from 'rxjs';
 import { ModalService, ModalType } from '../../services/modal.service';
 import { Router } from '@angular/router';
+import { CustomValidators } from '../../shared/custom-validators';
 
 @Component({
   selector: 'app-register-modal',
@@ -49,11 +50,17 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
         Validators.required,
         Validators.maxLength(256)
       ]),
-      password: new FormControl('', [
-        Validators.minLength(8),
-        Validators.required,
-        Validators.pattern('^(?=.*[^\\w])(?=.*\\d)(?=.*[A-Z]).+$')
-      ])
+      passwords: new FormGroup(
+        {
+          password: new FormControl('', [
+            Validators.minLength(8),
+            Validators.required,
+            Validators.pattern(CustomValidators.passwordPattern)
+          ]),
+          confirmPassword: new FormControl('', [])
+        },
+        CustomValidators.passwordMatchValidator()
+      )
     });
   }
 
