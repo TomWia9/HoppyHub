@@ -60,6 +60,11 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSignUp() {
+    this.onFormReset();
+    this.modalService.openModal(ModalType.Register);
+  }
+
   onFormReset() {
     this.errorMessage = '';
     this.loginForm.reset();

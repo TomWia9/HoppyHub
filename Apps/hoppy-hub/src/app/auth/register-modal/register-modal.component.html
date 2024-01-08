@@ -129,7 +129,12 @@
         </button>
         <div class="flex items-center">
           <p>You already have an account?</p>
-          <a class="link link-primary ml-2"> Sign In </a>
+          <button
+            type="button"
+            class="link link-primary ml-2"
+            (click)="onSignIn()">
+            Sign In
+          </button>
         </div>
       </div>
     </form>

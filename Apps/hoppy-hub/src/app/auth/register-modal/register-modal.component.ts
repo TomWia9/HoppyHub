@@ -77,6 +77,11 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  onSignIn() {
+    this.onFormReset();
+    this.modalService.openModal(ModalType.Login);
+  }
+
   showModal(modalType: ModalType) {
     if (modalType === ModalType.Register && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
