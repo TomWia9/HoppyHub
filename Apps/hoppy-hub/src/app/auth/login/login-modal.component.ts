@@ -15,6 +15,7 @@ import {
   Validators
 } from '@angular/forms';
 import { ModalService, ModalType } from '../../services/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-modal',
@@ -25,6 +26,8 @@ import { ModalService, ModalType } from '../../services/modal.service';
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
+  private router: Router = inject(Router);
+
   @ViewChild('loginModal') myModalRef!: ElementRef;
   modalOpenedSubscription!: Subscription;
   loginForm!: FormGroup;
@@ -49,8 +52,19 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.loginForm.valid) {
       console.log('Sign in data:', this.loginForm.value);
+      //authService.login();
+      this.onFormReset();
+      this.router.navigate(['/']);
     } else {
       console.log('The form is invalid');
+    }
+  }
+
+  onFormReset() {
+    this.errorMessage = '';
+    this.loginForm.reset();
+    if (this.myModalRef) {
+      (this.myModalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 

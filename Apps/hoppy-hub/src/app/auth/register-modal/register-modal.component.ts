@@ -15,6 +15,7 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService, ModalType } from '../../services/modal.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-modal',
@@ -25,6 +26,8 @@ import { ModalService, ModalType } from '../../services/modal.service';
 })
 export class RegisterModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
+  private router: Router = inject(Router);
+
   @ViewChild('registerModal') myModalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   registerForm!: FormGroup;
@@ -55,9 +58,20 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     });
   }
 
+  onFormReset() {
+    this.errorMessage = '';
+    this.registerForm.reset();
+    if (this.myModalRef) {
+      (this.myModalRef.nativeElement as HTMLDialogElement).close();
+    }
+  }
+
   onSubmit() {
     if (this.registerForm.valid) {
       console.log('Sign up data:', this.registerForm.value);
+      //authService.register();
+      this.onFormReset();
+      this.router.navigate(['/']);
     } else {
       console.log('The form is invalid');
     }
