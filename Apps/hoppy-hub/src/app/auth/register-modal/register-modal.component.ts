@@ -32,7 +32,6 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   @ViewChild('registerModal') myModalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   registerForm!: FormGroup;
-  errorMessage = '';
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -65,7 +64,6 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   }
 
   onFormReset() {
-    this.errorMessage = '';
     this.registerForm.reset();
     if (this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).close();
@@ -78,8 +76,6 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
       //authService.register();
       this.onFormReset();
       this.router.navigate(['/']);
-    } else {
-      console.log('The form is invalid');
     }
   }
 

@@ -5,6 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginModalComponent } from './auth/login/login-modal.component';
 import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
+import { AlertComponent } from './alert/alert.component';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +18,8 @@ import { RegisterModalComponent } from './auth/register-modal/register-modal.com
     HeaderComponent,
     FooterComponent,
     LoginModalComponent,
-    RegisterModalComponent
+    RegisterModalComponent,
+    AlertComponent
   ]
 })
 export class AppComponent {}
