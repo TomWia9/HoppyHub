@@ -51,9 +51,8 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
       ]),
       password: new FormControl('', [
         Validators.minLength(8),
-        Validators.maxLength(64),
-        Validators.required
-        //TODO: Add regex for number, capital, special character
+        Validators.required,
+        Validators.pattern('^(?=.*[^\\w])(?=.*\\d)(?=.*[A-Z]).+$')
       ])
     });
   }

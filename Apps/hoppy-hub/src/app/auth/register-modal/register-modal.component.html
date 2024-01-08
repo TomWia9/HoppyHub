@@ -25,7 +25,7 @@
                 registerForm.get('email')!.invalid &&
                 registerForm.get('email')!.touched
             }" />
-          <div class="label flex flex-col">
+          <div class="label flex flex-col text-center">
             @if (
               registerForm.get('email')!.errors &&
               registerForm.get('email')!.hasError('required') &&
@@ -67,7 +67,7 @@
                 registerForm.get('username')!.invalid &&
                 registerForm.get('username')!.touched
             }" />
-          <div class="label flex flex-col">
+          <div class="label flex flex-col text-center">
             @if (
               registerForm.get('username')!.errors &&
               registerForm.get('username')!.hasError('required') &&
@@ -102,7 +102,7 @@
                 registerForm.get('password')!.invalid &&
                 registerForm.get('password')!.touched
             }" />
-          <div class="label flex flex-col">
+          <div class="label flex flex-col text-center">
             @if (
               registerForm.get('password')!.errors &&
               registerForm.get('password')!.hasError('required') &&
@@ -117,6 +117,16 @@
             ) {
               <span class="label-text-alt"
                 >The password must have at least 8 characters</span
+              >
+            }
+            @if (
+              registerForm.get('password')!.errors &&
+              registerForm.get('password')!.hasError('pattern') &&
+              registerForm.get('password')!.touched
+            ) {
+              <span class="label-text-alt"
+                >The password must have at least one non alphanumeric character,
+                one digit and one uppercase</span
               >
             }
           </div>
