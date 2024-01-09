@@ -1,19 +1,13 @@
 import { inject } from '@angular/core';
-import {
-  Router,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  CanActivateFn
-} from '@angular/router';
+import { Router, ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
 import { AuthService } from './auth.service';
 import { take, map } from 'rxjs';
+import { ModalService, ModalType } from '../services/modal.service';
 
-export const authGuard: CanActivateFn = (
-  next: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
-) => {
+export const authGuard: CanActivateFn = (next: ActivatedRouteSnapshot) => {
   const authService: AuthService = inject(AuthService);
   const router: Router = inject(Router);
+  const modalService: ModalService = inject(ModalService);
 
   return authService.user.pipe(
     take(1),
@@ -26,14 +20,12 @@ export const authGuard: CanActivateFn = (
         ) {
           return true;
         } else {
-          return router.createUrlTree(['/'], {
-            queryParams: { returnUrl: state.url }
-          });
+          modalService.openModal(ModalType.Login);
+          return router.createUrlTree(['/']);
         }
       }
-      return router.createUrlTree(['/'], {
-        queryParams: { returnUrl: state.url }
-      });
+      modalService.openModal(ModalType.Login);
+      return router.createUrlTree(['/']);
     })
   );
 };
