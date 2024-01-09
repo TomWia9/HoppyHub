@@ -17,13 +17,13 @@
       </div>
       <ul
         tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+        class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         <li><a>Breweries</a></li>
         <li><a>Beers</a></li>
         <li><a>About</a></li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-3xl">HoppyHub</a>
+    <a class="btn btn-ghost text-2xl" routerLink="/">HoppyHub</a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1 text-xl">
@@ -40,7 +40,7 @@
         class="input input-bordered w-24 md:w-auto" />
     </div>
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+      <div tabindex="0" role="button" class="avatar btn btn-circle btn-ghost">
         <div class="w-10 rounded-full">
           <img
             alt="Tailwind CSS Navbar component"
@@ -49,10 +49,15 @@
       </div>
       <ul
         tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-        <li><a>Profile</a></li>
-        <li><a>Settings</a></li>
-        <li><a>Logout</a></li>
+        class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
+        @if (user) {
+          <li><a>Profile</a></li>
+          <li><a>Settings</a></li>
+          <li><button (click)="onLogout()">Logout</button></li>
+        } @else {
+          <li><button (click)="openLoginModal()">Login</button></li>
+          <li><button (click)="openRegisterModal()">Register</button></li>
+        }
       </ul>
     </div>
   </div>

@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/UserManagementSpecification/swagger.json", "HoppyHub - UserManagement");
         c.RoutePrefix = string.Empty;
     });
+    app.UseCors("AngularApp");
 }
 
 app.UseSerilogRequestLogging();
