@@ -54,18 +54,26 @@ export class LoginModalComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Sign in data:', this.loginForm.value);
       this.authService
         .login(this.loginForm.value.email, this.loginForm.value.password)
-        .subscribe(
-          () => {
+        .subscribe({
+          next: () => {
             this.onFormReset();
             this.router.navigate(['/']);
           },
-          error => {
-            this.alertService.openAlert(AlertType.Error, error.error);
+          error: error => {
+            const errorMessage = error.error.errors[0];
+
+            if (!errorMessage) {
+              this.alertService.openAlert(
+                AlertType.Error,
+                'Something went wrong'
+              );
+            }
+
+            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
-        );
+        });
     }
   }
 

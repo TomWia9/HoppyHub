@@ -76,7 +76,6 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log('Sign up data:', this.registerForm.value);
       this.authService
         .register(
           this.registerForm.value.email,
