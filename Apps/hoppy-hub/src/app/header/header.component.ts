@@ -4,11 +4,12 @@ import { ModalService, ModalType } from '../services/modal.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../auth/user.model';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
