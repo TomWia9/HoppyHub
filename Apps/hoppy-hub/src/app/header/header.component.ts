@@ -5,6 +5,7 @@ import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { User } from '../auth/user.model';
 import { RouterModule } from '@angular/router';
+import { Roles } from '../auth/roles';
 
 @Component({
   selector: 'app-header',
@@ -18,11 +19,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   authService: AuthService = inject(AuthService);
   user: User | null | undefined;
   userSubscription!: Subscription;
+  adminAccess: boolean = false;
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(
       (user: User | null) => {
         this.user = user;
+        this.adminAccess = user?.role == Roles.Administrator;
       }
     );
   }
