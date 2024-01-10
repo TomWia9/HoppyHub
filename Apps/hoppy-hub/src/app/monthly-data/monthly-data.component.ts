@@ -4,6 +4,8 @@ import { Opinion } from '../opinions/opinion.model';
 import { OpinionsParams } from '../opinions/opinions-params';
 import { OpinionsService } from '../services/opinions.service';
 import { PagedList } from '../shared/paged-list';
+import { BeersService } from '../beers/beers.service';
+import { Beer } from '../beers/beer.model';
 
 @Component({
   selector: 'app-monthly-data',
@@ -14,9 +16,11 @@ import { PagedList } from '../shared/paged-list';
 })
 export class MonthlyDataComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private beersService: BeersService = inject(BeersService);
+
   monthName!: string;
   totalBeersRated!: number;
-  theMostPopularBeer: string = 'Recraft';
+  theMostPopularBeer!: Beer | null;
   theMostActiveUser: string = 'TestUser';
   theMostActiveUserBeers: number = 31;
 
@@ -41,7 +45,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
 
     this.opinionsChangedSubscription =
       this.opinionsService.opinionsChanged.subscribe(opinions => {
-        this.getTotalBeersRatedInLastMonth(opinions);
+        this.getLastMonthData(opinions);
       });
 
     this.errorSubscription = this.opinionsService.errorCatched.subscribe(
@@ -51,7 +55,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     );
   }
 
-  getTotalBeersRatedInLastMonth(opinions: PagedList<Opinion>): void {
+  getLastMonthData(opinions: PagedList<Opinion>): void {
     const currentDate = new Date();
     const lastMonthDate = new Date(
       currentDate.getFullYear(),
@@ -59,7 +63,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       currentDate.getDate()
     );
 
-    let totalBeersRated = 0;
+    const opinionsFromLastMonth: Opinion[] = [];
 
     opinions.items.forEach(opinion => {
       const opinionDate = new Date(opinion.created);
@@ -67,11 +71,40 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
         opinionDate.getFullYear() === lastMonthDate.getFullYear() &&
         opinionDate.getMonth() === lastMonthDate.getMonth()
       ) {
-        totalBeersRated++;
+        opinionsFromLastMonth.push(opinion);
       }
     });
 
-    this.totalBeersRated = totalBeersRated;
+    const beerIdFrequencyMap = new Map<string, number>();
+
+    opinionsFromLastMonth.forEach(opinion => {
+      const beerId = opinion.beerId;
+      const count = beerIdFrequencyMap.get(beerId) || 0;
+      beerIdFrequencyMap.set(beerId, count + 1);
+    });
+
+    let maxOccurrences = 0;
+    let mostFrequentBeerId: string | null = null;
+
+    beerIdFrequencyMap.forEach((occurrences, beerId) => {
+      if (occurrences > maxOccurrences) {
+        maxOccurrences = occurrences;
+        mostFrequentBeerId = beerId;
+      }
+    });
+
+    if (mostFrequentBeerId) {
+      this.beersService
+        .getBeerById(mostFrequentBeerId)
+        .subscribe((beer: Beer) => {
+          this.theMostPopularBeer = beer;
+        });
+    } else {
+      this.theMostPopularBeer = null;
+    }
+
+    this.totalBeersRated = opinionsFromLastMonth.length;
+    //this.theMostPopularBeer = mostFrequentBeerId
   }
 
   getPreviousMonthName(): string {

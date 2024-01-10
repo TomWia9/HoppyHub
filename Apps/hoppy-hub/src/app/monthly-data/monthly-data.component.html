@@ -3,12 +3,17 @@
   <div class="stats bg-neutral text-neutral-content shadow">
     <div class="stat">
       <div class="stat-title">Total beers rated</div>
-      <div class="stat-value text-primary">{{ totalBeersRated }}</div>
+      <div class="stat-value flex justify-center text-5xl text-success">
+        {{ totalBeersRated }}
+      </div>
     </div>
     <div class="stat">
       <div class="stat-title">The most popular beer</div>
-      <div class="stat-value max-w-52 text-wrap text-secondary">
-        {{ theMostPopularBeer }}
+      <div class="stat-value text-wrap text-primary">
+        <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
+      </div>
+      <div class="stat-desc mt-2 text-wrap text-success">
+        <a class="link-hover link"> {{ theMostPopularBeer?.brewery?.name }} </a>
       </div>
     </div>
     <div class="stat">
