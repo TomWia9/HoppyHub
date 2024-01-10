@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Opinion } from '../opinions/opinion.model';
 import { OpinionsParams } from '../opinions/opinions-params';
-import { OpinionsService } from '../services/opinions.service';
+import { OpinionsService } from '../opinions/opinions.service';
 import { PagedList } from '../shared/paged-list';
 import { BeersService } from '../beers/beers.service';
 import { Beer } from '../beers/beer.model';
+import { User } from '../users/user.model';
+import { UsersService } from '../users/users.service';
 
 @Component({
   selector: 'app-monthly-data',
@@ -17,12 +19,13 @@ import { Beer } from '../beers/beer.model';
 export class MonthlyDataComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
   private beersService: BeersService = inject(BeersService);
+  private usersService: UsersService = inject(UsersService);
 
   monthName!: string;
   totalBeersRated!: number;
   theMostPopularBeer!: Beer | null;
-  theMostActiveUser: string = 'TestUser';
-  theMostActiveUserBeers: number = 31;
+  theMostActiveUser!: User | null;
+  theMostActiveUserBeersOpinionsCount!: number;
 
   opinions!: PagedList<Opinion>;
   error = '';
@@ -76,20 +79,35 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     });
 
     const beerIdFrequencyMap = new Map<string, number>();
+    const createdByFrequencyMap = new Map<string, number>();
 
     opinionsFromLastMonth.forEach(opinion => {
       const beerId = opinion.beerId;
-      const count = beerIdFrequencyMap.get(beerId) || 0;
-      beerIdFrequencyMap.set(beerId, count + 1);
+      const createdBy = opinion.createdBy;
+      const beerCount = beerIdFrequencyMap.get(beerId) || 0;
+      const createdByCount = createdByFrequencyMap.get(createdBy) || 0;
+
+      beerIdFrequencyMap.set(beerId, beerCount + 1);
+      createdByFrequencyMap.set(createdBy, createdByCount + 1);
     });
 
-    let maxOccurrences = 0;
+    let maxBeerIdOccurrences = 0;
     let mostFrequentBeerId: string | null = null;
 
     beerIdFrequencyMap.forEach((occurrences, beerId) => {
-      if (occurrences > maxOccurrences) {
-        maxOccurrences = occurrences;
+      if (occurrences > maxBeerIdOccurrences) {
+        maxBeerIdOccurrences = occurrences;
         mostFrequentBeerId = beerId;
+      }
+    });
+
+    let maxCreatedByOccurrences = 0;
+    let mostFrequentCreatedBy: string | null = null;
+
+    createdByFrequencyMap.forEach((occurrences, createdBy) => {
+      if (occurrences > maxCreatedByOccurrences) {
+        maxCreatedByOccurrences = occurrences;
+        mostFrequentCreatedBy = createdBy;
       }
     });
 
@@ -103,8 +121,21 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       this.theMostPopularBeer = null;
     }
 
+    if (mostFrequentCreatedBy) {
+      this.usersService
+        .getUserById(mostFrequentCreatedBy)
+        .subscribe((user: User) => {
+          this.theMostActiveUser = user;
+        });
+    } else {
+      this.theMostActiveUser = null;
+    }
+
+    const theMostActiveUserOpinionsCount =
+      createdByFrequencyMap.get(mostFrequentCreatedBy || '') || 0;
+
     this.totalBeersRated = opinionsFromLastMonth.length;
-    //this.theMostPopularBeer = mostFrequentBeerId
+    this.theMostActiveUserBeersOpinionsCount = theMostActiveUserOpinionsCount;
   }
 
   getPreviousMonthName(): string {

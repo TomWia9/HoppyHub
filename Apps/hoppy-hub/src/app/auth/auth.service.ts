@@ -3,9 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthResult } from './auth-result.model';
-import { User } from './user.model';
 import { jwtDecode } from 'jwt-decode';
 import { TokenClaims } from './token-claims.model';
+import { AuthUser } from './auth-user.model';
 
 const AUTH_API = 'http://localhost:5049/api/identity/';
 const httpOptions = {
@@ -19,7 +19,7 @@ export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
-  user = new BehaviorSubject<User | null>(null);
+  user = new BehaviorSubject<AuthUser | null>(null);
 
   login(email: string, password: string): Observable<AuthResult> {
     return this.http
@@ -63,7 +63,7 @@ export class AuthService {
   handleAuthentication(token: string) {
     const decodedToken: TokenClaims = jwtDecode(token);
     const expirationDate = new Date(+decodedToken.exp * 1000);
-    const user = new User(
+    const user = new AuthUser(
       decodedToken.sub,
       decodedToken.email,
       decodedToken.role,
@@ -89,7 +89,7 @@ export class AuthService {
     }
 
     const user = JSON.parse(userData);
-    const loadedUser = new User(
+    const loadedUser = new AuthUser(
       user.id,
       user.email,
       user.role,

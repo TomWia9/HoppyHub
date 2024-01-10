@@ -9,7 +9,7 @@
     </div>
     <div class="stat">
       <div class="stat-title">The most popular beer</div>
-      <div class="stat-value text-wrap text-primary">
+      <div class="stat-value text-wrap text-2xl text-primary">
         <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
       </div>
       <div class="stat-desc mt-2 text-wrap text-success">
@@ -18,9 +18,11 @@
     </div>
     <div class="stat">
       <div class="stat-title">The most active user</div>
-      <div class="stat-value text-primary">{{ theMostActiveUser }}</div>
+      <div class="stat-value text-2xl text-primary">
+        <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
+      </div>
       <div class="stat-desc mt-2 text-success">
-        {{ theMostActiveUserBeers }} beers rated
+        {{ theMostActiveUserBeersOpinionsCount }} beers rated
       </div>
     </div>
   </div>

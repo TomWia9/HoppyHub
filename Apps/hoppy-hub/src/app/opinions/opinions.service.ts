@@ -1,10 +1,10 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Opinion } from '../opinions/opinion.model';
+import { Opinion } from './opinion.model';
 import { Subject, Observable } from 'rxjs';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
-import { OpinionsParams } from '../opinions/opinions-params';
+import { OpinionsParams } from './opinions-params';
 
 const Opinions_Api = 'http://localhost:5110/api/opinions/';
 
