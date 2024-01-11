@@ -28,7 +28,6 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   theMostActiveUser!: User | null;
   theMostActiveUserBeersOpinionsCount!: number;
 
-  opinions!: PagedList<Opinion>;
   error = '';
   loading = false;
   opinionsChangedSubscription!: Subscription;
