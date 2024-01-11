@@ -28,11 +28,11 @@ export class OpinionsService {
         const paginationData: Pagination = JSON.parse(pagination!);
         const opinions = new PagedList<Opinion>(
           response.body!,
-          paginationData.currentPage,
-          paginationData.totalPages,
-          paginationData.totalCount,
-          paginationData.hasPrevious,
-          paginationData.hasNext
+          paginationData.CurrentPage,
+          paginationData.TotalPages,
+          paginationData.TotalCount,
+          paginationData.HasPrevious,
+          paginationData.HasNext
         );
 
         this.opinionsChanged.next(opinions);

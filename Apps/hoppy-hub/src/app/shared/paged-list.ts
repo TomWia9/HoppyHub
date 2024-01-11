@@ -3,10 +3,10 @@ import { Pagination } from './pagination';
 export class PagedList<T> implements Pagination {
   constructor(
     public items: T[] = [],
-    public currentPage: number,
-    public totalPages: number,
-    public totalCount: number,
-    public hasPrevious: boolean,
-    public hasNext: boolean
+    public CurrentPage: number,
+    public TotalPages: number,
+    public TotalCount: number,
+    public HasPrevious: boolean,
+    public HasNext: boolean
   ) {}
 }
