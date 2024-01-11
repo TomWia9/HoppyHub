@@ -10,10 +10,11 @@ FROM Users
 WHERE UserName = 'user@localhost'
 
 -- Generate @OpinionsPerBeer opinions for each beer
-INSERT INTO Opinions (Id, Rating, Comment, BeerId, Created, CreatedBy, LastModified, LastModifiedBy)
+INSERT INTO Opinions (Id, Rating, Comment, ImageUri, BeerId, Created, CreatedBy, LastModified, LastModifiedBy)
 SELECT NEWID(),
        FLOOR(RAND(CHECKSUM(NEWID())) * 10) + 1,
        'Sample comment',
+       'https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg',
        Beers.Id,
        CreatedDate,
        @UserId,
