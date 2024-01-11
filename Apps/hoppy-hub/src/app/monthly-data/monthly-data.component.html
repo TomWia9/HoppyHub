@@ -1,50 +1,49 @@
-<div class="my-4 text-center">
-  <h2 class="mb-4 text-lg font-semibold">Monthly data ({{ monthName }})</h2>
-  @if (loading) {
-    <app-loading-spinner></app-loading-spinner>
-  } @else if (error) {
-    <div role="alert" class="alert alert-error">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-6 w-6 shrink-0 stroke-current"
-        fill="none"
-        viewBox="0 0 24 24">
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-      <span>{{ error }}</span>
-    </div>
-  } @else {
-    <div class="stats bg-neutral text-neutral-content shadow">
-      <div class="stat">
-        <div class="stat-title">Total beers rated</div>
-        <div class="stat-value flex justify-center text-5xl text-success">
-          {{ totalBeersRated }}
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-title">The most popular beer</div>
-        <div class="stat-value text-wrap text-2xl text-primary">
-          <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
-        </div>
-        <div class="stat-desc mt-2 text-wrap text-success">
-          <a class="link-hover link">
-            {{ theMostPopularBeer?.brewery?.name }}
-          </a>
-        </div>
-      </div>
-      <div class="stat">
-        <div class="stat-title">The most active user</div>
-        <div class="stat-value text-2xl text-primary">
-          <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
-        </div>
-        <div class="stat-desc mt-2 text-success">
-          {{ theMostActiveUserBeersOpinionsCount }} beers rated
-        </div>
+<h2 class="mb-4 text-lg font-semibold">Monthly data ({{ monthName }})</h2>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <div role="alert" class="alert alert-error">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="h-6 w-6 shrink-0 stroke-current"
+      fill="none"
+      viewBox="0 0 24 24">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>{{ error }}</span>
+  </div>
+} @else {
+  <div
+    class="stats stats-vertical w-full bg-neutral text-neutral-content shadow">
+    <div class="stat">
+      <div class="stat-title">Total beers rated</div>
+      <div class="stat-value text-success">
+        {{ totalBeersRated }}
       </div>
     </div>
-  }
-</div>
+    <div class="stat">
+      <div class="stat-title">The most popular beer</div>
+      <div class="stat-value text-primary">
+        <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
+      </div>
+      <div class="stat-desc mt-2 text-success">
+        <a class="link-hover link">
+          {{ theMostPopularBeer?.brewery?.name }}
+        </a>
+      </div>
+    </div>
+    <div class="stat">
+      <div class="stat-title">The most active user</div>
+      <div class="stat-value text-primary">
+        <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
+      </div>
+      <div class="stat-desc mt-2 text-success">
+        {{ theMostActiveUserBeersOpinionsCount }} beers rated
+      </div>
+    </div>
+  </div>
+}
