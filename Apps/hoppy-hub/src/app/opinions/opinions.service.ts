@@ -5,8 +5,7 @@ import { Subject, Observable } from 'rxjs';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
 import { OpinionsParams } from './opinions-params';
-
-const Opinions_Api = 'http://localhost:5110/api/opinions/';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -49,9 +48,12 @@ export class OpinionsService {
   private fetchOpinions(
     params: HttpParams
   ): Observable<HttpResponse<Opinion[]>> {
-    return this.http.get<Opinion[]>(Opinions_Api, {
-      observe: 'response',
-      params: params
-    });
+    return this.http.get<Opinion[]>(
+      `${environment.opinionManagementApiUrl}/opinions`,
+      {
+        observe: 'response',
+        params: params
+      }
+    );
   }
 }

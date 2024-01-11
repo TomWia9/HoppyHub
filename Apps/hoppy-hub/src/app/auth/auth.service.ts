@@ -6,8 +6,8 @@ import { AuthResult } from './auth-result.model';
 import { jwtDecode } from 'jwt-decode';
 import { TokenClaims } from './token-claims.model';
 import { AuthUser } from './auth-user.model';
+import { environment } from '../../environments/environment';
 
-const AUTH_API = 'http://localhost:5049/api/identity/';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -24,7 +24,7 @@ export class AuthService {
   login(email: string, password: string): Observable<AuthResult> {
     return this.http
       .post<AuthResult>(
-        AUTH_API + 'login',
+        `${environment.userManagementApiUrl}/identity/login`,
         {
           email,
           password
@@ -46,11 +46,14 @@ export class AuthService {
     password: string
   ): Observable<AuthResult> {
     return this.http
-      .post<AuthResult>(AUTH_API + 'register', {
-        email,
-        username,
-        password
-      })
+      .post<AuthResult>(
+        `${environment.userManagementApiUrl}/identity/register`,
+        {
+          email,
+          username,
+          password
+        }
+      )
       .pipe(
         tap(result => {
           if (result.token) {

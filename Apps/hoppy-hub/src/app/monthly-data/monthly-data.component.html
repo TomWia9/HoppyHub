@@ -41,9 +41,11 @@
       <div class="stat-value text-primary">
         <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
       </div>
-      <div class="stat-desc mt-2 text-success">
-        {{ theMostActiveUserBeersOpinionsCount }} beers rated
-      </div>
+      @if (theMostActiveUser) {
+        <div class="stat-desc mt-2 text-success">
+          {{ theMostActiveUserBeersOpinionsCount }} beers rated
+        </div>
+      }
     </div>
   </div>
 }

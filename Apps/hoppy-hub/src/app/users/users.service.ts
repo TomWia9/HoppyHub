@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { User } from './user.model';
-
-const Users_Api = 'http://localhost:5049/api/users/';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +13,8 @@ export class UsersService {
   opinionsChanged = new Subject<User>();
 
   getUserById(id: string): Observable<User> {
-    return this.http.get<User>(`${Users_Api}${id}`);
+    return this.http.get<User>(
+      `${environment.userManagementApiUrl}/users/${id}`
+    );
   }
 }
