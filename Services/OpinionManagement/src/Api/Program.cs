@@ -26,6 +26,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/OpinionManagementSpecification/swagger.json", "HoppyHub - Opinion Management");
         c.RoutePrefix = string.Empty;
     });
+    app.UseCors("AngularApp");
 }
 
 app.UseSerilogRequestLogging();

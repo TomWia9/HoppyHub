@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { ModalService, ModalType } from '../services/modal.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
-import { User } from '../auth/user.model';
 import { RouterModule } from '@angular/router';
+import { Roles } from '../auth/roles';
+import { AuthUser } from '../auth/auth-user.model';
 
 @Component({
   selector: 'app-header',
@@ -16,13 +17,15 @@ import { RouterModule } from '@angular/router';
 export class HeaderComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   authService: AuthService = inject(AuthService);
-  user: User | null | undefined;
+  user: AuthUser | null | undefined;
   userSubscription!: Subscription;
+  adminAccess: boolean = false;
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(
-      (user: User | null) => {
+      (user: AuthUser | null) => {
         this.user = user;
+        this.adminAccess = user?.role == Roles.Administrator;
       }
     );
   }

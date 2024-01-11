@@ -1,14 +1,12 @@
-<section class="grid grid-cols-1 gap-52 lg:grid-cols-3">
-  <div class="rounded-lg bg-primary p-6 text-primary-content shadow-md">
-    <h2 class="mb-4 text-lg font-semibold">Last beers</h2>
-    <!-- <app-last-beers></app-last-beers> -->
+<section class="grid grid-cols-1 gap-52 text-center xl:grid-cols-2">
+  <div class="my-4 xl:order-last">
+    <app-monthly-data></app-monthly-data>
+    <div class="my-4 rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
+      <h2 class="mb-4 text-lg font-semibold">Recent opinions</h2>
+    </div>
   </div>
-  <div class="rounded-lg bg-primary p-6 text-primary-content shadow-md">
-    <h2 class="mb-4 text-lg font-semibold">Most popular breweries</h2>
-    <!-- <app-most-popular-breweries></app-most-popular-breweries> -->
-  </div>
-  <div class="rounded-lg bg-primary p-6 text-primary-content shadow-md">
-    <h2 class="mb-4 text-lg font-semibold">Last opinions</h2>
-    <!-- <app-last-opinions></app-last-opinions> -->
+  <div
+    class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md xl:order-first">
+    <h2 class="mb-4 text-lg font-semibold">Beers</h2>
   </div>
 </section>
