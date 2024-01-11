@@ -78,17 +78,19 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       }
     });
 
-    const beerIdFrequencyMap = new Map<string, number>();
-    const createdByFrequencyMap = new Map<string, number>();
+    this.totalBeersRated = opinionsFromLastMonth.length;
+    this.setTheMostPopularBeer(opinionsFromLastMonth);
+    this.setTheMostActiveUser(opinionsFromLastMonth);
+  }
 
-    opinionsFromLastMonth.forEach(opinion => {
+  setTheMostPopularBeer(opinions: Opinion[]): void {
+    const beerIdFrequencyMap = new Map<string, number>();
+
+    opinions.forEach(opinion => {
       const beerId = opinion.beerId;
-      const createdBy = opinion.createdBy;
       const beerCount = beerIdFrequencyMap.get(beerId) || 0;
-      const createdByCount = createdByFrequencyMap.get(createdBy) || 0;
 
       beerIdFrequencyMap.set(beerId, beerCount + 1);
-      createdByFrequencyMap.set(createdBy, createdByCount + 1);
     });
 
     let maxBeerIdOccurrences = 0;
@@ -101,6 +103,27 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (mostFrequentBeerId) {
+      this.beersService
+        .getBeerById(mostFrequentBeerId)
+        .subscribe((beer: Beer) => {
+          this.theMostPopularBeer = beer;
+        });
+    } else {
+      this.theMostPopularBeer = null;
+    }
+  }
+
+  setTheMostActiveUser(opinions: Opinion[]): void {
+    const createdByFrequencyMap = new Map<string, number>();
+
+    opinions.forEach(opinion => {
+      const createdBy = opinion.createdBy;
+      const createdByCount = createdByFrequencyMap.get(createdBy) || 0;
+
+      createdByFrequencyMap.set(createdBy, createdByCount + 1);
+    });
+
     let maxCreatedByOccurrences = 0;
     let mostFrequentCreatedBy: string | null = null;
 
@@ -111,31 +134,19 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (mostFrequentBeerId) {
-      this.beersService
-        .getBeerById(mostFrequentBeerId)
-        .subscribe((beer: Beer) => {
-          this.theMostPopularBeer = beer;
-        });
-    } else {
-      this.theMostPopularBeer = null;
-    }
-
     if (mostFrequentCreatedBy) {
       this.usersService
         .getUserById(mostFrequentCreatedBy)
         .subscribe((user: User) => {
+          const theMostActiveUserOpinionsCount =
+            createdByFrequencyMap.get(mostFrequentCreatedBy || '') || 0;
+          this.theMostActiveUserBeersOpinionsCount =
+            theMostActiveUserOpinionsCount;
           this.theMostActiveUser = user;
         });
     } else {
       this.theMostActiveUser = null;
     }
-
-    const theMostActiveUserOpinionsCount =
-      createdByFrequencyMap.get(mostFrequentCreatedBy || '') || 0;
-
-    this.totalBeersRated = opinionsFromLastMonth.length;
-    this.theMostActiveUserBeersOpinionsCount = theMostActiveUserOpinionsCount;
   }
 
   getPreviousMonthName(): string {
