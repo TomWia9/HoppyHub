@@ -1,29 +1,35 @@
-<div class="my-4">
+<div class="my-4 text-center">
   <h2 class="mb-4 text-lg font-semibold">Monthly data ({{ monthName }})</h2>
-  <div class="stats bg-neutral text-neutral-content shadow">
-    <div class="stat">
-      <div class="stat-title">Total beers rated</div>
-      <div class="stat-value flex justify-center text-5xl text-success">
-        {{ totalBeersRated }}
+  @if (loading) {
+    <app-loading-spinner></app-loading-spinner>
+  } @else {
+    <div class="stats bg-neutral text-neutral-content shadow">
+      <div class="stat">
+        <div class="stat-title">Total beers rated</div>
+        <div class="stat-value flex justify-center text-5xl text-success">
+          {{ totalBeersRated }}
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">The most popular beer</div>
+        <div class="stat-value text-wrap text-2xl text-primary">
+          <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
+        </div>
+        <div class="stat-desc mt-2 text-wrap text-success">
+          <a class="link-hover link">
+            {{ theMostPopularBeer?.brewery?.name }}
+          </a>
+        </div>
+      </div>
+      <div class="stat">
+        <div class="stat-title">The most active user</div>
+        <div class="stat-value text-2xl text-primary">
+          <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
+        </div>
+        <div class="stat-desc mt-2 text-success">
+          {{ theMostActiveUserBeersOpinionsCount }} beers rated
+        </div>
       </div>
     </div>
-    <div class="stat">
-      <div class="stat-title">The most popular beer</div>
-      <div class="stat-value text-wrap text-2xl text-primary">
-        <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
-      </div>
-      <div class="stat-desc mt-2 text-wrap text-success">
-        <a class="link-hover link"> {{ theMostPopularBeer?.brewery?.name }} </a>
-      </div>
-    </div>
-    <div class="stat">
-      <div class="stat-title">The most active user</div>
-      <div class="stat-value text-2xl text-primary">
-        <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
-      </div>
-      <div class="stat-desc mt-2 text-success">
-        {{ theMostActiveUserBeersOpinionsCount }} beers rated
-      </div>
-    </div>
-  </div>
+  }
 </div>

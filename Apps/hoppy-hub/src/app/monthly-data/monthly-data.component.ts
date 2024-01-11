@@ -8,13 +8,14 @@ import { BeersService } from '../beers/beers.service';
 import { Beer } from '../beers/beer.model';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-monthly-data',
   standalone: true,
-  imports: [],
   templateUrl: './monthly-data.component.html',
-  styleUrl: './monthly-data.component.css'
+  styleUrl: './monthly-data.component.css',
+  imports: [LoadingSpinnerComponent]
 })
 export class MonthlyDataComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
