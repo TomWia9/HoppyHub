@@ -5,20 +5,21 @@ import { Subscription } from 'rxjs';
 import { Opinion } from '../opinions/opinion.model';
 import { PagedList } from '../shared/paged-list';
 import { OpinionsParams } from '../opinions/opinions-params';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-recent-opinions',
   standalone: true,
   templateUrl: './recent-opinions.component.html',
   styleUrl: './recent-opinions.component.css',
-  imports: [RecentOpinionComponent]
+  imports: [RecentOpinionComponent, LoadingSpinnerComponent]
 })
 export class RecentOpinionsComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
 
   opinions: PagedList<Opinion> | undefined;
   error = '';
-  loading = false;
+  loading = true;
   getOpinionsSubscription!: Subscription;
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: () => {
-          this.error = 'An error occurred while loading the opinions';
+          this.error = 'An error occurred while loading the recent opinions';
           this.loading = false;
         }
       });

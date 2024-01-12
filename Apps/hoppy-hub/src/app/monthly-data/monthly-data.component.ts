@@ -29,7 +29,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   theMostActiveUserBeersOpinionsCount!: number;
 
   error = '';
-  loading = false;
+  loading = true;
   getOpinionsSubscription!: Subscription;
 
   ngOnInit() {
@@ -50,7 +50,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: () => {
-          this.error = 'An error occurred while loading the opinions';
+          this.error = 'An error occurred while loading monthly data';
           this.loading = false;
         }
       });
