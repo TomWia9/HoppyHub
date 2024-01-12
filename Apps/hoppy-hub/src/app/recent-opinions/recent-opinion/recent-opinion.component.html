@@ -1,14 +1,16 @@
 <div class="card card-side my-4 bg-base-100 shadow-xl">
   <figure>
-    <img
-      src="https://daisyui.com/images/stock/photo-1635805737707-575885ab0820.jpg"
-      alt="Movie" />
+    <img src="{{ opinion.imageUri }}" alt="beer image" />
   </figure>
   <div class="card-body">
-    <h2 class="card-title">New movie is released!</h2>
-    <p>Click the button to watch on Jetflix app.</p>
-    <div class="card-actions justify-end">
-      <button class="btn btn-primary">Watch</button>
+    <h2 class="card-title">{{ opinion.comment }}</h2>
+    <div class="rating">
+      <p>Rate: {{ opinion.rating }}/10</p>
+      <input class="mask mask-star-2 bg-green-500" />
+      <input class="mask mask-star-2 bg-green-500" />
+      <input class="mask mask-star-2 bg-green-500" />
+      <input class="mask mask-star-2 bg-green-500" />
+      <input class="mask mask-star-2 bg-green-500" />
     </div>
   </div>
 </div>

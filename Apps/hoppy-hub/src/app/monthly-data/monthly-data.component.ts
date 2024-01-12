@@ -30,32 +30,30 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
 
   error = '';
   loading = false;
-  opinionsChangedSubscription!: Subscription;
-  errorSubscription!: Subscription;
-  loadingSubscription!: Subscription;
+  getOpinionsSubscription!: Subscription;
 
   ngOnInit() {
     this.monthName = this.getPreviousMonthName();
-    this.loadingSubscription = this.opinionsService.loading.subscribe(
-      isLoading => {
-        this.loading = isLoading;
-      }
-    );
 
     this.opinionsService.getOpinions(
       new OpinionsParams(10000, 1, 'lastModified', 1)
     );
 
-    this.opinionsChangedSubscription =
-      this.opinionsService.opinionsChanged.subscribe(opinions => {
-        this.getLastMonthData(opinions);
-      });
+    this.getOpinionsSubscription = this.opinionsService
+      .getOpinions(new OpinionsParams(10000, 1, 'lastModified', 1))
+      .subscribe({
+        next: (opinions: PagedList<Opinion>) => {
+          console.log(opinions);
 
-    this.errorSubscription = this.opinionsService.errorCatched.subscribe(
-      errorMessage => {
-        this.error = errorMessage;
-      }
-    );
+          this.loading = true;
+          this.getLastMonthData(opinions);
+          this.loading = false;
+        },
+        error: () => {
+          this.error = 'An error occurred while loading the opinions';
+          this.loading = false;
+        }
+      });
   }
 
   getLastMonthData(opinions: PagedList<Opinion>): void {
@@ -172,8 +170,6 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.opinionsChangedSubscription.unsubscribe();
-    this.errorSubscription.unsubscribe();
-    this.loadingSubscription.unsubscribe();
+    this.getOpinionsSubscription.unsubscribe();
   }
 }

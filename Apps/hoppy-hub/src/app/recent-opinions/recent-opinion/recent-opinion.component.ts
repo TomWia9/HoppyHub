@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Opinion } from '../../opinions/opinion.model';
 
 @Component({
   selector: 'app-recent-opinion',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './recent-opinion.component.css'
 })
 export class RecentOpinionComponent {
-
+  @Input({ required: true }) opinion!: Opinion;
 }
