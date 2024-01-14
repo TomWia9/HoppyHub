@@ -1,22 +1,18 @@
-<div class="card card-side my-4 bg-base-100 shadow-xl">
-  <figure class="w-32">
-    <img src="{{ opinion.imageUri }}" alt="beer image" />
-  </figure>
-  <div class="card-body grid grid-cols-2">
-    <div class="text-start">
-      <h2 class="card-title">{{ opinion.comment }}</h2>
-      <a class="link-hover link link-primary">
-        {{ opinion.username }}
-      </a>
-    </div>
-    <div class="flex items-center justify-end">
-      <div class="rating">
-        <input class="mask mask-star-2 bg-green-500" />
-        <input class="mask mask-star-2 bg-green-500" />
-        <input class="mask mask-star-2 bg-green-500" />
-        <input class="mask mask-star-2 bg-green-500" />
-        <input class="mask mask-star-2 bg-green-500" />
+<div class="card my-4 bg-base-100 shadow-xl">
+  <div class="card-body">
+    <h2 class="card-title">Beer: {{ opinion.beerId }}</h2>
+    <p>{{ opinion.comment }}</p>
+    <div class="justify-start text-start">
+      <h2>Rating: {{ opinion.rating }}/10</h2>
+      <div class="rating mt-2">
+        <input
+          *ngFor="let star of getStars(opinion.rating)"
+          class="mask mask-star-2 cursor-default bg-green-500"
+          disabled />
       </div>
     </div>
+    <figure class="mt-4 max-h-96">
+      <img src="{{ opinion.imageUri }}" alt="beer image" />
+    </figure>
   </div>
 </div>

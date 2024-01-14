@@ -29,8 +29,6 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
         next: (opinions: PagedList<Opinion>) => {
           this.loading = true;
           this.opinions = opinions;
-          console.log(opinions);
-
           this.loading = false;
         },
         error: () => {
