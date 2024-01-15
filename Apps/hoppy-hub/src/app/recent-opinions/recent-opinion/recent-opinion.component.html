@@ -1,19 +1,27 @@
 <div class="card my-4 bg-base-100 shadow-xl">
   <div class="card-body">
-    <a class="link-hover link card-title link-primary text-3xl">{{
-      beer.name
-    }}</a>
-    <a class="link-hover link link-accent text-start text-xl">{{
-      beer.brewery.name
-    }}</a>
-    <p>{{ opinion.comment }}</p>
-    <div class="justify-start text-start">
+    <div class="flex justify-between">
+      <div class="flex flex-col">
+        <a class="link-hover link card-title link-primary text-3xl">{{
+          beer.name
+        }}</a>
+        <a class="link-hover link link-accent my-2 text-start text-xl">{{
+          beer.brewery.name
+        }}</a>
+      </div>
+      <a class="link-hover link link-primary text-2xl">{{
+        opinion.username
+      }}</a>
+    </div>
+    <p class="text-justify text-xl">{{ opinion.comment }}</p>
+    <div class="mt-4 justify-start text-start">
       <h2>Rating: {{ opinion.rating }}/10</h2>
       <div class="rating mt-2">
-        <input
-          *ngFor="let star of getStars(opinion.rating)"
-          class="mask mask-star-2 cursor-default bg-green-500"
-          disabled />
+        @for (star of getStars(opinion.rating); track star) {
+          <input
+            class="mask mask-star-2 cursor-default bg-green-500"
+            disabled />
+        }
       </div>
     </div>
     <figure class="mt-4 max-h-96">
