@@ -1,6 +1,11 @@
 <div class="card my-4 bg-base-100 shadow-xl">
   <div class="card-body">
-    <h2 class="card-title">Beer: {{ opinion.beerId }}</h2>
+    <a class="link-hover link card-title link-primary text-3xl">{{
+      beer.name
+    }}</a>
+    <a class="link-hover link link-accent text-start text-xl">{{
+      beer.brewery.name
+    }}</a>
     <p>{{ opinion.comment }}</p>
     <div class="justify-start text-start">
       <h2>Rating: {{ opinion.rating }}/10</h2>
