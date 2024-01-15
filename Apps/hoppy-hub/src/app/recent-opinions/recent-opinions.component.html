@@ -18,10 +18,8 @@
   </div>
 } @else {
   @if (opinions && opinions.TotalCount > 0) {
-    <div class="my-4 rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
-      @for (opinion of opinions.items; track opinion.id) {
-        <app-recent-opinion [opinion]="opinion"></app-recent-opinion>
-      }
-    </div>
+    @for (opinion of opinions.items; track opinion.id) {
+      <app-recent-opinion [opinion]="opinion"></app-recent-opinion>
+    }
   }
 }

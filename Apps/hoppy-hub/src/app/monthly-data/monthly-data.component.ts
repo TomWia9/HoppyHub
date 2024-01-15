@@ -36,15 +36,13 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     this.monthName = this.getPreviousMonthName();
 
     this.opinionsService.getOpinions(
-      new OpinionsParams(10000, 1, 'lastModified', 1)
+      new OpinionsParams(50, 1, 'lastModified', 1)
     );
 
     this.getOpinionsSubscription = this.opinionsService
       .getOpinions(new OpinionsParams(10000, 1, 'lastModified', 1))
       .subscribe({
         next: (opinions: PagedList<Opinion>) => {
-          console.log(opinions);
-
           this.loading = true;
           this.getLastMonthData(opinions);
           this.loading = false;
