@@ -1,0 +1,33 @@
+<div class="card my-4 bg-neutral shadow-xl">
+  <div class="card-body">
+    <div class="flex justify-between">
+      @if (beer) {
+        <div class="flex flex-col">
+          <a class="link-hover link card-title link-primary text-3xl">{{
+            beer.name
+          }}</a>
+          <a class="link-hover link link-accent my-2 text-start text-xl">{{
+            beer.brewery.name
+          }}</a>
+        </div>
+      }
+      <a class="link-hover link link-primary text-2xl">{{
+        opinion.username
+      }}</a>
+    </div>
+    <p class="text-justify text-xl">{{ opinion.comment }}</p>
+    <div class="mt-4 justify-start text-start">
+      <h2>Rating: {{ opinion.rating }}/10</h2>
+      <div class="rating mt-2">
+        @for (star of getStars(opinion.rating); track star) {
+          <input
+            class="mask mask-star-2 cursor-default bg-green-500"
+            disabled />
+        }
+      </div>
+    </div>
+    <figure class="mt-4 max-h-96">
+      <img src="{{ opinion.imageUri }}" alt="beer image" />
+    </figure>
+  </div>
+</div>
