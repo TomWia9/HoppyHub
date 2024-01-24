@@ -35,7 +35,8 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
     {
         var delegates = new List<Expression<Func<Opinion, bool>>>
         {
-            x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating
+            x => x.Rating >= request.MinRating && x.Rating <= request.MaxRating,
+            x => x.Created >= request.From && x.Created <= request.To
         };
 
         if (request.BeerId is not null)
