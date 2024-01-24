@@ -15,6 +15,7 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
     public static readonly Dictionary<string, Expression<Func<Opinion, object>>> SortingColumns = new()
     {
         { nameof(Opinion.LastModified).ToUpper(), x => x.LastModified ?? new DateTimeOffset() },
+        { nameof(Opinion.Created).ToUpper(), x => x.Created ?? new DateTimeOffset() },
         { nameof(Opinion.Rating).ToUpper(), x => x.Rating },
         { nameof(Opinion.Comment).ToUpper(), x => x.Comment ?? string.Empty }
     };
