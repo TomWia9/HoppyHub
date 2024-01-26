@@ -148,6 +148,126 @@ public class GetOpinionsQueryValidatorTests
         result.ShouldHaveValidationErrorFor(x => x.MaxRating)
             .WithErrorMessage("Max value must be greater than or equal to Min value");
     }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for From when From is valid.
+    /// </summary>
+    [Fact]
+    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForFrom_WhenFromIsValid()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            From = "01.01.20"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.From);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for From when From is invalid.
+    /// </summary>
+    [Fact]
+    public void GetOpinionsQuery_ShouldHaveValidationErrorForFrom_WhenFromIsInvalid()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            From = "abc"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.From);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for From when From is greater than To.
+    /// </summary>
+    [Fact]
+    public void
+        GetOpinionsQuery_ShouldHaveValidationErrorForFrom_WhenFromIsGreaterThanTo()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            From = "02.01.20",
+            To = "01.01.20"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.From)
+            .WithErrorMessage("Min value must be less than or equal to Max value");
+    }
+    
+    /// <summary>
+    ///     Tests that validation should not have error for To when To is valid.
+    /// </summary>
+    [Fact]
+    public void GetOpinionsQuery_ShouldNotHaveValidationErrorForTo_WhenToIsValid()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            To = "01.01.20"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldNotHaveValidationErrorFor(x => x.To);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for To when To is invalid.
+    /// </summary>
+    [Fact]
+    public void GetOpinionsQuery_ShouldHaveValidationErrorForTo_WhenToIsInvalid()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            To = "abc"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.To);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for To when To is less than From.
+    /// </summary>
+    [Fact]
+    public void
+        GetOpinionsQuery_ShouldHaveValidationErrorForTo_WhenToIsLessThanFrom()
+    {
+        // Arrange
+        var query = new GetOpinionsQuery
+        {
+            From = "02.01.20",
+            To = "01.01.20"
+        };
+
+        // Act
+        var result = _validator.TestValidate(query);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.To)
+            .WithErrorMessage("Max value must be greater than or equal to Min value");
+    }
 
     /// <summary>
     ///     Tests that validation should not have error for SortBy when SortBy is valid.
@@ -156,6 +276,7 @@ public class GetOpinionsQueryValidatorTests
     [InlineData(nameof(OpinionDto.LastModified))]
     [InlineData(nameof(OpinionDto.Rating))]
     [InlineData(nameof(OpinionDto.Comment))]
+    [InlineData(nameof(OpinionDto.Created))]
     [InlineData("")]
     [InlineData(null)]
     public void GetOpinionsQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
@@ -190,6 +311,6 @@ public class GetOpinionsQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [LASTMODIFIED, RATING, COMMENT]");
+            .WithErrorMessage("SortBy must be in [LASTMODIFIED, CREATED, RATING, COMMENT]");
     }
 }
