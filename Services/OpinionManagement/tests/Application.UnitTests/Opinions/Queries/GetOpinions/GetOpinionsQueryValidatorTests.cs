@@ -218,7 +218,7 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            To = "01.01.20"
+            To = DateOnly.FromDateTime(DateTime.Now).ToString()
         };
 
         // Act
