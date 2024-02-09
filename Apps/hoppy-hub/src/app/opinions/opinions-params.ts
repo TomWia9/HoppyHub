@@ -10,6 +10,8 @@ export class OpinionsParams implements Params {
     public searchQuery?: string,
     public minRating?: number,
     public maxRating?: number,
+    public from?: string,
+    public to?: string,
     public haveImage?: boolean,
     public beerId?: string,
     public userId?: string
@@ -34,6 +36,12 @@ export class OpinionsParams implements Params {
     }
     if (this.maxRating) {
       params = params.append('maxRating', this.maxRating);
+    }
+    if (this.from) {
+      params = params.append('from', this.from);
+    }
+    if (this.to) {
+      params = params.append('to', this.to);
     }
     if (this.haveImage) {
       params = params.append('haveImage', this.haveImage);

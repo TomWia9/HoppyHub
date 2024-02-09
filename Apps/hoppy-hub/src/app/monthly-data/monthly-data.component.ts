@@ -34,18 +34,36 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.monthName = this.getPreviousMonthName();
+    this.fetchAllOpinions();
+  }
 
-    this.opinionsService.getOpinions(
-      new OpinionsParams(50, 1, 'lastModified', 1)
-    );
+  fetchAllOpinions(pageNumber: number = 1, allOpinions: Opinion[] = []) {
+    const { from, to } = this.getPreviousMonthRange();
 
     this.getOpinionsSubscription = this.opinionsService
-      .getOpinions(new OpinionsParams(10000, 1, 'lastModified', 1))
+      .getOpinions(
+        new OpinionsParams(
+          50,
+          pageNumber,
+          'lastModified',
+          1,
+          undefined,
+          undefined,
+          undefined,
+          from.toDateString(),
+          to.toDateString()
+        )
+      )
       .subscribe({
         next: (opinions: PagedList<Opinion>) => {
           this.loading = true;
-          this.getLastMonthData(opinions);
-          this.loading = false;
+          allOpinions.push(...opinions.items);
+          if (opinions.HasNext) {
+            this.fetchAllOpinions(pageNumber + 1, allOpinions);
+          } else {
+            this.getLastMonthData(allOpinions);
+            this.loading = false;
+          }
         },
         error: () => {
           this.error = 'An error occurred while loading monthly data';
@@ -54,29 +72,35 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       });
   }
 
-  getLastMonthData(opinions: PagedList<Opinion>): void {
-    const currentDate = new Date();
-    const lastMonthDate = new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() - 1,
-      currentDate.getDate()
+  getPreviousMonthRange(): { from: Date; to: Date } {
+    const today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+
+    if (month === 0) {
+      year--;
+      month = 11;
+    } else {
+      month--;
+    }
+
+    const firstDayOfPreviousMonth = new Date(year, month, 1);
+    const lastDayOfPreviousMonth = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      0
     );
 
-    const opinionsFromLastMonth: Opinion[] = [];
+    return {
+      from: firstDayOfPreviousMonth,
+      to: lastDayOfPreviousMonth
+    };
+  }
 
-    opinions.items.forEach(opinion => {
-      const opinionDate = new Date(opinion.created);
-      if (
-        opinionDate.getFullYear() === lastMonthDate.getFullYear() &&
-        opinionDate.getMonth() === lastMonthDate.getMonth()
-      ) {
-        opinionsFromLastMonth.push(opinion);
-      }
-    });
-
-    this.totalBeersRated = opinionsFromLastMonth.length;
-    this.setTheMostPopularBeer(opinionsFromLastMonth);
-    this.setTheMostActiveUser(opinionsFromLastMonth);
+  getLastMonthData(opinions: Opinion[]): void {
+    this.totalBeersRated = opinions.length;
+    this.setTheMostPopularBeer(opinions);
+    this.setTheMostActiveUser(opinions);
   }
 
   setTheMostPopularBeer(opinions: Opinion[]): void {
