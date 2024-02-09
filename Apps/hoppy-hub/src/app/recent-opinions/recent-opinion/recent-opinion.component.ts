@@ -30,6 +30,10 @@ export class RecentOpinionComponent implements OnInit, OnDestroy {
     return Array.from({ length: rating }, (_, index) => index + 1);
   }
 
+  getEmptyStars(rating: number): number[] {
+    return Array(10 - rating).fill(0);
+  }
+
   ngOnDestroy(): void {
     this.beerSubscription.unsubscribe();
   }

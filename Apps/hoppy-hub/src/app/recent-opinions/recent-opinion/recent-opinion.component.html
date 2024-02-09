@@ -16,14 +16,23 @@
       }}</a>
     </div>
     <p class="text-justify text-xl">{{ opinion.comment }}</p>
-    <div class="mt-4 justify-start text-start">
-      <h2>Rating: {{ opinion.rating }}/10</h2>
-      <div class="rating mt-2">
-        @for (star of getStars(opinion.rating); track star) {
-          <input
-            class="mask mask-star-2 cursor-default bg-green-500"
-            disabled />
-        }
+    <div class="mt-4 flex justify-between">
+      <div class="justify-start text-start">
+        <div class="rating mt-2">
+          @for (star of getStars(opinion.rating); track star) {
+            <input
+              class="mask mask-star-2 cursor-default bg-green-500"
+              disabled />
+          }
+          @for (star of getEmptyStars(opinion.rating); track star) {
+            <input
+              class="mask mask-star-2 cursor-default bg-gray-400"
+              disabled />
+          }
+        </div>
+      </div>
+      <div>
+        <h2 class="text-xl">{{ opinion.created | date: 'short' }}</h2>
       </div>
     </div>
     <figure class="mt-4 max-h-96">
