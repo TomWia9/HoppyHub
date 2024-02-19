@@ -24,8 +24,13 @@ function Restore-Database
     )
 
     # Construct a connection strings using provided or default parameters.
-    $masterConnectionString = "Server=$server;User=$user;Password=$password;Initial Catalog=master;Trusted_Connection=True;TrustServerCertificate=True"
+    $masterConnectionString = "Server=$server;User=$user;Password=$password;Integrated Security=True;Initial Catalog=master;TrustServerCertificate=True"
     $connectionString = "Server=$server;Database=$databaseName;User=$user;Password=$password;Trusted_Connection=True;TrustServerCertificate=True"
+
+    if ($docker) {
+        $masterConnectionString = "Server=$server;User=$user;Password=$password;Initial Catalog=master;Encrypt=False;"
+        $connectionString = "Server=$server;Database=$databaseName;User=$user;Password=$password;Encrypt=False;"
+    }
 
     # Create a path for the directory of the specific solution's.
     $solutionDirectory = Join-Path -Path (Join-Path -Path $initialDirectory -ChildPath "Services") -ChildPath "$databaseName"
@@ -43,7 +48,7 @@ function Restore-Database
     }
 
     # Update database schema
-    dotnet ef database update --connection $connectionString --project src/api --no-build > $null
+    dotnet ef database update --connection $connectionString --project src/api > $null
 }
 
 # A function to initialize a database using SQL scripts.
@@ -56,6 +61,10 @@ function Initialize-Database
 
     # Construct a connection string using provided or default parameters.
     $connectionString = "Server=$server;Database=$databaseName;User=$user;Password=$password;Trusted_Connection=True;TrustServerCertificate=True"
+
+    if ($docker) {
+        $connectionString = "Server=$server;Database=$databaseName;User=$user;Password=$password;Encrypt=False;"
+    }
 
     # Execute SQL scripts to initialize the database.
     $scriptPath = Join-Path -Path $initialDirectory -ChildPath "Scripts\SQLScripts\$scriptName.sql"
