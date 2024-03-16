@@ -22,14 +22,26 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
 
+  beersParams = new BeersParams(25, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
   error = '';
   loading = true;
+  beersParamsSubscription!: Subscription;
   getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
+    this.getBeers();
+    this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
+      (params: BeersParams) => {
+        this.beersParams = params;
+        this.getBeers();
+      }
+    );
+  }
+
+  private getBeers(): void {
     this.getBeersSubscription = this.beersService
-      .getBeers(new BeersParams(25, 1, 'ReleaseDate', 1))
+      .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
@@ -42,7 +54,9 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         }
       });
   }
+
   ngOnDestroy(): void {
+    this.getBeersSubscription.unsubscribe();
     this.getBeersSubscription.unsubscribe();
   }
 }
