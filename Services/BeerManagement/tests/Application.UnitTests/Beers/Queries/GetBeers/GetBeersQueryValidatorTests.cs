@@ -927,7 +927,7 @@ public class GetBeersQueryValidatorTests
         // Arrange
         var query = new GetBeersQuery
         {
-            MaxReleaseDate = "01.01.20"
+            MaxReleaseDate = DateOnly.FromDateTime(DateTime.Now).ToString()
         };
 
         // Act
