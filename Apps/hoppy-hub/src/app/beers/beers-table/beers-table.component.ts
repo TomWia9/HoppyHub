@@ -1,20 +1,20 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { BeersService } from './beers.service';
-import { Beer } from './beer.model';
-import { PagedList } from '../shared/paged-list';
+import { BeersService } from '../beers.service';
+import { Beer } from '../beer.model';
+import { PagedList } from '../../shared/paged-list';
 import { Subscription } from 'rxjs';
-import { BeersParams } from './beers-params';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
-import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
+import { BeersParams } from '../beers-params';
+import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 
 @Component({
-  selector: 'app-beers',
+  selector: 'app-beers-table',
   standalone: true,
   imports: [LoadingSpinnerComponent, ErrorMessageComponent],
-  templateUrl: './beers.component.html',
-  styleUrl: './beers.component.css'
+  templateUrl: './beers-table.component.html',
+  styleUrl: './beers-table.component.css'
 })
-export class BeersComponent implements OnInit, OnDestroy {
+export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
 
   beers: PagedList<Beer> | undefined;
