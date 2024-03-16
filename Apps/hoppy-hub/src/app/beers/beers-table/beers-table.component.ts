@@ -8,6 +8,7 @@ import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.c
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
+import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
 
 @Component({
   selector: 'app-beers-table',
@@ -15,7 +16,8 @@ import { Pagination } from '../../shared/pagination';
   imports: [
     LoadingSpinnerComponent,
     ErrorMessageComponent,
-    PaginationComponent
+    PaginationComponent,
+    BeersTableFiltersComponent
   ],
   templateUrl: './beers-table.component.html',
   styleUrl: './beers-table.component.css'

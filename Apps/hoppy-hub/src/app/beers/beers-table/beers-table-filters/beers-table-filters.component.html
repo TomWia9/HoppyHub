@@ -1,0 +1,35 @@
+<div class="mx-4 mb-4 flex items-center justify-between">
+  <div class="join">
+    <div class="tooltip tooltip-top" data-tip="Clear the filters">
+      <button class="btn btn-outline btn-primary join-item">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <button class="btn btn-outline btn-primary join-item">Filters</button>
+  </div>
+  <div>
+    <div class="join">
+      <input
+        class="input join-item input-bordered w-40"
+        placeholder="Search beers..." />
+      <button class="btn btn-primary join-item rounded-r-full">Search</button>
+    </div>
+  </div>
+  <div>
+    <app-pagination
+      [params]="params"
+      [paginationData]="paginationData"
+      size="md"></app-pagination>
+  </div>
+</div>
