@@ -1,27 +1,31 @@
 <div class="join">
   <button
-    class="btn btn-primary join-item btn-lg"
+    class="btn btn-primary join-item"
+    [ngClass]="paginationSize"
     [attr.disabled]="paginationData.CurrentPage === 1 ? true : null"
     (click)="onChangePage(1)">
     |«
   </button>
   <button
-    class="btn btn-primary join-item btn-lg"
+    class="btn btn-primary join-item"
+    [ngClass]="paginationSize"
     [attr.disabled]="paginationData.HasPrevious ? null : true"
     (click)="onChangePage(paginationData.CurrentPage - 1)">
     «
   </button>
-  <button class="btn join-item btn-neutral btn-lg">
+  <button class="btn join-item btn-neutral" [ngClass]="paginationSize">
     Page {{ paginationData.CurrentPage }}
   </button>
   <button
-    class="btn btn-primary join-item btn-lg"
+    class="btn btn-primary join-item"
+    [ngClass]="paginationSize"
     [attr.disabled]="paginationData.HasNext ? null : true"
     (click)="onChangePage(paginationData.CurrentPage + 1)">
     »
   </button>
   <button
-    class="btn btn-primary join-item btn-lg"
+    class="btn btn-primary join-item"
+    [ngClass]="paginationSize"
     [attr.disabled]="
       paginationData.CurrentPage === paginationData.TotalPages ||
       paginationData.TotalPages === 0

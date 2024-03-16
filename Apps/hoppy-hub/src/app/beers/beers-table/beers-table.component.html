@@ -1,9 +1,23 @@
-<h2 class="mb-4 text-lg font-semibold">Beers</h2>
+<h2 class="font-b mb-4 text-lg">Beers</h2>
 @if (loading) {
   <app-loading-spinner></app-loading-spinner>
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
+  <div class="mb-4 flex items-center justify-between">
+    <div>
+      <span>TODO: Filters</span>
+    </div>
+    <div>
+      <span>TODO: Search</span>
+    </div>
+    <div>
+      <app-pagination
+        [params]="beersParams"
+        [paginationData]="getPaginationData()"
+        size="md"></app-pagination>
+    </div>
+  </div>
   <div class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
     <div class="overflow-x-auto">
       <table class="table table-xs lg:table-lg xl:table-xs 2xl:table-sm">
