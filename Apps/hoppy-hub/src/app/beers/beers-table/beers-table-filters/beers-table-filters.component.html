@@ -1,26 +1,32 @@
-<div class="mx-4 mb-4 flex items-center justify-between">
-  <div class="join">
-    <div class="tooltip tooltip-top" data-tip="Clear the filters">
-      <button
-        class="btn btn-outline btn-primary join-item"
-        (click)="onFiltersClear()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12" />
-        </svg>
+<div
+  class="mx-4 mb-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-2 2xl:grid-cols-3">
+  <div class="col-span-1 2xl:place-self-start">
+    <div class="join">
+      <div class="tooltip tooltip-top" data-tip="Clear the filters">
+        <button
+          class="btn btn-outline btn-primary join-item"
+          (click)="onFiltersClear()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <button class="btn btn-outline btn-primary join-item w-40">
+        Filters
       </button>
     </div>
-    <button class="btn btn-outline btn-primary join-item">Filters</button>
   </div>
-  <div>
+
+  <div class="col-span-1 2xl:place-self-stretch">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="join">
         <input
@@ -33,7 +39,8 @@
       </div>
     </form>
   </div>
-  <div>
+  <div
+    class="col-span-2 md:col-span-1 lg:col-span-2 2xl:col-span-1 2xl:place-self-end">
     <app-pagination
       [params]="params"
       [paginationData]="paginationData"
