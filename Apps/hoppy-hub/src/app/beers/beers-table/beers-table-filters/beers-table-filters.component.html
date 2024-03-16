@@ -1,7 +1,9 @@
 <div class="mx-4 mb-4 flex items-center justify-between">
   <div class="join">
     <div class="tooltip tooltip-top" data-tip="Clear the filters">
-      <button class="btn btn-outline btn-primary join-item">
+      <button
+        class="btn btn-outline btn-primary join-item"
+        (click)="onFiltersClear()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="h-6 w-6"
@@ -19,12 +21,17 @@
     <button class="btn btn-outline btn-primary join-item">Filters</button>
   </div>
   <div>
-    <div class="join">
-      <input
-        class="input join-item input-bordered w-40"
-        placeholder="Search beers..." />
-      <button class="btn btn-primary join-item rounded-r-full">Search</button>
-    </div>
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <div class="join">
+        <input
+          type="text"
+          id="beers_filters_search"
+          formControlName="search"
+          class="input join-item input-bordered w-40"
+          placeholder="Search beers..." />
+        <button class="btn btn-primary join-item rounded-r-full">Search</button>
+      </div>
+    </form>
   </div>
   <div>
     <app-pagination
