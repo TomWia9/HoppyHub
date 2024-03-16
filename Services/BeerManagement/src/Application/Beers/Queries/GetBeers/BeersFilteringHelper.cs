@@ -22,7 +22,8 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         { nameof(Beer.Ibu).ToUpper(), x => x.Ibu ?? 0 },
         { nameof(Beer.Rating).ToUpper(), x => x.Rating },
         { nameof(Beer.OpinionsCount).ToUpper(), x => x.OpinionsCount },
-        { nameof(Beer.FavoritesCount).ToUpper(), x => x.FavoritesCount }
+        { nameof(Beer.FavoritesCount).ToUpper(), x => x.FavoritesCount },
+        { nameof(Beer.ReleaseDate).ToUpper(), x => x.ReleaseDate ?? new DateOnly() }
     };
 
     /// <summary>

@@ -819,6 +819,7 @@ public class GetBeersQueryValidatorTests
     [InlineData(nameof(BeerDto.Rating))]
     [InlineData(nameof(BeerDto.OpinionsCount))]
     [InlineData(nameof(BeerDto.FavoritesCount))]
+    [InlineData(nameof(BeerDto.ReleaseDate))]
     [InlineData("")]
     [InlineData(null)]
     public void GetBeersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
@@ -854,7 +855,7 @@ public class GetBeersQueryValidatorTests
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
             .WithErrorMessage(
-                "SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU, RATING, OPINIONSCOUNT, FAVORITESCOUNT]");
+                "SortBy must be in [NAME, BREWERY, BEERSTYLE, ALCOHOLBYVOLUME, BLG, IBU, RATING, OPINIONSCOUNT, FAVORITESCOUNT, RELEASEDATE]");
     }
 
     /// <summary>
