@@ -7,6 +7,7 @@ import { BeersParams } from '../beers-params';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
+import { Pagination } from '../../shared/pagination';
 
 @Component({
   selector: 'app-beers-table',
@@ -53,6 +54,16 @@ export class BeersTableComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
+  }
+
+  getPaginationData(): Pagination {
+    return {
+      CurrentPage: this.beers!.CurrentPage,
+      HasNext: this.beers!.HasNext,
+      HasPrevious: this.beers!.HasPrevious,
+      TotalPages: this.beers!.TotalPages,
+      TotalCount: this.beers!.TotalCount
+    };
   }
 
   ngOnDestroy(): void {

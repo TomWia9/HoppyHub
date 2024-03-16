@@ -64,6 +64,8 @@
     </div>
   </div>
   <div class="my-4">
-    <app-pagination [params]="beersParams"></app-pagination>
+    <app-pagination
+      [params]="beersParams"
+      [paginationData]="getPaginationData()"></app-pagination>
   </div>
 }

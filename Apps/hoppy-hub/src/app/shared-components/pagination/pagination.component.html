@@ -1,11 +1,34 @@
 <div class="join">
-  <button class="btn disabled btn-primary join-item" [attr.disabled]="null">
-    «|
+  <button
+    class="btn btn-primary join-item btn-lg"
+    [attr.disabled]="paginationData.CurrentPage === 1 ? true : null"
+    (click)="onChangePage(1)">
+    |«
   </button>
-  <button class="btn btn-primary join-item" [attr.disabled]="null">«</button>
-  <button class="btn btn-primary join-item" [attr.disabled]="null">
-    Page 22
+  <button
+    class="btn btn-primary join-item btn-lg"
+    [attr.disabled]="paginationData.HasPrevious ? null : true"
+    (click)="onChangePage(paginationData.CurrentPage - 1)">
+    «
   </button>
-  <button class="btn btn-primary join-item" [attr.disabled]="null">»</button>
-  <button class="btn btn-primary join-item" [attr.disabled]="null">»|</button>
+  <button class="btn join-item btn-neutral btn-lg">
+    Page {{ paginationData.CurrentPage }}
+  </button>
+  <button
+    class="btn btn-primary join-item btn-lg"
+    [attr.disabled]="paginationData.HasNext ? null : true"
+    (click)="onChangePage(paginationData.CurrentPage + 1)">
+    »
+  </button>
+  <button
+    class="btn btn-primary join-item btn-lg"
+    [attr.disabled]="
+      paginationData.CurrentPage === paginationData.TotalPages ||
+      paginationData.TotalPages === 0
+        ? true
+        : null
+    "
+    (click)="onChangePage(paginationData.TotalPages)">
+    »|
+  </button>
 </div>
