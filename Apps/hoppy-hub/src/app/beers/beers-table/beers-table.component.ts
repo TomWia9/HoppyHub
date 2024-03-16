@@ -24,7 +24,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBeersSubscription = this.beersService
-      .getBeers(new BeersParams(25, 1, 'name', 1))
+      .getBeers(new BeersParams(25, 1, 'ReleaseDate', 1))
       .subscribe({
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
