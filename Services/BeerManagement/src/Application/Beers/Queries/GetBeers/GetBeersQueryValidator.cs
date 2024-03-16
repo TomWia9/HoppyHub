@@ -8,6 +8,8 @@ namespace Application.Beers.Queries.GetBeers;
 /// </summary>
 public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
 {
+    private const string IncorrectDateFormat = "Incorrect date format";
+
     /// <summary>
     ///     Initializes GetBeersQueryValidator.
     /// </summary>
@@ -26,6 +28,14 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
             .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxIbu).InclusiveBetween(0, 200).GreaterThanOrEqualTo(x => x.MinIbu)
             .WithMessage(MaxValueMessage);
+        RuleFor(x => x.MinReleaseDate)
+            .Cascade(CascadeMode.Stop)
+            .Must(BeValidDate).WithMessage(IncorrectDateFormat)
+            .LessThanOrEqualTo(x => x.MaxReleaseDate).WithMessage(MinValueMessage);
+        RuleFor(x => x.MaxReleaseDate)
+            .Cascade(CascadeMode.Stop)
+            .Must(BeValidDate).WithMessage(IncorrectDateFormat)
+            .GreaterThanOrEqualTo(x => x.MinReleaseDate).WithMessage(MaxValueMessage);
         RuleFor(x => x.MinRating).InclusiveBetween(0, 10).LessThanOrEqualTo(x => x.MaxRating)
             .WithMessage(MinValueMessage);
         RuleFor(x => x.MaxRating).InclusiveBetween(0, 10).GreaterThanOrEqualTo(x => x.MinRating)
@@ -43,5 +53,10 @@ public class GetBeersQueryValidator : QueryValidator<GetBeersQuery>
             .Must(value =>
                 string.IsNullOrWhiteSpace(value) || BeersFilteringHelper.SortingColumns.ContainsKey(value.ToUpper()))
             .WithMessage($"SortBy must be in [{string.Join(", ", BeersFilteringHelper.SortingColumns.Keys)}]");
+    }
+
+    private bool BeValidDate(string? date)
+    {
+        return DateTime.TryParse(date, out _);
     }
 }
