@@ -6,25 +6,43 @@ import { Subscription } from 'rxjs';
 import { BeersParams } from '../beers-params';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
+import { Pagination } from '../../shared/pagination';
 
 @Component({
   selector: 'app-beers-table',
   standalone: true,
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    PaginationComponent
+  ],
   templateUrl: './beers-table.component.html',
   styleUrl: './beers-table.component.css'
 })
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
 
+  beersParams = new BeersParams(25, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
   error = '';
   loading = true;
+  beersParamsSubscription!: Subscription;
   getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
+    this.getBeers();
+    this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
+      (params: BeersParams) => {
+        this.beersParams = params;
+        this.getBeers();
+      }
+    );
+  }
+
+  private getBeers(): void {
     this.getBeersSubscription = this.beersService
-      .getBeers(new BeersParams(25, 1, 'ReleaseDate', 1))
+      .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
@@ -37,7 +55,19 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  getPaginationData(): Pagination {
+    return {
+      CurrentPage: this.beers!.CurrentPage,
+      HasNext: this.beers!.HasNext,
+      HasPrevious: this.beers!.HasPrevious,
+      TotalPages: this.beers!.TotalPages,
+      TotalCount: this.beers!.TotalCount
+    };
+  }
+
   ngOnDestroy(): void {
+    this.getBeersSubscription.unsubscribe();
     this.getBeersSubscription.unsubscribe();
   }
 }
