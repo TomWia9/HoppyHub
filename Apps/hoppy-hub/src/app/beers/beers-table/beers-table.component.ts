@@ -6,11 +6,16 @@ import { Subscription } from 'rxjs';
 import { BeersParams } from '../beers-params';
 import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 
 @Component({
   selector: 'app-beers-table',
   standalone: true,
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    PaginationComponent
+  ],
   templateUrl: './beers-table.component.html',
   styleUrl: './beers-table.component.css'
 })
