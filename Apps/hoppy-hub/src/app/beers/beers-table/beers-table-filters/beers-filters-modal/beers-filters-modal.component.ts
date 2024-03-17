@@ -7,16 +7,23 @@ import {
   ViewChild,
   inject
 } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormGroup,
+  FormControl,
+  FormsModule
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { AlertService } from '../../../../alert/alert.service';
 import { ModalService, ModalType } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
+import { Brewery } from '../../../../breweries/brewery.model';
+import { BreweryAddress } from '../../../../breweries/brewery-address.model';
 
 @Component({
   selector: 'app-beers-filters-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './beers-filters-modal.component.html'
 })
 export class BeersFiltersModalComponent implements OnInit, OnDestroy {
@@ -27,6 +34,32 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   @ViewChild('beersFiltersModal') modalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   beersFiltersForm!: FormGroup;
+  breweries: Brewery[] = [
+    {
+      id: '123',
+      name: 'Brewery 1',
+      description: '',
+      foundationYear: 2012,
+      websiteUrl: '',
+      address: new BreweryAddress('', '', '', '', '', '', '')
+    },
+    {
+      id: '122',
+      name: 'Brewery 2',
+      description: '',
+      foundationYear: 2012,
+      websiteUrl: '',
+      address: new BreweryAddress('', '', '', '', '', '', '')
+    },
+    {
+      id: '321',
+      name: 'Brewery 3',
+      description: '',
+      foundationYear: 2012,
+      websiteUrl: '',
+      address: new BreweryAddress('', '', '', '', '', '', '')
+    }
+  ];
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -34,10 +67,16 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
         this.showModal(modalType);
       }
     );
-    this.beersFiltersForm = new FormGroup({});
+    this.beersFiltersForm = new FormGroup({
+      brewery: new FormControl('')
+    });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    const selectedBrewery = this.beersFiltersForm.value.brewery;
+
+    console.log(selectedBrewery);
+  }
 
   onFormReset() {
     this.beersFiltersForm.reset();

@@ -13,12 +13,13 @@
         class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
         <!-- 1st column -->
         <div class="w-full space-y-4">
-          <select class="select select-primary select-sm w-full">
-            <option disabled selected>Brewery</option>
-            <option>Pinta</option>
-            <option>Trzech Kumpli</option>
-            <option>Piwne Podziemie</option>
-            <option>Nepo</option>
+          <select
+            formControlName="brewery"
+            class="select select-primary select-sm w-full">
+            <option value="" disabled selected>Brewery</option>
+            @for (brewery of breweries; track $index) {
+              <option [value]="brewery.id">{{ brewery.name }}</option>
+            }
           </select>
           <div class="flex justify-center space-x-2">
             <input
