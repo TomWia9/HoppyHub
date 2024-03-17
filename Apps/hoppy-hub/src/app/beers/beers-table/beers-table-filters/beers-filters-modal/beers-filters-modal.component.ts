@@ -18,48 +18,38 @@ import { AlertService } from '../../../../alert/alert.service';
 import { ModalService, ModalType } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
 import { Brewery } from '../../../../breweries/brewery.model';
-import { BreweryAddress } from '../../../../breweries/brewery-address.model';
+import { BreweriesService } from '../../../../breweries/breweries.service';
+import { PagedList } from '../../../../shared/paged-list';
+import { BreweriesParams } from '../../../../breweries/breweries-params';
+import { LoadingSpinnerComponent } from '../../../../loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../../../shared-components/error-message/error-message.component';
 
 @Component({
   selector: 'app-beers-filters-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
-  templateUrl: './beers-filters-modal.component.html'
+  templateUrl: './beers-filters-modal.component.html',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    LoadingSpinnerComponent,
+    ErrorMessageComponent
+  ]
 })
 export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private beersService = inject(BeersService);
+  private breweriesService = inject(BreweriesService);
   private alertService = inject(AlertService);
 
   @ViewChild('beersFiltersModal') modalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   beersFiltersForm!: FormGroup;
-  breweries: Brewery[] = [
-    {
-      id: '123',
-      name: 'Brewery 1',
-      description: '',
-      foundationYear: 2012,
-      websiteUrl: '',
-      address: new BreweryAddress('', '', '', '', '', '', '')
-    },
-    {
-      id: '122',
-      name: 'Brewery 2',
-      description: '',
-      foundationYear: 2012,
-      websiteUrl: '',
-      address: new BreweryAddress('', '', '', '', '', '', '')
-    },
-    {
-      id: '321',
-      name: 'Brewery 3',
-      description: '',
-      foundationYear: 2012,
-      websiteUrl: '',
-      address: new BreweryAddress('', '', '', '', '', '', '')
-    }
-  ];
+  breweries: Brewery[] = [];
+  error = '';
+  loading = true;
+  getBreweriesSubscription!: Subscription;
+  getBeerStylesSubscription!: Subscription;
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -67,6 +57,10 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
         this.showModal(modalType);
       }
     );
+
+    this.fetchAllBreweries();
+    //TODO: Fetch beer styles
+
     this.beersFiltersForm = new FormGroup({
       brewery: new FormControl('')
     });
@@ -80,6 +74,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
   onFormReset() {
     this.beersFiltersForm.reset();
+    //TODO: this.beersFiltersForm.value.brewery = 'Brewery';
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
@@ -91,7 +86,30 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
+    this.getBreweriesSubscription = this.breweriesService
+      .getBreweries(new BreweriesParams(50, pageNumber))
+      .subscribe({
+        next: (breweries: PagedList<Brewery>) => {
+          this.loading = true;
+          allBreweries.push(...breweries.items);
+          if (breweries.HasNext) {
+            this.fetchAllBreweries(pageNumber + 1, allBreweries);
+          } else {
+            this.breweries = allBreweries;
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.error = 'An error occurred while loading the breweries';
+          this.loading = false;
+        }
+      });
+  }
+
   ngOnDestroy(): void {
     this.modalOppenedSubscription.unsubscribe();
+    this.getBreweriesSubscription.unsubscribe();
+    this.getBeerStylesSubscription.unsubscribe();
   }
 }

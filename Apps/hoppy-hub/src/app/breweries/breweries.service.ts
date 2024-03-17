@@ -13,8 +13,10 @@ import { BreweriesParams } from './breweries-params';
 export class BreweriesService {
   private http: HttpClient = inject(HttpClient);
 
-  getBeers(beersParams: BreweriesParams): Observable<PagedList<Brewery>> {
-    const params: HttpParams = beersParams.getHttpParams();
+  getBreweries(
+    breweriesParams: BreweriesParams
+  ): Observable<PagedList<Brewery>> {
+    const params: HttpParams = breweriesParams.getHttpParams();
 
     return this.http
       .get<Brewery[]>(`${environment.beerManagementApiUrl}/breweries`, {
