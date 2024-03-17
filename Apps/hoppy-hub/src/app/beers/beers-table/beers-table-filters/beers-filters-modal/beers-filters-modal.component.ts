@@ -26,6 +26,7 @@ import { ErrorMessageComponent } from '../../../../shared-components/error-messa
 import { BeerStylesService } from '../../../../beer-styles/beer-styles.service';
 import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
 import { BeerStyle } from '../../../../beer-styles/beer-style.model';
+import { BeersParams } from '../../../beers-params';
 
 @Component({
   selector: 'app-beers-filters-modal',
@@ -89,13 +90,37 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.beersFiltersForm.value);
+    const beersParams = new BeersParams(
+      25,
+      1,
+      this.beersFiltersForm.value.sortBy,
+      this.beersFiltersForm.value.sortDirection,
+      undefined,
+      undefined,
+      this.beersFiltersForm.value.brewery,
+      this.beersFiltersForm.value.beerStyle,
+      this.beersFiltersForm.value.minAbv,
+      this.beersFiltersForm.value.maxAbv,
+      this.beersFiltersForm.value.minExtract,
+      this.beersFiltersForm.value.maxExtract,
+      this.beersFiltersForm.value.minIbu,
+      this.beersFiltersForm.value.maxIbu,
+      this.beersFiltersForm.value.minReleaseDate,
+      this.beersFiltersForm.value.maxReleaseDate,
+      this.beersFiltersForm.value.minRating,
+      this.beersFiltersForm.value.maxRating,
+      this.beersFiltersForm.value.minFavoritesCount,
+      this.beersFiltersForm.value.maxFavoritesCount,
+      this.beersFiltersForm.value.minOpinionsCount,
+      this.beersFiltersForm.value.maxOpinionsCount
+    );
+
+    this.beersService.paramsChanged.next(beersParams);
+
+    this.onModalHide();
   }
 
-  onFormReset() {
-    this.beersFiltersForm.reset();
-    //TODO: this.beersFiltersForm.value.brewery = 'Brewery';
-    //TODO: this.beersFiltersForm.value.beerStyle = 'Beer style';
+  onModalHide() {
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }

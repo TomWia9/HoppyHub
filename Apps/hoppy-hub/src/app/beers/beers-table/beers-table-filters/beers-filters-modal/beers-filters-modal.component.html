@@ -3,7 +3,7 @@
     <form method="dialog">
       <button
         class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
-        (click)="onFormReset()">
+        (click)="onModalHide()">
         ✕
       </button>
     </form>
@@ -192,17 +192,12 @@
         </div>
         <!-- Apply filters -->
         <div class="mt-2 flex items-center justify-center">
-          <button
-            type="submit"
-            class="btn btn-accent"
-            [disabled]="!beersFiltersForm.valid">
-            Apply filters
-          </button>
+          <button type="submit" class="btn btn-accent">Apply filters</button>
         </div>
       </form>
     }
   </div>
   <form method="dialog" class="modal-backdrop">
-    <button (click)="onFormReset()">close</button>
+    <button (click)="onModalHide()">close</button>
   </form>
 </dialog>
