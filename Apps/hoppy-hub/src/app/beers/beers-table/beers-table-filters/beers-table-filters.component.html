@@ -1,49 +1,49 @@
 <div
-  class="mx-4 mb-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-2 2xl:grid-cols-3">
-  <div class="col-span-1 2xl:place-self-start">
-    <div class="join">
-      <div class="tooltip tooltip-top" data-tip="Clear the filters">
-        <button
-          class="btn btn-outline btn-primary join-item"
-          (click)="onFiltersClear()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-      <button class="btn btn-outline btn-primary join-item w-40">
-        Filters
+  class="mx-4 mb-4 flex flex-col items-center justify-between space-y-4 md:flex-row md:space-y-0">
+  <div class="join">
+    <div class="tooltip tooltip-top" data-tip="Clear the filters">
+      <button
+        class="btn btn-outline btn-primary join-item btn-sm"
+        (click)="onFiltersClear()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
       </button>
     </div>
+    <button class="btn btn-outline btn-primary join-item btn-sm w-40">
+      Filters
+    </button>
   </div>
 
-  <div class="col-span-1 2xl:place-self-stretch">
+  <div>
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="join">
         <input
           type="text"
           id="beers_filters_search"
           formControlName="search"
-          class="input join-item input-bordered w-40"
+          class="input join-item input-bordered input-sm w-40"
           placeholder="Search beers..." />
-        <button class="btn btn-primary join-item rounded-r-full">Search</button>
+        <button class="btn btn-primary join-item btn-sm rounded-r-full">
+          Search
+        </button>
       </div>
     </form>
   </div>
-  <div
-    class="col-span-2 md:col-span-1 lg:col-span-2 2xl:col-span-1 2xl:place-self-end">
+
+  <div>
     <app-pagination
       [params]="params"
       [paginationData]="paginationData"
-      size="md"></app-pagination>
+      size="sm"></app-pagination>
   </div>
 </div>
