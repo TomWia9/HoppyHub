@@ -15,7 +15,6 @@ import { ErrorMessageComponent } from '../shared-components/error-message/error-
   selector: 'app-monthly-data',
   standalone: true,
   templateUrl: './monthly-data.component.html',
-  styleUrl: './monthly-data.component.css',
   imports: [LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class MonthlyDataComponent implements OnInit, OnDestroy {

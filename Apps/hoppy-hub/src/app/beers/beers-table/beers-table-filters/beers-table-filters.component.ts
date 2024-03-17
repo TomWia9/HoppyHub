@@ -10,8 +10,7 @@ import { ModalService, ModalType } from '../../../services/modal.service';
   selector: 'app-beers-table-filters',
   standalone: true,
   imports: [PaginationComponent, ReactiveFormsModule],
-  templateUrl: './beers-table-filters.component.html',
-  styleUrl: './beers-table-filters.component.css'
+  templateUrl: './beers-table-filters.component.html'
 })
 export class BeersTableFiltersComponent implements OnInit {
   @Input({ required: true }) params!: BeersParams;

@@ -23,8 +23,7 @@ import { AuthService } from '../auth.service';
   selector: 'app-login-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login-modal.component.html',
-  styleUrl: './login-modal.component.css'
+  templateUrl: './login-modal.component.html'
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);

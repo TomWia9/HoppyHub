@@ -8,8 +8,7 @@ import { Pagination } from '../../shared/pagination';
   selector: 'app-pagination',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css'
+  templateUrl: './pagination.component.html'
 })
 export class PaginationComponent implements OnInit {
   @Input({ required: true }) params!: BeersParams;

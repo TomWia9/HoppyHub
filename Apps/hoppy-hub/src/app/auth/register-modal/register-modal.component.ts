@@ -24,8 +24,7 @@ import { AlertService, AlertType } from '../../alert/alert.service';
   selector: 'app-register-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register-modal.component.html',
-  styleUrl: './register-modal.component.css'
+  templateUrl: './register-modal.component.html'
 })
 export class RegisterModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);

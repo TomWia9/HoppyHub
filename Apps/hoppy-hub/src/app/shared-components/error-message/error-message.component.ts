@@ -4,8 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-error-message',
   standalone: true,
   imports: [],
-  templateUrl: './error-message.component.html',
-  styleUrl: './error-message.component.css'
+  templateUrl: './error-message.component.html'
 })
 export class ErrorMessageComponent {
   @Input({ required: true }) message!: string;

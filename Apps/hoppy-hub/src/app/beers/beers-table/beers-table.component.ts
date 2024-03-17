@@ -19,8 +19,7 @@ import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-fi
     PaginationComponent,
     BeersTableFiltersComponent
   ],
-  templateUrl: './beers-table.component.html',
-  styleUrl: './beers-table.component.css'
+  templateUrl: './beers-table.component.html'
 })
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);

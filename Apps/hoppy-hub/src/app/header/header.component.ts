@@ -11,8 +11,7 @@ import { AuthUser } from '../auth/auth-user.model';
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);

@@ -8,8 +8,7 @@ import { CommonModule } from '@angular/common';
   selector: 'app-alert',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './alert.component.html',
-  styleUrl: './alert.component.css'
+  templateUrl: './alert.component.html'
 })
 export class AlertComponent implements OnInit, OnDestroy {
   private alertService: AlertService = inject(AlertService);

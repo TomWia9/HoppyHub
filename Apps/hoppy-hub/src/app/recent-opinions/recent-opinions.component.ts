@@ -12,7 +12,6 @@ import { ErrorMessageComponent } from '../shared-components/error-message/error-
   selector: 'app-recent-opinions',
   standalone: true,
   templateUrl: './recent-opinions.component.html',
-  styleUrl: './recent-opinions.component.css',
   imports: [
     RecentOpinionComponent,
     LoadingSpinnerComponent,

@@ -17,8 +17,7 @@ import { BeersService } from '../../../beers.service';
   selector: 'app-beers-filters-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './beers-filters-modal.component.html',
-  styleUrl: './beers-filters-modal.component.css'
+  templateUrl: './beers-filters-modal.component.html'
 })
 export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);

@@ -9,8 +9,7 @@ import { Beer } from '../../beers/beer.model';
   selector: 'app-recent-opinion',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './recent-opinion.component.html',
-  styleUrl: './recent-opinion.component.css'
+  templateUrl: './recent-opinion.component.html'
 })
 export class RecentOpinionComponent implements OnInit, OnDestroy {
   @Input({ required: true }) opinion!: Opinion;
