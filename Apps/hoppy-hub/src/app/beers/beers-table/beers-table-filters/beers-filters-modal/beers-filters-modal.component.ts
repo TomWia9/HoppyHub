@@ -23,6 +23,9 @@ import { PagedList } from '../../../../shared/paged-list';
 import { BreweriesParams } from '../../../../breweries/breweries-params';
 import { LoadingSpinnerComponent } from '../../../../loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared-components/error-message/error-message.component';
+import { BeerStylesService } from '../../../../beer-styles/beer-styles.service';
+import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
+import { BeerStyle } from '../../../../beer-styles/beer-style.model';
 
 @Component({
   selector: 'app-beers-filters-modal',
@@ -40,12 +43,14 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private beersService = inject(BeersService);
   private breweriesService = inject(BreweriesService);
+  private beerStylesService = inject(BeerStylesService);
   private alertService = inject(AlertService);
 
   @ViewChild('beersFiltersModal') modalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   beersFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
+  beerStyles: BeerStyle[] = [];
   error = '';
   loading = true;
   getBreweriesSubscription!: Subscription;
@@ -59,7 +64,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     );
 
     this.fetchAllBreweries();
-    //TODO: Fetch beer styles
+    this.fetchAllBeerStyles();
 
     this.beersFiltersForm = new FormGroup({
       brewery: new FormControl('')
@@ -97,6 +102,27 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
             this.fetchAllBreweries(pageNumber + 1, allBreweries);
           } else {
             this.breweries = allBreweries;
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.error = 'An error occurred while loading the breweries';
+          this.loading = false;
+        }
+      });
+  }
+
+  fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
+    this.getBeerStylesSubscription = this.beerStylesService
+      .getBeerStyles(new BeerStylesParams(50, pageNumber))
+      .subscribe({
+        next: (beerStyles: PagedList<BeerStyle>) => {
+          this.loading = true;
+          allBeerStyles.push(...beerStyles.items);
+          if (beerStyles.HasNext) {
+            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
+          } else {
+            this.beerStyles = allBeerStyles;
             this.loading = false;
           }
         },
