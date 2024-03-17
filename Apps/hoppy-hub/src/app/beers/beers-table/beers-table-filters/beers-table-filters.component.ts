@@ -4,6 +4,7 @@ import { Pagination } from '../../../shared/pagination';
 import { BeersParams } from '../../beers-params';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BeersService } from '../../beers.service';
+import { ModalService, ModalType } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-beers-table-filters',
@@ -17,6 +18,7 @@ export class BeersTableFiltersComponent implements OnInit {
   @Input({ required: true }) paginationData!: Pagination;
 
   private beersService: BeersService = inject(BeersService);
+  private modalService: ModalService = inject(ModalService);
 
   searchForm!: FormGroup;
 
@@ -31,6 +33,10 @@ export class BeersTableFiltersComponent implements OnInit {
       this.params.searchQuery = this.searchForm.value.search;
       this.beersService.paramsChanged.next(this.params);
     }
+  }
+
+  onFiltersModalOpen() {
+    this.modalService.openModal(ModalType.BeersFilters);
   }
 
   onFiltersClear() {

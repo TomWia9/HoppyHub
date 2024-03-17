@@ -7,6 +7,7 @@ import { LoginModalComponent } from './auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 import { AlertComponent } from './alert/alert.component';
 import { AuthService } from './auth/auth.service';
+import { BeersFiltersModalComponent } from './beers/beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,8 @@ import { AuthService } from './auth/auth.service';
     FooterComponent,
     LoginModalComponent,
     RegisterModalComponent,
-    AlertComponent
+    AlertComponent,
+    BeersFiltersModalComponent
   ]
 })
 export class AppComponent implements OnInit {

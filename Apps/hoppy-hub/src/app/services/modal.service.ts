@@ -3,7 +3,8 @@ import { Subject } from 'rxjs';
 
 export enum ModalType {
   Login,
-  Register
+  Register,
+  BeersFilters
 }
 
 @Injectable({
