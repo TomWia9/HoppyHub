@@ -29,7 +29,13 @@ export class BeersTableFiltersComponent implements OnInit {
 
   onSearch() {
     if (this.searchForm.value.search) {
-      this.params.searchQuery = this.searchForm.value.search;
+      this.params = new BeersParams(
+        25,
+        1,
+        'ReleaseDate',
+        1,
+        this.searchForm.value.search
+      );
       this.beersService.paramsChanged.next(this.params);
     }
   }
