@@ -67,14 +67,29 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.fetchAllBeerStyles();
 
     this.beersFiltersForm = new FormGroup({
-      brewery: new FormControl(''),
-      beerStyle: new FormControl('')
+      brewery: new FormControl(),
+      minAbv: new FormControl(),
+      maxAbv: new FormControl(),
+      minExtract: new FormControl(),
+      maxExtract: new FormControl(),
+      minIbu: new FormControl(),
+      maxIbu: new FormControl(),
+      beerStyle: new FormControl(),
+      minRating: new FormControl(),
+      maxRating: new FormControl(),
+      minFavoritesCount: new FormControl(),
+      maxFavoritesCount: new FormControl(),
+      minOpinionsCount: new FormControl(),
+      maxOpinionsCount: new FormControl(),
+      minReleaseDate: new FormControl(),
+      maxReleaseDate: new FormControl(),
+      sortBy: new FormControl(),
+      sortDirection: new FormControl()
     });
   }
 
   onSubmit() {
-    console.log(this.beersFiltersForm.value.brewery);
-    console.log(this.beersFiltersForm.value.beerStyle);
+    console.log(this.beersFiltersForm.value);
   }
 
   onFormReset() {

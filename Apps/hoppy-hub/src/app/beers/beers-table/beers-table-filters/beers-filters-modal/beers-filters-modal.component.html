@@ -19,6 +19,7 @@
           <!-- 1 -->
           <div class="w-full space-y-4">
             <select
+              id="brewery"
               formControlName="brewery"
               class="select select-primary select-sm w-full">
               <option value="" disabled selected>Brewery</option>
@@ -30,6 +31,7 @@
               <input
                 type="number"
                 id="minAbv"
+                formControlName="minAbv"
                 placeholder="Min ABV"
                 min="0"
                 max="100"
@@ -37,6 +39,7 @@
               <input
                 type="number"
                 id="maxAbv"
+                formControlName="maxAbv"
                 placeholder="Max ABV"
                 min="0"
                 max="100"
@@ -46,6 +49,7 @@
               <input
                 type="number"
                 id="minExtract"
+                formControlName="minExtract"
                 placeholder="Min BLG"
                 min="0"
                 max="100"
@@ -53,6 +57,7 @@
               <input
                 type="number"
                 id="maxExtract"
+                formControlName="maxExtract"
                 placeholder="Max BLG"
                 min="0"
                 max="100"
@@ -62,6 +67,7 @@
               <input
                 type="number"
                 id="minIbu"
+                formControlName="minIbu"
                 placeholder="Min IBU"
                 min="0"
                 max="100"
@@ -69,6 +75,7 @@
               <input
                 type="number"
                 id="maxIbu"
+                formControlName="maxIbu"
                 placeholder="Max IBU"
                 min="0"
                 max="100"
@@ -89,26 +96,32 @@
               <input
                 type="number"
                 id="minRating"
+                formControlName="minRating"
                 placeholder="Min rating"
                 min="0"
+                max="10"
                 class="input input-bordered input-primary input-sm w-36" />
               <input
                 type="number"
                 id="maxRating"
+                formControlName="maxRating"
                 placeholder="Max rating"
                 min="0"
+                max="10"
                 class="input input-bordered input-primary input-sm w-36" />
             </div>
             <div class="flex justify-center space-x-2">
               <input
                 type="number"
                 id="minFavoritesCount"
+                formControlName="minFavoritesCount"
                 placeholder="Min favorites"
                 min="0"
                 class="input input-bordered input-primary input-sm w-36" />
               <input
                 type="number"
                 id="maxFavoritesCount"
+                formControlName="maxFavoritesCount"
                 placeholder="Max favorites"
                 min="0"
                 class="input input-bordered input-primary input-sm w-36" />
@@ -117,12 +130,14 @@
               <input
                 type="number"
                 id="minOpinionsCount"
+                formControlName="minOpinionsCount"
                 placeholder="Min opinions"
                 min="0"
                 class="input input-bordered input-primary input-sm w-36" />
               <input
                 type="number"
                 id="maxOpinionsCount"
+                formControlName="maxOpinionsCount"
                 placeholder="Max opinions"
                 min="0"
                 class="input input-bordered input-primary input-sm w-36" />
@@ -139,6 +154,7 @@
             <input
               type="date"
               id="minReleaseDate"
+              formControlName="minReleaseDate"
               class="input input-bordered input-primary input-sm" />
           </label>
 
@@ -149,19 +165,26 @@
             <input
               type="date"
               id="maxReleaseDate"
+              formControlName="maxReleaseDate"
               class="input input-bordered input-primary input-sm" />
           </label>
         </div>
         <!-- 4 -->
         <div
           class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-          <select class="select select-primary select-sm w-full">
+          <select
+            id="sortBy"
+            formControlName="sortBy"
+            class="select select-primary select-sm w-full">
             <option disabled selected>Sort by</option>
             <option>Name</option>
             <option>Brewery name</option>
             <option>Release date</option>
           </select>
-          <select class="select select-primary select-sm w-full">
+          <select
+            id="sortDirection"
+            formControlName="sortDirection"
+            class="select select-primary select-sm w-full">
             <option disabled selected>Sort direction</option>
             <option>Asc</option>
             <option>Desc</option>
