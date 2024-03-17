@@ -67,19 +67,20 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.fetchAllBeerStyles();
 
     this.beersFiltersForm = new FormGroup({
-      brewery: new FormControl('')
+      brewery: new FormControl(''),
+      beerStyle: new FormControl('')
     });
   }
 
   onSubmit() {
-    const selectedBrewery = this.beersFiltersForm.value.brewery;
-
-    console.log(selectedBrewery);
+    console.log(this.beersFiltersForm.value.brewery);
+    console.log(this.beersFiltersForm.value.beerStyle);
   }
 
   onFormReset() {
     this.beersFiltersForm.reset();
     //TODO: this.beersFiltersForm.value.brewery = 'Brewery';
+    //TODO: this.beersFiltersForm.value.beerStyle = 'Beer style';
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }

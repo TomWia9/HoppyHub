@@ -16,7 +16,7 @@
       <form [formGroup]="beersFiltersForm" (ngSubmit)="onSubmit()">
         <div
           class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-          <!-- 1st column -->
+          <!-- 1 -->
           <div class="w-full space-y-4">
             <select
               formControlName="brewery"
@@ -75,22 +75,16 @@
                 class="input input-bordered input-primary input-sm w-36" />
             </div>
           </div>
-
-          <!-- 2nd column -->
-
+          <!-- 2 -->
           <div class="w-full space-y-4">
-            <div class="flex justify-center space-x-2">
-              <input
-                type="date"
-                id="minReleaseDate"
-                placeholder="Min release date"
-                class="input input-bordered input-primary input-sm w-40" />
-              <input
-                type="date"
-                id="maxReleaseDate"
-                placeholder="Max release date"
-                class="input input-bordered input-primary input-sm w-40" />
-            </div>
+            <select
+              formControlName="beerStyle"
+              class="select select-primary select-sm w-full">
+              <option value="" disabled selected>Beer style</option>
+              @for (beerStyle of beerStyles; track $index) {
+                <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+              }
+            </select>
             <div class="flex justify-center space-x-2">
               <input
                 type="number"
@@ -135,6 +129,30 @@
             </div>
           </div>
         </div>
+        <!-- 3 -->
+        <div
+          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Min release date</span>
+            </div>
+            <input
+              type="date"
+              id="minReleaseDate"
+              class="input input-bordered input-primary input-sm" />
+          </label>
+
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Max release date</span>
+            </div>
+            <input
+              type="date"
+              id="maxReleaseDate"
+              class="input input-bordered input-primary input-sm" />
+          </label>
+        </div>
+        <!-- 4 -->
         <div
           class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
           <select class="select select-primary select-sm w-full">
