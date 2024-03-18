@@ -68,14 +68,14 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.fetchAllBeerStyles();
 
     this.beersFiltersForm = new FormGroup({
-      brewery: new FormControl(),
+      brewery: new FormControl(''),
       minAbv: new FormControl(),
       maxAbv: new FormControl(),
       minExtract: new FormControl(),
       maxExtract: new FormControl(),
       minIbu: new FormControl(),
       maxIbu: new FormControl(),
-      beerStyle: new FormControl(),
+      beerStyle: new FormControl(''),
       minRating: new FormControl(),
       maxRating: new FormControl(),
       minFavoritesCount: new FormControl(),
@@ -84,8 +84,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       maxOpinionsCount: new FormControl(),
       minReleaseDate: new FormControl(),
       maxReleaseDate: new FormControl(),
-      sortBy: new FormControl(),
-      sortDirection: new FormControl()
+      sortBy: new FormControl(''),
+      sortDirection: new FormControl('')
     });
   }
 

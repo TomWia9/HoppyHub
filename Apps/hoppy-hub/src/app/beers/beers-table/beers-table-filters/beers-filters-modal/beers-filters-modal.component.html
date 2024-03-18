@@ -22,7 +22,9 @@
               id="brewery"
               formControlName="brewery"
               class="select select-primary select-sm w-full">
-              <option value="" disabled selected>Brewery</option>
+              <option value="{{ null }}" selected class="font-bold">
+                Brewery
+              </option>
               @for (brewery of breweries; track $index) {
                 <option [value]="brewery.id">{{ brewery.name }}</option>
               }
@@ -87,7 +89,9 @@
             <select
               formControlName="beerStyle"
               class="select select-primary select-sm w-full">
-              <option value="" disabled selected>Beer style</option>
+              <option value="{{ null }}" selected class="font-bold">
+                Beer style
+              </option>
               @for (beerStyle of beerStyles; track $index) {
                 <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
               }
@@ -176,7 +180,9 @@
             id="sortBy"
             formControlName="sortBy"
             class="select select-primary select-sm w-full">
-            <option disabled selected>Sort by</option>
+            <option value="{{ null }}" selected class="font-bold">
+              Sort by
+            </option>
             <option>Name</option>
             <option>Brewery name</option>
             <option>Release date</option>
@@ -185,7 +191,9 @@
             id="sortDirection"
             formControlName="sortDirection"
             class="select select-primary select-sm w-full">
-            <option disabled selected>Sort direction</option>
+            <option value="{{ null }}" selected class="font-bold">
+              Sort direction
+            </option>
             <option>Asc</option>
             <option>Desc</option>
           </select>
