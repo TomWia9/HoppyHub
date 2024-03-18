@@ -7,7 +7,6 @@ import { BeersTableComponent } from '../beers/beers-table/beers-table.component'
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css',
   imports: [MonthlyDataComponent, RecentOpinionsComponent, BeersTableComponent]
 })
 export class HomeComponent {}

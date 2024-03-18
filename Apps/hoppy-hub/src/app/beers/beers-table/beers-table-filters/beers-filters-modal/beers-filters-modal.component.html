@@ -1,0 +1,230 @@
+<dialog #beersFiltersModal class="modal modal-middle">
+  <div class="modal-box w-11/12 max-w-3xl">
+    <form method="dialog">
+      <button
+        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+        (click)="onModalHide()">
+        ✕
+      </button>
+    </form>
+    @if (loading) {
+      <app-loading-spinner></app-loading-spinner>
+    } @else if (error) {
+      <app-error-message [message]="error"></app-error-message>
+    } @else {
+      <h3 class="mb-2 text-2xl font-bold">Filter beers</h3>
+      <form [formGroup]="beersFiltersForm" (ngSubmit)="onSubmit()">
+        <div
+          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          <!-- 1 -->
+          <div class="w-full space-y-4">
+            <label class="form-control w-full">
+              <div class="label">
+                <span class="label-text">Brewery</span>
+              </div>
+              <select
+                id="brewery"
+                formControlName="brewery"
+                class="select select-primary select-sm w-full">
+                <option value="" selected class="font-bold">---</option>
+                @for (brewery of breweries; track $index) {
+                  <option [value]="brewery.id">{{ brewery.name }}</option>
+                }
+              </select>
+            </label>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minAbv"
+                formControlName="minAbv"
+                placeholder="Min ABV"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxAbv"
+                formControlName="maxAbv"
+                placeholder="Max ABV"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minExtract"
+                formControlName="minExtract"
+                placeholder="Min BLG"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxExtract"
+                formControlName="maxExtract"
+                placeholder="Max BLG"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minIbu"
+                formControlName="minIbu"
+                placeholder="Min IBU"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxIbu"
+                formControlName="maxIbu"
+                placeholder="Max IBU"
+                min="0"
+                max="100"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+          </div>
+          <!-- 2 -->
+          <div class="w-full space-y-4">
+            <label class="form-control w-full">
+              <div class="label">
+                <span class="label-text">Beer style</span>
+              </div>
+              <select
+                formControlName="beerStyle"
+                class="select select-primary select-sm w-full">
+                <option value="" selected class="font-bold">---</option>
+                @for (beerStyle of beerStyles; track $index) {
+                  <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+                }
+              </select>
+            </label>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minRating"
+                formControlName="minRating"
+                placeholder="Min rating"
+                min="0"
+                max="10"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxRating"
+                formControlName="maxRating"
+                placeholder="Max rating"
+                min="0"
+                max="10"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minFavoritesCount"
+                formControlName="minFavoritesCount"
+                placeholder="Min favorites"
+                min="0"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxFavoritesCount"
+                formControlName="maxFavoritesCount"
+                placeholder="Max favorites"
+                min="0"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+            <div class="flex justify-center space-x-2">
+              <input
+                type="number"
+                id="minOpinionsCount"
+                formControlName="minOpinionsCount"
+                placeholder="Min opinions"
+                min="0"
+                class="input input-bordered input-primary input-sm w-36" />
+              <input
+                type="number"
+                id="maxOpinionsCount"
+                formControlName="maxOpinionsCount"
+                placeholder="Max opinions"
+                min="0"
+                class="input input-bordered input-primary input-sm w-36" />
+            </div>
+          </div>
+        </div>
+        <!-- 3 -->
+        <div
+          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Min release date</span>
+            </div>
+            <input
+              type="date"
+              id="minReleaseDate"
+              formControlName="minReleaseDate"
+              class="input input-bordered input-primary input-sm" />
+          </label>
+
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Max release date</span>
+            </div>
+            <input
+              type="date"
+              id="maxReleaseDate"
+              formControlName="maxReleaseDate"
+              class="input input-bordered input-primary input-sm" />
+          </label>
+        </div>
+        <!-- 4 -->
+        <div
+          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Sort by</span>
+            </div>
+            <select
+              id="sortBy"
+              formControlName="sortBy"
+              class="select select-primary select-sm w-full">
+              <option value="" selected class="font-bold">---</option>
+              @for (sortBy of sortByOptions; track $index) {
+                <option [value]="sortBy">{{ sortBy }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Sort direction</span>
+            </div>
+            <select
+              id="sortDirection"
+              formControlName="sortDirection"
+              class="select select-primary select-sm w-full">
+              <option value="" selected class="font-bold">---</option>
+              @for (sortDirection of sortDirectionOptions; track $index) {
+                <option [value]="sortDirection">{{ sortDirection }}</option>
+              }
+            </select>
+          </label>
+        </div>
+        <!-- Apply filters -->
+        <div class="mt-2 flex items-center justify-evenly">
+          <button type="submit" class="btn btn-accent">Apply filters</button>
+          <button
+            type="button"
+            class="btn btn-neutral"
+            (click)="onClearFilters()">
+            Clear filters
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="onModalHide()">close</button>
+  </form>
+</dialog>

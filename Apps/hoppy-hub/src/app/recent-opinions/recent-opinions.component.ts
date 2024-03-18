@@ -5,14 +5,13 @@ import { Subscription } from 'rxjs';
 import { Opinion } from '../opinions/opinion.model';
 import { PagedList } from '../shared/paged-list';
 import { OpinionsParams } from '../opinions/opinions-params';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
 
 @Component({
   selector: 'app-recent-opinions',
   standalone: true,
   templateUrl: './recent-opinions.component.html',
-  styleUrl: './recent-opinions.component.css',
   imports: [
     RecentOpinionComponent,
     LoadingSpinnerComponent,
@@ -34,6 +33,7 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
         next: (opinions: PagedList<Opinion>) => {
           this.loading = true;
           this.opinions = opinions;
+          this.error = '';
           this.loading = false;
         },
         error: () => {

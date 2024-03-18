@@ -16,15 +16,17 @@ import {
 } from '@angular/forms';
 import { ModalService, ModalType } from '../../services/modal.service';
 import { Router } from '@angular/router';
-import { AlertService, AlertType } from '../../alert/alert.service';
+import {
+  AlertService,
+  AlertType
+} from '../../shared-components/alert/alert.service';
 import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './login-modal.component.html',
-  styleUrl: './login-modal.component.css'
+  templateUrl: './login-modal.component.html'
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);

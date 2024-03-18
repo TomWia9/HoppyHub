@@ -4,10 +4,11 @@ import { Beer } from '../beer.model';
 import { PagedList } from '../../shared/paged-list';
 import { Subscription } from 'rxjs';
 import { BeersParams } from '../beers-params';
-import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
+import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
 
 @Component({
   selector: 'app-beers-table',
@@ -15,10 +16,10 @@ import { Pagination } from '../../shared/pagination';
   imports: [
     LoadingSpinnerComponent,
     ErrorMessageComponent,
-    PaginationComponent
+    PaginationComponent,
+    BeersTableFiltersComponent
   ],
-  templateUrl: './beers-table.component.html',
-  styleUrl: './beers-table.component.css'
+  templateUrl: './beers-table.component.html'
 })
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
@@ -47,10 +48,12 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.error = '';
           this.loading = false;
         },
-        error: () => {
-          this.error = 'An error occurred while loading the beers';
+        error: error => {
+          const errorMessage = this.getErrorMessage(error.error.errors);
+          this.error = `An error occurred while loading the beers${errorMessage}`;
           this.loading = false;
         }
       });
@@ -64,6 +67,17 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       TotalPages: this.beers!.TotalPages,
       TotalCount: this.beers!.TotalCount
     };
+  }
+
+  getErrorMessage(array: { [key: string]: string }[]): string {
+    const firstObject = Object.values(array)[0];
+    const errorMessage = Object.values(firstObject)[0];
+
+    if (!errorMessage) {
+      return '';
+    }
+
+    return ': ' + errorMessage;
   }
 
   ngOnDestroy(): void {

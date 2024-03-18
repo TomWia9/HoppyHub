@@ -8,14 +8,13 @@ import { BeersService } from '../beers/beers.service';
 import { Beer } from '../beers/beer.model';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
 
 @Component({
   selector: 'app-monthly-data',
   standalone: true,
   templateUrl: './monthly-data.component.html',
-  styleUrl: './monthly-data.component.css',
   imports: [LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class MonthlyDataComponent implements OnInit, OnDestroy {
@@ -63,6 +62,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
             this.fetchAllOpinions(pageNumber + 1, allOpinions);
           } else {
             this.getLastMonthData(allOpinions);
+            this.error = '';
             this.loading = false;
           }
         },

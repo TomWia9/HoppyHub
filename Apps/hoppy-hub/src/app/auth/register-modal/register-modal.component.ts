@@ -18,14 +18,16 @@ import { ModalService, ModalType } from '../../services/modal.service';
 import { Router } from '@angular/router';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../auth.service';
-import { AlertService, AlertType } from '../../alert/alert.service';
+import {
+  AlertService,
+  AlertType
+} from '../../shared-components/alert/alert.service';
 
 @Component({
   selector: 'app-register-modal',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './register-modal.component.html',
-  styleUrl: './register-modal.component.css'
+  templateUrl: './register-modal.component.html'
 })
 export class RegisterModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
