@@ -14,7 +14,6 @@ import {
   FormsModule
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { AlertService } from '../../../../alert/alert.service';
 import { ModalService, ModalType } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
 import { Brewery } from '../../../../breweries/brewery.model';
@@ -45,7 +44,6 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   private beersService = inject(BeersService);
   private breweriesService = inject(BreweriesService);
   private beerStylesService = inject(BeerStylesService);
-  private alertService = inject(AlertService);
 
   @ViewChild('beersFiltersModal') modalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
@@ -160,6 +158,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
             this.fetchAllBreweries(pageNumber + 1, allBreweries);
           } else {
             this.breweries = allBreweries;
+            this.error = '';
             this.loading = false;
           }
         },
@@ -181,6 +180,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
             this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
           } else {
             this.beerStyles = allBeerStyles;
+            this.error = '';
             this.loading = false;
           }
         },

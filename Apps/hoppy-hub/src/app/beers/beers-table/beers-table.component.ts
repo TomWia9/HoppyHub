@@ -48,10 +48,12 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.error = '';
           this.loading = false;
         },
-        error: () => {
-          this.error = 'An error occurred while loading the beers';
+        error: error => {
+          const errorMessage = this.getErrorMessage(error.error.errors);
+          this.error = `An error occurred while loading the beers${errorMessage}`;
           this.loading = false;
         }
       });
@@ -65,6 +67,17 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       TotalPages: this.beers!.TotalPages,
       TotalCount: this.beers!.TotalCount
     };
+  }
+
+  getErrorMessage(array: { [key: string]: string }[]): string {
+    const firstObject = Object.values(array)[0];
+    const errorMessage = Object.values(firstObject)[0];
+
+    if (!errorMessage) {
+      return '';
+    }
+
+    return ': ' + errorMessage;
   }
 
   ngOnDestroy(): void {

@@ -62,6 +62,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
             this.fetchAllOpinions(pageNumber + 1, allOpinions);
           } else {
             this.getLastMonthData(allOpinions);
+            this.error = '';
             this.loading = false;
           }
         },
