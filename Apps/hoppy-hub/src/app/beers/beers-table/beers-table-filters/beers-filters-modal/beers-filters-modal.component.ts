@@ -60,7 +60,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
       (modalType: ModalType) => {
-        this.showModal(modalType);
+        this.onShowModal(modalType);
       }
     );
 
@@ -126,10 +126,14 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  showModal(modalType: ModalType) {
+  onShowModal(modalType: ModalType) {
     if (modalType === ModalType.BeersFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
+  }
+
+  onClearFilters() {
+    this.beersFiltersForm.reset();
   }
 
   fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {

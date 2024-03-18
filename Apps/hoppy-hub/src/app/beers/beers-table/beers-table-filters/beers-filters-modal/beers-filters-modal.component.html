@@ -18,17 +18,20 @@
           class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
           <!-- 1 -->
           <div class="w-full space-y-4">
-            <select
-              id="brewery"
-              formControlName="brewery"
-              class="select select-primary select-sm w-full">
-              <option value="{{ null }}" selected class="font-bold">
-                Brewery
-              </option>
-              @for (brewery of breweries; track $index) {
-                <option [value]="brewery.id">{{ brewery.name }}</option>
-              }
-            </select>
+            <label class="form-control w-full">
+              <div class="label">
+                <span class="label-text">Brewery</span>
+              </div>
+              <select
+                id="brewery"
+                formControlName="brewery"
+                class="select select-primary select-sm w-full">
+                <option value="" selected class="font-bold">---</option>
+                @for (brewery of breweries; track $index) {
+                  <option [value]="brewery.id">{{ brewery.name }}</option>
+                }
+              </select>
+            </label>
             <div class="flex justify-center space-x-2">
               <input
                 type="number"
@@ -86,16 +89,19 @@
           </div>
           <!-- 2 -->
           <div class="w-full space-y-4">
-            <select
-              formControlName="beerStyle"
-              class="select select-primary select-sm w-full">
-              <option value="{{ null }}" selected class="font-bold">
-                Beer style
-              </option>
-              @for (beerStyle of beerStyles; track $index) {
-                <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
-              }
-            </select>
+            <label class="form-control w-full">
+              <div class="label">
+                <span class="label-text">Sort by</span>
+              </div>
+              <select
+                formControlName="beerStyle"
+                class="select select-primary select-sm w-full">
+                <option value="" selected class="font-bold">---</option>
+                @for (beerStyle of beerStyles; track $index) {
+                  <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+                }
+              </select>
+            </label>
             <div class="flex justify-center space-x-2">
               <input
                 type="number"
@@ -176,31 +182,43 @@
         <!-- 4 -->
         <div
           class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-          <select
-            id="sortBy"
-            formControlName="sortBy"
-            class="select select-primary select-sm w-full">
-            <option value="{{ null }}" selected class="font-bold">
-              Sort by
-            </option>
-            <option>Name</option>
-            <option>Brewery name</option>
-            <option>Release date</option>
-          </select>
-          <select
-            id="sortDirection"
-            formControlName="sortDirection"
-            class="select select-primary select-sm w-full">
-            <option value="{{ null }}" selected class="font-bold">
-              Sort direction
-            </option>
-            <option>Asc</option>
-            <option>Desc</option>
-          </select>
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Sort by</span>
+            </div>
+            <select
+              id="sortBy"
+              formControlName="sortBy"
+              class="select select-primary select-sm w-full">
+              <option value="" selected class="font-bold">---</option>
+              <option>Name</option>
+              <option>Brewery name</option>
+              <option>Release date</option>
+            </select>
+          </label>
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Sort direction</span>
+            </div>
+            <select
+              id="sortDirection"
+              formControlName="sortDirection"
+              class="select select-primary select-sm w-full">
+              <option value="" selected class="font-bold">---</option>
+              <option>Asc</option>
+              <option>Desc</option>
+            </select>
+          </label>
         </div>
         <!-- Apply filters -->
-        <div class="mt-2 flex items-center justify-center">
+        <div class="mt-2 flex items-center justify-evenly">
           <button type="submit" class="btn btn-accent">Apply filters</button>
+          <button
+            type="button"
+            class="btn btn-neutral"
+            (click)="onClearFilters()">
+            Clear filters
+          </button>
         </div>
       </form>
     }
