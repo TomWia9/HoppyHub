@@ -191,9 +191,9 @@
               formControlName="sortBy"
               class="select select-primary select-sm w-full">
               <option value="" selected class="font-bold">---</option>
-              <option>Name</option>
-              <option>Brewery name</option>
-              <option>Release date</option>
+              @for (sortBy of sortByOptions; track $index) {
+                <option [value]="sortBy">{{ sortBy }}</option>
+              }
             </select>
           </label>
           <label class="form-control w-full">
@@ -205,8 +205,9 @@
               formControlName="sortDirection"
               class="select select-primary select-sm w-full">
               <option value="" selected class="font-bold">---</option>
-              <option>Asc</option>
-              <option>Desc</option>
+              @for (sortDirection of sortDirectionOptions; track $index) {
+                <option [value]="sortDirection">{{ sortDirection }}</option>
+              }
             </select>
           </label>
         </div>

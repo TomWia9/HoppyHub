@@ -56,6 +56,19 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   loading = true;
   getBreweriesSubscription!: Subscription;
   getBeerStylesSubscription!: Subscription;
+  sortByOptions: string[] = [
+    'Name',
+    'Brewery',
+    'Beer style',
+    'Alcohol by volume',
+    'Blg',
+    'Ibu',
+    'Rating',
+    'Opinions count',
+    'Favorites count',
+    'Release date'
+  ];
+  sortDirectionOptions: string[] = ['Asc', 'Desc'];
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -93,7 +106,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     const beersParams = new BeersParams(
       25,
       1,
-      this.beersFiltersForm.value.sortBy,
+      this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
       this.beersFiltersForm.value.sortDirection,
       undefined,
       undefined,
