@@ -8,7 +8,7 @@ import { BeersService } from '../beers/beers.service';
 import { Beer } from '../beers/beer.model';
 import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
 
 @Component({

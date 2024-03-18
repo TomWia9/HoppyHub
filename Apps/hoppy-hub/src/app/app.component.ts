@@ -5,7 +5,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { LoginModalComponent } from './auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
-import { AlertComponent } from './alert/alert.component';
+import { AlertComponent } from './shared-components/alert/alert.component';
 import { AuthService } from './auth/auth.service';
 import { BeersFiltersModalComponent } from './beers/beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 

@@ -4,7 +4,7 @@ import { Beer } from '../beer.model';
 import { PagedList } from '../../shared/paged-list';
 import { Subscription } from 'rxjs';
 import { BeersParams } from '../beers-params';
-import { LoadingSpinnerComponent } from '../../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';

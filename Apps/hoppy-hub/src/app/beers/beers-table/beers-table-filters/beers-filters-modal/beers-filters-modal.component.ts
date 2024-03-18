@@ -20,7 +20,7 @@ import { Brewery } from '../../../../breweries/brewery.model';
 import { BreweriesService } from '../../../../breweries/breweries.service';
 import { PagedList } from '../../../../shared/paged-list';
 import { BreweriesParams } from '../../../../breweries/breweries-params';
-import { LoadingSpinnerComponent } from '../../../../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerComponent } from '../../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared-components/error-message/error-message.component';
 import { BeerStylesService } from '../../../../beer-styles/beer-styles.service';
 import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
