@@ -4,7 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <UserSecretsId>dotnet-ImageManagement-5B6AB62A-7ED3-4C83-BF96-A773BB1B87B7</UserSecretsId>
+        <UserSecretsId>9D4790B2-345F-4C67-8530-24AD44A93C0E</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SharedUtilities.Filters;
 using SharedUtilities.Models;
@@ -35,18 +36,32 @@ public static class ConfigureServices
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
-                {
-                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
-                });
 
-                cfg.ConfigureEndpoints(context,
-                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "OpinionManagement"));
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                    {
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    });
+
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "OpinionManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
+            else
+            {
+                x.UsingAzureServiceBus((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<string>("AzureServiceBus:ConnectionString"));
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "OpinionManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
         });
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();

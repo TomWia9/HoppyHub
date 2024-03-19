@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Application.Favorites.Queries.GetFavorites;
+using AutoMapper;
+using Domain.Entities;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,8 +85,8 @@ public class ConfigureServicesTests
     public void AddApplicationServices_ShouldAddFilteringHelpers()
     {
         // Assert
-        // _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Beer, GetBeersQuery>));
-        // _services.Should().Contain(s => s.ImplementationType == typeof(BeersFilteringHelper));
-        // _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
+        _services.Should().Contain(x => x.ServiceType == typeof(IFilteringHelper<Favorite, GetFavoritesQuery>));
+        _services.Should().Contain(s => s.ImplementationType == typeof(FavoritesFilteringHelper));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 }
