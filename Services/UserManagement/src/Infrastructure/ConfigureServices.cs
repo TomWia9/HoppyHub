@@ -50,7 +50,7 @@ public static class ConfigureServices
             {
                 x.UsingAzureServiceBus((_, cfg) =>
                 {
-                    cfg.Host(configuration.GetValue<Uri>("AzureServiceBus:ConnectionString"));
+                    cfg.Host(configuration.GetValue<string>("AzureServiceBus:ConnectionString"));
                 });
             }
         });

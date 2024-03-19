@@ -54,7 +54,7 @@ public static class ConfigureServices
             {
                 x.UsingAzureServiceBus((context, cfg) =>
                 {
-                    cfg.Host(configuration.GetValue<Uri>("AzureServiceBus:ConnectionString"));
+                    cfg.Host(configuration.GetValue<string>("AzureServiceBus:ConnectionString"));
                     cfg.ConfigureEndpoints(context,
                         endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "ImageManagement"));
                     cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
