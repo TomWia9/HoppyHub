@@ -13,7 +13,7 @@ services:
 
   rabbitmq:
       image: rabbitmq:3-management
-      container_name: rabbitmq-container
+      container_name: rabbitmq
       ports:
         - "5672:5672"
         - "15672:15672"
@@ -22,7 +22,7 @@ services:
         RABBITMQ_DEFAULT_PASS: "rabbituser"
 
   beer-management:
-    container_name: beermanagement
+    container_name: beer-management
     build:
       context: .
       dockerfile: ./Services/BeerManagement/Dockerfile
@@ -39,7 +39,7 @@ services:
       - sql-server
 
   user-management:
-    container_name: usermanagement
+    container_name: user-management
     build:
       context: .
       dockerfile: ./Services/UserManagement/Dockerfile
@@ -55,7 +55,7 @@ services:
       - sql-server
 
   favorite-management:
-    container_name: favoritemanagement
+    container_name: favorite-management
     build:
       context: .
       dockerfile: ./Services/FavoriteManagement/Dockerfile
@@ -71,7 +71,7 @@ services:
       - sql-server
 
   opinion-management:
-    container_name: opinionmanagement
+    container_name: opinion-management
     build:
       context: .
       dockerfile: ./Services/OpinionManagement/Dockerfile
@@ -87,7 +87,7 @@ services:
       - sql-server
 
   image-management:
-    container_name: imagemanagement
+    container_name: image-management
     build:
       context: .
       dockerfile: ./Services/ImageManagement/Dockerfile
@@ -101,3 +101,19 @@ services:
       - "5004:5004"
     depends_on:
       - rabbitmq
+
+  hoppy-hub-app:
+    container_name: hoppy-hub-app
+    build:
+      context: ./Apps/hoppy-hub
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./Config/.env
+    ports:
+      - "4200:80"
+    depends_on:
+      - beer-management
+      - user-management
+      - favorite-management
+      - opinion-management
+      - image-management
