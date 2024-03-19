@@ -66,6 +66,8 @@ public class OpinionsFilteringHelperTests
         {
             MinRating = 5,
             MaxRating = 10,
+            From = DateOnly.MinValue.ToString(),
+            To = DateOnly.FromDateTime(DateTime.Now).ToString(),
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             HaveImages = true,
@@ -76,7 +78,7 @@ public class OpinionsFilteringHelperTests
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
     }
 
     /// <summary>
@@ -90,6 +92,8 @@ public class OpinionsFilteringHelperTests
         {
             MinRating = 5,
             MaxRating = 10,
+            From = DateOnly.MinValue.ToString(),
+            To = DateOnly.FromDateTime(DateTime.Now).ToString(),
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             HaveImages = false
@@ -99,6 +103,6 @@ public class OpinionsFilteringHelperTests
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(4, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
     }
 }

@@ -26,6 +26,8 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/FavoriteManagementSpecification/swagger.json", "HoppyHub - Favorite Management");
         c.RoutePrefix = string.Empty;
     });
+    app.UseCors("AngularApp");
+
 }
 
 app.UseSerilogRequestLogging();

@@ -58,12 +58,12 @@ public record GetBeersQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
     /// <summary>
     ///     Minimum beer release date.
     /// </summary>
-    public DateOnly? MinReleaseDate { get; init; } = DateOnly.MinValue;
+    public string MinReleaseDate { get; init; } = DateOnly.MinValue.ToString();
 
     /// <summary>
     ///     Maximum beer release date.
     /// </summary>
-    public DateOnly? MaxReleaseDate { get; init; } = DateOnly.FromDateTime(DateTime.Now);
+    public string MaxReleaseDate { get; init; } = DateOnly.FromDateTime(DateTime.Now).ToString();
 
     /// <summary>
     ///     Minimum rating.

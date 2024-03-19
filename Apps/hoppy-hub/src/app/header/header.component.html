@@ -1,0 +1,70 @@
+<div class="navbar bg-neutral text-neutral-content">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+      <ul
+        tabindex="0"
+        class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
+        @if (adminAccess) {
+          <li><a>Admin panel</a></li>
+        }
+        <li><a>Search beers</a></li>
+        <li><a>Search breweries</a></li>
+        <li><a>About</a></li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl" routerLink="/">HoppyHub</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      @if (adminAccess) {
+        <li><a>Admin panel</a></li>
+      }
+      <li><a>Search beers</a></li>
+      <li><a>Search breweries</a></li>
+      <li><a>About</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end flex-none gap-5">
+    <div class="form-control">
+      <input
+        type="text"
+        placeholder="Search"
+        class="input input-bordered w-24 md:w-auto" />
+    </div>
+    <div class="dropdown dropdown-end">
+      <div tabindex="0" role="button" class="avatar btn btn-circle btn-ghost">
+        <div class="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+        </div>
+      </div>
+      <ul
+        tabindex="0"
+        class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
+        @if (user) {
+          <li><a>Profile</a></li>
+          <li><a>Settings</a></li>
+          <li><button (click)="onLogout()">Logout</button></li>
+        } @else {
+          <li><button (click)="openLoginModal()">Login</button></li>
+          <li><button (click)="openRegisterModal()">Register</button></li>
+        }
+      </ul>
+    </div>
+  </div>
+</div>
