@@ -34,18 +34,32 @@ public static class ConfigureServices
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetExecutingAssembly());
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
-                {
-                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
-                });
 
-                cfg.ConfigureEndpoints(context,
-                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "ImageManagement"));
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
+            if (Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT") == Environments.Development)
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                    {
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    });
+
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "ImageManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
+            else
+            {
+                x.UsingAzureServiceBus((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<Uri>("AzureServiceBus:ConnectionString"));
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "ImageManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
         });
     }
 
