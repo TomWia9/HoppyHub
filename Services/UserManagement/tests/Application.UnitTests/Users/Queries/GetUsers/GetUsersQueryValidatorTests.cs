@@ -90,7 +90,7 @@ public class GetUsersQueryValidatorTests
     [InlineData(nameof(UserDto.Username))]
     [InlineData("")]
     [InlineData(null)]
-    public void GetUsersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string sortBy)
+    public void GetUsersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)
     {
         // Arrange
         var query = new GetUsersQuery
