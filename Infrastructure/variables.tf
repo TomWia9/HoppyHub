@@ -4,6 +4,6 @@ variable "environment" {
 }
 
 variable "location" {
-  type = string
+  type        = string
   description = "Location value"
 }
