@@ -31,7 +31,13 @@ resource "azurerm_key_vault" "key_vault" {
     object_id = data.azurerm_client_config.current.object_id
 
     secret_permissions = [
-      "Get", "List"
+      "Get", "List", "Set"
     ]
   }
+}
+
+module "azure_keyvault_secrets" {
+  source = "./modules/azure-keyvault-secrets"
+
+  key_vault_id = azurerm_key_vault.key_vault.id
 }
