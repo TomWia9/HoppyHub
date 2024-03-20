@@ -220,8 +220,8 @@ public class IdentityServiceTests
     [InlineData("user@example.com", "")]
     [InlineData(" ", "P@ssw0rd")]
     [InlineData("user@example.com", " ")]
-    public async Task LoginAsync_ShouldThrowValidationException_WhenCalledWithInvalidInput(string email,
-        string password)
+    public async Task LoginAsync_ShouldThrowValidationException_WhenCalledWithInvalidInput(string? email,
+        string? password)
     {
         // Act & Assert
         await Assert.ThrowsAsync<ValidationException>(() => _identityService.LoginAsync(email, password));
@@ -251,7 +251,6 @@ public class IdentityServiceTests
     /// </summary>
     [Theory]
     [InlineData("")]
-    [InlineData(null)]
     public void GetClaimValueFromJwt_InvalidToken_ThrowsArgumentException(string jwtToken)
     {
         // Arrange

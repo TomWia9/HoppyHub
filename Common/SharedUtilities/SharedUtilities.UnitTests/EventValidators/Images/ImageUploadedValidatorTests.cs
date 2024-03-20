@@ -48,7 +48,7 @@ public class ImageUploadedValidatorTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void ImageUploaded_ShouldHaveValidationErrorForUri_WhenUriIsNullOrEmpty(string uri)
+    public void ImageUploaded_ShouldHaveValidationErrorForUri_WhenUriIsNullOrEmpty(string? uri)
     {
         // Arrange
         var imageUploadedEvent = new ImageUploaded
