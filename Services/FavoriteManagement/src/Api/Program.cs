@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Application.Common.Interfaces;
+using Azure.Identity;
 using Infrastructure;
 using Serilog;
 
@@ -27,7 +28,12 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty;
     });
     app.UseCors("AngularApp");
-
+}
+else
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
 }
 
 app.UseSerilogRequestLogging();
