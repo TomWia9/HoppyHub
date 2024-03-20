@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Runtime.CompilerServices;
 using Application.Common.Mappings;
 using Application.Favorites.Dtos;
 using AutoMapper;
@@ -53,6 +53,6 @@ public class MappingTests
             return Activator.CreateInstance(type)!;
 
         // Type without parameterless constructor
-        return FormatterServices.GetUninitializedObject(type);
+        return RuntimeHelpers.GetUninitializedObject(type);
     }
 }
