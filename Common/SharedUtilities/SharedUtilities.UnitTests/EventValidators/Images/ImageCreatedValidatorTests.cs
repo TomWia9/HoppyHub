@@ -67,7 +67,7 @@ public class ImageCreatedValidatorTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void ImageCreated_ShouldHaveValidationErrorForPath_WhenPathIsNullOrEmpty(string path)
+    public void ImageCreated_ShouldHaveValidationErrorForPath_WhenPathIsNullOrEmpty(string? path)
     {
         // Arrange
         var imageCreatedEvent = new ImageCreated
@@ -108,7 +108,7 @@ public class ImageCreatedValidatorTests
     [Theory]
     [InlineData(null)]
     [InlineData(new byte[0])]
-    public void ImageCreated_ShouldHaveValidationErrorForImage_WhenImageIsNullOrEmpty(byte[] image)
+    public void ImageCreated_ShouldHaveValidationErrorForImage_WhenImageIsNullOrEmpty(byte[]? image)
     {
         // Arrange
         var imageCreatedEvent = new ImageCreated

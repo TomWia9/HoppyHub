@@ -48,7 +48,7 @@ public class ImageDeletedValidatorTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
-    public void ImageDeleted_ShouldHaveValidationErrorForUri_WhenUriIsNullOrEmpty(string uri)
+    public void ImageDeleted_ShouldHaveValidationErrorForUri_WhenUriIsNullOrEmpty(string? uri)
     {
         // Arrange
         var imageDeletedEvent = new ImageDeleted

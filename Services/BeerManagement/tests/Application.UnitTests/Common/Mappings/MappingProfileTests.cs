@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Runtime.CompilerServices;
 using Application.Beers.Dtos;
 using Application.BeerStyles.Dtos;
 using Application.Breweries.Dtos;
@@ -58,6 +58,6 @@ public class MappingTests
             return Activator.CreateInstance(type)!;
 
         // Type without parameterless constructor
-        return FormatterServices.GetUninitializedObject(type);
+        return RuntimeHelpers.GetUninitializedObject(type);
     }
 }
