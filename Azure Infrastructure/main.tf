@@ -1,7 +1,7 @@
 locals {
   resource_group_name         = "hoppy-hub"
   key_vault_name              = "hoppy-hub-kv"
-  storage_account_name        = "hoppyhubsa6"
+  storage_account_name        = "hoppyhubsa"
   blob_container_name         = "hoppy-hub-container"
   service_bus_name            = "hoppy-hub-service-bus"
   sql_server_name             = "hoppy-hub-sql-server"
@@ -137,6 +137,11 @@ resource "azurerm_key_vault_secret" "kv_secret_jwt" {
 resource "azurerm_key_vault_secret" "kv_secret_blob_connection_string" {
   name         = "BlobContainerSettings--BlobConnectionString"
   value        = azurerm_storage_account.storage_account.primary_connection_string
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_blob_container_name" {
+  name         = "BlobContainerSettings--BlobContainerName"
+  value        = azurerm_storage_container.blob_container.name
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 resource "azurerm_key_vault_secret" "kv_secret_service_bus_connection_string" {
