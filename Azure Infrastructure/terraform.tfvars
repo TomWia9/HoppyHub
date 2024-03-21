@@ -1,2 +1,1 @@
-environment = "dev"
-location    = "polandcentral"
+location = "polandcentral"

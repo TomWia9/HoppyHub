@@ -1,23 +1,20 @@
 locals {
-  resource_group_name        = "hoppy-hub"
-  key_vault_name             = "hoppy-hub-kv"
-  storage_account_name       = "hoppyhubsa"
-  blob_container_name        = "hoppy-hub-container"
-  service_bus_name           = "hoppy-hub-service-bus"
-  sql_server_name            = "hoppy-hub-sql-server"
-  user_management_db_name    = "UserManagement"
-  beer_management_db_name    = "BeerManagement"
-  opinion_management_db_name = "OpinionManagement"
-  favorie_management_db_name = "FavoriteManagement"
+  resource_group_name         = "hoppy-hub"
+  key_vault_name              = "hoppy-hub-kv"
+  storage_account_name        = "hoppyhubsa6"
+  blob_container_name         = "hoppy-hub-container"
+  service_bus_name            = "hoppy-hub-service-bus"
+  sql_server_name             = "hoppy-hub-sql-server"
+  user_management_db_name     = "UserManagement"
+  beer_management_db_name     = "BeerManagement"
+  opinion_management_db_name  = "OpinionManagement"
+  favorite_management_db_name = "FavoriteManagement"
 }
 
 #Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = local.resource_group_name
   location = var.location
-  tags = {
-    Environment = var.environment
-  }
 }
 
 #Key Vault
@@ -85,16 +82,45 @@ resource "azurerm_mssql_server" "sql_server" {
   administrator_login          = "sqladmin"
   administrator_login_password = random_password.password.result
 }
-resource "azurerm_mssql_database" "user_management_db" {
-  name                 = local.user_management_db_name
-  server_id            = azurerm_mssql_server.sql_server.id
-  collation            = "SQL_Latin1_General_CP1_CI_AS"
-  license_type         = "LicenseIncluded"
-  max_size_gb          = 2
-  sku_name             = "Basic"
-  zone_redundant       = false
-  enclave_type         = "VBS"
-  storage_account_type = "Local"
+module "user_management_db" {
+  source                        = "./modules/sql_database"
+  db_name                       = local.user_management_db_name
+  sql_server_id                 = azurerm_mssql_server.sql_server.id
+  sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
+  sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
+  connection_string_secret_name = "UserManagementDbConnectionString"
+  key_vault_id                  = azurerm_key_vault.key_vault.id
+}
+module "beer_management_db" {
+  source                        = "./modules/sql_database"
+  db_name                       = local.beer_management_db_name
+  sql_server_id                 = azurerm_mssql_server.sql_server.id
+  sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
+  sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
+  connection_string_secret_name = "BeerManagementDbConnectionString"
+  key_vault_id                  = azurerm_key_vault.key_vault.id
+}
+module "opinion_management_db" {
+  source                        = "./modules/sql_database"
+  db_name                       = local.opinion_management_db_name
+  sql_server_id                 = azurerm_mssql_server.sql_server.id
+  sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
+  sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
+  connection_string_secret_name = "OpinionManagementDbConnectionString"
+  key_vault_id                  = azurerm_key_vault.key_vault.id
+}
+module "favorite_management_db" {
+  source                        = "./modules/sql_database"
+  db_name                       = local.favorite_management_db_name
+  sql_server_id                 = azurerm_mssql_server.sql_server.id
+  sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
+  sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
+  connection_string_secret_name = "FavoriteManagementDbConnectionString"
+  key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 
 #Key Vault secrets
@@ -133,8 +159,3 @@ resource "azurerm_key_vault_secret" "kv_secret_sql_server_password" {
   value        = random_password.password.result
   key_vault_id = azurerm_key_vault.key_vault.id
 }
-# resource "azurerm_key_vault_secret" "kv_secret_user_management_db_connection_string" {
-#   name         = "UserManagementDbConnectionString"
-#   value        = azurerm_mssql_database.user_management_db.connection_string
-#   key_vault_id = azurerm_key_vault.key_vault.id
-# }
