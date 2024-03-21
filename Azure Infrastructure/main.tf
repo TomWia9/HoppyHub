@@ -1,8 +1,9 @@
 locals {
-  resource_group_name  = "HoppyHub1"
-  key_vault_name       = "HoppyHub-KeyVault1"
-  storage_account_name = "hoppyhub1"
-  blob_container_name = "hoppyhub-container"
+  resource_group_name  = "hoppy-hub-rg"
+  key_vault_name       = "hoppy-hub-kv"
+  storage_account_name = "hoppyhubsa"
+  blob_container_name  = "hoppy-hub-container"
+  service_bus_name     = "hoppy-hub-service-bus"
 }
 
 #Resource Group
@@ -57,6 +58,14 @@ resource "azurerm_storage_blob" "temp_beer_image" {
   source                 = "./assets/temp.jpg"
 }
 
+#Service bus
+resource "azurerm_servicebus_namespace" "service_bus" {
+  name                = local.service_bus_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Standard"
+}
+
 #Key Vault secrets
 resource "azurerm_key_vault_secret" "kv_secret_temp_beer_image_url" {
   name         = "TempBeerImageUri"
@@ -71,5 +80,10 @@ resource "azurerm_key_vault_secret" "kv_secret_jwt" {
 resource "azurerm_key_vault_secret" "kv_secret_blob_connection_string" {
   name         = "BlobContainerSettings--BlobConnectionString"
   value        = azurerm_storage_account.storage_account.primary_connection_string
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_service_bus_connection_string" {
+  name         = "AzureServiceBus--ConnectionString"
+  value        = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 }
