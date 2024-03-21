@@ -1,9 +1,14 @@
 locals {
-  resource_group_name  = "hoppy-hub-rg"
-  key_vault_name       = "hoppy-hub-kv"
-  storage_account_name = "hoppyhubsa"
-  blob_container_name  = "hoppy-hub-container"
-  service_bus_name     = "hoppy-hub-service-bus"
+  resource_group_name        = "hoppy-hub"
+  key_vault_name             = "hoppy-hub-kv"
+  storage_account_name       = "hoppyhubsa"
+  blob_container_name        = "hoppy-hub-container"
+  service_bus_name           = "hoppy-hub-service-bus"
+  sql_server_name            = "hoppy-hub-sql-server"
+  user_management_db_name    = "UserManagement"
+  beer_management_db_name    = "BeerManagement"
+  opinion_management_db_name = "OpinionManagement"
+  favorie_management_db_name = "FavoriteManagement"
 }
 
 #Resource Group
@@ -66,6 +71,32 @@ resource "azurerm_servicebus_namespace" "service_bus" {
   sku                 = "Standard"
 }
 
+#Sql Server, databases
+resource "random_password" "password" {
+  length           = 16
+  special          = true
+  override_special = "_@%"
+}
+resource "azurerm_mssql_server" "sql_server" {
+  name                         = local.sql_server_name
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = azurerm_resource_group.rg.location
+  version                      = "12.0"
+  administrator_login          = "sqladmin"
+  administrator_login_password = random_password.password.result
+}
+resource "azurerm_mssql_database" "user_management_db" {
+  name                 = local.user_management_db_name
+  server_id            = azurerm_mssql_server.sql_server.id
+  collation            = "SQL_Latin1_General_CP1_CI_AS"
+  license_type         = "LicenseIncluded"
+  max_size_gb          = 2
+  sku_name             = "Basic"
+  zone_redundant       = false
+  enclave_type         = "VBS"
+  storage_account_type = "Local"
+}
+
 #Key Vault secrets
 resource "azurerm_key_vault_secret" "kv_secret_temp_beer_image_url" {
   name         = "TempBeerImageUri"
@@ -87,3 +118,23 @@ resource "azurerm_key_vault_secret" "kv_secret_service_bus_connection_string" {
   value        = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 }
+resource "azurerm_key_vault_secret" "kv_secret_sql_server_name" {
+  name         = "SqlServerName"
+  value        = azurerm_mssql_server.sql_server.fully_qualified_domain_name
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_sql_server_user" {
+  name         = "SqlServerUser"
+  value        = "sqladmin"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_sql_server_password" {
+  name         = "SqlServerPassword"
+  value        = random_password.password.result
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+# resource "azurerm_key_vault_secret" "kv_secret_user_management_db_connection_string" {
+#   name         = "UserManagementDbConnectionString"
+#   value        = azurerm_mssql_database.user_management_db.connection_string
+#   key_vault_id = azurerm_key_vault.key_vault.id
+# }
