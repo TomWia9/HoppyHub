@@ -40,7 +40,7 @@ resource "azurerm_key_vault" "key_vault" {
   }
 }
 
-#Storage account, container, blob
+#Storage account, container, blobs
 resource "azurerm_storage_account" "storage_account" {
   name                     = local.storage_account_name
   resource_group_name      = azurerm_resource_group.rg.name
@@ -59,6 +59,34 @@ resource "azurerm_storage_blob" "temp_beer_image" {
   storage_container_name = azurerm_storage_container.blob_container.name
   type                   = "Block"
   source                 = "./assets/temp.jpg"
+}
+resource "azurerm_storage_blob" "user_management_db_bacpac" {
+  name                   = "Bacpacs/UserManagement.bacpac"
+  storage_account_name   = azurerm_storage_account.storage_account.name
+  storage_container_name = azurerm_storage_container.blob_container.name
+  type                   = "Block"
+  source                 = "./assets/Bacpacs/UserManagement.bacpac"
+}
+resource "azurerm_storage_blob" "beer_management_db_bacpac" {
+  name                   = "Bacpacs/BeerManagement.bacpac"
+  storage_account_name   = azurerm_storage_account.storage_account.name
+  storage_container_name = azurerm_storage_container.blob_container.name
+  type                   = "Block"
+  source                 = "./assets/Bacpacs/BeerManagement.bacpac"
+}
+resource "azurerm_storage_blob" "opinion_management_db_bacpac" {
+  name                   = "Bacpacs/OpinionManagement.bacpac"
+  storage_account_name   = azurerm_storage_account.storage_account.name
+  storage_container_name = azurerm_storage_container.blob_container.name
+  type                   = "Block"
+  source                 = "./assets/Bacpacs/OpinionManagement.bacpac"
+}
+resource "azurerm_storage_blob" "favorite_management_db_bacpac" {
+  name                   = "Bacpacs/FavoriteManagement.bacpac"
+  storage_account_name   = azurerm_storage_account.storage_account.name
+  storage_container_name = azurerm_storage_container.blob_container.name
+  type                   = "Block"
+  source                 = "./assets/Bacpacs/FavoriteManagement.bacpac"
 }
 
 #Service bus
