@@ -7,5 +7,5 @@ variable "location" {
 variable "master_name" {
   type        = string
   description = "Master name"
-  default     = "hoppyhub999"
+  default     = "hoppyhub"
 }
