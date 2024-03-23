@@ -1,11 +1,11 @@
 locals {
-  resource_group_name      = "hoppyhub"
-  key_vault_name           = "hoppyhubkv"
-  storage_account_name     = "hoppyhubsa"
-  blob_container_name      = "hoppyhubcontainer"
-  service_bus_name         = "hoppyhubservicebus"
-  sql_server_name          = "hoppyhubsqlserver"
-  app_service_plan_name    = "hoppyhub-asp"
+  resource_group_name      = "hoppyhub3"
+  key_vault_name           = "hoppyhubkv3"
+  storage_account_name     = "hoppyhubsa3"
+  blob_container_name      = "hoppyhubcontainer3"
+  service_bus_name         = "hoppyhubservicebus3"
+  sql_server_name          = "hoppyhubsqlserver3"
+  app_service_plan_name    = "hoppyhub-asp3"
   user_management_name     = "UserManagement"
   beer_management_name     = "BeerManagement"
   opinion_management_name  = "OpinionManagement"
@@ -90,7 +90,7 @@ module "user_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "${local.user_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.user_management_name}DbConnectionString"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "beer_management_db" {
@@ -100,7 +100,7 @@ module "beer_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "${local.beer_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.beer_management_name}DbConnectionString"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "opinion_management_db" {
@@ -110,7 +110,7 @@ module "opinion_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "${local.opinion_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.opinion_management_name}DbConnectionString"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "favorite_management_db" {
@@ -120,7 +120,7 @@ module "favorite_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "${local.favorite_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.favorite_management_name}DbConnectionString"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 
@@ -199,7 +199,7 @@ resource "azurerm_key_vault_secret" "kv_secret_blob_container_name" {
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 resource "azurerm_key_vault_secret" "kv_secret_service_bus_connection_string" {
-  name         = "AzureServiceBus--ConnectionString"
+  name         = "ConnectionStrings--AzureServiceBusConnection"
   value        = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 }
