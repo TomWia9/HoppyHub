@@ -4,7 +4,11 @@ resource "azurerm_linux_web_app" "web_app" {
   location            = var.location
   service_plan_id     = var.service_plan_id
 
-  site_config {}
+  site_config {
+    application_stack {
+      dotnet_version = "8.0"
+    }
+  }
 
   app_settings = {
     "KeyVaultName" = var.key_vault_name
