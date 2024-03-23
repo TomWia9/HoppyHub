@@ -1,11 +1,11 @@
 locals {
-  resource_group_name      = "hoppyhub3"
-  key_vault_name           = "hoppyhubkv3"
-  storage_account_name     = "hoppyhubsa3"
-  blob_container_name      = "hoppyhubcontainer3"
-  service_bus_name         = "hoppyhubservicebus3"
-  sql_server_name          = "hoppyhubsqlserver3"
-  app_service_plan_name    = "hoppyhub-asp3"
+  resource_group_name      = "${var.master_name}rg"
+  key_vault_name           = "${var.master_name}kv"
+  storage_account_name     = "${var.master_name}sa"
+  blob_container_name      = "${var.master_name}container"
+  service_bus_name         = "${var.master_name}servicebus"
+  sql_server_name          = "${var.master_name}sqlserver"
+  app_service_plan_name    = "${var.master_name}asp"
   user_management_name     = "UserManagement"
   beer_management_name     = "BeerManagement"
   opinion_management_name  = "OpinionManagement"
@@ -73,7 +73,11 @@ resource "azurerm_servicebus_namespace" "service_bus" {
 resource "random_password" "sql_server_password" {
   length           = 16
   special          = true
-  override_special = "_@%"
+  min_lower        = 1
+  min_upper        = 1
+  min_numeric      = 1
+  min_special      = 1
+  override_special = "!$#%"
 }
 resource "azurerm_mssql_server" "sql_server" {
   name                         = local.sql_server_name
