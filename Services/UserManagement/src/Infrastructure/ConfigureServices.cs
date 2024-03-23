@@ -30,7 +30,7 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            options.UseSqlServer(configuration.GetConnectionString("UserManagementDbConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
         services.AddMassTransit(x =>
@@ -50,7 +50,7 @@ public static class ConfigureServices
             {
                 x.UsingAzureServiceBus((_, cfg) =>
                 {
-                    cfg.Host(configuration.GetValue<string>("AzureServiceBus:ConnectionString"));
+                    cfg.Host(configuration.GetConnectionString("AzureServiceBusConnection"));
                 });
             }
         });
