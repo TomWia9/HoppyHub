@@ -10,10 +10,10 @@ public record Image
     /// <summary>
     ///     The image name.
     /// </summary>
-    public string Name { get; init; }
+    public string? Name { get; init; }
 
     /// <summary>
     ///     The beer image.
     /// </summary>
-    public IFormFile File { get; init; }
+    public IFormFile? File { get; init; }
 }

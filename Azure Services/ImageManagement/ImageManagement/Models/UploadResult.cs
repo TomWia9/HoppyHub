@@ -13,10 +13,10 @@ public class UploadResponse
     /// <summary>
     ///     The file uri.
     /// </summary>
-    public string Uri { get; set; }
+    public string? Uri { get; set; }
 
     /// <summary>
     ///     The error message.
     /// </summary>
-    public string ErrorMessage { get; set; }
+    public string? ErrorMessage { get; set; }
 }

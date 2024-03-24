@@ -1,38 +1,31 @@
-﻿using System;
-using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using ImageManagement.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using Microsoft.WindowsAzure.Storage;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.Functions.Worker;
 
 namespace ImageManagement;
 
 /// <summary>
 ///     The UploadBeerImage function class.
 /// </summary>
-public static class UploadBeerImage
+public abstract class UploadBeerImage
 {
     /// <summary>
     ///     Uploads beer image to azure storage container.
     /// </summary>
     /// <param name="req">The http request</param>
-    /// <param name="logger">The logger</param>
     /// <returns>UploadResponse</returns>
-    [FunctionName("UploadBeerImage")]
-    public static async Task<IActionResult> RunAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)]
-        HttpRequest req, ILogger logger)
+    [Function("UploadBeerImage")]
+    public static async Task<IActionResult> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "post")]
+        HttpRequest req)
     {
         var formData = await req.ReadFormAsync();
-        var file = req.Form.Files["file"];
-        var name = formData["name"];
-        var image = new Image()
+        var image = new Image
         {
-            Name = name,
-            File = file
+            Name = formData["name"],
+            File = req.Form.Files["file"]
         };
         var response = new UploadResponse();
 
@@ -47,29 +40,27 @@ public static class UploadBeerImage
         var blobContainerName = Environment.GetEnvironmentVariable("BlobContainerName");
         var blobConnectionString = Environment.GetEnvironmentVariable("BlobConnectionString");
 
-        if (!CloudStorageAccount.TryParse(blobConnectionString, out var storageAccount))
+        if (string.IsNullOrEmpty(blobConnectionString) || string.IsNullOrEmpty(blobContainerName))
         {
             response.Success = false;
-            response.ErrorMessage = "Invalid storage account connection string";
+            response.ErrorMessage = "Storage account connection string or blob container name not found";
 
             return new BadRequestObjectResult(response);
         }
 
-        var blobClient = storageAccount.CreateCloudBlobClient();
-        var container = blobClient.GetContainerReference(blobContainerName);
+        var blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
+        await blobContainerClient.CreateIfNotExistsAsync();
 
-        await container.CreateIfNotExistsAsync();
-
-        var blockBlob = container.GetBlockBlobReference(image.Name);
+        var blobClient = blobContainerClient.GetBlobClient(image.Name);
 
         await using (var stream = image.File.OpenReadStream())
         {
-            await blockBlob.UploadFromStreamAsync(stream);
+            await blobClient.UploadAsync(stream, true);
         }
 
         response.Success = true;
-        response.Uri = blockBlob.Uri.ToString();
+        response.Uri = blobClient.Uri.ToString();
 
-        return new OkObjectResult(blockBlob.Uri);
+        return new OkObjectResult(blobClient.Uri);
     }
 }
