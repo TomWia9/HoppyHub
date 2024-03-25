@@ -1,14 +1,11 @@
 ﻿using Application.BeerImages.Commands.UpsertBeerImage;
 using Application.Common.Interfaces;
 using Domain.Entities;
-using MassTransit;
 using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
-using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
-using SharedUtilities.Extensions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.BeerImages.Commands.UpsertBeerImage;
 
@@ -34,9 +31,9 @@ public class UpsertBeerImageCommandHandlerTests
     private readonly UpsertBeerImageCommandHandler _handler;
 
     /// <summary>
-    ///     The publish endpoint mock.
+    ///     The storage container service mock.
     /// </summary>
-    private readonly Mock<IRequestClient<ImageCreated>> _imageCreatedRequestClientMock;
+    private readonly Mock<IStorageContainerService> _storageContainerServiceMock;
 
     /// <summary>
     ///     Setups UpsertBeerImageCommandHandlerTests.
@@ -44,19 +41,18 @@ public class UpsertBeerImageCommandHandlerTests
     public UpsertBeerImageCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _imageCreatedRequestClientMock = new Mock<IRequestClient<ImageCreated>>();
+        _storageContainerServiceMock = new Mock<IStorageContainerService>();
         _formFileMock = new Mock<IFormFile>();
 
-        _handler = new UpsertBeerImageCommandHandler(_contextMock.Object, _imageCreatedRequestClientMock.Object);
+        _handler = new UpsertBeerImageCommandHandler(_contextMock.Object, _storageContainerServiceMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method gets ImageUploaded response and add BeerImage to database when beer exists and beer image
-    ///     does not exists.
+    ///     Tests that Handle method uploads beer image and adds BeerImage to database when beer exists and beer image does not exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldGetImageUploadedResponseAndAddBeerImageToDatabase_WhenBeerExitsAndBeerImageDoesNotExists()
+        Handle_ShouldUploadBeerImageAndAddBeerImageToDatabase_WhenBeerExitsAndBeerImageDoesNotExists()
     {
         // Arrange
         const string imageUri = "https://test.com/test.jpg";
@@ -74,45 +70,30 @@ public class UpsertBeerImageCommandHandlerTests
         };
         var beerImages = Enumerable.Empty<BeerImage>();
         var beerImagesDbSetMock = beerImages.AsQueryable().BuildMockDbSet();
-        var imageCreatedEvent = new ImageCreated
-        {
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = await request.Image.GetBytes()
-        };
-        var imageUploadedResponse = new ImageUploaded
-        {
-            Uri = imageUri
-        };
-        var responseMock = new Mock<Response<ImageUploaded>>();
 
         _contextMock
             .Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.BeerImages).Returns(beerImagesDbSetMock.Object);
-        responseMock.SetupGet(x => x.Message).Returns(imageUploadedResponse);
-        _imageCreatedRequestClientMock
-            .Setup(x => x.GetResponse<ImageUploaded>(imageCreatedEvent, It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ReturnsAsync(responseMock.Object);
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
+            .ReturnsAsync(imageUri);
 
         // Act
         await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        _imageCreatedRequestClientMock.Verify(x => x.GetResponse<ImageUploaded>(It.Is<ImageCreated>(y =>
-                y.Path == imageCreatedEvent.Path && y.Image == imageCreatedEvent.Image),
-            It.IsAny<CancellationToken>(), It.IsAny<RequestTimeout>()), Times.Once);
+        _storageContainerServiceMock.Verify(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()), Times.Once);
         _contextMock.Verify(x => x.BeerImages.AddAsync(It.IsAny<BeerImage>(), It.IsAny<CancellationToken>()),
             Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     /// <summary>
-    ///     Tests that Handle method gets ImageUploaded response and updates BeerImage when beer exists and beer image exists.
+    ///     Tests that Handle method uploads beer image and updates BeerImage when beer exists and beer image exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldGetImageUploadedResponseAndUpdateBeerImage_WhenBeerExitsAndBeerImageExists()
+        Handle_ShouldUploadBeerImageAndUpdateBeerImage_WhenBeerExitsAndBeerImageExists()
     {
         // Arrange
         const string imageUri = "https://test.com/test.jpg";
@@ -138,35 +119,20 @@ public class UpsertBeerImageCommandHandlerTests
         };
         var beerImages = new List<BeerImage> { beerImage };
         var beerImagesDbSetMock = beerImages.AsQueryable().BuildMockDbSet();
-        var imageCreatedEvent = new ImageCreated
-        {
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = await request.Image.GetBytes()
-        };
-        var imageUploadedEvent = new ImageUploaded
-        {
-            Uri = imageUri
-        };
-        var responseMock = new Mock<Response<ImageUploaded>>();
 
         _contextMock
             .Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.BeerImages).Returns(beerImagesDbSetMock.Object);
-        responseMock.SetupGet(x => x.Message).Returns(imageUploadedEvent);
-        _imageCreatedRequestClientMock
-            .Setup(x => x.GetResponse<ImageUploaded>(imageCreatedEvent, It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ReturnsAsync(responseMock.Object);
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
+            .ReturnsAsync(imageUri);
 
         // Act
         await _handler.Handle(request, CancellationToken.None);
 
         // Assert
-        beerImage.ImageUri.Should().Be(imageUploadedEvent.Uri);
-        _imageCreatedRequestClientMock.Verify(x => x.GetResponse<ImageUploaded>(It.Is<ImageCreated>(y =>
-                y.Path == imageCreatedEvent.Path && y.Image == imageCreatedEvent.Image),
-            It.IsAny<CancellationToken>(), It.IsAny<RequestTimeout>()), Times.Once);
+        beerImage.ImageUri.Should().Be(imageUri);
+        _storageContainerServiceMock.Verify(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()), Times.Once);
         _contextMock.Verify(x => x.BeerImages.AddAsync(It.IsAny<BeerImage>(), It.IsAny<CancellationToken>()),
             Times.Never);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
@@ -207,7 +173,7 @@ public class UpsertBeerImageCommandHandlerTests
         string? imageUri)
     {
         // Arrange
-        const string expectedMessage = "Failed to sent image.";
+        const string expectedMessage = "Failed to upload image.";
         var beerId = Guid.NewGuid();
         var breweryId = Guid.NewGuid();
         var request = new UpsertBeerImageCommand
@@ -220,67 +186,15 @@ public class UpsertBeerImageCommandHandlerTests
             Id = beerId,
             BreweryId = breweryId
         };
-        var imageCreatedEvent = new ImageCreated
-        {
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = await request.Image.GetBytes()
-        };
-        var imageUploadedEvent = new ImageUploaded
-        {
-            Uri = imageUri
-        };
-        var responseMock = new Mock<Response<ImageUploaded>>();
 
         _contextMock
             .Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
-        responseMock.SetupGet(x => x.Message).Returns(imageUploadedEvent);
-        _imageCreatedRequestClientMock
-            .Setup(x => x.GetResponse<ImageUploaded>(imageCreatedEvent, It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ReturnsAsync(responseMock.Object);
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
+            .ReturnsAsync(imageUri);
 
         // Act & Assert
         await _handler.Invoking(x => x.Handle(request, CancellationToken.None))
             .Should().ThrowAsync<RemoteServiceConnectionException>().WithMessage(expectedMessage);
-    }
-
-    /// <summary>
-    ///     Tests that Handle method throws RequestTimeoutException when response from ImageUploaded response take too long.
-    /// </summary>
-    [Fact]
-    public async Task Handle_ShouldThrowRequestTimeoutException_WhenResponseFromImageUploadedTakeTooLong()
-    {
-        // Arrange
-
-        var beerId = Guid.NewGuid();
-        var breweryId = Guid.NewGuid();
-        var request = new UpsertBeerImageCommand
-        {
-            BeerId = beerId,
-            Image = _formFileMock.Object
-        };
-        var beer = new Beer
-        {
-            Id = beerId,
-            BreweryId = breweryId
-        };
-        var imageCreatedEvent = new ImageCreated
-        {
-            Path = $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}",
-            Image = await request.Image.GetBytes()
-        };
-
-        _contextMock
-            .Setup(x => x.Beers.FindAsync(new object[] { beerId }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(beer);
-        _imageCreatedRequestClientMock
-            .Setup(x => x.GetResponse<ImageUploaded>(imageCreatedEvent, It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ThrowsAsync(new RequestTimeoutException());
-
-        // Act & Assert
-        await _handler.Invoking(x => x.Handle(request, CancellationToken.None))
-            .Should().ThrowAsync<RequestTimeoutException>();
     }
 }

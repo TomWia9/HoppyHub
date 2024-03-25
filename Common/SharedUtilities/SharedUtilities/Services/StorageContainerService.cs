@@ -41,7 +41,7 @@ public class StorageContainerService : IStorageContainerService
     /// <param name="fileName">The file</param>
     /// <param name="file">The file name</param>
     /// <returns>File uri</returns>
-    public async Task<string> UploadAsync(string fileName, IFormFile file)
+    public async Task<string?> UploadAsync(string fileName, IFormFile file)
     {
         try
         {

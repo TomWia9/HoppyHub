@@ -13,7 +13,7 @@ public interface IStorageContainerService
     /// <param name="fileName">The file</param>
     /// <param name="file">The file name</param>
     /// <returns>File uri</returns>
-    public Task<string> UploadAsync(string fileName, IFormFile file);
+    public Task<string?> UploadAsync(string fileName, IFormFile file);
 
     /// <summary>
     ///     Deletes files from given path.
