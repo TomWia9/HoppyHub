@@ -7,16 +7,16 @@ using Microsoft.Azure.Functions.Worker;
 namespace ImageManagement.Functions;
 
 /// <summary>
-///     The UploadBeerImageFunction class.
+///     The UploadImageFunction class.
 /// </summary>
-public abstract class UploadBeerImageFunction
+public abstract class UploadImageFunction
 {
     /// <summary>
-    ///     Uploads beer image to azure storage container.
+    ///     Uploads image to azure storage container.
     /// </summary>
     /// <param name="req">The http request</param>
-    /// <returns>UploadResponse</returns>
-    [Function("UploadBeerImage")]
+    /// <returns>UploadResult</returns>
+    [Function("UploadImage")]
     public static async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post")]
         HttpRequest req)
