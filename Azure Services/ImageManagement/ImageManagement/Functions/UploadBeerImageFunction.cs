@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 
-namespace ImageManagement;
+namespace ImageManagement.Functions;
 
 /// <summary>
-///     The UploadBeerImage function class.
+///     The UploadBeerImageFunction class.
 /// </summary>
-public abstract class UploadBeerImage
+public abstract class UploadBeerImageFunction
 {
     /// <summary>
     ///     Uploads beer image to azure storage container.
@@ -48,19 +48,29 @@ public abstract class UploadBeerImage
             return new BadRequestObjectResult(response);
         }
 
-        var blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
-        await blobContainerClient.CreateIfNotExistsAsync();
-
-        var blobClient = blobContainerClient.GetBlobClient(image.Name);
-
-        await using (var stream = image.File.OpenReadStream())
+        try
         {
-            await blobClient.UploadAsync(stream, true);
+            var blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
+            await blobContainerClient.CreateIfNotExistsAsync();
+
+            var blobClient = blobContainerClient.GetBlobClient(image.Name);
+
+            await using (var stream = image.File.OpenReadStream())
+            {
+                await blobClient.UploadAsync(stream, true);
+            }
+
+            response.Success = true;
+            response.Uri = blobClient.Uri.ToString();
+
+            return new OkObjectResult(blobClient.Uri);
         }
+        catch (Exception e)
+        {
+            response.Success = false;
+            response.ErrorMessage = $"Failed to upload file: {e.Message}";
 
-        response.Success = true;
-        response.Uri = blobClient.Uri.ToString();
-
-        return new OkObjectResult(blobClient.Uri);
+            return new BadRequestObjectResult(response);
+        }
     }
 }
