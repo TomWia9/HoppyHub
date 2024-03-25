@@ -19,7 +19,7 @@ public class StorageContainerService : IStorageContainerService
     /// <summary>
     ///     Initializes StorageContainerService.
     /// </summary>
-    public StorageContainerService(string storageAccountConnectionString, string blobContainerName)
+    public StorageContainerService(string? storageAccountConnectionString, string? blobContainerName)
     {
         if (string.IsNullOrEmpty(storageAccountConnectionString))
         {
