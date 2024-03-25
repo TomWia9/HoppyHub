@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -27,17 +28,24 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     private readonly IOpinionsService _opinionsService;
 
     /// <summary>
+    ///     The storage container service.
+    /// </summary>
+    private readonly IStorageContainerService _storageContainerService;
+
+    /// <summary>
     ///     Initializes DeleteOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="opinionsService">TThe opinions service</param>
+    /// <param name="storageContainerService">The storage container service</param>
     public DeleteOpinionCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService,
-        IOpinionsService opinionsService)
+        IOpinionsService opinionsService, IStorageContainerService storageContainerService)
     {
         _context = context;
         _currentUserService = currentUserService;
         _opinionsService = opinionsService;
+        _storageContainerService = storageContainerService;
     }
 
     /// <summary>
@@ -48,7 +56,8 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
     public async Task Handle(DeleteOpinionCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Opinions.FindAsync(new object?[] { request.Id }, cancellationToken);
+            await _context.Opinions.Include(x => x.Beer)
+                .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken: cancellationToken);
 
         if (entity is null)
         {
@@ -68,10 +77,17 @@ public class DeleteOpinionCommandHandler : IRequestHandler<DeleteOpinionCommand>
             _context.Opinions.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _opinionsService.DeleteImageAsync(entity.ImageUri, cancellationToken);
+            if (!string.IsNullOrEmpty(entity.ImageUri))
+            {
+                var opinionImagePath = $"Opinions/{entity.Beer!.BreweryId}/{entity.BeerId}/{entity.Id}";
+
+                await _storageContainerService.DeleteFromPathAsync(opinionImagePath);
+            }
+            
+            await transaction.CommitAsync(cancellationToken);
+            
             await _opinionsService.PublishOpinionChangedEventAsync(entity.BeerId, cancellationToken);
 
-            await transaction.CommitAsync(cancellationToken);
         }
         catch
         {

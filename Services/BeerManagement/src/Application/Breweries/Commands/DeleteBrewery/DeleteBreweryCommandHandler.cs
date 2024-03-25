@@ -62,6 +62,14 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             await _storageContainerService.DeleteFromPathAsync(breweryBeerOpinionsImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
+
+            //TODO: Create and send this event and handle in OpinionManagement and FavoriteManagement
+            // var breweryDeletedEvent = new BreweryDeleted
+            // {
+            //     Id = entity.Id
+            // };
+            //
+            // await _publishEndpoint.Publish(breweryDeletedEvent, cancellationToken);
         }
         catch
         {

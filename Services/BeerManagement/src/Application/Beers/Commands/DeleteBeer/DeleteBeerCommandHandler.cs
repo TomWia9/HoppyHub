@@ -63,12 +63,13 @@ public class DeleteBeerCommandHandler : IRequestHandler<DeleteBeerCommand>
         {
             _context.Beers.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
+            
+            //TODO: Move this to OpinionManagement.Beers.EventConsumers.BeerDeletedConsumer
+            var beerOpinionsImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
+            await _storageContainerService.DeleteFromPathAsync(beerOpinionsImagesPath);
 
             var beerImagePath = $"Beers/{entity.BreweryId}/{entity.Id}";
-            var beerOpinionsImagesPath = $"Opinions/{entity.BreweryId}/{entity.Id}";
-
             await _storageContainerService.DeleteFromPathAsync(beerImagePath);
-            await _storageContainerService.DeleteFromPathAsync(beerOpinionsImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
 
