@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using ImageManagement.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -7,36 +8,29 @@ using Microsoft.Azure.Functions.Worker;
 namespace ImageManagement.Functions;
 
 /// <summary>
-///     The UploadImageFunction class.
+///     The DeleteImageFunction class.
 /// </summary>
-public abstract class UploadImageFunction
+public abstract class DeleteImageFunction
 {
     /// <summary>
-    ///     Uploads image to azure storage container.
+    ///     Deletes image or images in given path from azure storage container.
     /// </summary>
     /// <param name="req">The http request</param>
-    /// <returns>UploadResult</returns>
-    [Function("UploadImage")]
+    /// <returns>DeleteResult</returns>
+    [Function("DeleteImage")]
     public static async Task<IActionResult> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post")]
+        [HttpTrigger(AuthorizationLevel.Function, "delete")]
         HttpRequest req)
     {
-        var formData = await req.ReadFormAsync();
-        var image = new Image
-        {
-            Name = formData["name"],
-            File = req.Form.Files["file"]
-        };
-        var result = new UploadResult();
+        var path = req.Query["path"].ToString();
 
-        if (string.IsNullOrEmpty(image.Name) || image.File == null || image.File.Length == 0)
+        if (string.IsNullOrEmpty(path))
         {
-            result.Success = false;
-            result.ErrorMessage = "File not found";
-
-            return new BadRequestObjectResult(result);
+            return new BadRequestObjectResult("Path is empty");
         }
 
+        path = path.Trim();
+        var result = new DeleteResult();
         var blobContainerName = Environment.GetEnvironmentVariable("BlobContainerName");
         var blobConnectionString = Environment.GetEnvironmentVariable("BlobConnectionString");
 
@@ -51,24 +45,24 @@ public abstract class UploadImageFunction
         try
         {
             var blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
-            await blobContainerClient.CreateIfNotExistsAsync();
 
-            var blobClient = blobContainerClient.GetBlobClient(image.Name);
-
-            await using (var stream = image.File.OpenReadStream())
+            foreach (var blobItem in blobContainerClient.GetBlobsByHierarchy(prefix: path))
             {
-                await blobClient.UploadAsync(stream, true);
+                if (blobItem.IsBlob)
+                {
+                    await blobContainerClient.DeleteBlobIfExistsAsync(blobItem.Blob.Name,
+                        DeleteSnapshotsOption.IncludeSnapshots);
+                }
             }
-
+            
             result.Success = true;
-            result.Uri = blobClient.Uri.ToString();
 
             return new OkObjectResult(result);
         }
         catch (Exception e)
         {
             result.Success = false;
-            result.ErrorMessage = $"Failed to upload file: {e.Message}";
+            result.ErrorMessage = $"Failed to delete files: {e.Message}";
 
             return new BadRequestObjectResult(result);
         }
