@@ -49,11 +49,11 @@ public class DeleteBeerCommandHandlerTests
     }
 
     /// <summary>
-    ///     Tests that Handle method removes beer from database and from storage container and publishes BeerDeleted event when beer exists.
+    ///     Tests that Handle method removes beer from database and beer image from storage container and publishes BeerDeleted event when beer exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveBeerFromDatabaseAndAndFromBlobStorageAndPublishBeerDeletedEvent_WhenBeerExists()
+        Handle_ShouldRemoveBeerFromDatabaseAndBeerImageFromBlobStorageAndPublishBeerDeletedEvent_WhenBeerExists()
     {
         // Arrange
         var beerId = Guid.NewGuid();
@@ -75,7 +75,7 @@ public class DeleteBeerCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Beers.Remove(beer), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Exactly(2));
+        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Exactly(1));
         _publishEndpointMock.Verify(x =>
             x.Publish(It.Is<BeerDeleted>(y => y.Id == beerId), It.IsAny<CancellationToken>()));
     }
