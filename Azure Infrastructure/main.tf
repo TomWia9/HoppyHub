@@ -220,13 +220,13 @@ resource "azurerm_key_vault_secret" "kv_secret_jwt" {
   value        = random_password.random_jwt.result
   key_vault_id = azurerm_key_vault.key_vault.id
 }
-resource "azurerm_key_vault_secret" "kv_secret_blob_connection_string" {
-  name         = "BlobContainerSettings--BlobConnectionString"
+resource "azurerm_key_vault_secret" "kv_secret_storage_account_connection_string" {
+  name         = "ConnectionStrings--StorageAccountConnection"
   value        = azurerm_storage_account.storage_account.primary_connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 }
-resource "azurerm_key_vault_secret" "kv_secret_blob_container_name" {
-  name         = "BlobContainerSettings--BlobContainerName"
+resource "azurerm_key_vault_secret" "kv_secret_container_name" {
+  name         = "ContainerName"
   value        = azurerm_storage_container.blob_container.name
   key_vault_id = azurerm_key_vault.key_vault.id
 }

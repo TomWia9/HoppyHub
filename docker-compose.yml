@@ -12,14 +12,14 @@ services:
       - "1433:1433"
 
   rabbitmq:
-      image: rabbitmq:3-management
-      container_name: rabbitmq
-      ports:
-        - "5672:5672"
-        - "15672:15672"
-      environment:
-        RABBITMQ_DEFAULT_USER: "rabbituser"
-        RABBITMQ_DEFAULT_PASS: "rabbituser"
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbituser"
+      RABBITMQ_DEFAULT_PASS: "rabbituser"
 
   beer-management:
     container_name: beer-management
@@ -29,9 +29,9 @@ services:
     env_file:
       - ./Config/.env
     environment:
+      - ASPNETCORE_URLS=http://*:5000
       - ConnectionStrings__BeerManagementDbConnection=Server=hoppyhub-sql-server;Database=BeerManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - TempBeerImageUri=https://hoppyhub.blob.core.windows.net/hoppyhub-container/Beers/temp.jpg
-      - ASPNETCORE_URLS=http://*:5000
     ports:
       - "5000:5000"
     depends_on:
@@ -46,8 +46,10 @@ services:
     env_file:
       - ./Config/.env
     environment:
-      - ConnectionStrings__UserManagementDbConnection=Server=hoppyhub-sql-server;Database=UserManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - ASPNETCORE_URLS=http://*:5001
+      - ConnectionStrings__UserManagementDbConnection=Server=hoppyhub-sql-server;Database=UserManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - ConnectionStrings__StorageAccountConnection=${STORAGE_ACCOUNT_CONNECTION}
+      - ContainerName=${CONTAINER_NAME}
     ports:
       - "5001:5001"
     depends_on:
@@ -62,8 +64,8 @@ services:
     env_file:
       - ./Config/.env
     environment:
-      - ConnectionStrings__FavoriteManagementDbConnection=Server=hoppyhub-sql-server;Database=FavoriteManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - ASPNETCORE_URLS=http://*:5002
+      - ConnectionStrings__FavoriteManagementDbConnection=Server=hoppyhub-sql-server;Database=FavoriteManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
     ports:
       - "5002:5002"
     depends_on:
@@ -78,29 +80,16 @@ services:
     env_file:
       - ./Config/.env
     environment:
-      - ConnectionStrings__OpinionManagementDbConnection=Server=hoppyhub-sql-server;Database=OpinionManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - ASPNETCORE_URLS=http://*:5003
+      - ConnectionStrings__OpinionManagementDbConnection=Server=hoppyhub-sql-server;Database=OpinionManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
+      - ConnectionStrings__StorageAccountConnection=${STORAGE_ACCOUNT_CONNECTION}
+      - ContainerName=${CONTAINER_NAME}
+      - BlobContainerSettings__BlobContainerName=hoppyhub-container
     ports:
       - "5003:5003"
     depends_on:
       - rabbitmq
       - sql-server
-
-  image-management:
-    container_name: image-management
-    build:
-      context: .
-      dockerfile: ./Services/ImageManagement/Dockerfile
-    env_file:
-      - ./Config/.env
-    environment:
-      - BlobContainerSettings__BlobConnectionString=${BLOB_CONNECTION_STRING}
-      - BlobContainerSettings__BlobContainerName=hoppyhub-container
-      - ASPNETCORE_URLS=http://*:5004
-    ports:
-      - "5004:5004"
-    depends_on:
-      - rabbitmq
 
   hoppy-hub-app:
     container_name: hoppy-hub-app
@@ -116,4 +105,3 @@ services:
       - user-management
       - favorite-management
       - opinion-management
-      - image-management

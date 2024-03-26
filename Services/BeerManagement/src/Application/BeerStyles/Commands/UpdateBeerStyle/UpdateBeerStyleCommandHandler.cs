@@ -31,7 +31,7 @@ public class UpdateBeerStyleCommandHandler : IRequestHandler<UpdateBeerStyleComm
     public async Task Handle(UpdateBeerStyleCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.BeerStyles.FindAsync(new object?[] { request.Id }, cancellationToken);
+            await _context.BeerStyles.FindAsync([request.Id], cancellationToken);
 
         if (entity is null)
         {

@@ -22,7 +22,6 @@ jobs:
           dotnet restore Common/SharedUtilities/SharedUtilities.sln
           dotnet restore Services/UserManagement/UserManagement.sln
           dotnet restore Services/BeerManagement/BeerManagement.sln
-          dotnet restore Services/ImageManagement/ImageManagement.sln
           dotnet restore Services/FavoriteManagement/FavoriteManagement.sln
           dotnet restore Services/OpinionManagement/OpinionManagement.sln
 
@@ -31,7 +30,6 @@ jobs:
           dotnet build Common/SharedUtilities/SharedUtilities.sln --no-restore
           dotnet build Services/UserManagement/UserManagement.sln --no-restore
           dotnet build Services/BeerManagement/BeerManagement.sln --no-restore
-          dotnet build Services/ImageManagement/ImageManagement.sln --no-restore
           dotnet build Services/FavoriteManagement/FavoriteManagement.sln --no-restore
           dotnet build Services/OpinionManagement/OpinionManagement.sln --no-restore
 
@@ -40,7 +38,6 @@ jobs:
           dotnet test Common/SharedUtilities/SharedUtilities.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/UserManagement/UserManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/BeerManagement/BeerManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
-          dotnet test Services/ImageManagement/ImageManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/FavoriteManagement/FavoriteManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
           dotnet test Services/OpinionManagement/OpinionManagement.sln --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 

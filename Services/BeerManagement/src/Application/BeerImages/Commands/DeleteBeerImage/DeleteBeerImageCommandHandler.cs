@@ -1,11 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.BeerImages.Commands.DeleteBeerImage;
 
@@ -25,22 +23,22 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The image deleted request client.
+    ///     The storage container service.
     /// </summary>
-    private readonly IRequestClient<ImageDeleted> _imageDeletedRequestClient;
+    private readonly IStorageContainerService _storageContainerService;
 
     /// <summary>
     ///     Initializes DeleteBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="imageDeletedRequestClient">The image deleted request client</param>
+    /// <param name="storageContainerService">The storage container service</param>
     /// <param name="appConfiguration">The app configuration</param>
     public DeleteBeerImageCommandHandler(IApplicationDbContext context,
-        IRequestClient<ImageDeleted> imageDeletedRequestClient,
+        IStorageContainerService storageContainerService,
         IAppConfiguration appConfiguration)
     {
         _context = context;
-        _imageDeletedRequestClient = imageDeletedRequestClient;
+        _storageContainerService = storageContainerService;
         _appConfiguration = appConfiguration;
     }
 
@@ -61,26 +59,14 @@ public class DeleteBeerImageCommandHandler : IRequestHandler<DeleteBeerImageComm
 
         if (beer.BeerImage is { TempImage: false, ImageUri: not null })
         {
-            var beerImageDeleted = new ImageDeleted
-            {
-                Uri = beer.BeerImage.ImageUri
-            };
+            var path = $"Beers/{beer.BreweryId}/{beer.Id}{Path.GetExtension(beer.BeerImage.ImageUri)}";
+            
+            await _storageContainerService.DeleteFromPathAsync(path);
 
-            var response =
-                await _imageDeletedRequestClient.GetResponse<ImageDeletedFromBlobStorage>(beerImageDeleted,
-                    cancellationToken);
-            var imageDeletedSuccessfully = response.Message.Success;
-            if (imageDeletedSuccessfully)
-            {
-                beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
-                beer.BeerImage.TempImage = true;
+            beer.BeerImage.ImageUri = _appConfiguration.TempBeerImageUri;
+            beer.BeerImage.TempImage = true;
 
-                await _context.SaveChangesAsync(CancellationToken.None);
-            }
-            else
-            {
-                throw new RemoteServiceConnectionException("There was a problem deleting the image.");
-            }
+            await _context.SaveChangesAsync(CancellationToken.None);
         }
         else
         {

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using MockQueryable.Moq;
 using Moq;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Opinions.Commands.CreateOpinion;
 
@@ -29,14 +30,19 @@ public class CreateOpinionCommandHandlerTests
     private readonly Mock<IFormFile> _formFileMock;
 
     /// <summary>
-    ///     The handler.
-    /// </summary>
-    private readonly CreateOpinionCommandHandler _handler;
-
-    /// <summary>
     ///     The opinions service mock.
     /// </summary>
     private readonly Mock<IOpinionsService> _opinionsServiceMock;
+
+    /// <summary>
+    ///     The storage container service mock.
+    /// </summary>
+    private readonly Mock<IStorageContainerService> _storageContainerServiceMock;
+
+    /// <summary>
+    ///     The handler.
+    /// </summary>
+    private readonly CreateOpinionCommandHandler _handler;
 
     /// <summary>
     ///     Setups CreateOpinionCommandHandlerTests.
@@ -49,17 +55,19 @@ public class CreateOpinionCommandHandlerTests
         _contextMock = new Mock<IApplicationDbContext>();
         _formFileMock = new Mock<IFormFile>();
         _opinionsServiceMock = new Mock<IOpinionsService>();
+        _storageContainerServiceMock = new Mock<IStorageContainerService>();
 
-        _handler = new CreateOpinionCommandHandler(_contextMock.Object, mapper, _opinionsServiceMock.Object);
+        _handler = new CreateOpinionCommandHandler(_contextMock.Object, mapper, _opinionsServiceMock.Object,
+            _storageContainerServiceMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method creates opinion, uploads image to blob storage, publishes BeerOpinionChanged event
+    ///     Tests that Handle method creates opinion, uploads image to storage container, publishes BeerOpinionChanged event
     ///     and returns correct dto when opinion contains image.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldCreateOpinionAndUploadImageToBlobStorageAndPublishBeerOpinionChangedEventAndReturnCorrectOpinionDto_WhenOpinionContainsImage()
+        Handle_ShouldCreateOpinionAndUploadImageToStorageContainerAndPublishBeerOpinionChangedEventAndReturnCorrectOpinionDto_WhenOpinionContainsImage()
     {
         // Arrange
         const string username = "testUser";
@@ -100,10 +108,8 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.Setup(x => x.Users.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
-        _opinionsServiceMock.Setup(x => x.UploadImageAsync(It.IsAny<Opinion>(), request.Image, breweryId, beerId,
-            It.IsAny<Guid>(),
-            It.IsAny<CancellationToken>())).Callback<Opinion, IFormFile?, Guid, Guid, Guid, CancellationToken>(
-            (entity, _, _, _, _, _) => { entity.ImageUri = imageUri; });
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
+            .ReturnsAsync(imageUri);
 
         // Act
         var result = await _handler.Handle(request, CancellationToken.None);
@@ -114,12 +120,10 @@ public class CreateOpinionCommandHandlerTests
         result.Should().BeEquivalentTo(expectedOpinionDto);
 
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
-        _opinionsServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<Opinion>(), request.Image, breweryId, beerId, It.IsAny<Guid>(),
-                It.IsAny<CancellationToken>()), Times.Once);
+        _storageContainerServiceMock.Verify(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()), Times.Once);
         _opinionsServiceMock.Verify(x => x.PublishOpinionChangedEventAsync(beerId, It.IsAny<CancellationToken>()),
             Times.Once);
-        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
+        _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Exactly(2));
     }
 
     /// <summary>
@@ -172,9 +176,7 @@ public class CreateOpinionCommandHandlerTests
 
         _contextMock.Verify(x => x.Opinions.AddAsync(It.IsAny<Opinion>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
-        _opinionsServiceMock.Verify(
-            x => x.UploadImageAsync(It.IsAny<Opinion>(), request.Image, It.IsAny<Guid>(), beerId, It.IsAny<Guid>(),
-                It.IsAny<CancellationToken>()), Times.Once);
+        _storageContainerServiceMock.Verify(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()), Times.Never);
         _opinionsServiceMock.Verify(x => x.PublishOpinionChangedEventAsync(beerId, It.IsAny<CancellationToken>()),
             Times.Once);
     }
@@ -192,7 +194,8 @@ public class CreateOpinionCommandHandlerTests
         {
             Rating = 6,
             Comment = "Sample comment",
-            BeerId = beerId
+            BeerId = beerId,
+            Image = _formFileMock.Object
         };
         var beer = new Beer { Id = beerId };
         var opinions = Enumerable.Empty<Opinion>();
@@ -202,9 +205,7 @@ public class CreateOpinionCommandHandlerTests
         _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(beer);
         _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
-        _opinionsServiceMock.Setup(x => x.UploadImageAsync(It.IsAny<Opinion>(), It.IsAny<IFormFile?>(),
-                It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(),
-                It.IsAny<CancellationToken>()))
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         // Act & Assert
@@ -235,5 +236,42 @@ public class CreateOpinionCommandHandlerTests
         // Act & Assert
         await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
             .Should().ThrowAsync<NotFoundException>().WithMessage(expectedMessage);
+    }
+
+    /// <summary>
+    ///     Tests that Handle method throws RemoteServiceConnectionException when failed to upload image.
+    /// </summary>
+    [Fact]
+    public async Task Handle_ShouldThrowRemoteServiceConnectionException_WhenFailedToUploadImage()
+    {
+        // Arrange
+        const string expectedMessage = "Failed to upload image.";
+        var beerId = Guid.NewGuid();
+        var breweryId = Guid.NewGuid();
+        var command = new CreateOpinionCommand
+        {
+            Rating = 6,
+            Comment = "Sample comment",
+            BeerId = beerId,
+            Image = _formFileMock.Object
+        };
+        var beer = new Beer
+        {
+            Id = beerId, BreweryId = breweryId, Name = "testName", BreweryName = "testBreweryName",
+            Opinions = new List<Opinion>()
+        };
+        var opinions = Enumerable.Empty<Opinion>();
+        var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
+
+        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
+        _contextMock.Setup(x => x.Beers.FindAsync(It.IsAny<object?[]?>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(beer);
+        _contextMock.Setup(x => x.Opinions).Returns(opinionsDbSetMock.Object);
+        _storageContainerServiceMock.Setup(x => x.UploadAsync(It.IsAny<string>(), It.IsAny<IFormFile>()))
+            .ReturnsAsync(string.Empty);
+
+        // Act & Assert
+        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
+            .Should().ThrowAsync<RemoteServiceConnectionException>().WithMessage(expectedMessage);
     }
 }
