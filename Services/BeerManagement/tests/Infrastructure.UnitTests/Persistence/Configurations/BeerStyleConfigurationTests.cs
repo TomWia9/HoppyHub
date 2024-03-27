@@ -40,6 +40,6 @@ public class BeerStyleConfigurationTests
         var beersNavigation = entity.FindNavigation(nameof(BeerStyle.Beers))!;
         beersNavigation.IsCollection.Should().BeTrue();
         beersNavigation.ForeignKey.PrincipalEntityType.ClrType.Should().Be(typeof(BeerStyle));
-        beersNavigation.ForeignKey.IsRequired.Should().BeTrue();
+        beersNavigation.ForeignKey.IsRequired.Should().BeFalse();
     }
 }
