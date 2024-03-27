@@ -37,7 +37,6 @@ public class BeerCreatedConsumer : IConsumer<BeerCreated>
         {
             Id = message.Id,
             Name = message.Name,
-            BreweryName = message.BreweryName,
             BreweryId = message.BreweryId
         };
 

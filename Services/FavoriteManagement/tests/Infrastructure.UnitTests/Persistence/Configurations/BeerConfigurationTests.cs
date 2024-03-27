@@ -31,9 +31,6 @@ public class BeerConfigurationTests
         entity!.FindProperty(nameof(Beer.Name))!.IsNullable.Should().BeFalse();
         entity.FindProperty(nameof(Beer.Name))!.GetMaxLength().Should().Be(200);
 
-        entity.FindProperty(nameof(Beer.BreweryName))!.IsNullable.Should().BeFalse();
-        entity.FindProperty(nameof(Beer.BreweryName))!.GetMaxLength().Should().Be(500);
-
         var opinionsNavigation = entity.FindNavigation(nameof(Beer.Favorites))!;
         opinionsNavigation.IsCollection.Should().BeTrue();
         opinionsNavigation.ForeignKey.PrincipalEntityType.ClrType.Should().Be(typeof(Beer));
