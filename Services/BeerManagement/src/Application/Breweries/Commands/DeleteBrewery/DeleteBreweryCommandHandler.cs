@@ -1,6 +1,8 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
+using MassTransit;
 using MediatR;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -22,15 +24,22 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
     private readonly IStorageContainerService _storageContainerService;
 
     /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
+
+    /// <summary>
     ///     Initializes DeleteBreweryCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="storageContainerService">The storage container service</param>
+    /// <param name="publishEndpoint">The publish endpoint</param>
     public DeleteBreweryCommandHandler(IApplicationDbContext context,
-        IStorageContainerService storageContainerService)
+        IStorageContainerService storageContainerService, IPublishEndpoint publishEndpoint)
     {
         _context = context;
         _storageContainerService = storageContainerService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -56,20 +65,17 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             await _context.SaveChangesAsync(cancellationToken);
 
             var breweryBeersImagesPath = $"Beers/{entity.Id}";
-            var breweryBeerOpinionsImagesPath = $"Opinions/{entity.Id}";
 
             await _storageContainerService.DeleteFromPathAsync(breweryBeersImagesPath);
-            await _storageContainerService.DeleteFromPathAsync(breweryBeerOpinionsImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
 
-            //TODO: Create and send this event and handle in OpinionManagement and FavoriteManagement
-            // var breweryDeletedEvent = new BreweryDeleted
-            // {
-            //     Id = entity.Id
-            // };
-            //
-            // await _publishEndpoint.Publish(breweryDeletedEvent, cancellationToken);
+            var breweryDeletedEvent = new BreweryDeleted
+            {
+                Id = entity.Id
+            };
+
+            await _publishEndpoint.Publish(breweryDeletedEvent, cancellationToken);
         }
         catch
         {

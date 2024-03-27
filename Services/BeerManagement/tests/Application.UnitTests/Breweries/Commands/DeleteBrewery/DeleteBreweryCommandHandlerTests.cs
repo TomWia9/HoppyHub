@@ -2,7 +2,9 @@
 using Application.Common.Interfaces;
 using Application.UnitTests.TestHelpers;
 using Domain.Entities;
+using MassTransit;
 using Moq;
+using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
@@ -30,21 +32,28 @@ public class DeleteBreweryCommandHandlerTests
     private readonly Mock<IStorageContainerService> _storageContainerServiceMock;
 
     /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
+
+    /// <summary>
     ///     Setups DeleteBreweryCommandHandlerTests.
     /// </summary>
     public DeleteBreweryCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
         _storageContainerServiceMock = new Mock<IStorageContainerService>();
-        _handler = new DeleteBreweryCommandHandler(_contextMock.Object, _storageContainerServiceMock.Object);
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new DeleteBreweryCommandHandler(_contextMock.Object, _storageContainerServiceMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method removes brewery from database and removes brewery beers images fom storage container when brewery exists.
+    ///     Tests that Handle method removes brewery from database and removes brewery beers images fom storage container and publishes BreweryDeleted event when brewery exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveBreweryFromDatabaseAndRemoveBreweryBeersImagesFromStorageContainer_WhenBeerExists()
+        Handle_ShouldRemoveBreweryFromDatabaseAndRemoveBreweryBeersImagesFromStorageContainerAndPublishBreweryDeletedEvent_WhenBeerExists()
     {
         // Arrange
         var breweryId = Guid.NewGuid();
@@ -61,7 +70,9 @@ public class DeleteBreweryCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Breweries.Remove(brewery), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Exactly(2));
+        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Once);
+        _publishEndpointMock.Verify(x =>
+            x.Publish(It.Is<BreweryDeleted>(y => y.Id == breweryId), It.IsAny<CancellationToken>()));
     }
 
     /// <summary>

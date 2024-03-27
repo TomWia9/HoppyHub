@@ -51,14 +51,12 @@ public class BeerUpdatedConsumerTests
         {
             Id = beerId,
             Name = "Old name",
-            BreweryName = "Old brewery name",
             BreweryId = Guid.NewGuid()
         };
         var message = new BeerUpdated
         {
             Id = beerId,
             Name = "new beer name",
-            BreweryName = "new brewery name",
             BreweryId = Guid.NewGuid()
         };
         _consumeContextMock.Setup(x => x.Message).Returns(message);
@@ -70,7 +68,6 @@ public class BeerUpdatedConsumerTests
         // Assert
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         existingBeer.Name.Should().Be(message.Name);
-        existingBeer.BreweryName.Should().Be(message.BreweryName);
         existingBeer.BreweryId.Should().Be(message.BreweryId);
     }
 }

@@ -65,7 +65,6 @@ public class GetFavoritesQueryHandlerTests
             {
                 Id = beerId,
                 Name = "Test beer",
-                BreweryName = "Test brewery name",
                 BreweryId = Guid.NewGuid()
             }
         };
@@ -87,7 +86,6 @@ public class GetFavoritesQueryHandlerTests
         {
             Id = x.Id,
             Name = x.Name,
-            BreweryName = x.BreweryName,
             BreweryId = x.BreweryId
         }), 1, 10);
 

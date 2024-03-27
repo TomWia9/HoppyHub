@@ -21,11 +21,6 @@ public class Beer
     public Guid BreweryId { get; set; }
 
     /// <summary>
-    ///     The beer brewery name.
-    /// </summary>
-    public string? BreweryName { get; set; }
-
-    /// <summary>
     ///     The favorites.
     /// </summary>
     public ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
