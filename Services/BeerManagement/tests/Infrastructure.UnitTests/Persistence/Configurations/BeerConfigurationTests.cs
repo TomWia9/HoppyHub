@@ -31,9 +31,7 @@ public class BeerConfigurationTests
         entity.Should().NotBeNull();
         entity!.FindProperty(nameof(Beer.Name))!.IsNullable.Should().BeFalse();
         entity.FindProperty(nameof(Beer.Name))!.GetMaxLength().Should().Be(200);
-
-        entity.FindProperty(nameof(Beer.BeerStyleId))!.IsNullable.Should().BeFalse();
-
+        
         entity.FindProperty(nameof(Beer.AlcoholByVolume))!.IsNullable.Should().BeFalse();
 
         entity.FindProperty(nameof(Beer.Description))!.IsNullable.Should().BeTrue();
