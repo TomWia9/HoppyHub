@@ -1,6 +1,6 @@
 INSERT INTO Beers (Id, Name, BreweryId)
 SELECT Beers.Id,
        Beers.Name,
-       Breweries.Id
+       Beers.BreweryId
 FROM BeerManagement.dbo.Beers
 ORDER BY Beers.Id
