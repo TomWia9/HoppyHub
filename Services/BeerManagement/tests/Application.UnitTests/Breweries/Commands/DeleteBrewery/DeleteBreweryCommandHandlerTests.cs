@@ -70,7 +70,7 @@ public class DeleteBreweryCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Breweries.Remove(brewery), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Exactly(2));
+        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Once);
         _publishEndpointMock.Verify(x =>
             x.Publish(It.Is<BreweryDeleted>(y => y.Id == breweryId), It.IsAny<CancellationToken>()));
     }

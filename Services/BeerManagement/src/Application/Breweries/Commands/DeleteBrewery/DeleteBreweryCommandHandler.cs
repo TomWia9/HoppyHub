@@ -65,10 +65,8 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             await _context.SaveChangesAsync(cancellationToken);
 
             var breweryBeersImagesPath = $"Beers/{entity.Id}";
-            var breweryBeerOpinionsImagesPath = $"Opinions/{entity.Id}";
 
             await _storageContainerService.DeleteFromPathAsync(breweryBeersImagesPath);
-            await _storageContainerService.DeleteFromPathAsync(breweryBeerOpinionsImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
 
