@@ -6,6 +6,7 @@ locals {
   service_bus_name         = "${var.master_name}servicebus"
   sql_server_name          = "${var.master_name}sqlserver"
   app_service_plan_name    = "${var.master_name}asp"
+  web_app_name             = "${var.master_name}staticwebapp"
   user_management_name     = "UserManagement"
   beer_management_name     = "BeerManagement"
   opinion_management_name  = "OpinionManagement"
@@ -203,6 +204,12 @@ module "favorite_management_app" {
   app_url_secret_name = "${local.favorite_management_name}ApiUrl"
   key_vault_id        = azurerm_key_vault.key_vault.id
   key_vault_name      = azurerm_key_vault.key_vault.name
+}
+
+resource "azurerm_static_web_app" "ui_static_web_app" {
+  name                = local.web_app_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = "westeurope"
 }
 
 #Key Vault secrets
