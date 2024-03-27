@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
@@ -22,6 +23,6 @@ public class BeerStyleConfiguration : BaseConfiguration<BeerStyle>
 
         builder.HasMany(x => x.Beers)
             .WithOne(x => x.BeerStyle)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

@@ -15,7 +15,7 @@ public class Beer : BaseAuditableEntity
     /// <summary>
     ///     The beer style id.
     /// </summary>
-    public Guid BeerStyleId { get; set; }
+    public Guid? BeerStyleId { get; set; }
 
     /// <summary>
     ///     The beer style.
