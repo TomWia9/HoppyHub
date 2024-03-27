@@ -75,8 +75,7 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         {
             Id = entity.Id,
             Name = entity.Name,
-            BreweryId = entity.BreweryId,
-            BreweryName = entity.Brewery!.Name
+            BreweryId = entity.BreweryId
         };
 
         await _publishEndpoint.Publish(beerUpdatedEvent, cancellationToken);

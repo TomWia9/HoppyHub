@@ -16,7 +16,6 @@ public class BeerConfiguration : IEntityTypeConfiguration<Beer>
     public void Configure(EntityTypeBuilder<Beer> builder)
     {
         builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
-        builder.Property(x => x.BreweryName).IsRequired().HasMaxLength(500);
 
         builder.HasMany(x => x.Opinions)
             .WithOne(x => x.Beer)

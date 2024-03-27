@@ -96,7 +96,7 @@ public class CreateOpinionCommandHandlerTests
         };
         var beer = new Beer
         {
-            Id = beerId, BreweryId = breweryId, Name = "testName", BreweryName = "testBreweryName",
+            Id = beerId, BreweryId = breweryId, Name = "testName",
             Opinions = new List<Opinion>()
         };
         var opinions = Enumerable.Empty<Opinion>();
@@ -257,7 +257,7 @@ public class CreateOpinionCommandHandlerTests
         };
         var beer = new Beer
         {
-            Id = beerId, BreweryId = breweryId, Name = "testName", BreweryName = "testBreweryName",
+            Id = beerId, BreweryId = breweryId, Name = "testName",
             Opinions = new List<Opinion>()
         };
         var opinions = Enumerable.Empty<Opinion>();
