@@ -1,4 +1,4 @@
-name: Build and deploy UserManagement to an Azure Web App
+name: UserManagement Deploy
 
 on:
   push:
