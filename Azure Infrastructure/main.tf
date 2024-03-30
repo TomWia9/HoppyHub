@@ -123,7 +123,7 @@ module "user_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "ConnectionStrings--${local.user_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.user_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "beer_management_db" {
@@ -133,7 +133,7 @@ module "beer_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "ConnectionStrings--${local.beer_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.beer_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "opinion_management_db" {
@@ -143,7 +143,7 @@ module "opinion_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "ConnectionStrings--${local.opinion_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.opinion_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 module "favorite_management_db" {
@@ -153,7 +153,7 @@ module "favorite_management_db" {
   sql_server_full_name          = azurerm_mssql_server.sql_server.fully_qualified_domain_name
   sql_server_user               = azurerm_mssql_server.sql_server.administrator_login
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
-  connection_string_secret_name = "ConnectionStrings--${local.favorite_management_name}DbConnectionString"
+  connection_string_secret_name = "ConnectionStrings--${local.favorite_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 
