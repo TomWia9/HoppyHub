@@ -159,6 +159,8 @@ jobs:
     needs: build-ui-app
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Deploy HoppyHub UI
         uses: Azure/static-web-apps-deploy@v1
         with:
