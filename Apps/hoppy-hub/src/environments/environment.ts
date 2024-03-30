@@ -1,7 +1,11 @@
 export const environment = {
-  production: false,
-  beerManagementApiUrl: 'http://localhost:5000/api',
-  userManagementApiUrl: 'http://localhost:5001/api',
-  favoriteManagementApiUrl: 'http://localhost:5002/api',
-  opinionManagementApiUrl: 'http://localhost:5003/api'
+  production: true,
+  beerManagementApiUrl:
+    'https://hoppy-hub-BeerManagement.azurewebsites.net/api',
+  userManagementApiUrl:
+    'https://hoppy-hub-UserManagement.azurewebsites.net/api',
+  favoriteManagementApiUrl:
+    'https://hoppy-hub-FavoriteManagement.azurewebsites.net/api',
+  opinionManagementApiUrl:
+    'https://hoppy-hub-OpinionManagement.azurewebsites.net/api'
 };
