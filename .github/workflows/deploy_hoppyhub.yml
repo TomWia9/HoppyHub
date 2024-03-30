@@ -131,32 +131,31 @@ jobs:
   #         package: .
   #         publish-profile: ${{ secrets.AZURE_FAVORITE_MANAGEMENT_PUBLISH_PROFILE }}
 
-  build-ui-app:
-    runs-on: ubuntu-latest
+  # build-ui-app:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: "20"
 
-      - name: Install Angular CLI
-        run: npm install -g @angular/cli
+  #     - name: Install Angular CLI
+  #       run: npm install -g @angular/cli
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: Apps/hoppy-hub
+  #     - name: Install dependencies
+  #       run: npm install
+  #       working-directory: Apps/hoppy-hub
 
-      - name: Build Angular app
-        run: ng build --configuration production --output-path=dist/hoppy-hub
-        working-directory: Apps/hoppy-hub
+  #     - name: Build Angular app
+  #       run: ng build --configuration production --output-path=dist/hoppy-hub
+  #       working-directory: Apps/hoppy-hub
 
   deploy-ui-app:
     runs-on: ubuntu-latest
-    needs: build-ui-app
 
     steps:
       - name: Checkout repository
@@ -169,4 +168,3 @@ jobs:
           action: "upload"
           app_location: Apps/hoppy-hub
           output_location: dist/hoppy-hub/browser
-          skip_app_build: true
