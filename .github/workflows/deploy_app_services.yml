@@ -85,7 +85,6 @@ jobs:
           name: UserManagement
 
       - name: Deploy UserManagement
-        id: deploy-user-management
         uses: azure/webapps-deploy@v3
         with:
           app-name: "hoppy-hub-UserManagement"
@@ -99,7 +98,6 @@ jobs:
           name: BeerManagement
 
       - name: Deploy BeerManagement
-        id: deploy-beer-management
         uses: azure/webapps-deploy@v3
         with:
           app-name: "hoppy-hub-BeerManagement"
@@ -113,7 +111,6 @@ jobs:
           name: OpinionManagement
 
       - name: Deploy OpinionManagement
-        id: deploy-opinion-management
         uses: azure/webapps-deploy@v3
         with:
           app-name: "hoppy-hub-OpinionManagement"
@@ -127,7 +124,6 @@ jobs:
           name: FavoriteManagement
 
       - name: Deploy FavoriteManagement
-        id: deploy-favorite-management
         uses: azure/webapps-deploy@v3
         with:
           app-name: "hoppy-hub-FavoriteManagement"
