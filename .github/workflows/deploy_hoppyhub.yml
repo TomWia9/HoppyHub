@@ -165,3 +165,4 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_HOPPYHUB_API_TOKEN }}
           action: "upload"
           app_location: "Apps/hoppy-hub"
+          output_location: "dist/hoppy-hub"
