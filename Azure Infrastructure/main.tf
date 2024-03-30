@@ -6,7 +6,7 @@ locals {
   service_bus_name         = "${var.master_name}servicebus"
   sql_server_name          = "${var.master_name}sqlserver"
   app_service_plan_name    = "${var.master_name}asp"
-  web_app_name             = "${var.master_name}staticwebapp"
+  web_app_name             = "HoppyHub"
   user_management_name     = "UserManagement"
   beer_management_name     = "BeerManagement"
   opinion_management_name  = "OpinionManagement"
@@ -164,17 +164,23 @@ module "favorite_management_db" {
   key_vault_id                  = azurerm_key_vault.key_vault.id
 }
 
-#App service plan add app services
+#App service plan, static web app and app services
 resource "azurerm_service_plan" "app_service_plan" {
   name                = local.app_service_plan_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = "B2"
+}
+resource "azurerm_static_web_app" "ui_static_web_app" {
+  name                = local.web_app_name
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = "westeurope"
 }
 module "user_management_app" {
   source              = "./modules/web_app"
-  web_app_name        = "hoppy-hub-${local.user_management_name}"
+  name                = "hoppy-hub-${local.user_management_name}"
+  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
@@ -184,7 +190,8 @@ module "user_management_app" {
 }
 module "beer_management_app" {
   source              = "./modules/web_app"
-  web_app_name        = "hoppy-hub-${local.beer_management_name}"
+  name                = "hoppy-hub-${local.beer_management_name}"
+  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
@@ -194,7 +201,8 @@ module "beer_management_app" {
 }
 module "opinion_management_app" {
   source              = "./modules/web_app"
-  web_app_name        = "hoppy-hub-${local.opinion_management_name}"
+  name                = "hoppy-hub-${local.opinion_management_name}"
+  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
@@ -204,19 +212,14 @@ module "opinion_management_app" {
 }
 module "favorite_management_app" {
   source              = "./modules/web_app"
-  web_app_name        = "hoppy-hub-${local.favorite_management_name}"
+  name                = "hoppy-hub-${local.favorite_management_name}"
+  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.app_service_plan.id
   app_url_secret_name = "${local.favorite_management_name}ApiUrl"
   key_vault_id        = azurerm_key_vault.key_vault.id
   key_vault_name      = azurerm_key_vault.key_vault.name
-}
-
-resource "azurerm_static_web_app" "ui_static_web_app" {
-  name                = local.web_app_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = "westeurope"
 }
 
 #Key Vault secrets

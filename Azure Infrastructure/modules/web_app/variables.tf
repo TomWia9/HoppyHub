@@ -1,6 +1,11 @@
-variable "web_app_name" {
+variable "name" {
   type        = string
-  description = "Web app name"
+  description = "Name"
+}
+
+variable "static_web_app_uri" {
+  type        = string
+  description = "Static web app uri"
 }
 
 variable "resource_group_name" {
