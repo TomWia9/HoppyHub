@@ -52,28 +52,28 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: UserManagement
-          path: ${{env.DOTNET_ROOT}}/UserManagement/
+          path: /usr/share/dotnet/UserManagement/
           if-no-files-found: error
 
       - name: Upload BeerManagement artifact
         uses: actions/upload-artifact@v4
         with:
           name: BeerManagement
-          path: ${{env.DOTNET_ROOT}}/BeerManagement/
+          path: /usr/share/dotnet/BeerManagement/
           if-no-files-found: error
 
       - name: Upload OpinionManagement artifact
         uses: actions/upload-artifact@v4
         with:
           name: OpinionManagement
-          path: ${{env.DOTNET_ROOT}}/OpinionManagement/
+          path: /usr/share/dotnet/OpinionManagement/
           if-no-files-found: error
 
       - name: Upload FavoriteManagement artifact
         uses: actions/upload-artifact@v4
         with:
           name: FavoriteManagement
-          path: ${{env.DOTNET_ROOT}}/FavoriteManagement/
+          path: /usr/share/dotnet/FavoriteManagement/
           if-no-files-found: error
 
   deploy:
