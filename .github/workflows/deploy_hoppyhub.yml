@@ -133,11 +133,10 @@ jobs:
 
   build-ui-app:
     runs-on: ubuntu-latest
-    needs: build-and-upload-artifacts
 
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -145,12 +144,12 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm --prefix ./Apps/hoppy-hub install
-        working-directory: ./Apps/hoppy-hub
+        run: npm install
+        working-directory: Apps/hoppy-hub
 
       - name: Build Angular app
         run: npm run build -- --prod
-        working-directory: ./Apps/hoppy-hub
+        working-directory: Apps/hoppy-hub
 
   deploy-ui-app:
     runs-on: ubuntu-latest
