@@ -148,7 +148,7 @@ jobs:
         working-directory: Apps/hoppy-hub
 
       - name: Build Angular app
-        run: npm run build -- --prod
+        run: npm run build -- --production
         working-directory: Apps/hoppy-hub
 
   deploy-ui-app:
