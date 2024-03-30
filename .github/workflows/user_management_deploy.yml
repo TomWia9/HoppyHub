@@ -18,6 +18,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.x"
+          dotnet-quality: "preview"
 
       - name: Build with dotnet
         run: dotnet build Services/UserManagement/src/Api/Api.csproj --configuration Release
