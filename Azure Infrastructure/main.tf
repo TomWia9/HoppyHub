@@ -178,48 +178,52 @@ resource "azurerm_static_web_app" "ui_static_web_app" {
   location            = "westeurope"
 }
 module "user_management_app" {
-  source              = "./modules/web_app"
-  name                = "hoppy-hub-${local.user_management_name}"
-  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.app_service_plan.id
-  app_url_secret_name = "${local.user_management_name}ApiUrl"
-  key_vault_id        = azurerm_key_vault.key_vault.id
-  key_vault_name      = azurerm_key_vault.key_vault.name
+  source                          = "./modules/web_app"
+  name                            = "hoppy-hub-${local.user_management_name}"
+  static_web_app_uri              = azurerm_static_web_app.ui_static_web_app.default_host_name
+  resource_group_name             = azurerm_resource_group.rg.name
+  location                        = azurerm_resource_group.rg.location
+  service_plan_id                 = azurerm_service_plan.app_service_plan.id
+  app_url_secret_name             = "${local.user_management_name}ApiUrl"
+  app_publish_profile_secret_name = "AZURE_${upper(local.user_management_name)}_PUBLISH_PROFILE"
+  key_vault_id                    = azurerm_key_vault.key_vault.id
+  key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 module "beer_management_app" {
-  source              = "./modules/web_app"
-  name                = "hoppy-hub-${local.beer_management_name}"
-  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.app_service_plan.id
-  app_url_secret_name = "${local.beer_management_name}ApiUrl"
-  key_vault_id        = azurerm_key_vault.key_vault.id
-  key_vault_name      = azurerm_key_vault.key_vault.name
+  source                          = "./modules/web_app"
+  name                            = "hoppy-hub-${local.beer_management_name}"
+  static_web_app_uri              = azurerm_static_web_app.ui_static_web_app.default_host_name
+  resource_group_name             = azurerm_resource_group.rg.name
+  location                        = azurerm_resource_group.rg.location
+  service_plan_id                 = azurerm_service_plan.app_service_plan.id
+  app_url_secret_name             = "${local.beer_management_name}ApiUrl"
+  app_publish_profile_secret_name = "AZURE_${upper(local.beer_management_name)}_PUBLISH_PROFILE"
+  key_vault_id                    = azurerm_key_vault.key_vault.id
+  key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 module "opinion_management_app" {
-  source              = "./modules/web_app"
-  name                = "hoppy-hub-${local.opinion_management_name}"
-  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.app_service_plan.id
-  app_url_secret_name = "${local.opinion_management_name}ApiUrl"
-  key_vault_id        = azurerm_key_vault.key_vault.id
-  key_vault_name      = azurerm_key_vault.key_vault.name
+  source                          = "./modules/web_app"
+  name                            = "hoppy-hub-${local.opinion_management_name}"
+  static_web_app_uri              = azurerm_static_web_app.ui_static_web_app.default_host_name
+  resource_group_name             = azurerm_resource_group.rg.name
+  location                        = azurerm_resource_group.rg.location
+  service_plan_id                 = azurerm_service_plan.app_service_plan.id
+  app_url_secret_name             = "${local.opinion_management_name}ApiUrl"
+  app_publish_profile_secret_name = "AZURE_${upper(local.opinion_management_name)}_PUBLISH_PROFILE"
+  key_vault_id                    = azurerm_key_vault.key_vault.id
+  key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 module "favorite_management_app" {
-  source              = "./modules/web_app"
-  name                = "hoppy-hub-${local.favorite_management_name}"
-  static_web_app_uri  = azurerm_static_web_app.ui_static_web_app.default_host_name
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  service_plan_id     = azurerm_service_plan.app_service_plan.id
-  app_url_secret_name = "${local.favorite_management_name}ApiUrl"
-  key_vault_id        = azurerm_key_vault.key_vault.id
-  key_vault_name      = azurerm_key_vault.key_vault.name
+  source                          = "./modules/web_app"
+  name                            = "hoppy-hub-${local.favorite_management_name}"
+  static_web_app_uri              = azurerm_static_web_app.ui_static_web_app.default_host_name
+  resource_group_name             = azurerm_resource_group.rg.name
+  location                        = azurerm_resource_group.rg.location
+  service_plan_id                 = azurerm_service_plan.app_service_plan.id
+  app_url_secret_name             = "${local.favorite_management_name}ApiUrl"
+  app_publish_profile_secret_name = "AZURE_${upper(local.favorite_management_name)}_PUBLISH_PROFILE"
+  key_vault_id                    = azurerm_key_vault.key_vault.id
+  key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 
 #Key Vault secrets
@@ -265,5 +269,10 @@ resource "azurerm_key_vault_secret" "kv_secret_sql_server_user" {
 resource "azurerm_key_vault_secret" "kv_secret_sql_server_password" {
   name         = "SqlServerPassword"
   value        = azurerm_mssql_server.sql_server.administrator_login_password
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_static_web_app_api_key" {
+  name         = "StaticWebAppApiKey"
+  value        = azurerm_static_web_app.ui_static_web_app.api_key
   key_vault_id = azurerm_key_vault.key_vault.id
 }

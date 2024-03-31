@@ -35,3 +35,22 @@ resource "azurerm_key_vault_secret" "kv_secret_app_url" {
   value        = "${azurerm_linux_web_app.web_app.name}.azurewebsites.net"
   key_vault_id = var.key_vault_id
 }
+
+resource "azurerm_key_vault_secret" "kv_secret_publish_profile" {
+  name         = var.app_publish_profile_secret_name
+  value        = <<EOT
+                    <publishData>
+                      <publishProfile 
+                        profileName="${azurerm_linux_web_app.web_app.name} - Zip Deploy"
+                        publishMethod="ZipDeploy"
+                        publishUrl="${azurerm_linux_web_app.web_app.name}.scm.azurewebsites.net:443"
+                        userName="${azurerm_linux_web_app.web_app.site_credential[0].name}"
+                        userPWD="${azurerm_linux_web_app.web_app.site_credential[0].password}" 
+                        destinationAppUrl="http://${azurerm_linux_web_app.web_app.name}.azurewebsites.net" 
+                        controlPanelLink="https://portal.azure.com" 
+                        webSystem="WebSites">
+                      </publishProfile>
+                    </publishData>
+                  EOT
+  key_vault_id = var.key_vault_id
+}
