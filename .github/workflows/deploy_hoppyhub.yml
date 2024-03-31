@@ -145,4 +145,3 @@ jobs:
           action: "upload"
           app_location: Apps/hoppy-hub
           output_location: dist/hoppy-hub/browser
-          production_branch: "Features/deployment-pipelines"
