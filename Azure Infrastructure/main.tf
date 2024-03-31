@@ -170,7 +170,7 @@ resource "azurerm_service_plan" "app_service_plan" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
-  sku_name            = "B2"
+  sku_name            = "B3"
 }
 resource "azurerm_static_web_app" "ui_static_web_app" {
   name                = local.web_app_name
