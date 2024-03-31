@@ -142,6 +142,6 @@ jobs:
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_HOPPYHUB_API_TOKEN }}
-          action: "upload"
+          action: "close"
           app_location: Apps/hoppy-hub
           output_location: dist/hoppy-hub/browser
