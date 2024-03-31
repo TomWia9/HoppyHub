@@ -90,7 +90,7 @@ jobs:
           app-name: "hoppy-hub-UserManagement"
           slot-name: "production"
           package: .
-          publish-profile: ${{ secrets.AZURE_USER_MANAGEMENT_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_USERMANAGEMENT_PUBLISH_PROFILE }}
 
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -103,7 +103,7 @@ jobs:
           app-name: "hoppy-hub-BeerManagement"
           slot-name: "production"
           package: .
-          publish-profile: ${{ secrets.AZURE_BEER_MANAGEMENT_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_BEERMANAGEMENT_PUBLISH_PROFILE }}
 
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -116,7 +116,7 @@ jobs:
           app-name: "hoppy-hub-OpinionManagement"
           slot-name: "production"
           package: .
-          publish-profile: ${{ secrets.AZURE_OPINION_MANAGEMENT_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_OPINIONMANAGEMENT_PUBLISH_PROFILE }}
 
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -129,7 +129,7 @@ jobs:
           app-name: "hoppy-hub-FavoriteManagement"
           slot-name: "production"
           package: .
-          publish-profile: ${{ secrets.AZURE_FAVORITE_MANAGEMENT_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZURE_FAVORITEMANAGEMENT_PUBLISH_PROFILE }}
 
   deploy-ui-app:
     runs-on: ubuntu-latest
