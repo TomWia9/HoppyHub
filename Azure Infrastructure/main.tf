@@ -226,7 +226,7 @@ module "favorite_management_app" {
   key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 
-#Key Vault secrets
+#Key Vault and GitHub secrets
 resource "random_password" "random_jwt" {
   length  = 32
   special = false
@@ -275,4 +275,9 @@ resource "azurerm_key_vault_secret" "kv_secret_static_web_app_api_key" {
   name         = "StaticWebAppApiKey"
   value        = azurerm_static_web_app.ui_static_web_app.api_key
   key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "github_actions_secret" "gh_secret_static_web_app_api_key" {
+  repository      = "HoppyHub"
+  secret_name     = "AZURE_STATIC_HOPPYHUB_API_TOKEN"
+  plaintext_value = azurerm_static_web_app.ui_static_web_app.api_key
 }
