@@ -10,6 +10,7 @@ on:
 jobs:
   build-and-upload-artifacts:
     runs-on: ubuntu-latest
+    name: Build And Upload Artifacts
 
     steps:
       - uses: actions/checkout@v4
@@ -74,6 +75,7 @@ jobs:
 
   deploy-services:
     runs-on: ubuntu-latest
+    name: Deploy Services
     needs: build-and-upload-artifacts
     environment:
       name: "production"
@@ -134,7 +136,7 @@ jobs:
   deploy-ui-app:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and deploy UI app
+    name: Build And Deploy UI App
 
     steps:
       - name: Checkout repository
