@@ -144,4 +144,5 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_HOPPYHUB_API_TOKEN }}
           app_location: Apps/hoppy-hub
           output_location: dist/hoppy-hub/browser
+          app_build_command: "ng build --configuration production"
           action: "upload"
