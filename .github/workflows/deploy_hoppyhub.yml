@@ -145,3 +145,4 @@ jobs:
           app_location: Apps/hoppy-hub
           output_location: dist/hoppy-hub/browser
           action: "upload"
+          deployment_environment: "production"
