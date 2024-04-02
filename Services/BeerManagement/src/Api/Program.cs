@@ -27,6 +27,7 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/BeerManagementSpecification/swagger.json", "HoppyHub - Beer Management");
         c.RoutePrefix = string.Empty;
     });
+    app.UseCors("AngularApp");
 }
 else
 {
@@ -34,8 +35,6 @@ else
         new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
         new DefaultAzureCredential());
 }
-
-app.UseCors("AngularApp");
 
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
