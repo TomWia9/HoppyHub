@@ -110,6 +110,9 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(array: { [key: string]: string }[]): string {
+    if (array.length === 0) {
+      return 'Something went wrong';
+    }
     const firstObject = Object.values(array)[0];
     const errorMessage = Object.values(firstObject)[0];
 

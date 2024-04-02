@@ -70,6 +70,10 @@ export class BeersTableComponent implements OnInit, OnDestroy {
   }
 
   getErrorMessage(array: { [key: string]: string }[]): string {
+    if (array.length === 0) {
+      return '';
+    }
+
     const firstObject = Object.values(array)[0];
     const errorMessage = Object.values(firstObject)[0];
 
@@ -81,7 +85,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getBeersSubscription.unsubscribe();
     this.getBeersSubscription.unsubscribe();
   }
 }
