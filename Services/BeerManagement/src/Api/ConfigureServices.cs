@@ -25,14 +25,14 @@ public static class ConfigureServices
         services.AddHttpContextAccessor();
         services.AddFluentValidationClientsideAdapters();
         services.AddFluentValidationRulesToSwagger();
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AngularApp", builder =>
-            {
-                builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
-                    .AllowAnyMethod().WithExposedHeaders("X-Pagination");
-            });
-        });
+        // services.AddCors(options =>
+        // {
+        //     options.AddPolicy("AngularApp", builder =>
+        //     {
+        //         builder.WithOrigins("https://happy-sky-0e76f8203-92.westeurope.5.azurestaticapps.net/").AllowAnyHeader()
+        //             .AllowAnyMethod().WithExposedHeaders("X-Pagination");
+        //     });
+        // });
         services.AddSwaggerGen(setupAction =>
         {
             setupAction.SwaggerDoc(
