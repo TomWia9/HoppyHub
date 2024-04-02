@@ -29,9 +29,14 @@ public static class ConfigureServices
         {
             options.AddPolicy("AngularApp", builder =>
             {
-                builder.WithOrigins("http://localhost:4200").AllowAnyHeader()
+                builder.AllowAnyHeader()
                     .AllowAnyMethod().WithExposedHeaders("X-Pagination");
             });
+            // options.AddPolicy("AngularApp", builder =>
+            // {
+            //     builder.WithOrigins("https://happy-sky-0e76f8203-92.westeurope.5.azurestaticapps.net/").AllowAnyHeader()
+            //         .AllowAnyMethod().WithExposedHeaders("X-Pagination");
+            // });
         });
         services.AddSwaggerGen(setupAction =>
         {
