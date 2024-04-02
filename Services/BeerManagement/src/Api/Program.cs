@@ -35,7 +35,7 @@ else
         new DefaultAzureCredential());
 }
 
-// app.UseCors("AngularApp");
+app.UseCors("AngularApp");
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();
