@@ -122,6 +122,15 @@ resource "azurerm_mssql_firewall_rule" "sql_server_firewall_rule" {
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
+data "http" "current_ip" {
+  url = "https://api.ipify.org?format=text"
+}
+resource "azurerm_mssql_firewall_rule" "sql_server_firewall_rule_current_ip" {
+  name             = "TerraformCurrentIp"
+  server_id        = azurerm_mssql_server.sql_server.id
+  start_ip_address = data.http.current_ip.response_body
+  end_ip_address   = data.http.current_ip.response_body
+}
 
 module "user_management_db" {
   source                        = "./modules/sql_database"
@@ -132,6 +141,8 @@ module "user_management_db" {
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
   connection_string_secret_name = "ConnectionStrings--${local.user_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
+  bacpac_uri                    = azurerm_storage_blob.user_management_db_bacpac.url
+  storage_key                   = azurerm_storage_account.storage_account.primary_access_key
 }
 module "beer_management_db" {
   source                        = "./modules/sql_database"
@@ -142,6 +153,8 @@ module "beer_management_db" {
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
   connection_string_secret_name = "ConnectionStrings--${local.beer_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
+  bacpac_uri                    = azurerm_storage_blob.beer_management_db_bacpac.url
+  storage_key                   = azurerm_storage_account.storage_account.primary_access_key
 }
 module "opinion_management_db" {
   source                        = "./modules/sql_database"
@@ -152,6 +165,8 @@ module "opinion_management_db" {
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
   connection_string_secret_name = "ConnectionStrings--${local.opinion_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
+  bacpac_uri                    = azurerm_storage_blob.opinion_management_db_bacpac.url
+  storage_key                   = azurerm_storage_account.storage_account.primary_access_key
 }
 module "favorite_management_db" {
   source                        = "./modules/sql_database"
@@ -162,6 +177,8 @@ module "favorite_management_db" {
   sql_server_password           = azurerm_mssql_server.sql_server.administrator_login_password
   connection_string_secret_name = "ConnectionStrings--${local.favorite_management_name}DbConnection"
   key_vault_id                  = azurerm_key_vault.key_vault.id
+  bacpac_uri                    = azurerm_storage_blob.favorite_management_db_bacpac.url
+  storage_key                   = azurerm_storage_account.storage_account.primary_access_key
 }
 
 #App service plan, static web app and app services
