@@ -90,7 +90,11 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
             this.router.navigate(['/']);
           },
           error: error => {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            let errorMessage = 'Something went wrong';
+
+            if (error.error && error.error.errors) {
+              errorMessage = this.getErrorMessage(error.error.errors);
+            }
 
             this.alertService.openAlert(AlertType.Error, errorMessage);
           }
