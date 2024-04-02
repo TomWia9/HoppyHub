@@ -39,8 +39,6 @@ export class BeersService {
           console.log(pagination);
 
           const paginationData: Pagination = JSON.parse(pagination!);
-          console.log('BeersService - map - paginationData: ');
-          console.log(paginationData);
 
           return new PagedList<Beer>(
             response.body as Beer[],

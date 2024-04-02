@@ -52,9 +52,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
           this.loading = false;
         },
         error: error => {
-          console.log('Beers table: ');
-          console.log(error);
-
           this.error = 'An error occurred while loading the beers';
 
           if (error.error && error.error.errors) {

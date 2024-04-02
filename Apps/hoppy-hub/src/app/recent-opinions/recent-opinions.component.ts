@@ -36,10 +36,7 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
           this.error = '';
           this.loading = false;
         },
-        error: error => {
-          console.log('Recent Opinions: ');
-          console.log(error);
-
+        error: () => {
           this.error = 'An error occurred while loading the recent opinions';
           this.loading = false;
         }
