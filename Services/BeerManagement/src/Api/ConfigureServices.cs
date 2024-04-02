@@ -29,8 +29,7 @@ public static class ConfigureServices
         {
             options.AddPolicy("AngularApp", builder =>
             {
-                builder.AllowAnyOrigin().AllowAnyHeader()
-                    .AllowAnyMethod().WithExposedHeaders("X-Pagination");
+                builder.WithExposedHeaders("X-Pagination");
             });
         });
         services.AddSwaggerGen(setupAction =>
