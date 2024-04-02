@@ -66,7 +66,10 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
             this.loading = false;
           }
         },
-        error: () => {
+        error: error => {
+          console.log('Monthly data: ');
+          console.log(error);
+
           this.error = 'An error occurred while loading monthly data';
           this.loading = false;
         }
