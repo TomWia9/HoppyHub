@@ -15,7 +15,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddApiServices();
+builder.Services.AddApiServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -35,7 +35,7 @@ else
         new DefaultAzureCredential());
 }
 
-app.UseCors("AngularApp");
+app.UseCors("UIApp");
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -17,7 +17,8 @@ public static class ConfigureServices
     ///     Adds api project services.
     /// </summary>
     /// <param name="services">The services</param>
-    public static void AddApiServices(this IServiceCollection services)
+    /// <param name="configuration">The configuration</param>
+    public static void AddApiServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilterAttribute>(); });
@@ -27,9 +28,10 @@ public static class ConfigureServices
         services.AddFluentValidationRulesToSwagger();
         services.AddCors(options =>
         {
-            options.AddPolicy("AngularApp", builder =>
+            options.AddPolicy("UIApp", builder =>
             {
-                builder.WithExposedHeaders("X-Pagination");
+                builder.WithOrigins(configuration.GetValue<string>("UIAppUrl") ?? throw new InvalidOperationException()).AllowAnyHeader()
+                    .AllowAnyMethod().WithExposedHeaders("X-Pagination");
             });
         });
         services.AddSwaggerGen(setupAction =>

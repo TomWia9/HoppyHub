@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SharedUtilities.Interfaces;
@@ -23,8 +24,10 @@ public class ConfigureServicesTests
     /// </summary>
     public ConfigureServicesTests()
     {
+        IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+
         _services = new ServiceCollection();
-        _services.AddApiServices();
+        _services.AddApiServices(configuration);
     }
 
     /// <summary>
