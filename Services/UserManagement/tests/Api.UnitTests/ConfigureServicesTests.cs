@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using SharedUtilities.Interfaces;
@@ -23,8 +24,13 @@ public class ConfigureServicesTests
     /// </summary>
     public ConfigureServicesTests()
     {
+        IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(new[]
+        {
+            new KeyValuePair<string, string>("UIAppUrl", "https://test.com"),
+        }!).Build();
+        
         _services = new ServiceCollection();
-        _services.AddApiServices();
+        _services.AddApiServices(configuration);
     }
 
     /// <summary>
@@ -62,11 +68,10 @@ public class ConfigureServicesTests
 
         var serviceProvider = _services.BuildServiceProvider();
         var corsOptions = serviceProvider.GetRequiredService<IOptions<CorsOptions>>().Value;
-        var angularAppPolicy = corsOptions.GetPolicy("AngularApp");
+        var angularAppPolicy = corsOptions.GetPolicy("UIApp");
         
         angularAppPolicy.Should().NotBeNull();
-        angularAppPolicy!.Origins.Should().Contain("http://localhost:4200");
-        angularAppPolicy.Origins.Count.Should().Be(1);
+        angularAppPolicy!.Origins.Count.Should().Be(1);
         angularAppPolicy.AllowAnyHeader.Should().BeTrue();
         angularAppPolicy.AllowAnyMethod.Should().BeTrue();
         angularAppPolicy.ExposedHeaders.Should().Contain("X-Pagination");

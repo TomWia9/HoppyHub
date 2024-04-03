@@ -9,6 +9,7 @@ import { AlertComponent } from './shared-components/alert/alert.component';
 import { AuthService } from './auth/auth.service';
 import { BeersFiltersModalComponent } from './beers/beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent implements OnInit {
   authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
+    console.log('Production: ' + environment.production);
     this.authService.autoLogin();
   }
 }

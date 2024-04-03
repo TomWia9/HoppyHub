@@ -32,3 +32,13 @@ variable "key_vault_id" {
   type        = string
   description = "Key vault id"
 }
+
+variable "storage_key" {
+  type        = string
+  description = "Storage key"
+}
+
+variable "bacpac_uri" {
+  type        = string
+  description = "Bacpac uri"
+}

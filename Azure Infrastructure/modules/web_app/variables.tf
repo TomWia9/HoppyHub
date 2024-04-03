@@ -1,6 +1,11 @@
-variable "web_app_name" {
+variable "name" {
   type        = string
-  description = "Web app name"
+  description = "Name"
+}
+
+variable "static_web_app_uri" {
+  type        = string
+  description = "Static web app uri"
 }
 
 variable "resource_group_name" {
@@ -21,6 +26,11 @@ variable "service_plan_id" {
 variable "app_url_secret_name" {
   type        = string
   description = "App url secret name"
+}
+
+variable "app_publish_profile_secret_name" {
+  type        = string
+  description = "App publish profile secret name"
 }
 
 variable "key_vault_id" {

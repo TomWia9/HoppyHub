@@ -33,6 +33,7 @@ export class BeersService {
         map((response: HttpResponse<Beer[]>) => {
           const pagination = response.headers.get('X-Pagination');
           const paginationData: Pagination = JSON.parse(pagination!);
+
           return new PagedList<Beer>(
             response.body as Beer[],
             paginationData.CurrentPage,

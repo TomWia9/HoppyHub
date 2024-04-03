@@ -15,7 +15,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddApiServices();
+builder.Services.AddApiServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -27,7 +27,6 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/OpinionManagementSpecification/swagger.json", "HoppyHub - Opinion Management");
         c.RoutePrefix = string.Empty;
     });
-    app.UseCors("AngularApp");
 }
 else
 {
@@ -36,6 +35,7 @@ else
         new DefaultAzureCredential());
 }
 
+app.UseCors("UIApp");
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();

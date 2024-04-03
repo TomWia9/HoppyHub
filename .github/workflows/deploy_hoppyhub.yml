@@ -1,0 +1,161 @@
+name: Deploy HoppyHub
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-upload-artifacts:
+    runs-on: ubuntu-latest
+    name: Build And Upload Artifacts
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.x"
+          dotnet-quality: "preview"
+
+      - name: Build UserManagement
+        run: dotnet build Services/UserManagement/src/Api/Api.csproj --configuration Release
+
+      - name: Build BeerManagement
+        run: dotnet build Services/BeerManagement/src/Api/Api.csproj --configuration Release
+
+      - name: Build OpinionManagement
+        run: dotnet build Services/OpinionManagement/src/Api/Api.csproj --configuration Release
+
+      - name: Build FavoriteManagement
+        run: dotnet build Services/FavoriteManagement/src/Api/Api.csproj --configuration Release
+
+      - name: Publish UserManagement
+        run: dotnet publish Services/UserManagement/src/Api/Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/UserManagement
+
+      - name: Publish BeerManagement
+        run: dotnet publish Services/BeerManagement/src/Api/Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/BeerManagement
+
+      - name: Publish OpinionManagement
+        run: dotnet publish Services/OpinionManagement/src/Api/Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/OpinionManagement
+
+      - name: Publish FavoriteManagement
+        run: dotnet publish Services/FavoriteManagement/src/Api/Api.csproj -c Release -o ${{env.DOTNET_ROOT}}/FavoriteManagement
+
+      - name: Upload UserManagement artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UserManagement
+          path: ${{env.DOTNET_ROOT}}/UserManagement
+          if-no-files-found: error
+
+      - name: Upload BeerManagement artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BeerManagement
+          path: ${{env.DOTNET_ROOT}}/BeerManagement
+          if-no-files-found: error
+
+      - name: Upload OpinionManagement artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpinionManagement
+          path: ${{env.DOTNET_ROOT}}/OpinionManagement
+          if-no-files-found: error
+
+      - name: Upload FavoriteManagement artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FavoriteManagement
+          path: ${{env.DOTNET_ROOT}}/FavoriteManagement
+          if-no-files-found: error
+
+  deploy-services:
+    runs-on: ubuntu-latest
+    name: Deploy Services
+    needs: build-and-upload-artifacts
+    environment:
+      name: "production"
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: UserManagement
+
+      - name: Deploy UserManagement
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "hoppy-hub-UserManagement"
+          slot-name: "production"
+          package: .
+          publish-profile: ${{ secrets.AZURE_USERMANAGEMENT_PUBLISH_PROFILE }}
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: BeerManagement
+
+      - name: Deploy BeerManagement
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "hoppy-hub-BeerManagement"
+          slot-name: "production"
+          package: .
+          publish-profile: ${{ secrets.AZURE_BEERMANAGEMENT_PUBLISH_PROFILE }}
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: OpinionManagement
+
+      - name: Deploy OpinionManagement
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "hoppy-hub-OpinionManagement"
+          slot-name: "production"
+          package: .
+          publish-profile: ${{ secrets.AZURE_OPINIONMANAGEMENT_PUBLISH_PROFILE }}
+
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: FavoriteManagement
+
+      - name: Deploy FavoriteManagement
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: "hoppy-hub-FavoriteManagement"
+          slot-name: "production"
+          package: .
+          publish-profile: ${{ secrets.AZURE_FAVORITEMANAGEMENT_PUBLISH_PROFILE }}
+
+  deploy-ui-app:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build And Deploy UI App
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy HoppyHub UI
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_HOPPYHUB_API_TOKEN }}
+          app_location: Apps/hoppy-hub
+          output_location: dist/hoppy-hub/browser
+          action: "upload"
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_HOPPYHUB_API_TOKEN }}
+          action: "close"
