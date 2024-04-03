@@ -3,6 +3,8 @@ using Api.Filters;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
+using Serilog;
+using Serilog.Core;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Services;
 
@@ -30,7 +32,9 @@ public static class ConfigureServices
         {
             options.AddPolicy("UIApp", builder =>
             {
-                builder.WithOrigins(configuration.GetValue<string>("UIAppUrl") ?? throw new InvalidOperationException()).AllowAnyHeader()
+                Log.Information($"CORS: {configuration.GetValue<string>("UIAppUrl")}");
+                builder.WithOrigins(configuration.GetValue<string>("UIAppUrl") ?? throw new InvalidOperationException())
+                    .AllowAnyHeader()
                     .AllowAnyMethod().WithExposedHeaders("X-Pagination");
             });
         });
