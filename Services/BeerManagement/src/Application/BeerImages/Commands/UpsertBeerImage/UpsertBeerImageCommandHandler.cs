@@ -1,12 +1,9 @@
 ﻿using Application.Common.Interfaces;
 using Domain.Entities;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
-using SharedUtilities.Extensions;
+using SharedUtilities.Interfaces;
 
 namespace Application.BeerImages.Commands.UpsertBeerImage;
 
@@ -21,20 +18,20 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The image created request client.
+    ///     The storage container service.
     /// </summary>
-    private readonly IRequestClient<ImageCreated> _imageCreatedRequestClient;
+    private readonly IStorageContainerService _storageContainerService;
 
     /// <summary>
     ///     Initializes UpsertBeerImageCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="imageCreatedRequestClient">The image created request client</param>
+    /// <param name="storageContainerService">The storage container service</param>
     public UpsertBeerImageCommandHandler(IApplicationDbContext context,
-        IRequestClient<ImageCreated> imageCreatedRequestClient)
+        IStorageContainerService storageContainerService)
     {
         _context = context;
-        _imageCreatedRequestClient = imageCreatedRequestClient;
+        _storageContainerService = storageContainerService;
     }
 
     /// <summary>
@@ -44,29 +41,21 @@ public class UpsertBeerImageCommandHandler : IRequestHandler<UpsertBeerImageComm
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<string> Handle(UpsertBeerImageCommand request, CancellationToken cancellationToken)
     {
-        var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken);
+        var beer = await _context.Beers.FindAsync([request.BeerId], cancellationToken);
 
         if (beer is null)
         {
             throw new NotFoundException(nameof(Beer), request.BeerId);
         }
 
-        var imageCreatedEvent = new ImageCreated
-        {
-            Path =
-                $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}{Path.GetExtension(request.Image!.FileName)}",
-            Image = await request.Image!.GetBytes()
-        };
+        var fileName =
+            $"Beers/{beer.BreweryId.ToString()}/{beer.Id.ToString()}{Path.GetExtension(request.Image!.FileName)}";
 
-        var imageUploadResult =
-            await _imageCreatedRequestClient.GetResponse<ImageUploaded>(imageCreatedEvent, cancellationToken);
-
-        var imageUri = imageUploadResult.Message.Uri;
+        var imageUri = await _storageContainerService.UploadAsync(fileName, request.Image);
 
         if (string.IsNullOrEmpty(imageUri))
         {
-            throw new RemoteServiceConnectionException("Failed to sent image.");
+            throw new RemoteServiceConnectionException("Failed to upload image.");
         }
 
         var entity = await _context.BeerImages.FirstOrDefaultAsync(x => x.BeerId == request.BeerId,

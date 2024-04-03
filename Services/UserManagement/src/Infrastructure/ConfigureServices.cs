@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SharedUtilities.Models;
 
@@ -29,19 +30,29 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            options.UseSqlServer(configuration.GetConnectionString("UserManagementDbConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
         services.AddMassTransit(x =>
         {
-            x.UsingRabbitMq((_, cfg) =>
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
             {
-                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                x.UsingRabbitMq((_, cfg) =>
                 {
-                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                    {
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    });
                 });
-            });
+            }
+            else
+            {
+                x.UsingAzureServiceBus((_, cfg) =>
+                {
+                    cfg.Host(configuration.GetConnectionString("AzureServiceBusConnection"));
+                });
+            }
         });
 
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());

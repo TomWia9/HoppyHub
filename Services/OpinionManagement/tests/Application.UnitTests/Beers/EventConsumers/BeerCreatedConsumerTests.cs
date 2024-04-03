@@ -53,8 +53,7 @@ public class BeerCreatedConsumerTests
         {
             Id = Guid.NewGuid(),
             BreweryId = Guid.NewGuid(),
-            Name = "testName",
-            BreweryName = "testBreweryName"
+            Name = "testName"
         };
         _consumeContextMock.Setup(x => x.Message).Returns(message);
         _contextMock.Setup(x => x.Beers).Returns(beersDbSetMock.Object);

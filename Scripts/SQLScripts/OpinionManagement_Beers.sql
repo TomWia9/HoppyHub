@@ -1,8 +1,6 @@
-INSERT INTO Beers (Id, Name, BreweryId, BreweryName)
+INSERT INTO Beers (Id, Name, BreweryId)
 SELECT Beers.Id,
        Beers.Name,
-       Beers.BreweryId,
-       Breweries.Name
+       Beers.BreweryId
 FROM BeerManagement.dbo.Beers
-         INNER JOIN BeerManagement.dbo.Breweries ON Beers.BreweryId = Breweries.Id
 ORDER BY Beers.Id

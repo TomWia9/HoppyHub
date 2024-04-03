@@ -5,8 +5,8 @@ using Domain.Entities;
 using MassTransit;
 using Moq;
 using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.UnitTests.Breweries.Commands.DeleteBrewery;
 
@@ -27,9 +27,14 @@ public class DeleteBreweryCommandHandlerTests
     private readonly DeleteBreweryCommandHandler _handler;
 
     /// <summary>
-    ///     The ImagesDeleted request client mock.
+    ///     The storage container service mock.
     /// </summary>
-    private readonly Mock<IRequestClient<ImagesDeleted>> _imagesDeletedRequestClientMock;
+    private readonly Mock<IStorageContainerService> _storageContainerServiceMock;
+
+    /// <summary>
+    ///     The publish endpoint mock.
+    /// </summary>
+    private readonly Mock<IPublishEndpoint> _publishEndpointMock;
 
     /// <summary>
     ///     Setups DeleteBreweryCommandHandlerTests.
@@ -37,45 +42,27 @@ public class DeleteBreweryCommandHandlerTests
     public DeleteBreweryCommandHandlerTests()
     {
         _contextMock = new Mock<IApplicationDbContext>();
-        _imagesDeletedRequestClientMock = new Mock<IRequestClient<ImagesDeleted>>();
-        _handler = new DeleteBreweryCommandHandler(_contextMock.Object, _imagesDeletedRequestClientMock.Object);
+        _storageContainerServiceMock = new Mock<IStorageContainerService>();
+        _publishEndpointMock = new Mock<IPublishEndpoint>();
+        _handler = new DeleteBreweryCommandHandler(_contextMock.Object, _storageContainerServiceMock.Object,
+            _publishEndpointMock.Object);
     }
 
     /// <summary>
-    ///     Tests that Handle method removes brewery from database and gets ImagesDeletedFromBlobStorage response without error
-    ///     when brewery exists.
+    ///     Tests that Handle method removes brewery from database and removes brewery beers images fom storage container and publishes BreweryDeleted event when brewery exists.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldRemoveBeerFromDatabaseAndGetImagesDeletedFromBlobStorageResponseWithoutError_WhenBeerExists()
+        Handle_ShouldRemoveBreweryFromDatabaseAndRemoveBreweryBeersImagesFromStorageContainerAndPublishBreweryDeletedEvent_WhenBeerExists()
     {
         // Arrange
         var breweryId = Guid.NewGuid();
         var brewery = new Brewery { Id = breweryId };
         var command = new DeleteBreweryCommand { Id = breweryId };
-        var imagesDeletedEvent = new ImagesDeleted
-        {
-            Paths = new List<string>
-            {
-                $"Opinions/{breweryId}",
-                $"Beers/{breweryId}"
-            }
-        };
-        var imagesDeletedFromBlobStorageResponse = new ImagesDeletedFromBlobStorage
-        {
-            Success = true
-        };
-        var responseMock = new Mock<Response<ImagesDeletedFromBlobStorage>>();
 
-        responseMock.SetupGet(x => x.Message).Returns(imagesDeletedFromBlobStorageResponse);
         _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
         _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(brewery);
-        _imagesDeletedRequestClientMock
-            .Setup(x => x.GetResponse<ImagesDeletedFromBlobStorage>(It.IsAny<ImagesDeleted>(),
-                It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ReturnsAsync(responseMock.Object);
 
         // Act
         await _handler.Handle(command, CancellationToken.None);
@@ -83,11 +70,9 @@ public class DeleteBreweryCommandHandlerTests
         // Assert
         _contextMock.Verify(x => x.Breweries.Remove(brewery), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
-        _imagesDeletedRequestClientMock.Verify(x => x.GetResponse<ImagesDeletedFromBlobStorage>(It.Is<ImagesDeleted>(
-                y =>
-                    y.Paths!.Count() == imagesDeletedEvent.Paths.Count() &&
-                    y.Paths!.All(imagesDeletedEvent.Paths.Contains)), It.IsAny<CancellationToken>(),
-            It.IsAny<RequestTimeout>()), Times.Once);
+        _storageContainerServiceMock.Verify(x => x.DeleteFromPathAsync(It.IsAny<string>()), Times.Once);
+        _publishEndpointMock.Verify(x =>
+            x.Publish(It.Is<BreweryDeleted>(y => y.Id == breweryId), It.IsAny<CancellationToken>()));
     }
 
     /// <summary>
@@ -109,44 +94,6 @@ public class DeleteBreweryCommandHandlerTests
         await action.Should().ThrowAsync<NotFoundException>();
         _contextMock.Verify(x => x.Breweries.Remove(It.IsAny<Brewery>()), Times.Never);
         _contextMock.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
-        _imagesDeletedRequestClientMock.Verify(
-            x => x.GetResponse<ImagesDeletedFromBlobStorage>(It.IsAny<ImagesDeleted>(), It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()),
-            Times.Never);
-    }
-
-    /// <summary>
-    ///     Tests that Handle method throws RemoteServiceConnectionException when ImagesDeletedFromBlobStorage response has an
-    ///     error.
-    /// </summary>
-    [Fact]
-    public async Task
-        Handle_ShouldThrowRemoteServiceConnectionException_WhenImagesDeletedFromBlobStorageHasAnError()
-    {
-        // Arrange
-        const string expectedMessage = "There was a problem deleting the images.";
-        var breweryId = Guid.NewGuid();
-        var brewery = new Brewery { Id = breweryId };
-        var command = new DeleteBreweryCommand { Id = breweryId };
-        var imagesDeletedFromBlobStorageResponse = new ImagesDeletedFromBlobStorage
-        {
-            Success = false
-        };
-        var responseMock = new Mock<Response<ImagesDeletedFromBlobStorage>>();
-
-        responseMock.SetupGet(x => x.Message).Returns(imagesDeletedFromBlobStorageResponse);
-        _contextMock.SetupGet(x => x.Database).Returns(new MockDatabaseFacade(_contextMock.Object));
-        _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(brewery);
-        _imagesDeletedRequestClientMock
-            .Setup(x => x.GetResponse<ImagesDeletedFromBlobStorage>(It.IsAny<ImagesDeleted>(),
-                It.IsAny<CancellationToken>(),
-                It.IsAny<RequestTimeout>()))
-            .ReturnsAsync(responseMock.Object);
-
-        // Act & Assert
-        await _handler.Invoking(x => x.Handle(command, CancellationToken.None))
-            .Should().ThrowAsync<RemoteServiceConnectionException>().WithMessage(expectedMessage);
     }
 
     /// <summary>
@@ -165,9 +112,7 @@ public class DeleteBreweryCommandHandlerTests
         _contextMock.Setup(x => x.Breweries.FindAsync(new object[] { breweryId }, It.IsAny<CancellationToken>()))
             .ReturnsAsync(brewery);
 
-        _imagesDeletedRequestClientMock.Setup(x =>
-                x.GetResponse<ImagesDeletedFromBlobStorage>(It.IsAny<ImagesDeleted>(), It.IsAny<CancellationToken>(),
-                    It.IsAny<RequestTimeout>()))
+        _storageContainerServiceMock.Setup(x => x.DeleteFromPathAsync(It.IsAny<string>()))
             .ThrowsAsync(new Exception(exceptionMessage));
 
         // Act & Assert

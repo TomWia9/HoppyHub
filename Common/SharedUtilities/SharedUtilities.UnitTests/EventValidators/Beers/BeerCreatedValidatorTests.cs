@@ -81,63 +81,6 @@ public class BeerCreatedValidatorTests
     }
 
     /// <summary>
-    ///     Tests that validation should not have error for BreweryName when BreweryName is valid.
-    /// </summary>
-    [Fact]
-    public void BeerCreated_ShouldNotHaveValidationErrorForBreweryName_WhenBreweryNameIsValid()
-    {
-        // Arrange
-        var beerCreatedEvent = new BeerCreated
-        {
-            BreweryName = new string('x', 250)
-        };
-
-        // Act
-        var result = _validator.TestValidate(beerCreatedEvent);
-
-        // Assert
-        result.ShouldNotHaveValidationErrorFor(x => x.BreweryName);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for BreweryName when BreweryName exceeds maximum length.
-    /// </summary>
-    [Fact]
-    public void BeerCreated_ShouldHaveValidationErrorForBreweryName_WhenBreweryNameExceedsMaximumLength()
-    {
-        // Arrange
-        var beerCreatedEvent = new BeerCreated
-        {
-            BreweryName = new string('x', 501)
-        };
-
-        // Act
-        var result = _validator.TestValidate(beerCreatedEvent);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.BreweryName);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for BreweryName when BreweryName is empty.
-    /// </summary>
-    [Fact]
-    public void BeerCreated_ShouldHaveValidationErrorForBreweryName_WhenBreweryNameIsEmpty()
-    {
-        // Arrange
-        var beerCreatedEvent = new BeerCreated
-        {
-            BreweryName = string.Empty
-        };
-
-        // Act
-        var result = _validator.TestValidate(beerCreatedEvent);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.BreweryName);
-    }
-
-    /// <summary>
     ///     Tests that validation should not have error for BreweryId when BreweryId is valid.
     /// </summary>
     [Fact]

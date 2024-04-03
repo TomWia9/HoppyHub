@@ -3,8 +3,8 @@ using Domain.Entities;
 using MassTransit;
 using MediatR;
 using SharedEvents.Events;
-using SharedEvents.Responses;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.Breweries.Commands.DeleteBrewery;
 
@@ -19,20 +19,27 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
     private readonly IApplicationDbContext _context;
 
     /// <summary>
-    ///     The ImagesDeleted request client.
+    ///     The storage container service.
     /// </summary>
-    private readonly IRequestClient<ImagesDeleted> _imagesDeletedRequestClient;
+    private readonly IStorageContainerService _storageContainerService;
+
+    /// <summary>
+    ///     The publish endpoint.
+    /// </summary>
+    private readonly IPublishEndpoint _publishEndpoint;
 
     /// <summary>
     ///     Initializes DeleteBreweryCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
-    /// <param name="imagesDeletedRequestClient">The ImagesDeleted request client</param>
+    /// <param name="storageContainerService">The storage container service</param>
+    /// <param name="publishEndpoint">The publish endpoint</param>
     public DeleteBreweryCommandHandler(IApplicationDbContext context,
-        IRequestClient<ImagesDeleted> imagesDeletedRequestClient)
+        IStorageContainerService storageContainerService, IPublishEndpoint publishEndpoint)
     {
         _context = context;
-        _imagesDeletedRequestClient = imagesDeletedRequestClient;
+        _storageContainerService = storageContainerService;
+        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
@@ -43,7 +50,7 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
     public async Task Handle(DeleteBreweryCommand request, CancellationToken cancellationToken)
     {
         var entity =
-            await _context.Breweries.FindAsync(new object?[] { request.Id }, cancellationToken);
+            await _context.Breweries.FindAsync([request.Id], cancellationToken);
 
         if (entity is null)
         {
@@ -57,26 +64,18 @@ public class DeleteBreweryCommandHandler : IRequestHandler<DeleteBreweryCommand>
             _context.Breweries.Remove(entity);
             await _context.SaveChangesAsync(cancellationToken);
 
-            var imagesDeletedEvent = new ImagesDeleted
-            {
-                Paths = new List<string>
-                {
-                    $"Opinions/{entity.Id}",
-                    $"Beers/{entity.Id}"
-                }
-            };
+            var breweryBeersImagesPath = $"Beers/{entity.Id}";
 
-            var result =
-                await _imagesDeletedRequestClient.GetResponse<ImagesDeletedFromBlobStorage>(imagesDeletedEvent,
-                    cancellationToken);
-            var imagesDeletedSuccessfully = result.Message.Success;
-
-            if (!imagesDeletedSuccessfully)
-            {
-                throw new RemoteServiceConnectionException("There was a problem deleting the images.");
-            }
+            await _storageContainerService.DeleteFromPathAsync(breweryBeersImagesPath);
 
             await transaction.CommitAsync(cancellationToken);
+
+            var breweryDeletedEvent = new BreweryDeleted
+            {
+                Id = entity.Id
+            };
+
+            await _publishEndpoint.Publish(breweryDeletedEvent, cancellationToken);
         }
         catch
         {

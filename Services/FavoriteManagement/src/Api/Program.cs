@@ -1,6 +1,7 @@
 using Api;
 using Application;
 using Application.Common.Interfaces;
+using Azure.Identity;
 using Infrastructure;
 using Serilog;
 
@@ -14,7 +15,7 @@ builder.Host.UseSerilog();
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddApiServices();
+builder.Services.AddApiServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -26,10 +27,15 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("swagger/FavoriteManagementSpecification/swagger.json", "HoppyHub - Favorite Management");
         c.RoutePrefix = string.Empty;
     });
-    app.UseCors("AngularApp");
-
+}
+else
+{
+    builder.Configuration.AddAzureKeyVault(
+        new Uri($"https://{builder.Configuration["KeyVaultName"]}.vault.azure.net/"),
+        new DefaultAzureCredential());
 }
 
+app.UseCors("UIApp");
 app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();

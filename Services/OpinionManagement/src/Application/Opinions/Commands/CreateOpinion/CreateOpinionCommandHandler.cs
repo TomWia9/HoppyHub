@@ -4,6 +4,7 @@ using AutoMapper;
 using Domain.Entities;
 using MediatR;
 using SharedUtilities.Exceptions;
+using SharedUtilities.Interfaces;
 
 namespace Application.Opinions.Commands.CreateOpinion;
 
@@ -28,16 +29,24 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     private readonly IOpinionsService _opinionsService;
 
     /// <summary>
+    ///     The storage container service.
+    /// </summary>
+    private readonly IStorageContainerService _storageContainerService;
+
+    /// <summary>
     ///     Initializes CreateOpinionCommandHandler.
     /// </summary>
     /// <param name="context">The database context</param>
     /// <param name="mapper">The mapper</param>
     /// <param name="opinionsService">TThe opinions service</param>
-    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IOpinionsService opinionsService)
+    /// <param name="storageContainerService">The storage container service</param>
+    public CreateOpinionCommandHandler(IApplicationDbContext context, IMapper mapper, IOpinionsService opinionsService,
+        IStorageContainerService storageContainerService)
     {
         _context = context;
         _mapper = mapper;
         _opinionsService = opinionsService;
+        _storageContainerService = storageContainerService;
     }
 
     /// <summary>
@@ -47,8 +56,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<OpinionDto> Handle(CreateOpinionCommand request, CancellationToken cancellationToken)
     {
-        var beer = await _context.Beers.FindAsync(new object?[] { request.BeerId },
-            cancellationToken);
+        var beer = await _context.Beers.FindAsync([request.BeerId], cancellationToken);
 
         if (beer is null)
         {
@@ -69,11 +77,26 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             await _context.Opinions.AddAsync(entity, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _opinionsService.UploadImageAsync(entity, request.Image, beer.BreweryId, beer.Id, entity.Id,
-                cancellationToken);
+            if (request.Image is not null)
+            {
+                var fileName =
+                    $"Opinions/{beer.BreweryId.ToString()}/{beer.Id.ToString()}/{entity.Id.ToString()}{Path.GetExtension(request.Image.FileName)}";
+
+                var imageUri = await _storageContainerService.UploadAsync(fileName, request.Image);
+
+                if (string.IsNullOrEmpty(imageUri))
+                {
+                    throw new RemoteServiceConnectionException("Failed to upload image.");
+                }
+
+                entity.ImageUri = imageUri;
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+            
+            await transaction.CommitAsync(cancellationToken);
+            
             await _opinionsService.PublishOpinionChangedEventAsync(beer.Id, cancellationToken);
 
-            await transaction.CommitAsync(cancellationToken);
         }
         catch
         {
@@ -81,7 +104,7 @@ public class CreateOpinionCommandHandler : IRequestHandler<CreateOpinionCommand,
             throw;
         }
 
-        entity.User = await _context.Users.FindAsync(new object?[] { entity.CreatedBy },
+        entity.User = await _context.Users.FindAsync([entity.CreatedBy],
             cancellationToken);
 
         var opinionDto = _mapper.Map<OpinionDto>(entity);

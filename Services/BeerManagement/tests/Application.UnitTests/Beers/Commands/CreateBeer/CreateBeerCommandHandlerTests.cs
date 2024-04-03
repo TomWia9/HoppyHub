@@ -106,8 +106,7 @@ public class CreateBeerCommandHandlerTests
         _contextMock.Verify(x => x.Beers.AddAsync(It.IsAny<Beer>(), CancellationToken.None), Times.Once);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);
         _publishEndpointMock.Verify(x =>
-            x.Publish(It.Is<BeerCreated>(y => y.Name == beerName && y.BreweryName == breweryName),
-                It.IsAny<CancellationToken>()));
+            x.Publish(It.Is<BeerCreated>(y => y.Name == beerName), It.IsAny<CancellationToken>()));
     }
 
     /// <summary>

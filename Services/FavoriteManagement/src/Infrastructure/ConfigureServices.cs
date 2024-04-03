@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SharedUtilities.Filters;
 using SharedUtilities.Models;
@@ -29,24 +30,38 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            options.UseSqlServer(configuration.GetConnectionString("FavoriteManagementDbConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
 
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
-                {
-                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
-                });
 
-                cfg.ConfigureEndpoints(context,
-                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "FavoriteManagement"));
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                    {
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    });
+
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "FavoriteManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
+            else
+            {
+                x.UsingAzureServiceBus((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetConnectionString("AzureServiceBusConnection"));
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "FavoriteManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
         });
 
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();

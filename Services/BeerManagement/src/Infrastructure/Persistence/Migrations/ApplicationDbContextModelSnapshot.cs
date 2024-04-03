@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -80,7 +80,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<double>("AlcoholByVolume")
                         .HasColumnType("float");
 
-                    b.Property<Guid>("BeerStyleId")
+                    b.Property<Guid?>("BeerStyleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<double?>("Blg")
@@ -273,8 +273,7 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasOne("Domain.Entities.BeerStyle", "BeerStyle")
                         .WithMany("Beers")
                         .HasForeignKey("BeerStyleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("Domain.Entities.Brewery", "Brewery")
                         .WithMany("Beers")

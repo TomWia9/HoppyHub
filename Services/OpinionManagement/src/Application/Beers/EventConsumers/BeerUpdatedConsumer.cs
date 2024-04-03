@@ -37,7 +37,6 @@ public class BeerUpdatedConsumer : IConsumer<BeerUpdated>
         {
             beer.Name = message.Name;
             beer.BreweryId = message.BreweryId;
-            beer.BreweryName = message.BreweryName;
 
             await _context.SaveChangesAsync(CancellationToken.None);
         }

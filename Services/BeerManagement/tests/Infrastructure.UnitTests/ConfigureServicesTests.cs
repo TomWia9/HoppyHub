@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SharedUtilities.Interfaces;
 
 namespace Infrastructure.UnitTests;
 
@@ -39,6 +40,17 @@ public class ConfigureServicesTests
         _services.Should().Contain(x => x.ServiceType == typeof(ApplicationDbContext));
         _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
+    }
+    
+    /// <summary>
+    ///     Tests that the AddInfrastructureServices method adds the StorageContainerService to the service collection.
+    /// </summary>
+    [Fact]
+    public void AddInfrastructureServices_Should_StorageContainerService()
+    {
+        // Assert
+        _services.Should().Contain(x => x.ServiceType == typeof(IStorageContainerService));
+        _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Transient);
     }
 
     /// <summary>

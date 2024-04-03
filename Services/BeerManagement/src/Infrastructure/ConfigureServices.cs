@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SharedUtilities.Filters;
+using SharedUtilities.Interfaces;
 using SharedUtilities.Models;
+using SharedUtilities.Services;
 
 namespace Infrastructure;
 
@@ -30,24 +33,42 @@ public static class ConfigureServices
         IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
+            options.UseSqlServer(configuration.GetConnectionString("BeerManagementDbConnection"),
                 builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+        services.AddTransient<IStorageContainerService>(_ =>
+            new StorageContainerService(configuration.GetConnectionString("StorageAccountConnection"),
+                configuration.GetValue<string>("ContainerName")));
 
         services.AddMassTransit(x =>
         {
             x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
-            x.UsingRabbitMq((context, cfg) =>
-            {
-                cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
-                {
-                    h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                    h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
-                });
 
-                cfg.ConfigureEndpoints(context,
-                    endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "BeerManagement"));
-                cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
-            });
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+            {
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
+                    {
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                    });
+
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "BeerManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
+            else
+            {
+                x.UsingAzureServiceBus((context, cfg) =>
+                {
+                    cfg.Host(configuration.GetConnectionString("AzureServiceBusConnection"));
+                    cfg.ConfigureEndpoints(context,
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "BeerManagement"));
+                    cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
+                });
+            }
         });
 
         services.AddSingleton<IAppConfiguration, AppConfiguration>();
