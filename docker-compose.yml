@@ -96,8 +96,6 @@ services:
     build:
       context: ./Apps/hoppy-hub
       dockerfile: ./Dockerfile
-    env_file:
-      - ./Config/.env
     ports:
       - "4200:80"
     depends_on:
