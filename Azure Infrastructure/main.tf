@@ -288,9 +288,9 @@ resource "azurerm_key_vault_secret" "kv_secret_sql_server_password" {
   value        = azurerm_mssql_server.sql_server.administrator_login_password
   key_vault_id = azurerm_key_vault.key_vault.id
 }
-resource "azurerm_key_vault_secret" "kv_secret_static_web_app_api_key" {
-  name         = "StaticWebAppApiKey"
-  value        = azurerm_static_web_app.ui_static_web_app.api_key
+resource "azurerm_key_vault_secret" "kv_secret_ui_app_url" {
+  name         = "UIAppUrl"
+  value        = azurerm_static_web_app.ui_static_web_app.default_host_name
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 resource "github_actions_secret" "gh_secret_static_web_app_api_key" {
