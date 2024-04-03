@@ -8,9 +8,6 @@ resource "azurerm_linux_web_app" "web_app" {
     application_stack {
       dotnet_version = "8.0"
     }
-    cors {
-      allowed_origins = ["https://${var.static_web_app_uri}"]
-    }
   }
 
   app_settings = {
