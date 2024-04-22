@@ -84,7 +84,6 @@ services:
       - ConnectionStrings__OpinionManagementDbConnection=Server=hoppyhub-sql-server;Database=OpinionManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - ConnectionStrings__StorageAccountConnection=${STORAGE_ACCOUNT_CONNECTION}
       - ContainerName=${CONTAINER_NAME}
-      - BlobContainerSettings__BlobContainerName=hoppyhub-container
     ports:
       - "5003:5003"
     depends_on:
