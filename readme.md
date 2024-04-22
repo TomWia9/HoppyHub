@@ -112,7 +112,39 @@ Adjust **.github\workflows\deploy_hoppyhub.yml** pipeline and run it.
 
 JWT token must be provided in the header when accessing sensitive data.
 
-//TODO
+### UserManagement Service
+
+#### Identity Controller
+
+| Method | Path                   | Body                                                                                                                   | Params | Description                              | Responses                                                                                                    | Who can access |
+| :----- | :--------------------- | :--------------------------------------------------------------------------------------------------------------------- | :----- | :--------------------------------------- | :----------------------------------------------------------------------------------------------------------- | :------------- |
+| POST   | /api/Identity/register | [RegisterUserCommand](./Services/UserManagement/src/Application/Identity/Commands/RegisterUser/RegisterUserCommand.cs) | None   | Creates a new user and returns JWT token | [AuthenticationResult](./Services/UserManagement/src/Application/Common/Models/AuthenticationResult.cs), 400 | Everyone       |
+| POST   | /api/Identity/login    | [LoginUserCommand](./Services/UserManagement/src/Application/Identity/Commands/LoginUser/LoginUserCommand.cs)          | None   | Returns JWT token                        | [AuthenticationResult](./Services/UserManagement/src/Application/Common/Models/AuthenticationResult.cs), 400 | Everyone       |
+
+#### Users Controller
+
+| Method | Path            | Body                                                                                                          | Params                                                                                             | Description      | Responses                                                                                 | Who can access               |
+| :----- | :-------------- | :------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------- | :--------------- | :---------------------------------------------------------------------------------------- | :--------------------------- |
+| GET    | /api/Users      | None                                                                                                          | [GetUsersQuery](./Services/UserManagement/src/Application/Users/Queries/GetUsers/GetUsersQuery.cs) | Gets all users   | PaginatedList<[UserDto](./Services/UserManagement/src/Application/Users/Dtos/UserDto.cs)> | Everyone                     |
+| GET    | /api/Users/{id} | None                                                                                                          | Id:GUID                                                                                            | Gets user by id  | [UserDto](./Services/UserManagement/src/Application/Users/Dtos/UserDto.cs), 404           | Everyone                     |
+| PUT    | /api/Users/{id} | [UpdateUserCommand](./Services/UserManagement/src/Application/Users/Commands/UpdateUser/UpdateUserCommand.cs) | Id:GUID                                                                                            | Updates the user | 204, 400, 404, 401, 403                                                                   | Account owner, Administrator |
+| DELETE | /api/Users      | [DeleteUserCommand](./Services/UserManagement/src/Application/Users/Commands/DeleteUser/DeleteUserCommand.cs) | Id:GUID                                                                                            | Deletes the user | 204, 400, 404, 401, 403                                                                   | Account owner, Administrator |
+
+### BeerManagement Service
+
+#### Beers Controller
+
+#### BeerStyles Controller
+
+#### Breweries Controller
+
+### OpinionManagement Service
+
+#### Opinions Controller
+
+### FavoriteManagement Service
+
+#### Favorites Controller
 
 ## Tests
 
