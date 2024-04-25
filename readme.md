@@ -4,13 +4,11 @@
 
 - ### [Description](#description)
 
-- ### [Screenshots](#screenshots)
+- ### [Application Screenshots](#application-screenshots)
 
 - ### [Stack](#stack)
 
-- ### [Installation & Configuration](#installation&configuration)
-
-- ### [Configuration](#configuration)
+- ### [Installation & Configuration](#installation-&-configuration)
 
 - ### [Endpoints](#endpoints)
 
