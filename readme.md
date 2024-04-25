@@ -1,3 +1,7 @@
+# Project Title
+
+A brief description of what this project does and who it's for
+
 ## List of contents
 
 - ### [Description](#description)
@@ -133,6 +137,16 @@ JWT token must be provided in the header when accessing sensitive data.
 ### BeerManagement Service
 
 #### Beers Controller
+
+| Method | Path            | Body                                                                                                                              | Params                                                                                             | Description                                        | Responses                                                                                 | Who can access |
+| :----- | :-------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- | :------------------------------------------------- | :---------------------------------------------------------------------------------------- | :------------- |
+| GET    | /api/Beers      | None                                                                                                                              | [GetBeersQuery](./Services/BeerManagement/src/Application/Beers/Queries/GetBeers/GetBeersQuery.cs) | Gets all beers                                     | PaginatedList<[BeerDto](./Services/BeerManagement/src/Application/Beers/Dtos/BeerDto.cs)> | Everyone       |
+| GET    | /api/Beers/{id} | None                                                                                                                              | Id:GUID                                                                                            | Gets beer by id                                    | [BeerDto](./Services/BeerManagement/src/Application/Beers/Dtos/BeerDto.cs), 404           | Everyone       |
+| POST   | /api/Beers      | [CreateBeerCommand](./Services/BeerManagement/src/Application/Beers/Commands/CreateBeer/CreateBeerCommand.cs)                     | None                                                                                               | Creates the beer                                   | 201, 400, 404, 401, 403                                                                   | Administrator  |
+| PUT    | /api/Beers/{id} | [UpdateBeerCommand](./Services/BeerManagement/src/Application/Beers/Commands/UpdateBeer/UpdateBeerCommand.cs)                     | Id:GUID                                                                                            | Updates the beer                                   | 204, 400, 404, 401, 403                                                                   | Administrator  |
+| DELETE | /api/Beers/{id} | [DeleteBeerCommand](./Services/BeerManagement/src/Application/Beers/Commands/DeleteBeer/DeleteBeerCommand.cs)                     | None                                                                                               | Deletes the beer                                   | 204, 400, 404, 401, 403                                                                   | Administrator  |
+| POST   | /api/Beers/{id} | [UpsertBeerImageCommand](./Services/BeerManagement/src/Application/BeerImages/Commands/UpsertBeerImage/UpsertBeerImageCommand.cs) | Id:GUID                                                                                            | Creates or updates the beer image                  | 201, 400, 404, 401, 403                                                                   | Administrator  |
+| DELETE | /api/Beers/{id} | None                                                                                                                              | Id:GUID                                                                                            | Deletes the beer image and restores the temp image | 204, 400, 404, 401, 403                                                                   | Administrator  |
 
 #### BeerStyles Controller
 
