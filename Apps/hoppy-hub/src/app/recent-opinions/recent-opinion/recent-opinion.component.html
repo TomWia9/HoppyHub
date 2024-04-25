@@ -33,10 +33,12 @@
         <h2 class="">{{ opinion.created | date: 'short' }}</h2>
       </div>
     </div>
-    <div class="flex justify-center">
-      <figure class="mt-4 flex h-48 w-48 justify-center">
-        <img src="{{ opinion.imageUri }}" alt="beer image" />
-      </figure>
-    </div>
+    @if (opinion.imageUri) {
+      <div class="flex justify-center">
+        <figure class="mt-4 flex h-48 w-48 justify-center">
+          <img src="{{ opinion.imageUri }}" alt="beer image" />
+        </figure>
+      </div>
+    }
   </div>
 </div>
