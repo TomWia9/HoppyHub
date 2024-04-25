@@ -1,10 +1,10 @@
-# Project Title
-
-A brief description of what this project does and who it's for
+# HoppyHub
 
 ## List of contents
 
 - ### [Description](#description)
+
+- ### [Screenshots](#screenshots)
 
 - ### [Stack](#stack)
 
@@ -21,6 +21,20 @@ A brief description of what this project does and who it's for
 ## Description
 
 **HoppyHub** is a **.NET 8** and **Angular** implemented Web Application for exchanging opinions about different types of beer. Users can create accounts, add beers to their favorites list, rate and comment on beers.
+
+## Application Screenshots
+
+<details>
+  <summary>Click to expand!</summary>
+  
+#### Landing page
+![Landing Page](https://i.imgur.com/k9NJI91.png[/img] "Landing Page")
+
+#### Beers filtering
+
+![Beers Filtering](https://i.imgur.com/YBrC64O.png[/img] "Beers Filtering")
+
+</details>
 
 ## Stack
 
@@ -90,7 +104,7 @@ Set these appsettings values in all solutions:
 - **RabbitMQ:Password** - RabbitMQ password (default: guest)
 
 Initialize databases data using **Scripts\RestoreDatabases.ps1** script.\
-You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.\
+You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.
 
 Build and run all solutions (`dotnet run` in solution root directory)\
 Build and run UI App (`ng serve -o` in Apps\hoppy-hub directory)
@@ -102,7 +116,7 @@ Open docker-compose.yml file.
 Set proper **TempBeerImageUri**, **ConnectionStrings\_\_StorageAccountConnection** and **ContainerName** environment variables.\
 Execute `docker compose up` command in root directory.\
 Initialize databases data using **Scripts\RestoreDatabases.ps1** script with -docker flag.\
-You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.\
+You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.
 
 ### Azure
 

@@ -6,7 +6,7 @@ DECLARE @ImageUri VARCHAR(100)
 SET @OpinionsPerBeer = 20
 
 -- Image uri
-SET @ImageUri = 'https://hoppyhubsa.blob.core.windows.net/hoppyhubcontainer/Beers/temp.jpg'
+SET @ImageUri = 'https://hoppyhub.blob.core.windows.net/hoppyhub/Beers/temp.jpg'
 
 -- Select Id for "user@localhost" user
 SELECT @UserId = Id
