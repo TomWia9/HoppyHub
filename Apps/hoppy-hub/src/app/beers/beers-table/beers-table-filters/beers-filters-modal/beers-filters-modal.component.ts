@@ -11,7 +11,8 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormControl,
-  FormsModule
+  FormsModule,
+  Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService, ModalType } from '../../../../services/modal.service';
@@ -80,21 +81,21 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
     this.beersFiltersForm = new FormGroup({
       brewery: new FormControl(''),
-      minAbv: new FormControl(),
-      maxAbv: new FormControl(),
-      minExtract: new FormControl(),
-      maxExtract: new FormControl(),
-      minIbu: new FormControl(),
-      maxIbu: new FormControl(),
+      minAbv: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Less than or equal to maxAbv
+      maxAbv: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Greater than or equal to minAbv
+      minExtract: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Less than or equal to maxExtract
+      maxExtract: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Greater than or equal to minExtract
+      minIbu: new FormControl('', [Validators.min(0), Validators.max(200)]), //TODO: Custom validator: Less than or equal to maxIbu
+      maxIbu: new FormControl('', [Validators.min(0), Validators.max(200)]), //TODO: Custom validator: Greater than or equal to minIbu
       beerStyle: new FormControl(''),
-      minRating: new FormControl(),
-      maxRating: new FormControl(),
-      minFavoritesCount: new FormControl(),
-      maxFavoritesCount: new FormControl(),
-      minOpinionsCount: new FormControl(),
-      maxOpinionsCount: new FormControl(),
-      minReleaseDate: new FormControl(),
-      maxReleaseDate: new FormControl(),
+      minRating: new FormControl('', [Validators.min(0), Validators.max(10)]), //TODO: Custom validator: Less than or equal to maxRating
+      maxRating: new FormControl('', [Validators.min(0), Validators.max(10)]), //TODO: Custom validator: Greater than or equal to minRating
+      minFavoritesCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Less than or equal to maxFavoritesCount
+      maxFavoritesCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Greater than or equal to minFavoritesCount
+      minOpinionsCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Less than or equal to maxOpinionsCount
+      maxOpinionsCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Greater than or equal to minOpinionsCount
+      minReleaseDate: new FormControl('', []), //TODO: Custom validator: Less than or equal to maxReleaseDate
+      maxReleaseDate: new FormControl('', []), //TODO: Custom validator: Greater than or equal to minReleaseDate
       sortBy: new FormControl(''),
       sortDirection: new FormControl('')
     });
