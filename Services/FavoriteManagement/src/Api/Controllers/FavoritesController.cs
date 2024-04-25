@@ -18,7 +18,7 @@ public class FavoritesController : ApiControllerBase
     /// </summary>
     /// <param name="query">The GetFavoritesQuery</param>
     /// <returns>An ActionResult of type PaginatedList of BeerDto</returns>
-    [HttpGet("favorites")]
+    [HttpGet]
     public async Task<ActionResult<PaginatedList<BeerDto>>> GetFavorites([FromQuery] GetFavoritesQuery query)
     {
         var result = await Mediator.Send(query);
@@ -34,7 +34,7 @@ public class FavoritesController : ApiControllerBase
     /// <param name="beerId">The beer id.</param>
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.UserAccess)]
-    [HttpPost("{beerId:guid}/favorites")]
+    [HttpPost("{beerId:guid}")]
     public async Task<IActionResult> CreateFavorite(Guid beerId)
     {
         await Mediator.Send(new CreateFavoriteCommand { BeerId = beerId });
@@ -48,7 +48,7 @@ public class FavoritesController : ApiControllerBase
     /// <param name="beerId">The id of the beer added to favorites</param>
     /// <returns>An ActionResult</returns>
     [Authorize(Policy = Policies.UserAccess)]
-    [HttpDelete("{beerId:guid}/favorites")]
+    [HttpDelete("{beerId:guid}")]
     public async Task<IActionResult> DeleteFavorite(Guid beerId)
     {
         await Mediator.Send(new DeleteFavoriteCommand { BeerId = beerId });

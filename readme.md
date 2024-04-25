@@ -184,6 +184,12 @@ JWT token must be provided in the header when accessing sensitive data.
 
 #### Favorites Controller
 
+| Method | Path                | Body | Params                                                                                                                 | Description                                       | Responses                                                                                         | Who can access      |
+| :----- | :------------------ | :--- | :--------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------ | :------------------------------------------------------------------------------------------------ | :------------------ |
+| GET    | /api/Favorites      | None | [GetFavoritesQuery](./Services/FavoriteManagement/src/Application/Favorites/Queries/GetFavorites/GetFavoritesQuery.cs) | Gets favorite beers of a specific user            | PaginatedList<[BeerDto](./Services/FavoriteManagement/src/Application/Favorites/Dtos/BeerDto.cs)> | Everyone            |
+| POST   | /api/Favorites      | None | Id:GUID                                                                                                                | Adds beer to current user favorites list          | 201, 400, 404, 401                                                                                | Administrator, User |
+| DELETE | /api/Favorites/{id} | None | Id:GUID                                                                                                                | Deletes the beer from current user favorites list | 204, 400, 404, 401, 403                                                                           | Administrator, User |
+
 ## Tests
 
 This project uses unit tests provided by xUnit.
