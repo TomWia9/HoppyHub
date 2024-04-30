@@ -48,37 +48,42 @@
                         beersFiltersForm.get('abv.minAbv')!.touched) ||
                       beersFiltersForm.get('abv')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('abv.minAbv')!.errors &&
-                    beersFiltersForm.get('abv.minAbv')!.hasError('min') &&
-                    beersFiltersForm.get('abv.minAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min ABV must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('abv.minAbv')!.errors &&
-                    beersFiltersForm.get('abv.minAbv')!.hasError('max') &&
-                    beersFiltersForm.get('abv.minAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min ABV must be less than or equal to 100</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('abv')!.errors &&
-                    beersFiltersForm
-                      .get('abv')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('abv.minAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min ABV must be less than or equal to Max ABV</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('abv')!.errors ||
+                  beersFiltersForm.get('abv.minAbv')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('abv.minAbv')!.errors &&
+                      beersFiltersForm.get('abv.minAbv')!.hasError('min') &&
+                      beersFiltersForm.get('abv.minAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min ABV must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('abv.minAbv')!.errors &&
+                      beersFiltersForm.get('abv.minAbv')!.hasError('max') &&
+                      beersFiltersForm.get('abv.minAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min ABV must be less than or equal to 100</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('abv')!.errors &&
+                      beersFiltersForm
+                        .get('abv')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('abv.minAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min ABV must be less than or equal to Max ABV</span
+                      >
+                    }
+                  </div>
+                }
               </label>
 
               <label class="form-control flex w-full max-w-xs items-center">
@@ -96,37 +101,42 @@
                         beersFiltersForm.get('abv.maxAbv')!.touched) ||
                       beersFiltersForm.get('abv')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('abv.maxAbv')!.errors &&
-                    beersFiltersForm.get('abv.maxAbv')!.hasError('min') &&
-                    beersFiltersForm.get('abv.maxAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max ABV must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('abv.maxAbv')!.errors &&
-                    beersFiltersForm.get('abv.maxAbv')!.hasError('max') &&
-                    beersFiltersForm.get('abv.maxAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max ABV must be less than or equal to 100</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('abv')!.errors &&
-                    beersFiltersForm
-                      .get('abv')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('abv.maxAbv')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max ABV must be greater than or equal to Min ABV</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('abv')!.errors ||
+                  beersFiltersForm.get('abv.maxAbv')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('abv.maxAbv')!.errors &&
+                      beersFiltersForm.get('abv.maxAbv')!.hasError('min') &&
+                      beersFiltersForm.get('abv.maxAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max ABV must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('abv.maxAbv')!.errors &&
+                      beersFiltersForm.get('abv.maxAbv')!.hasError('max') &&
+                      beersFiltersForm.get('abv.maxAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max ABV must be less than or equal to 100</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('abv')!.errors &&
+                      beersFiltersForm
+                        .get('abv')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('abv.maxAbv')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max ABV must be greater than or equal to Min ABV</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
             <div class="flex justify-center space-x-2" formGroupName="extract">
@@ -145,42 +155,47 @@
                         beersFiltersForm.get('extract.minExtract')!.touched) ||
                       beersFiltersForm.get('extract')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('extract.minExtract')!.errors &&
-                    beersFiltersForm
-                      .get('extract.minExtract')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('extract.minExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Extract must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('extract.minExtract')!.errors &&
-                    beersFiltersForm
-                      .get('extract.minExtract')!
-                      .hasError('max') &&
-                    beersFiltersForm.get('extract.minExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Extract must be less than or equal to 100</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('extract')!.errors &&
-                    beersFiltersForm
-                      .get('extract')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('extract.minExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Extract must be less than or equal to Max
-                      Extract</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('extract')!.errors ||
+                  beersFiltersForm.get('extract.minExtract')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('extract.minExtract')!.errors &&
+                      beersFiltersForm
+                        .get('extract.minExtract')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('extract.minExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Extract must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('extract.minExtract')!.errors &&
+                      beersFiltersForm
+                        .get('extract.minExtract')!
+                        .hasError('max') &&
+                      beersFiltersForm.get('extract.minExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Extract must be less than or equal to 100</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('extract')!.errors &&
+                      beersFiltersForm
+                        .get('extract')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('extract.minExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Extract must be less than or equal to Max
+                        Extract</span
+                      >
+                    }
+                  </div>
+                }
               </label>
               <label class="form-control w-full max-w-xs items-center">
                 <input
@@ -197,42 +212,47 @@
                         beersFiltersForm.get('extract.maxExtract')!.touched) ||
                       beersFiltersForm.get('extract')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('extract.maxExtract')!.errors &&
-                    beersFiltersForm
-                      .get('extract.maxExtract')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('extract.maxExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Extract must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('extract.maxExtract')!.errors &&
-                    beersFiltersForm
-                      .get('extract.maxExtract')!
-                      .hasError('max') &&
-                    beersFiltersForm.get('extract.maxExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Extract must be less than or equal to 100</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('extract')!.errors &&
-                    beersFiltersForm
-                      .get('extract')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('extract.maxExtract')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Extract must be greater than or equal to Min
-                      Extract</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('extract')!.errors ||
+                  beersFiltersForm.get('extract.maxExtract')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('extract.maxExtract')!.errors &&
+                      beersFiltersForm
+                        .get('extract.maxExtract')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('extract.maxExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Extract must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('extract.maxExtract')!.errors &&
+                      beersFiltersForm
+                        .get('extract.maxExtract')!
+                        .hasError('max') &&
+                      beersFiltersForm.get('extract.maxExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Extract must be less than or equal to 100</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('extract')!.errors &&
+                      beersFiltersForm
+                        .get('extract')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('extract.maxExtract')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Extract must be greater than or equal to Min
+                        Extract</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
             <div class="flex justify-center space-x-2" formGroupName="ibu">
@@ -251,37 +271,42 @@
                         beersFiltersForm.get('ibu.minIbu')!.touched) ||
                       beersFiltersForm.get('ibu')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('ibu.minIbu')!.errors &&
-                    beersFiltersForm.get('ibu.minIbu')!.hasError('min') &&
-                    beersFiltersForm.get('ibu.minIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min IBU must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('ibu.minIbu')!.errors &&
-                    beersFiltersForm.get('ibu.minIbu')!.hasError('max') &&
-                    beersFiltersForm.get('ibu.minIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min IBU must be less than or equal to 200</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('ibu')!.errors &&
-                    beersFiltersForm
-                      .get('ibu')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('ibu.minIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Ibu must be less than or equal to Max Ibu</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('ibu')!.errors ||
+                  beersFiltersForm.get('ibu.minIbu')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('ibu.minIbu')!.errors &&
+                      beersFiltersForm.get('ibu.minIbu')!.hasError('min') &&
+                      beersFiltersForm.get('ibu.minIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min IBU must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('ibu.minIbu')!.errors &&
+                      beersFiltersForm.get('ibu.minIbu')!.hasError('max') &&
+                      beersFiltersForm.get('ibu.minIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min IBU must be less than or equal to 200</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('ibu')!.errors &&
+                      beersFiltersForm
+                        .get('ibu')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('ibu.minIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Ibu must be less than or equal to Max Ibu</span
+                      >
+                    }
+                  </div>
+                }
               </label>
 
               <label class="form-control w-full max-w-xs items-center">
@@ -299,37 +324,42 @@
                         beersFiltersForm.get('ibu.maxIbu')!.touched) ||
                       beersFiltersForm.get('ibu')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('ibu.maxIbu')!.errors &&
-                    beersFiltersForm.get('ibu.maxIbu')!.hasError('min') &&
-                    beersFiltersForm.get('ibu.maxIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max IBU must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('ibu.maxIbu')!.errors &&
-                    beersFiltersForm.get('ibu.maxIbu')!.hasError('max') &&
-                    beersFiltersForm.get('ibu.maxIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max IBU must be less than or equal to 200</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('ibu')!.errors &&
-                    beersFiltersForm
-                      .get('ibu')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('ibu.maxIbu')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Ibu must be greater than or equal to Min Ibu</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('ibu')!.errors ||
+                  beersFiltersForm.get('ibu.maxIbu')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('ibu.maxIbu')!.errors &&
+                      beersFiltersForm.get('ibu.maxIbu')!.hasError('min') &&
+                      beersFiltersForm.get('ibu.maxIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max IBU must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('ibu.maxIbu')!.errors &&
+                      beersFiltersForm.get('ibu.maxIbu')!.hasError('max') &&
+                      beersFiltersForm.get('ibu.maxIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max IBU must be less than or equal to 200</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('ibu')!.errors &&
+                      beersFiltersForm
+                        .get('ibu')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('ibu.maxIbu')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Ibu must be greater than or equal to Min Ibu</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
           </div>
@@ -364,37 +394,47 @@
                         beersFiltersForm.get('rating.minRating')!.touched) ||
                       beersFiltersForm.get('rating')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('rating.minRating')!.errors &&
-                    beersFiltersForm.get('rating.minRating')!.hasError('min') &&
-                    beersFiltersForm.get('rating.minRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Rating must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('rating.minRating')!.errors &&
-                    beersFiltersForm.get('rating.minRating')!.hasError('max') &&
-                    beersFiltersForm.get('rating.minRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Rating must be less than or equal to 10</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('rating')!.errors &&
-                    beersFiltersForm
-                      .get('rating')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('rating.minRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Rating must be less than or equal to Max Rating</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('rating')!.errors ||
+                  beersFiltersForm.get('rating.minRating')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('rating.minRating')!.errors &&
+                      beersFiltersForm
+                        .get('rating.minRating')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('rating.minRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Rating must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('rating.minRating')!.errors &&
+                      beersFiltersForm
+                        .get('rating.minRating')!
+                        .hasError('max') &&
+                      beersFiltersForm.get('rating.minRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Rating must be less than or equal to 10</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('rating')!.errors &&
+                      beersFiltersForm
+                        .get('rating')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('rating.minRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Rating must be less than or equal to Max
+                        Rating</span
+                      >
+                    }
+                  </div>
+                }
               </label>
               <label class="form-control w-full max-w-xs items-center">
                 <input
@@ -411,38 +451,47 @@
                         beersFiltersForm.get('rating.maxRating')!.touched) ||
                       beersFiltersForm.get('rating')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('rating.maxRating')!.errors &&
-                    beersFiltersForm.get('rating.maxRating')!.hasError('min') &&
-                    beersFiltersForm.get('rating.maxRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Rating must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('rating.maxRating')!.errors &&
-                    beersFiltersForm.get('rating.maxRating')!.hasError('max') &&
-                    beersFiltersForm.get('rating.maxRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Rating must be less than or equal to 10</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('rating')!.errors &&
-                    beersFiltersForm
-                      .get('rating')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('rating.maxRating')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Rating must be greater than or equal to Min
-                      Rating</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('rating')!.errors ||
+                  beersFiltersForm.get('rating.maxRating')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('rating.maxRating')!.errors &&
+                      beersFiltersForm
+                        .get('rating.maxRating')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('rating.maxRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Rating must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('rating.maxRating')!.errors &&
+                      beersFiltersForm
+                        .get('rating.maxRating')!
+                        .hasError('max') &&
+                      beersFiltersForm.get('rating.maxRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Rating must be less than or equal to 10</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('rating')!.errors &&
+                      beersFiltersForm
+                        .get('rating')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('rating.maxRating')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Rating must be greater than or equal to Min
+                        Rating</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
             <div
@@ -464,32 +513,39 @@
                           .touched) ||
                       beersFiltersForm.get('favorites')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('favorites.minFavoritesCount')!
-                      .errors &&
-                    beersFiltersForm
-                      .get('favorites.minFavoritesCount')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('favorites.minFavoritesCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Favorites must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('favorites')!.errors &&
-                    beersFiltersForm
-                      .get('favorites')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('favorites.minFavoritesCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Favorites must be less than or equal to Max
-                      Favorites</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('favorites')!.errors ||
+                  beersFiltersForm.get('favorites.minFavoritesCount')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('favorites.minFavoritesCount')!
+                        .errors &&
+                      beersFiltersForm
+                        .get('favorites.minFavoritesCount')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('favorites.minFavoritesCount')!
+                        .touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Favorites must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('favorites')!.errors &&
+                      beersFiltersForm
+                        .get('favorites')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('favorites.minFavoritesCount')!
+                        .touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Favorites must be less than or equal to Max
+                        Favorites</span
+                      >
+                    }
+                  </div>
+                }
               </label>
               <label class="form-control w-full max-w-xs items-center">
                 <input
@@ -507,32 +563,39 @@
                           .touched) ||
                       beersFiltersForm.get('favorites')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('favorites.maxFavoritesCount')!
-                      .errors &&
-                    beersFiltersForm
-                      .get('favorites.maxFavoritesCount')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('favorites.maxFavoritesCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Favorites must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('favorites')!.errors &&
-                    beersFiltersForm
-                      .get('favorites')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('favorites.maxFavoritesCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Favorites must be greater than or equal to Min
-                      Favorites</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('favorites')!.errors ||
+                  beersFiltersForm.get('favorites.maxFavoritesCount')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('favorites.maxFavoritesCount')!
+                        .errors &&
+                      beersFiltersForm
+                        .get('favorites.maxFavoritesCount')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('favorites.maxFavoritesCount')!
+                        .touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Favorites must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('favorites')!.errors &&
+                      beersFiltersForm
+                        .get('favorites')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('favorites.maxFavoritesCount')!
+                        .touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Favorites must be greater than or equal to Min
+                        Favorites</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
             <div class="flex justify-center space-x-2" formGroupName="opinions">
@@ -552,31 +615,37 @@
                           .touched) ||
                       beersFiltersForm.get('opinions')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('opinions.minOpinionsCount')!.errors &&
-                    beersFiltersForm
-                      .get('opinions.minOpinionsCount')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('opinions.minOpinionsCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Opinions must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('opinions')!.errors &&
-                    beersFiltersForm
-                      .get('opinions')!
-                      .hasError('lessThanOrEqualToControlError') &&
-                    beersFiltersForm.get('opinions.minOpinionsCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Min Opinions must be less than or equal to Max
-                      Opinions</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('opinions')!.errors ||
+                  beersFiltersForm.get('opinions.minOpinionsCount')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('opinions.minOpinionsCount')!
+                        .errors &&
+                      beersFiltersForm
+                        .get('opinions.minOpinionsCount')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('opinions.minOpinionsCount')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Opinions must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('opinions')!.errors &&
+                      beersFiltersForm
+                        .get('opinions')!
+                        .hasError('lessThanOrEqualToControlError') &&
+                      beersFiltersForm.get('opinions.minOpinionsCount')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Min Opinions must be less than or equal to Max
+                        Opinions</span
+                      >
+                    }
+                  </div>
+                }
               </label>
               <label class="form-control w-full max-w-xs items-center">
                 <input
@@ -594,31 +663,37 @@
                           .touched) ||
                       beersFiltersForm.get('opinions')!.invalid
                   }" />
-                <div class="label flex flex-col text-center">
-                  @if (
-                    beersFiltersForm.get('opinions.maxOpinionsCount')!.errors &&
-                    beersFiltersForm
-                      .get('opinions.maxOpinionsCount')!
-                      .hasError('min') &&
-                    beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Opinions must be greater than or equal to 0</span
-                    >
-                  }
-                  @if (
-                    beersFiltersForm.get('opinions')!.errors &&
-                    beersFiltersForm
-                      .get('opinions')!
-                      .hasError('greaterThanOrEqualToControlError') &&
-                    beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
-                  ) {
-                    <span class="label-text-alt"
-                      >Max Opinions must be greater than or equal to Min
-                      Opinions</span
-                    >
-                  }
-                </div>
+                @if (
+                  beersFiltersForm.get('opinions')!.errors ||
+                  beersFiltersForm.get('opinions.maxOpinionsCount')!.errors
+                ) {
+                  <div class="label flex flex-col text-center">
+                    @if (
+                      beersFiltersForm.get('opinions.maxOpinionsCount')!
+                        .errors &&
+                      beersFiltersForm
+                        .get('opinions.maxOpinionsCount')!
+                        .hasError('min') &&
+                      beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Opinions must be greater than or equal to 0</span
+                      >
+                    }
+                    @if (
+                      beersFiltersForm.get('opinions')!.errors &&
+                      beersFiltersForm
+                        .get('opinions')!
+                        .hasError('greaterThanOrEqualToControlError') &&
+                      beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
+                    ) {
+                      <span class="label-text-alt"
+                        >Max Opinions must be greater than or equal to Min
+                        Opinions</span
+                      >
+                    }
+                  </div>
+                }
               </label>
             </div>
           </div>
@@ -644,20 +719,25 @@
                       .touched) ||
                   beersFiltersForm.get('releaseDates')!.invalid
               }" />
-            <div class="label flex flex-col text-center">
-              @if (
-                beersFiltersForm.get('releaseDates')!.errors &&
-                beersFiltersForm
-                  .get('releaseDates')!
-                  .hasError('lessThanOrEqualToControlError') &&
-                beersFiltersForm.get('releaseDates.minReleaseDate')!.touched
-              ) {
-                <span class="label-text-alt"
-                  >Min Release Date must be less than or equal to Max Release
-                  Date</span
-                >
-              }
-            </div>
+            @if (
+              beersFiltersForm.get('releaseDates')!.errors ||
+              beersFiltersForm.get('releaseDates.minReleaseDate')!.errors
+            ) {
+              <div class="label flex flex-col text-center">
+                @if (
+                  beersFiltersForm.get('releaseDates')!.errors &&
+                  beersFiltersForm
+                    .get('releaseDates')!
+                    .hasError('lessThanOrEqualToControlError') &&
+                  beersFiltersForm.get('releaseDates.minReleaseDate')!.touched
+                ) {
+                  <span class="label-text-alt"
+                    >Min Release Date must be less than or equal to Max Release
+                    Date</span
+                  >
+                }
+              </div>
+            }
           </label>
 
           <label class="form-control flex w-full items-center">
@@ -677,20 +757,25 @@
                       .touched) ||
                   beersFiltersForm.get('releaseDates')!.invalid
               }" />
-            <div class="label flex flex-col text-center">
-              @if (
-                beersFiltersForm.get('releaseDates')!.errors &&
-                beersFiltersForm
-                  .get('releaseDates')!
-                  .hasError('greaterThanOrEqualToControlError') &&
-                beersFiltersForm.get('releaseDates.maxReleaseDate')!.touched
-              ) {
-                <span class="label-text-alt"
-                  >Max Release Date must be greater than or equal to Min Release
-                  Date</span
-                >
-              }
-            </div>
+            @if (
+              beersFiltersForm.get('releaseDates')!.errors ||
+              beersFiltersForm.get('releaseDates.maxReleaseDate')!.errors
+            ) {
+              <div class="label flex flex-col text-center">
+                @if (
+                  beersFiltersForm.get('releaseDates')!.errors &&
+                  beersFiltersForm
+                    .get('releaseDates')!
+                    .hasError('greaterThanOrEqualToControlError') &&
+                  beersFiltersForm.get('releaseDates.maxReleaseDate')!.touched
+                ) {
+                  <span class="label-text-alt"
+                    >Max Release Date must be greater than or equal to Min
+                    Release Date</span
+                  >
+                }
+              </div>
+            }
           </label>
         </div>
         <!-- 4 -->
