@@ -27,6 +27,7 @@ import { BeerStylesService } from '../../../../beer-styles/beer-styles.service';
 import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
 import { BeerStyle } from '../../../../beer-styles/beer-style.model';
 import { BeersParams } from '../../../beers-params';
+import { CustomValidators } from '../../../../shared/custom-validators';
 
 @Component({
   selector: 'app-beers-filters-modal',
@@ -81,27 +82,120 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
     this.beersFiltersForm = new FormGroup({
       brewery: new FormControl(''),
-      minAbv: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Less than or equal to maxAbv
-      maxAbv: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Greater than or equal to minAbv
-      minExtract: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Less than or equal to maxExtract
-      maxExtract: new FormControl('', [Validators.min(0), Validators.max(100)]), //TODO: Custom validator: Greater than or equal to minExtract
-      minIbu: new FormControl('', [Validators.min(0), Validators.max(200)]), //TODO: Custom validator: Less than or equal to maxIbu
-      maxIbu: new FormControl('', [Validators.min(0), Validators.max(200)]), //TODO: Custom validator: Greater than or equal to minIbu
+      abv: new FormGroup(
+        {
+          minAbv: new FormControl('', [Validators.min(0), Validators.max(100)]),
+          maxAbv: new FormControl('', [Validators.min(0), Validators.max(100)])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl('minAbv', 'maxAbv'),
+          CustomValidators.greaterThanOrEqualToControl('maxAbv', 'minAbv')
+        ]
+      ),
+      extract: new FormGroup(
+        {
+          minExtract: new FormControl('', [
+            Validators.min(0),
+            Validators.max(100)
+          ]),
+          maxExtract: new FormControl('', [
+            Validators.min(0),
+            Validators.max(100)
+          ])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl('minExtract', 'maxExtract'),
+          CustomValidators.greaterThanOrEqualToControl(
+            'maxExtract',
+            'minExtract'
+          )
+        ]
+      ),
+      ibu: new FormGroup(
+        {
+          minIbu: new FormControl('', [Validators.min(0), Validators.max(200)]),
+          maxIbu: new FormControl('', [Validators.min(0), Validators.max(200)])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl('minIbu', 'maxIbu'),
+          CustomValidators.greaterThanOrEqualToControl('maxIbu', 'minIbu')
+        ]
+      ),
       beerStyle: new FormControl(''),
-      minRating: new FormControl('', [Validators.min(0), Validators.max(10)]), //TODO: Custom validator: Less than or equal to maxRating
-      maxRating: new FormControl('', [Validators.min(0), Validators.max(10)]), //TODO: Custom validator: Greater than or equal to minRating
-      minFavoritesCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Less than or equal to maxFavoritesCount
-      maxFavoritesCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Greater than or equal to minFavoritesCount
-      minOpinionsCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Less than or equal to maxOpinionsCount
-      maxOpinionsCount: new FormControl('', [Validators.min(0)]), //TODO: Custom validator: Greater than or equal to minOpinionsCount
-      minReleaseDate: new FormControl('', []), //TODO: Custom validator: Less than or equal to maxReleaseDate
-      maxReleaseDate: new FormControl('', []), //TODO: Custom validator: Greater than or equal to minReleaseDate
+      rating: new FormGroup(
+        {
+          minRating: new FormControl('', [
+            Validators.min(0),
+            Validators.max(10)
+          ]),
+          maxRating: new FormControl('', [
+            Validators.min(0),
+            Validators.max(10)
+          ])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl('minRating', 'maxRating'),
+          CustomValidators.greaterThanOrEqualToControl('maxRating', 'minRating')
+        ]
+      ),
+
+      favorites: new FormGroup(
+        {
+          minFavoritesCount: new FormControl('', [Validators.min(0)]),
+          maxFavoritesCount: new FormControl('', [Validators.min(0)])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl(
+            'minFavoritesCount',
+            'maxFavoritesCount'
+          ),
+          CustomValidators.greaterThanOrEqualToControl(
+            'maxFavoritesCount',
+            'minFavoritesCount'
+          )
+        ]
+      ),
+      opinions: new FormGroup(
+        {
+          minOpinionsCount: new FormControl('', [Validators.min(0)]),
+          maxOpinionsCount: new FormControl('', [Validators.min(0)])
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl(
+            'minOpinionsCount',
+            'maxOpinionsCount'
+          ),
+          CustomValidators.greaterThanOrEqualToControl(
+            'maxOpinionsCount',
+            'minOpinionsCount'
+          )
+        ]
+      ),
+      releaseDates: new FormGroup(
+        {
+          minReleaseDate: new FormControl(''),
+          maxReleaseDate: new FormControl('')
+        },
+        [
+          CustomValidators.lessThanOrEqualToControl(
+            'minReleaseDate',
+            'maxReleaseDate'
+          ),
+          CustomValidators.greaterThanOrEqualToControl(
+            'maxReleaseDate',
+            'minReleaseDate'
+          )
+        ]
+      ),
+
       sortBy: new FormControl(''),
       sortDirection: new FormControl('')
     });
   }
 
   onSubmit() {
+    console.log(this.beersFiltersForm);
+
     const beersParams = new BeersParams(
       25,
       1,
