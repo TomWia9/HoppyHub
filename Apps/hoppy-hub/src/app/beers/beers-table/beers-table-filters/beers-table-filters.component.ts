@@ -47,6 +47,12 @@ export class BeersTableFiltersComponent implements OnInit {
   onFiltersClear() {
     this.searchForm.reset();
     this.params = new BeersParams(25, 1, 'ReleaseDate', 1);
-    this.beersService.paramsChanged.next(this.params);
+
+    if (
+      JSON.stringify(this.beersService.paramsChanged.value) !=
+      JSON.stringify(this.params)
+    ) {
+      this.beersService.paramsChanged.next(this.params);
+    }
   }
 }

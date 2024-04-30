@@ -32,59 +32,305 @@
                 }
               </select>
             </label>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minAbv"
-                formControlName="minAbv"
-                placeholder="Min ABV"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxAbv"
-                formControlName="maxAbv"
-                placeholder="Max ABV"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div class="flex justify-center space-x-2" formGroupName="abv">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minAbv"
+                  formControlName="minAbv"
+                  placeholder="Min ABV"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('abv.minAbv')!.invalid &&
+                        beersFiltersForm.get('abv.minAbv')!.touched) ||
+                      beersFiltersForm.get('abv')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('abv.minAbv')!.errors &&
+                    beersFiltersForm.get('abv.minAbv')!.hasError('min') &&
+                    beersFiltersForm.get('abv.minAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min ABV must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('abv.minAbv')!.errors &&
+                    beersFiltersForm.get('abv.minAbv')!.hasError('max') &&
+                    beersFiltersForm.get('abv.minAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min ABV must be less than or equal to 100</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('abv')!.errors &&
+                    beersFiltersForm
+                      .get('abv')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('abv.minAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min ABV must be less than or equal to Max ABV</span
+                    >
+                  }
+                </div>
+              </label>
+
+              <label class="form-control flex w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxAbv"
+                  formControlName="maxAbv"
+                  placeholder="Max ABV"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('abv.maxAbv')!.invalid &&
+                        beersFiltersForm.get('abv.maxAbv')!.touched) ||
+                      beersFiltersForm.get('abv')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('abv.maxAbv')!.errors &&
+                    beersFiltersForm.get('abv.maxAbv')!.hasError('min') &&
+                    beersFiltersForm.get('abv.maxAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max ABV must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('abv.maxAbv')!.errors &&
+                    beersFiltersForm.get('abv.maxAbv')!.hasError('max') &&
+                    beersFiltersForm.get('abv.maxAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max ABV must be less than or equal to 100</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('abv')!.errors &&
+                    beersFiltersForm
+                      .get('abv')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('abv.maxAbv')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max ABV must be greater than or equal to Min ABV</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minExtract"
-                formControlName="minExtract"
-                placeholder="Min BLG"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxExtract"
-                formControlName="maxExtract"
-                placeholder="Max BLG"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div class="flex justify-center space-x-2" formGroupName="extract">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minExtract"
+                  formControlName="minExtract"
+                  placeholder="Min BLG"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('extract.minExtract')!.invalid &&
+                        beersFiltersForm.get('extract.minExtract')!.touched) ||
+                      beersFiltersForm.get('extract')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('extract.minExtract')!.errors &&
+                    beersFiltersForm
+                      .get('extract.minExtract')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('extract.minExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Extract must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('extract.minExtract')!.errors &&
+                    beersFiltersForm
+                      .get('extract.minExtract')!
+                      .hasError('max') &&
+                    beersFiltersForm.get('extract.minExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Extract must be less than or equal to 100</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('extract')!.errors &&
+                    beersFiltersForm
+                      .get('extract')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('extract.minExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Extract must be less than or equal to Max
+                      Extract</span
+                    >
+                  }
+                </div>
+              </label>
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxExtract"
+                  formControlName="maxExtract"
+                  placeholder="Max BLG"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('extract.maxExtract')!.invalid &&
+                        beersFiltersForm.get('extract.maxExtract')!.touched) ||
+                      beersFiltersForm.get('extract')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('extract.maxExtract')!.errors &&
+                    beersFiltersForm
+                      .get('extract.maxExtract')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('extract.maxExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Extract must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('extract.maxExtract')!.errors &&
+                    beersFiltersForm
+                      .get('extract.maxExtract')!
+                      .hasError('max') &&
+                    beersFiltersForm.get('extract.maxExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Extract must be less than or equal to 100</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('extract')!.errors &&
+                    beersFiltersForm
+                      .get('extract')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('extract.maxExtract')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Extract must be greater than or equal to Min
+                      Extract</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minIbu"
-                formControlName="minIbu"
-                placeholder="Min IBU"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxIbu"
-                formControlName="maxIbu"
-                placeholder="Max IBU"
-                min="0"
-                max="100"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div class="flex justify-center space-x-2" formGroupName="ibu">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minIbu"
+                  formControlName="minIbu"
+                  placeholder="Min IBU"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('ibu.minIbu')!.invalid &&
+                        beersFiltersForm.get('ibu.minIbu')!.touched) ||
+                      beersFiltersForm.get('ibu')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('ibu.minIbu')!.errors &&
+                    beersFiltersForm.get('ibu.minIbu')!.hasError('min') &&
+                    beersFiltersForm.get('ibu.minIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min IBU must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('ibu.minIbu')!.errors &&
+                    beersFiltersForm.get('ibu.minIbu')!.hasError('max') &&
+                    beersFiltersForm.get('ibu.minIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min IBU must be less than or equal to 200</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('ibu')!.errors &&
+                    beersFiltersForm
+                      .get('ibu')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('ibu.minIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Ibu must be less than or equal to Max Ibu</span
+                    >
+                  }
+                </div>
+              </label>
+
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxIbu"
+                  formControlName="maxIbu"
+                  placeholder="Max IBU"
+                  min="0"
+                  max="100"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('ibu.maxIbu')!.invalid &&
+                        beersFiltersForm.get('ibu.maxIbu')!.touched) ||
+                      beersFiltersForm.get('ibu')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('ibu.maxIbu')!.errors &&
+                    beersFiltersForm.get('ibu.maxIbu')!.hasError('min') &&
+                    beersFiltersForm.get('ibu.maxIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max IBU must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('ibu.maxIbu')!.errors &&
+                    beersFiltersForm.get('ibu.maxIbu')!.hasError('max') &&
+                    beersFiltersForm.get('ibu.maxIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max IBU must be less than or equal to 200</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('ibu')!.errors &&
+                    beersFiltersForm
+                      .get('ibu')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('ibu.maxIbu')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Ibu must be greater than or equal to Min Ibu</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
           </div>
           <!-- 2 -->
@@ -102,61 +348,285 @@
                 }
               </select>
             </label>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minRating"
-                formControlName="minRating"
-                placeholder="Min rating"
-                min="0"
-                max="10"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxRating"
-                formControlName="maxRating"
-                placeholder="Max rating"
-                min="0"
-                max="10"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div class="flex justify-center space-x-2" formGroupName="rating">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minRating"
+                  formControlName="minRating"
+                  placeholder="Min rating"
+                  min="0"
+                  max="10"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('rating.minRating')!.invalid &&
+                        beersFiltersForm.get('rating.minRating')!.touched) ||
+                      beersFiltersForm.get('rating')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('rating.minRating')!.errors &&
+                    beersFiltersForm.get('rating.minRating')!.hasError('min') &&
+                    beersFiltersForm.get('rating.minRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Rating must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('rating.minRating')!.errors &&
+                    beersFiltersForm.get('rating.minRating')!.hasError('max') &&
+                    beersFiltersForm.get('rating.minRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Rating must be less than or equal to 10</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('rating')!.errors &&
+                    beersFiltersForm
+                      .get('rating')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('rating.minRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Rating must be less than or equal to Max Rating</span
+                    >
+                  }
+                </div>
+              </label>
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxRating"
+                  formControlName="maxRating"
+                  placeholder="Max rating"
+                  min="0"
+                  max="10"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('rating.maxRating')!.invalid &&
+                        beersFiltersForm.get('rating.maxRating')!.touched) ||
+                      beersFiltersForm.get('rating')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('rating.maxRating')!.errors &&
+                    beersFiltersForm.get('rating.maxRating')!.hasError('min') &&
+                    beersFiltersForm.get('rating.maxRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Rating must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('rating.maxRating')!.errors &&
+                    beersFiltersForm.get('rating.maxRating')!.hasError('max') &&
+                    beersFiltersForm.get('rating.maxRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Rating must be less than or equal to 10</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('rating')!.errors &&
+                    beersFiltersForm
+                      .get('rating')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('rating.maxRating')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Rating must be greater than or equal to Min
+                      Rating</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minFavoritesCount"
-                formControlName="minFavoritesCount"
-                placeholder="Min favorites"
-                min="0"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxFavoritesCount"
-                formControlName="maxFavoritesCount"
-                placeholder="Max favorites"
-                min="0"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div
+              class="flex justify-center space-x-2"
+              formGroupName="favorites">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minFavoritesCount"
+                  formControlName="minFavoritesCount"
+                  placeholder="Min favorites"
+                  min="0"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('favorites.minFavoritesCount')!
+                        .invalid &&
+                        beersFiltersForm.get('favorites.minFavoritesCount')!
+                          .touched) ||
+                      beersFiltersForm.get('favorites')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('favorites.minFavoritesCount')!
+                      .errors &&
+                    beersFiltersForm
+                      .get('favorites.minFavoritesCount')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('favorites.minFavoritesCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Favorites must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('favorites')!.errors &&
+                    beersFiltersForm
+                      .get('favorites')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('favorites.minFavoritesCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Favorites must be less than or equal to Max
+                      Favorites</span
+                    >
+                  }
+                </div>
+              </label>
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxFavoritesCount"
+                  formControlName="maxFavoritesCount"
+                  placeholder="Max favorites"
+                  min="0"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('favorites.maxFavoritesCount')!
+                        .invalid &&
+                        beersFiltersForm.get('favorites.maxFavoritesCount')!
+                          .touched) ||
+                      beersFiltersForm.get('favorites')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('favorites.maxFavoritesCount')!
+                      .errors &&
+                    beersFiltersForm
+                      .get('favorites.maxFavoritesCount')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('favorites.maxFavoritesCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Favorites must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('favorites')!.errors &&
+                    beersFiltersForm
+                      .get('favorites')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('favorites.maxFavoritesCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Favorites must be greater than or equal to Min
+                      Favorites</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
-            <div class="flex justify-center space-x-2">
-              <input
-                type="number"
-                id="minOpinionsCount"
-                formControlName="minOpinionsCount"
-                placeholder="Min opinions"
-                min="0"
-                class="input input-bordered input-primary input-sm w-36" />
-              <input
-                type="number"
-                id="maxOpinionsCount"
-                formControlName="maxOpinionsCount"
-                placeholder="Max opinions"
-                min="0"
-                class="input input-bordered input-primary input-sm w-36" />
+            <div class="flex justify-center space-x-2" formGroupName="opinions">
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="minOpinionsCount"
+                  formControlName="minOpinionsCount"
+                  placeholder="Min opinions"
+                  min="0"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('opinions.minOpinionsCount')!
+                        .invalid &&
+                        beersFiltersForm.get('opinions.minOpinionsCount')!
+                          .touched) ||
+                      beersFiltersForm.get('opinions')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('opinions.minOpinionsCount')!.errors &&
+                    beersFiltersForm
+                      .get('opinions.minOpinionsCount')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('opinions.minOpinionsCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Opinions must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('opinions')!.errors &&
+                    beersFiltersForm
+                      .get('opinions')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    beersFiltersForm.get('opinions.minOpinionsCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Opinions must be less than or equal to Max
+                      Opinions</span
+                    >
+                  }
+                </div>
+              </label>
+              <label class="form-control w-full max-w-xs items-center">
+                <input
+                  type="number"
+                  id="maxOpinionsCount"
+                  formControlName="maxOpinionsCount"
+                  placeholder="Max opinions"
+                  min="0"
+                  class="input input-bordered input-primary input-sm w-36"
+                  [ngClass]="{
+                    'input-error':
+                      (beersFiltersForm.get('opinions.maxOpinionsCount')!
+                        .invalid &&
+                        beersFiltersForm.get('opinions.maxOpinionsCount')!
+                          .touched) ||
+                      beersFiltersForm.get('opinions')!.invalid
+                  }" />
+                <div class="label flex flex-col text-center">
+                  @if (
+                    beersFiltersForm.get('opinions.maxOpinionsCount')!.errors &&
+                    beersFiltersForm
+                      .get('opinions.maxOpinionsCount')!
+                      .hasError('min') &&
+                    beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Opinions must be greater than or equal to 0</span
+                    >
+                  }
+                  @if (
+                    beersFiltersForm.get('opinions')!.errors &&
+                    beersFiltersForm
+                      .get('opinions')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    beersFiltersForm.get('opinions.maxOpinionsCount')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Opinions must be greater than or equal to Min
+                      Opinions</span
+                    >
+                  }
+                </div>
+              </label>
             </div>
           </div>
         </div>
         <!-- 3 -->
         <div
-          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
+          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0"
+          formGroupName="releaseDates">
           <label class="form-control w-full">
             <div class="label">
               <span class="label-text">Min release date</span>
@@ -165,7 +635,29 @@
               type="date"
               id="minReleaseDate"
               formControlName="minReleaseDate"
-              class="input input-bordered input-primary input-sm" />
+              class="input input-bordered input-primary input-sm"
+              [ngClass]="{
+                'input-error':
+                  (beersFiltersForm.get('releaseDates.minReleaseDate')!
+                    .invalid &&
+                    beersFiltersForm.get('releaseDates.minReleaseDate')!
+                      .touched) ||
+                  beersFiltersForm.get('releaseDates')!.invalid
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                beersFiltersForm.get('releaseDates')!.errors &&
+                beersFiltersForm
+                  .get('releaseDates')!
+                  .hasError('lessThanOrEqualToControlError') &&
+                beersFiltersForm.get('releaseDates.minReleaseDate')!.touched
+              ) {
+                <span class="label-text-alt"
+                  >Min Release Date must be less than or equal to Max Release
+                  Date</span
+                >
+              }
+            </div>
           </label>
 
           <label class="form-control w-full">
@@ -176,7 +668,29 @@
               type="date"
               id="maxReleaseDate"
               formControlName="maxReleaseDate"
-              class="input input-bordered input-primary input-sm" />
+              class="input input-bordered input-primary input-sm"
+              [ngClass]="{
+                'input-error':
+                  (beersFiltersForm.get('releaseDates.maxReleaseDate')!
+                    .invalid &&
+                    beersFiltersForm.get('releaseDates.maxReleaseDate')!
+                      .touched) ||
+                  beersFiltersForm.get('releaseDates')!.invalid
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                beersFiltersForm.get('releaseDates')!.errors &&
+                beersFiltersForm
+                  .get('releaseDates')!
+                  .hasError('greaterThanOrEqualToControlError') &&
+                beersFiltersForm.get('releaseDates.maxReleaseDate')!.touched
+              ) {
+                <span class="label-text-alt"
+                  >Max Release Date must be greater than or equal to Min Release
+                  Date</span
+                >
+              }
+            </div>
           </label>
         </div>
         <!-- 4 -->
@@ -211,9 +725,14 @@
             </select>
           </label>
         </div>
-        <!-- Apply filters -->
+        <!-- Buttons -->
         <div class="mt-2 flex items-center justify-evenly">
-          <button type="submit" class="btn btn-accent">Apply filters</button>
+          <button
+            type="submit"
+            class="btn btn-accent"
+            [disabled]="!beersFiltersForm.valid">
+            Apply filters
+          </button>
           <button
             type="button"
             class="btn btn-neutral"
