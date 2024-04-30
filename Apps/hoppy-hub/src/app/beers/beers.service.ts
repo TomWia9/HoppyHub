@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, Subject, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { Beer } from './beer.model';
 import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
@@ -13,7 +13,9 @@ import { BeersParams } from './beers-params';
 export class BeersService {
   private http: HttpClient = inject(HttpClient);
 
-  paramsChanged = new Subject<BeersParams>();
+  paramsChanged = new BehaviorSubject<BeersParams>(
+    new BeersParams(25, 1, 'ReleaseDate', 1)
+  );
 
   getBeerById(id: string): Observable<Beer> {
     return this.http.get<Beer>(
