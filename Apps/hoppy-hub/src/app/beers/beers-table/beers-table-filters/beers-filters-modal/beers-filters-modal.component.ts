@@ -80,7 +80,108 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.fetchAllBreweries();
     this.fetchAllBeerStyles();
 
-    this.beersFiltersForm = new FormGroup({
+    this.beersFiltersForm = this.getBeerFiltersForm();
+  }
+
+  onSubmit() {
+    const beersParams = new BeersParams(
+      25,
+      1,
+      this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
+      this.beersFiltersForm.value.sortDirection,
+      undefined,
+      undefined,
+      this.beersFiltersForm.value.brewery,
+      this.beersFiltersForm.value.beerStyle,
+      this.beersFiltersForm.value.minAbv,
+      this.beersFiltersForm.value.maxAbv,
+      this.beersFiltersForm.value.minExtract,
+      this.beersFiltersForm.value.maxExtract,
+      this.beersFiltersForm.value.minIbu,
+      this.beersFiltersForm.value.maxIbu,
+      this.beersFiltersForm.value.minReleaseDate,
+      this.beersFiltersForm.value.maxReleaseDate,
+      this.beersFiltersForm.value.minRating,
+      this.beersFiltersForm.value.maxRating,
+      this.beersFiltersForm.value.minFavoritesCount,
+      this.beersFiltersForm.value.maxFavoritesCount,
+      this.beersFiltersForm.value.minOpinionsCount,
+      this.beersFiltersForm.value.maxOpinionsCount
+    );
+
+    this.beersService.paramsChanged.next(beersParams);
+
+    this.onModalHide();
+  }
+
+  onModalHide() {
+    if (this.modalRef) {
+      (this.modalRef.nativeElement as HTMLDialogElement).close();
+    }
+  }
+
+  onShowModal(modalType: ModalType) {
+    if (modalType === ModalType.BeersFilters && this.modalRef) {
+      (this.modalRef.nativeElement as HTMLDialogElement).showModal();
+    }
+  }
+
+  onClearFilters() {
+    this.beersFiltersForm.reset();
+  }
+
+  fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
+    this.getBreweriesSubscription = this.breweriesService
+      .getBreweries(new BreweriesParams(50, pageNumber))
+      .subscribe({
+        next: (breweries: PagedList<Brewery>) => {
+          this.loading = true;
+          allBreweries.push(...breweries.items);
+          if (breweries.HasNext) {
+            this.fetchAllBreweries(pageNumber + 1, allBreweries);
+          } else {
+            this.breweries = allBreweries;
+            this.error = '';
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.error = 'An error occurred while loading the breweries';
+          this.loading = false;
+        }
+      });
+  }
+
+  fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
+    this.getBeerStylesSubscription = this.beerStylesService
+      .getBeerStyles(new BeerStylesParams(50, pageNumber))
+      .subscribe({
+        next: (beerStyles: PagedList<BeerStyle>) => {
+          this.loading = true;
+          allBeerStyles.push(...beerStyles.items);
+          if (beerStyles.HasNext) {
+            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
+          } else {
+            this.beerStyles = allBeerStyles;
+            this.error = '';
+            this.loading = false;
+          }
+        },
+        error: () => {
+          this.error = 'An error occurred while loading the breweries';
+          this.loading = false;
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.modalOppenedSubscription.unsubscribe();
+    this.getBreweriesSubscription.unsubscribe();
+    this.getBeerStylesSubscription.unsubscribe();
+  }
+
+  getBeerFiltersForm(): FormGroup {
+    return new FormGroup({
       brewery: new FormControl(''),
       abv: new FormGroup(
         {
@@ -191,104 +292,5 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       sortBy: new FormControl(''),
       sortDirection: new FormControl('')
     });
-  }
-
-  onSubmit() {
-    console.log(this.beersFiltersForm);
-
-    const beersParams = new BeersParams(
-      25,
-      1,
-      this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      this.beersFiltersForm.value.sortDirection,
-      undefined,
-      undefined,
-      this.beersFiltersForm.value.brewery,
-      this.beersFiltersForm.value.beerStyle,
-      this.beersFiltersForm.value.minAbv,
-      this.beersFiltersForm.value.maxAbv,
-      this.beersFiltersForm.value.minExtract,
-      this.beersFiltersForm.value.maxExtract,
-      this.beersFiltersForm.value.minIbu,
-      this.beersFiltersForm.value.maxIbu,
-      this.beersFiltersForm.value.minReleaseDate,
-      this.beersFiltersForm.value.maxReleaseDate,
-      this.beersFiltersForm.value.minRating,
-      this.beersFiltersForm.value.maxRating,
-      this.beersFiltersForm.value.minFavoritesCount,
-      this.beersFiltersForm.value.maxFavoritesCount,
-      this.beersFiltersForm.value.minOpinionsCount,
-      this.beersFiltersForm.value.maxOpinionsCount
-    );
-
-    this.beersService.paramsChanged.next(beersParams);
-
-    this.onModalHide();
-  }
-
-  onModalHide() {
-    if (this.modalRef) {
-      (this.modalRef.nativeElement as HTMLDialogElement).close();
-    }
-  }
-
-  onShowModal(modalType: ModalType) {
-    if (modalType === ModalType.BeersFilters && this.modalRef) {
-      (this.modalRef.nativeElement as HTMLDialogElement).showModal();
-    }
-  }
-
-  onClearFilters() {
-    this.beersFiltersForm.reset();
-  }
-
-  fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
-    this.getBreweriesSubscription = this.breweriesService
-      .getBreweries(new BreweriesParams(50, pageNumber))
-      .subscribe({
-        next: (breweries: PagedList<Brewery>) => {
-          this.loading = true;
-          allBreweries.push(...breweries.items);
-          if (breweries.HasNext) {
-            this.fetchAllBreweries(pageNumber + 1, allBreweries);
-          } else {
-            this.breweries = allBreweries;
-            this.error = '';
-            this.loading = false;
-          }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the breweries';
-          this.loading = false;
-        }
-      });
-  }
-
-  fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
-    this.getBeerStylesSubscription = this.beerStylesService
-      .getBeerStyles(new BeerStylesParams(50, pageNumber))
-      .subscribe({
-        next: (beerStyles: PagedList<BeerStyle>) => {
-          this.loading = true;
-          allBeerStyles.push(...beerStyles.items);
-          if (beerStyles.HasNext) {
-            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
-          } else {
-            this.beerStyles = allBeerStyles;
-            this.error = '';
-            this.loading = false;
-          }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the breweries';
-          this.loading = false;
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.modalOppenedSubscription.unsubscribe();
-    this.getBreweriesSubscription.unsubscribe();
-    this.getBeerStylesSubscription.unsubscribe();
   }
 }
