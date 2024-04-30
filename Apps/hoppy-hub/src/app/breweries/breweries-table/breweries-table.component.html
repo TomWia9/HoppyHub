@@ -1,1 +1,49 @@
-<p>breweries-table works!</p>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <!-- <app-breweries-table-filters
+    [params]="breweriesParams"
+    [paginationData]="getPaginationData()"></app-breweries-table-filters> -->
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  } @else {
+    <div class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
+      <div class="overflow-x-auto">
+        <table class="table table-xs lg:table-lg">
+          <thead>
+            <tr class="2xl:text-lg">
+              <th>Name</th>
+              <th>Foundation Year</th>
+              <th>Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (breweries && breweries.TotalCount > 0) {
+              @for (brewery of breweries.items; track brewery.id) {
+                <tr class="hover cursor-pointer">
+                  <td>
+                    <div>{{ brewery.name }}</div>
+                  </td>
+                  <td>
+                    <div>
+                      {{ brewery.foundationYear }}
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{ brewery.address.country }}</div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="my-4">
+      <app-pagination
+        [params]="breweriesParams"
+        [paginationData]="getPaginationData()"
+        size="md"></app-pagination>
+    </div>
+  }
+}

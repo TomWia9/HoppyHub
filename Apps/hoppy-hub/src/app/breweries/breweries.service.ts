@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Brewery } from './brewery.model';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
@@ -12,6 +12,10 @@ import { BreweriesParams } from './breweries-params';
 })
 export class BreweriesService {
   private http: HttpClient = inject(HttpClient);
+
+  paramsChanged = new BehaviorSubject<BreweriesParams>(
+    new BreweriesParams(25, 1, 'Name', 1)
+  );
 
   getBreweries(
     breweriesParams: BreweriesParams
