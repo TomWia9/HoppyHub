@@ -1,9 +1,9 @@
 @if (loading) {
   <app-loading-spinner></app-loading-spinner>
 } @else {
-  <!-- <app-breweries-table-filters
+  <app-breweries-table-filters
     [params]="breweriesParams"
-    [paginationData]="getPaginationData()"></app-breweries-table-filters> -->
+    [paginationData]="getPaginationData()"></app-breweries-table-filters>
   @if (error) {
     <app-error-message [message]="error"></app-error-message>
   } @else {

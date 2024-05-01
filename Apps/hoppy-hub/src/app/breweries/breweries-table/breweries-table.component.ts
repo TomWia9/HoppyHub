@@ -8,12 +8,18 @@ import { PagedList } from '../../shared/paged-list';
 import { Subscription } from 'rxjs';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
+import { BreweriesTableFiltersComponent } from './breweries-table-filters/breweries-table-filters.component';
 
 @Component({
   selector: 'app-breweries-table',
   standalone: true,
   templateUrl: './breweries-table.component.html',
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent, PaginationComponent]
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    PaginationComponent,
+    BreweriesTableFiltersComponent
+  ]
 })
 export class BreweriesTableComponent implements OnInit, OnDestroy {
   private breweriesService: BreweriesService = inject(BreweriesService);
@@ -26,7 +32,6 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
   getBreweriesSubscription!: Subscription;
 
   ngOnInit(): void {
-    // this.getBreweries();
     this.breweriesParamsSubscription =
       this.breweriesService.paramsChanged.subscribe(
         (params: BreweriesParams) => {
