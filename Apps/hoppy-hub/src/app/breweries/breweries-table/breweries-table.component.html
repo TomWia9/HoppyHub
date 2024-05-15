@@ -20,7 +20,10 @@
           <tbody>
             @if (breweries && breweries.TotalCount > 0) {
               @for (brewery of breweries.items; track brewery.id) {
-                <tr class="hover cursor-pointer">
+                <tr
+                  class="hover cursor-pointer"
+                  [routerLink]="[brewery.id]"
+                  routerLinkActive="active">
                   <td>
                     <div>{{ brewery.name }}</div>
                   </td>

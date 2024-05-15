@@ -1,1 +1,8 @@
-<p>brewery-details works!</p>
+<h2 class="my-4 text-lg font-semibold">Details</h2>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <h2 class="my-4 text-lg font-semibold">{{ breweryId }}</h2>
+}

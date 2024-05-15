@@ -5,6 +5,9 @@
     <app-breweries-table></app-breweries-table>
   </div>
   <div class="my-4">
-    <app-brewery-details></app-brewery-details>
+    @if (!brewerySelected) {
+      <div>Select brewery to see details</div>
+    }
+    <router-outlet></router-outlet>
   </div>
 </section>

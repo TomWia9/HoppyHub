@@ -9,12 +9,14 @@ import { Subscription } from 'rxjs';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
 import { BreweriesTableFiltersComponent } from './breweries-table-filters/breweries-table-filters.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-breweries-table',
   standalone: true,
   templateUrl: './breweries-table.component.html',
   imports: [
+    RouterModule,
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     PaginationComponent,
