@@ -28,32 +28,24 @@
       <!-- TODO: Search and Sort By dropdown -->
       <h2 class="my-4">TODO: Search and Sort By dropdown</h2>
 
-      <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <div class="card bg-base-100 shadow-xl">
-          <figure><img src="beer1.jpg" alt="Beer 1" /></figure>
-          <div class="card-body">
-            <h2 class="card-title">Beer 1</h2>
-            <p>Short beer description 1.</p>
+      <div class="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        @for (beer of beers?.items; track beer.id) {
+          <div class="card bg-base-100 shadow-xl">
+            <figure><img src="{{ beer.imageUri }}" alt="Beer 1" /></figure>
+            <div class="card-body">
+              <h2 class="card-title">{{ beer.name }}</h2>
+              <p>{{ beer.description }}</p>
+            </div>
           </div>
-        </div>
-        <div class="card bg-base-100 shadow-xl">
-          <figure><img src="beer2.jpg" alt="Beer 2" /></figure>
-          <div class="card-body">
-            <h2 class="card-title">Beer 2</h2>
-            <p>Short beer description 2.</p>
-          </div>
-        </div>
-        <div class="card bg-base-100 shadow-xl">
-          <figure><img src="beer3.jpg" alt="Beer 3" /></figure>
-          <div class="card-body">
-            <h2 class="card-title">Beer 3</h2>
-            <p>Short beer description 3.</p>
-          </div>
-        </div>
+        }
       </div>
 
-      <!-- TODO: Brewery beers pagination -->
-      <h2 class="my-4">TODO: Brewery beers pagination</h2>
+      @if (beers?.HasNext || beers?.HasPrevious) {
+        <app-pagination
+          [params]="beersParams"
+          [paginationData]="getPaginationData()"
+          size="md"></app-pagination>
+      }
     </div>
   </div>
 }
