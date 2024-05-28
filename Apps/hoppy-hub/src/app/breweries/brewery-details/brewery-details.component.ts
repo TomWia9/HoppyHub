@@ -115,6 +115,9 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.beersService.paramsChanged.next(
+      new BeersParams(25, 1, 'ReleaseDate', 1)
+    );
     this.unsubscribeAll();
 
     if (this.routeSubscription) {

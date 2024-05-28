@@ -40,9 +40,11 @@
                     </div>
                   </td>
                   <td>
-                    <a class="link-hover link font-bold">{{
-                      beer.brewery.name
-                    }}</a>
+                    <a
+                      class="link-hover link font-bold"
+                      [routerLink]="['/breweries', beer.brewery.id]"
+                      >{{ beer.brewery.name }}</a
+                    >
                   </td>
                   <td>
                     <div>

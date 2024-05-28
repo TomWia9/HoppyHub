@@ -9,6 +9,7 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
 import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-beers-table',
@@ -17,7 +18,8 @@ import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-fi
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     PaginationComponent,
-    BeersTableFiltersComponent
+    BeersTableFiltersComponent,
+    RouterModule
   ],
   templateUrl: './beers-table.component.html'
 })
