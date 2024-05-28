@@ -17,6 +17,12 @@ export class BreweriesService {
     new BreweriesParams(25, 1, 'Name', 1)
   );
 
+  getBreweryById(id: string): Observable<Brewery> {
+    return this.http.get<Brewery>(
+      `${environment.beerManagementApiUrl}/breweries/${id}`
+    );
+  }
+
   getBreweries(
     breweriesParams: BreweriesParams
   ): Observable<PagedList<Brewery>> {

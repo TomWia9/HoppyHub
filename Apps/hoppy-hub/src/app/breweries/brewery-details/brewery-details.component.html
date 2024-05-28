@@ -4,5 +4,7 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <h2 class="my-4 text-lg font-semibold">{{ breweryId }}</h2>
+  <h2 class="my-4 text-lg font-semibold">{{ brewery.id }}</h2>
+  <h2 class="my-4 text-lg font-semibold">{{ brewery.foundationYear }}</h2>
+  <h2 class="my-4 text-lg font-semibold">{{ brewery.name }}</h2>
 }
