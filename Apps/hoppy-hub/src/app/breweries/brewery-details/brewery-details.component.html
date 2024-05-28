@@ -1,10 +1,59 @@
-<h2 class="my-4 text-lg font-semibold">Details</h2>
 @if (loading) {
   <app-loading-spinner></app-loading-spinner>
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <h2 class="my-4 text-lg font-semibold">{{ brewery.id }}</h2>
-  <h2 class="my-4 text-lg font-semibold">{{ brewery.foundationYear }}</h2>
-  <h2 class="my-4 text-lg font-semibold">{{ brewery.name }}</h2>
+  <div class="container mx-auto p-4">
+    <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
+      <h1 class="mb-2 text-3xl font-bold">{{ brewery.name }}</h1>
+      <p class="mb-4">{{ brewery.description }}</p>
+      <div class="flex flex-row justify-evenly align-middle">
+        <div class="flex flex-col">
+          <p><strong>Address:</strong></p>
+          <p>{{ brewery.address.street }} {{ brewery.address.number }}</p>
+          <p>{{ brewery.address.city }} {{ brewery.address.postCode }}</p>
+          <p>{{ brewery.address.country }}, {{ brewery.address.state }}</p>
+        </div>
+        <div class="flex flex-col">
+          <p><strong>Foundation year:</strong> {{ brewery.foundationYear }}</p>
+          <!-- TODO: Add real beers number -->
+          <p><strong>Beers number:</strong> {{ 121 }}</p>
+          <a href="{{ brewery.websiteUrl }}" class="text-blue-500 underline"
+            >Website</a
+          >
+        </div>
+      </div>
+
+      <h1 class="my-2 text-2xl font-bold">Beers:</h1>
+      <!-- TODO: Search and Sort By dropdown -->
+      <h2 class="my-4">TODO: Search and Sort By dropdown</h2>
+
+      <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div class="card bg-base-100 shadow-xl">
+          <figure><img src="beer1.jpg" alt="Beer 1" /></figure>
+          <div class="card-body">
+            <h2 class="card-title">Beer 1</h2>
+            <p>Short beer description 1.</p>
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-xl">
+          <figure><img src="beer2.jpg" alt="Beer 2" /></figure>
+          <div class="card-body">
+            <h2 class="card-title">Beer 2</h2>
+            <p>Short beer description 2.</p>
+          </div>
+        </div>
+        <div class="card bg-base-100 shadow-xl">
+          <figure><img src="beer3.jpg" alt="Beer 3" /></figure>
+          <div class="card-body">
+            <h2 class="card-title">Beer 3</h2>
+            <p>Short beer description 3.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TODO: Brewery beers pagination -->
+      <h2 class="my-4">TODO: Brewery beers pagination</h2>
+    </div>
+  </div>
 }
