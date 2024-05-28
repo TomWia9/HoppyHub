@@ -16,8 +16,7 @@
         </div>
         <div class="flex flex-col">
           <p><strong>Foundation year:</strong> {{ brewery.foundationYear }}</p>
-          <!-- TODO: Add real beers number -->
-          <p><strong>Beers number:</strong> {{ 121 }}</p>
+          <p><strong>Beers number:</strong> {{ beers?.TotalCount }}</p>
           <a href="{{ brewery.websiteUrl }}" class="text-blue-500 underline"
             >Website</a
           >
@@ -31,10 +30,18 @@
       <div class="my-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         @for (beer of beers?.items; track beer.id) {
           <div class="card bg-base-100 shadow-xl">
-            <figure><img src="{{ beer.imageUri }}" alt="Beer 1" /></figure>
-            <div class="card-body">
-              <h2 class="card-title">{{ beer.name }}</h2>
+            <figure class="h-60">
+              <img src="{{ beer.imageUri }}" alt="Beer 1" />
+            </figure>
+            <div class="card-body items-center text-center">
+              <h2 class="card-title font-bold">{{ beer.name }}</h2>
+              <p class="mb-2">({{ beer.beerStyle.name }})</p>
               <p>{{ beer.description }}</p>
+
+              <div class="flex flex-row space-x-6 font-light">
+                <p>ABV: {{ beer.alcoholByVolume }}%</p>
+                <p>{{ beer.blg }} BLG</p>
+              </div>
             </div>
           </div>
         }

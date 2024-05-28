@@ -26,7 +26,7 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
   brewerySubscription!: Subscription;
   beersSubscription!: Subscription;
   beersParamsSubscription!: Subscription;
-  beersParams = new BeersParams(3, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams(9, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
