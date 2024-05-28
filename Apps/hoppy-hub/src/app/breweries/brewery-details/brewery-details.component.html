@@ -24,8 +24,9 @@
       </div>
 
       <h1 class="my-2 text-2xl font-bold">Beers:</h1>
-      <!-- TODO: Search and Sort By dropdown -->
-      <h2 class="my-4">TODO: Search and Sort By dropdown</h2>
+      <app-brewery-beers-filters
+        [params]="beersParams"
+        [paginationData]="getPaginationData()"></app-brewery-beers-filters>
 
       <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         @for (beer of beers?.items; track beer.id) {

@@ -11,12 +11,18 @@ import { PagedList } from '../../shared/paged-list';
 import { BeersParams } from '../../beers/beers-params';
 import { Pagination } from '../../shared/pagination';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
+import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-beers-filters.component';
 
 @Component({
   selector: 'app-brewery-details',
   standalone: true,
   templateUrl: './brewery-details.component.html',
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent, PaginationComponent]
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    PaginationComponent,
+    BreweryBeersFiltersComponent
+  ]
 })
 export class BreweryDetailsComponent implements OnInit, OnDestroy {
   brewery!: Brewery;
@@ -40,6 +46,7 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
         this.unsubscribeAll();
         this.beersParams.breweryId = breweryId as string;
         this.beersParams.pageNumber = 1;
+        this.beersParams.searchQuery = '';
         this.beersService.paramsChanged.next(this.beersParams);
 
         this.brewerySubscription = this.breweriesService
