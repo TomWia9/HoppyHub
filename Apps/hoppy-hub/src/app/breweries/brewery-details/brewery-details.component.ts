@@ -43,10 +43,13 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
       .subscribe(breweryId => {
-        this.unsubscribeAll();
+        this.unsubscribeAll(); //TODO: Rename to resetBreweryDetails()
+        //TODO: Move this to the separated method
         this.beersParams.breweryId = breweryId as string;
         this.beersParams.pageNumber = 1;
         this.beersParams.searchQuery = '';
+        this.beersParams.sortBy = 'ReleaseDate';
+        this.beersParams.sortDirection = 1;
         this.beersService.paramsChanged.next(this.beersParams);
 
         this.brewerySubscription = this.breweriesService

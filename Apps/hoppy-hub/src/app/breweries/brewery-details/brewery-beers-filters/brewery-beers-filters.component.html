@@ -20,7 +20,18 @@
       </button>
     </div>
   </div>
-
+  <div class="flex flex-col items-center">
+    <select
+      class="select select-bordered w-full max-w-xs"
+      [(ngModel)]="selectedSortOptionIndex"
+      (change)="onSort()">
+      @for (option of sortOptions; track $index) {
+        <option [value]="$index">
+          {{ option.label }}
+        </option>
+      }
+    </select>
+  </div>
   <div>
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="join">
