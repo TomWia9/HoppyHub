@@ -43,14 +43,7 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
       .subscribe(breweryId => {
-        this.unsubscribeAll(); //TODO: Rename to resetBreweryDetails()
-        //TODO: Move this to the separated method
-        this.beersParams.breweryId = breweryId as string;
-        this.beersParams.pageNumber = 1;
-        this.beersParams.searchQuery = '';
-        this.beersParams.sortBy = 'ReleaseDate';
-        this.beersParams.sortDirection = 1;
-        this.beersService.paramsChanged.next(this.beersParams);
+        this.resetBreweryDetails(breweryId as string);
 
         this.brewerySubscription = this.breweriesService
           .getBreweryById(breweryId as string)
@@ -112,7 +105,7 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  private unsubscribeAll(): void {
+  private resetBreweryDetails(breweryId: string): void {
     if (this.brewerySubscription) {
       this.brewerySubscription.unsubscribe();
     }
@@ -122,13 +115,20 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
     if (this.beersSubscription) {
       this.beersSubscription.unsubscribe();
     }
+
+    this.beersParams.breweryId = breweryId;
+    this.beersParams.pageNumber = 1;
+    this.beersParams.searchQuery = '';
+    this.beersParams.sortBy = 'ReleaseDate';
+    this.beersParams.sortDirection = 1;
+    this.beersService.paramsChanged.next(this.beersParams);
   }
 
   ngOnDestroy(): void {
     this.beersService.paramsChanged.next(
       new BeersParams(25, 1, 'ReleaseDate', 1)
     );
-    this.unsubscribeAll();
+    this.resetBreweryDetails(this.brewery.id);
 
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();

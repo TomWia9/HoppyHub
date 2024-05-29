@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, inject } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +8,8 @@ import {
 import { Pagination } from '../../../shared/pagination';
 import { BeersService } from '../../../beers/beers.service';
 import { BeersParams } from '../../../beers/beers-params';
+import { Subscription, map } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-brewery-beers-filters',
@@ -15,7 +17,7 @@ import { BeersParams } from '../../../beers/beers-params';
   imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './brewery-beers-filters.component.html'
 })
-export class BreweryBeersFiltersComponent implements OnInit {
+export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {
   @Input({ required: true }) params!: BeersParams;
   @Input({ required: true }) paginationData!: Pagination;
 
@@ -74,12 +76,22 @@ export class BreweryBeersFiltersComponent implements OnInit {
   ];
 
   selectedSortOptionIndex: number = 0;
+  routeSubscription!: Subscription;
 
   private beersService: BeersService = inject(BeersService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
 
-  searchForm!: FormGroup;
+  searchForm: FormGroup = new FormGroup({
+    search: new FormControl('')
+  });
 
   ngOnInit(): void {
+    this.routeSubscription = this.route.paramMap
+      .pipe(map(params => params.get('id')))
+      .subscribe(() => {
+        this.searchForm.reset();
+        this.selectedSortOptionIndex = 0;
+      });
     this.breweryId = this.params.breweryId as string;
     this.searchForm = new FormGroup({
       search: new FormControl('')
@@ -118,6 +130,12 @@ export class BreweryBeersFiltersComponent implements OnInit {
       JSON.stringify(this.params)
     ) {
       this.beersService.paramsChanged.next(this.params);
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
     }
   }
 }
