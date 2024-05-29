@@ -9,6 +9,7 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
 import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-beers-table',
@@ -17,7 +18,8 @@ import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-fi
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     PaginationComponent,
-    BeersTableFiltersComponent
+    BeersTableFiltersComponent,
+    RouterModule
   ],
   templateUrl: './beers-table.component.html'
 })
@@ -32,7 +34,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
   getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
-    this.getBeers();
     this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
       (params: BeersParams) => {
         this.beersParams = params;
@@ -101,5 +102,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.getBeersSubscription.unsubscribe();
+    this.beersParamsSubscription.unsubscribe();
   }
 }

@@ -49,41 +49,41 @@ VALUES (@BrowarStuMostówId, N'Browar Stu Mostów',
 -- Addresses
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), N'ul. Jagiellońska', '75', '30-303', N'Kraków', N'Małopolskie', 'Polska', @BrowarStuMostówId);
+VALUES (NEWID(), N'ul. Jagiellońska', '75', '30-303', N'Kraków', N'Małopolskie', 'Poland', @BrowarStuMostówId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), 'ul. Jana III Sobieskiego', '78', '62-030', N'Kłodawa', 'Wielkopolskie', 'Polska', @BrowarPintaId);
+VALUES (NEWID(), 'ul. Jana III Sobieskiego', '78', '62-030', N'Kłodawa', 'Wielkopolskie', 'Poland', @BrowarPintaId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), N'ul. Kościuszki', '123', '32-400', N'Myślenice', N'Małopolskie', 'Polska', @BrowarArtezanId);
+VALUES (NEWID(), N'ul. Kościuszki', '123', '32-400', N'Myślenice', N'Małopolskie', 'Poland', @BrowarArtezanId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), N'ul. Powstańców Śląskich', '54', '43-300', N'Bielsko-Biała', N'Śląskie', 'Polska',
+VALUES (NEWID(), N'ul. Powstańców Śląskich', '54', '43-300', N'Bielsko-Biała', N'Śląskie', 'Poland',
         @BrowarTrzechKumpliId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), 'ul. Biskupia', '6', '31-144', N'Kraków', N'Małopolskie', 'Polska', @BrowarNepomucenId);
+VALUES (NEWID(), 'ul. Biskupia', '6', '31-144', N'Kraków', N'Małopolskie', 'Poland', @BrowarNepomucenId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), 'ul. Browarna', '8', '37-310', N'Nowy Sącz', N'Małopolskie', 'Polska', @BrowarMaryensztadtId);
+VALUES (NEWID(), 'ul. Browarna', '8', '37-310', N'Nowy Sącz', N'Małopolskie', 'Poland', @BrowarMaryensztadtId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), 'ul. Fabryczna', '7', '33-318', 'Gromnik', N'Małopolskie', 'Polska', @BrowarZakładowyId);
+VALUES (NEWID(), 'ul. Fabryczna', '7', '33-318', 'Gromnik', N'Małopolskie', 'Poland', @BrowarZakładowyId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), 'ul. Krakowska', '12', '25-317', 'Kielce', N'Świętokrzyskie', 'Polska', @BrowarInneBeczkiId);
+VALUES (NEWID(), 'ul. Krakowska', '12', '25-317', 'Kielce', N'Świętokrzyskie', 'Poland', @BrowarInneBeczkiId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), N'ul. Cieszyńska', '14', '43-100', 'Tychy', N'Śląskie', 'Polska', @BrowarProfesjaId);
+VALUES (NEWID(), N'ul. Cieszyńska', '14', '43-100', 'Tychy', N'Śląskie', 'Poland', @BrowarProfesjaId);
 
 INSERT INTO ADDRESSES
     (Id, Street, Number, PostCode, City, State, Country, BreweryId)
-VALUES (NEWID(), N'ul. Młyńska', '5', '63-430', N'Luboń', 'Wielkopolskie', 'Polska', @BrowarSpółdzielczyId);
+VALUES (NEWID(), N'ul. Młyńska', '5', '63-430', N'Luboń', 'Wielkopolskie', 'Poland', @BrowarSpółdzielczyId);

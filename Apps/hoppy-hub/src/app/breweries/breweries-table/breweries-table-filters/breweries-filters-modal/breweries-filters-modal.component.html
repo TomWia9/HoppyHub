@@ -1,0 +1,275 @@
+<dialog #breweriesFiltersModal class="modal modal-middle">
+  <div class="modal-box w-11/12 max-w-md">
+    <form method="dialog">
+      <button
+        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+        (click)="onModalHide()">
+        ✕
+      </button>
+    </form>
+    @if (error) {
+      <app-error-message [message]="error"></app-error-message>
+    } @else {
+      <h3 class="mb-2 text-2xl font-bold">Filter breweries</h3>
+      <form [formGroup]="breweriesFiltersForm" (ngSubmit)="onSubmit()">
+        <div class="my-4 flex flex-col items-center justify-between space-y-4">
+          <div class="flex justify-center space-x-8">
+            <label class="form-control w-full">
+              <input
+                id="breweryName"
+                placeholder="Brewery Name"
+                type="text"
+                formControlName="name"
+                class="input input-bordered input-primary input-sm w-36"
+                [ngClass]="{
+                  'input-error':
+                    breweriesFiltersForm.get('name')!.invalid &&
+                    breweriesFiltersForm.get('name')!.touched
+                }" />
+              @if (breweriesFiltersForm.get('name')!.errors) {
+                <div class="label flex flex-col text-center">
+                  @if (
+                    breweriesFiltersForm.get('name')!.errors &&
+                    breweriesFiltersForm.get('name')!.hasError('maxlength') &&
+                    breweriesFiltersForm.get('name')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Maximum Brewery name is 500</span
+                    >
+                  }
+                </div>
+              }
+            </label>
+            <label class="form-control w-full">
+              <input
+                id="breweryCountry"
+                placeholder="Country"
+                type="text"
+                formControlName="country"
+                class="input input-bordered input-primary input-sm w-36"
+                [ngClass]="{
+                  'input-error':
+                    breweriesFiltersForm.get('country')!.invalid &&
+                    breweriesFiltersForm.get('country')!.touched
+                }" />
+              @if (breweriesFiltersForm.get('country')!.errors) {
+                <div class="label flex flex-col text-center">
+                  @if (
+                    breweriesFiltersForm.get('country')!.errors &&
+                    breweriesFiltersForm
+                      .get('country')!
+                      .hasError('maxlength') &&
+                    breweriesFiltersForm.get('country')!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Maximum Country name is 50</span
+                    >
+                  }
+                </div>
+              }
+            </label>
+          </div>
+          <div
+            class="flex justify-center space-x-8"
+            formGroupName="foundationYears">
+            <label class="form-control w-full max-w-xs items-center">
+              <input
+                type="number"
+                id="minFoundationYear"
+                formControlName="minFoundationYear"
+                placeholder="Min Foundation Year"
+                min="0"
+                max="{{ currentYear }}"
+                class="input input-bordered input-primary input-sm w-36 text-xs"
+                [ngClass]="{
+                  'input-error':
+                    (breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.invalid &&
+                      breweriesFiltersForm.get(
+                        'foundationYears.minFoundationYear'
+                      )!.touched) ||
+                    breweriesFiltersForm.get('foundationYears')!.invalid
+                }" />
+              @if (
+                breweriesFiltersForm.get('foundationYears')!.errors ||
+                breweriesFiltersForm.get('foundationYears.minFoundationYear')!
+                  .errors
+              ) {
+                <div class="label flex flex-col text-center">
+                  @if (
+                    breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears.minFoundationYear')!
+                      .hasError('min') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Foundation Year must be greater than or equal to
+                      0</span
+                    >
+                  }
+                  @if (
+                    breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears.minFoundationYear')!
+                      .hasError('max') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Foundation Year must be less than or equal to
+                      {{ currentYear }}</span
+                    >
+                  }
+                  @if (
+                    breweriesFiltersForm.get('foundationYears')!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears')!
+                      .hasError('lessThanOrEqualToControlError') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.minFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Min Foundation Year must be less than or equal to Max
+                      Foundation Year</span
+                    >
+                  }
+                </div>
+              }
+            </label>
+            <label class="form-control w-full max-w-xs items-center">
+              <input
+                type="number"
+                id="maxFoundationYear"
+                formControlName="maxFoundationYear"
+                placeholder="Max Foundation Year"
+                min="0"
+                max="{{ currentYear }}"
+                class="input input-bordered input-primary input-sm w-36 text-xs"
+                [ngClass]="{
+                  'input-error':
+                    (breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.invalid &&
+                      breweriesFiltersForm.get(
+                        'foundationYears.maxFoundationYear'
+                      )!.touched) ||
+                    breweriesFiltersForm.get('foundationYears')!.invalid
+                }" />
+              @if (
+                breweriesFiltersForm.get('foundationYears')!.errors ||
+                breweriesFiltersForm.get('foundationYears.maxFoundationYear')!
+                  .errors
+              ) {
+                <div class="label flex flex-col text-center">
+                  @if (
+                    breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears.maxFoundationYear')!
+                      .hasError('min') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Foundation Year must be greater than or equal to
+                      0</span
+                    >
+                  }
+                  @if (
+                    breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears.maxFoundationYear')!
+                      .hasError('max') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Foundation Year must be less than or equal to
+                      {{ currentYear }}</span
+                    >
+                  }
+                  @if (
+                    breweriesFiltersForm.get('foundationYears')!.errors &&
+                    breweriesFiltersForm
+                      .get('foundationYears')!
+                      .hasError('greaterThanOrEqualToControlError') &&
+                    breweriesFiltersForm.get(
+                      'foundationYears.maxFoundationYear'
+                    )!.touched
+                  ) {
+                    <span class="label-text-alt"
+                      >Max Foundation Year must be less than or equal to Min
+                      Foundation Year</span
+                    >
+                  }
+                </div>
+              }
+            </label>
+          </div>
+          <label class="form-control w-full max-w-xs items-center">
+            <div class="label">
+              <span class="label-text">Sort by</span>
+            </div>
+            <select
+              id="sortBy"
+              formControlName="sortBy"
+              class="select select-primary select-sm w-72">
+              <option value="" selected class="font-bold">---</option>
+              @for (sortBy of sortByOptions; track $index) {
+                <option [value]="sortBy">{{ sortBy }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control w-full max-w-xs items-center">
+            <div class="label">
+              <span class="label-text">Sort direction</span>
+            </div>
+            <select
+              id="sortDirection"
+              formControlName="sortDirection"
+              class="select select-primary select-sm w-72">
+              <option value="" selected class="font-bold">---</option>
+              @for (sortDirection of sortDirectionOptions; track $index) {
+                <option [value]="sortDirection">
+                  {{ sortDirection }}
+                </option>
+              }
+            </select>
+          </label>
+        </div>
+        <div class="mt-2 flex items-center justify-evenly">
+          <button
+            type="submit"
+            class="btn btn-accent"
+            [disabled]="!breweriesFiltersForm.valid">
+            Apply filters
+          </button>
+          <button
+            type="button"
+            class="btn btn-neutral"
+            (click)="onClearFilters()">
+            Clear filters
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="onModalHide()">close</button>
+  </form>
+</dialog>
