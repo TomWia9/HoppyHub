@@ -88,11 +88,11 @@ export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
-      .subscribe(() => {
+      .subscribe(breweryId => {
+        this.breweryId = breweryId as string;
         this.searchForm.reset();
         this.selectedSortOptionIndex = 0;
       });
-    this.breweryId = this.params.breweryId as string;
     this.searchForm = new FormGroup({
       search: new FormControl('')
     });
