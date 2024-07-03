@@ -66,8 +66,8 @@ public class OpinionsFilteringHelperTests
         {
             MinRating = 5,
             MaxRating = 10,
-            From = DateTime.MinValue,
-            To = DateTime.Now,
+            From = DateTimeOffset.MinValue,
+            To = DateTimeOffset.Now,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             HaveImages = true,
@@ -92,8 +92,8 @@ public class OpinionsFilteringHelperTests
         {
             MinRating = 5,
             MaxRating = 10,
-            From = DateTime.MinValue,
-            To = DateTime.Now,
+            From = DateTimeOffset.MinValue,
+            To = DateTimeOffset.Now,
             BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             HaveImages = false

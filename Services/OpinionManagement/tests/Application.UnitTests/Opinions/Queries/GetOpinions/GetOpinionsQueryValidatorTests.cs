@@ -158,7 +158,7 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = DateTime.Now.AddDays(-30)
+            From = DateTimeOffset.Now.AddDays(-30)
         };
 
         // Act
@@ -178,8 +178,8 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = DateTime.Now,
-            To = DateTime.Now.AddDays(-1)
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now.AddDays(-1)
         };
 
         // Act
@@ -199,7 +199,7 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            To = DateTime.Now.AddDays(-30)
+            To = DateTimeOffset.Now.AddDays(-30)
         };
 
         // Act
@@ -219,8 +219,8 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = DateTime.Now,
-            To = DateTime.Now.AddDays(-1)
+            From = DateTimeOffset.Now,
+            To = DateTimeOffset.Now.AddDays(-1)
         };
 
         // Act

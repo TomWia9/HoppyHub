@@ -23,12 +23,12 @@ public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<Opinion
     /// <summary>
     ///     Minimum created date.
     /// </summary>
-    public DateTime From { get; init; } = DateTime.MinValue;
+    public DateTimeOffset From { get; init; } = DateTimeOffset.MinValue;
 
     /// <summary>
     ///     Maximum created date.
     /// </summary>
-    public DateTime To { get; init; } = DateTime.Now;
+    public DateTimeOffset To { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
     ///     Indicates whether opinions have images.
