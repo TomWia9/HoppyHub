@@ -862,12 +862,12 @@ public class GetBeersQueryValidatorTests
     ///     Tests that validation should not have error for MinReleaseDate when MinReleaseDate is valid.
     /// </summary>
     [Fact]
-    public void GetBeersQuery_ShouldNotHaveValidationErrorForFrom_WhenFromIsValid()
+    public void GetBeersQuery_ShouldNotHaveValidationErrorForMinReleaseDate_WhenMinReleaseDateIsValid()
     {
         // Arrange
         var query = new GetBeersQuery
         {
-            MinReleaseDate = "01.01.20"
+            MinReleaseDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-30))
         };
 
         // Act
@@ -875,25 +875,6 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.MinReleaseDate);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for MinReleaseDate when MinReleaseDate is invalid.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForMinReleaseDate_WhenMinReleaseDateIsInvalid()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            MinReleaseDate = "abc"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MinReleaseDate);
     }
 
     /// <summary>
@@ -906,8 +887,8 @@ public class GetBeersQueryValidatorTests
         // Arrange
         var query = new GetBeersQuery
         {
-            MinReleaseDate = "02.01.20",
-            MaxReleaseDate = "01.01.20"
+            MinReleaseDate = DateOnly.FromDateTime(DateTime.Now),
+            MaxReleaseDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-30))
         };
 
         // Act
@@ -927,7 +908,7 @@ public class GetBeersQueryValidatorTests
         // Arrange
         var query = new GetBeersQuery
         {
-            MaxReleaseDate = DateOnly.FromDateTime(DateTime.Now).ToString()
+            MaxReleaseDate = DateOnly.FromDateTime(DateTime.Now),
         };
 
         // Act
@@ -935,25 +916,6 @@ public class GetBeersQueryValidatorTests
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.MaxReleaseDate);
-    }
-
-    /// <summary>
-    ///     Tests that validation should have error for MaxReleaseDate when MaxReleaseDate is invalid.
-    /// </summary>
-    [Fact]
-    public void GetBeersQuery_ShouldHaveValidationErrorForMaxReleaseDate_WhenMaxReleaseDateIsInvalid()
-    {
-        // Arrange
-        var query = new GetBeersQuery
-        {
-            MaxReleaseDate = "abc"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.MaxReleaseDate);
     }
 
     /// <summary>
@@ -966,8 +928,8 @@ public class GetBeersQueryValidatorTests
         // Arrange
         var query = new GetBeersQuery
         {
-            MinReleaseDate = "02.01.20",
-            MaxReleaseDate = "01.01.20"
+            MinReleaseDate = DateOnly.FromDateTime(DateTime.Now),
+            MaxReleaseDate = DateOnly.FromDateTime(DateTime.Now.AddDays(-30))
         };
 
         // Act

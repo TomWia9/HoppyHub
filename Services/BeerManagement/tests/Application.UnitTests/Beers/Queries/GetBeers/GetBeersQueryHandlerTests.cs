@@ -105,8 +105,8 @@ public class GetBeersQueryHandlerTests
         const string imageUri = "https://test.com/test.jpg";
         var request = new GetBeersQuery
         {
-            MinReleaseDate = DateOnly.Parse("01.01.2010").ToString(),
-            MaxReleaseDate = DateOnly.Parse("01.01.2012").ToString()
+            MinReleaseDate = DateOnly.Parse("01.01.2010"),
+            MaxReleaseDate = DateOnly.Parse("01.01.2012")
         };
         var beerImage = new BeerImage { ImageUri = imageUri };
         var allBeers = new List<Beer>
@@ -165,8 +165,8 @@ public class GetBeersQueryHandlerTests
         result.Count.Should().Be(2, "beer with incorrect release date should not be returned");
         foreach (var beer in result)
         {
-            beer.ReleaseDate.Should().BeOnOrAfter(DateOnly.Parse(request.MinReleaseDate));
-            beer.ReleaseDate.Should().BeOnOrBefore(DateOnly.Parse(request.MaxReleaseDate));
+            beer.ReleaseDate.Should().BeOnOrAfter(request.MinReleaseDate);
+            beer.ReleaseDate.Should().BeOnOrBefore(request.MaxReleaseDate);
         }
 
         result.Should().BeEquivalentTo(expectedResult,
