@@ -84,6 +84,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    console.log(this.beersFiltersForm);
+
     const beersParams = new BeersParams(
       25,
       1,
@@ -93,20 +95,20 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       undefined,
       this.beersFiltersForm.value.brewery,
       this.beersFiltersForm.value.beerStyle,
-      this.beersFiltersForm.value.minAbv,
-      this.beersFiltersForm.value.maxAbv,
-      this.beersFiltersForm.value.minExtract,
-      this.beersFiltersForm.value.maxExtract,
-      this.beersFiltersForm.value.minIbu,
-      this.beersFiltersForm.value.maxIbu,
-      this.beersFiltersForm.value.minReleaseDate,
-      this.beersFiltersForm.value.maxReleaseDate,
-      this.beersFiltersForm.value.minRating,
-      this.beersFiltersForm.value.maxRating,
-      this.beersFiltersForm.value.minFavoritesCount,
-      this.beersFiltersForm.value.maxFavoritesCount,
-      this.beersFiltersForm.value.minOpinionsCount,
-      this.beersFiltersForm.value.maxOpinionsCount
+      this.beersFiltersForm.value.abv.minAbv,
+      this.beersFiltersForm.value.abv.maxAbv,
+      this.beersFiltersForm.value.extract.minExtract,
+      this.beersFiltersForm.value.extract.maxExtract,
+      this.beersFiltersForm.value.ibu.minIbu,
+      this.beersFiltersForm.value.ibu.maxIbu,
+      this.beersFiltersForm.value.releaseDates.minReleaseDate,
+      this.beersFiltersForm.value.releaseDates.maxReleaseDate,
+      this.beersFiltersForm.value.rating.minRating,
+      this.beersFiltersForm.value.rating.maxRating,
+      this.beersFiltersForm.value.favorites.minFavoritesCount,
+      this.beersFiltersForm.value.favorites.maxFavoritesCount,
+      this.beersFiltersForm.value.opinions.minOpinionsCount,
+      this.beersFiltersForm.value.opinions.maxOpinionsCount
     );
 
     this.beersService.paramsChanged.next(beersParams);
@@ -239,7 +241,6 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
           CustomValidators.greaterThanOrEqualToControl('maxRating', 'minRating')
         ]
       ),
-
       favorites: new FormGroup(
         {
           minFavoritesCount: new FormControl('', [Validators.min(0)]),
