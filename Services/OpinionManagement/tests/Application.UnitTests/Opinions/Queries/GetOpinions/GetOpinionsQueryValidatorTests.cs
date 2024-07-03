@@ -158,7 +158,7 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = "01.01.20"
+            From = DateTime.Now.AddDays(-30)
         };
 
         // Act
@@ -166,25 +166,6 @@ public class GetOpinionsQueryValidatorTests
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.From);
-    }
-    
-    /// <summary>
-    ///     Tests that validation should have error for From when From is invalid.
-    /// </summary>
-    [Fact]
-    public void GetOpinionsQuery_ShouldHaveValidationErrorForFrom_WhenFromIsInvalid()
-    {
-        // Arrange
-        var query = new GetOpinionsQuery
-        {
-            From = "abc"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.From);
     }
     
     /// <summary>
@@ -197,8 +178,8 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = "02.01.20",
-            To = "01.01.20"
+            From = DateTime.Now,
+            To = DateTime.Now.AddDays(-1)
         };
 
         // Act
@@ -218,7 +199,7 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            To = DateOnly.FromDateTime(DateTime.Now).ToString()
+            To = DateTime.Now.AddDays(-30)
         };
 
         // Act
@@ -226,25 +207,6 @@ public class GetOpinionsQueryValidatorTests
 
         // Assert
         result.ShouldNotHaveValidationErrorFor(x => x.To);
-    }
-    
-    /// <summary>
-    ///     Tests that validation should have error for To when To is invalid.
-    /// </summary>
-    [Fact]
-    public void GetOpinionsQuery_ShouldHaveValidationErrorForTo_WhenToIsInvalid()
-    {
-        // Arrange
-        var query = new GetOpinionsQuery
-        {
-            To = "abc"
-        };
-
-        // Act
-        var result = _validator.TestValidate(query);
-
-        // Assert
-        result.ShouldHaveValidationErrorFor(x => x.To);
     }
     
     /// <summary>
@@ -257,8 +219,8 @@ public class GetOpinionsQueryValidatorTests
         // Arrange
         var query = new GetOpinionsQuery
         {
-            From = "02.01.20",
-            To = "01.01.20"
+            From = DateTime.Now,
+            To = DateTime.Now.AddDays(-1)
         };
 
         // Act
