@@ -3,7 +3,7 @@
 } @else {
   <app-beers-table-filters
     [params]="beersParams"
-    [paginationData]="getPaginationData()"></app-beers-table-filters>
+    [paginationData]="paginationData"></app-beers-table-filters>
   @if (error) {
     <app-error-message [message]="error"></app-error-message>
   } @else {
@@ -71,7 +71,7 @@
     <div class="my-4">
       <app-pagination
         [params]="beersParams"
-        [paginationData]="getPaginationData()"
+        [paginationData]="paginationData"
         size="md"></app-pagination>
     </div>
   }

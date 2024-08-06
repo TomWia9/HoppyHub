@@ -28,6 +28,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
 
   beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
+  paginationData!: Pagination;
   error = '';
   loading = true;
   beersParamsSubscription!: Subscription;
@@ -37,7 +38,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
     this.beersService.paramsChanged.next(this.beersParams);
     this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
       (params: BeersParams) => {
-        console.log('paramsChanged');
         this.beersParams = params;
         this.getBeers();
       }
@@ -51,6 +51,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.paginationData = this.getPaginationData();
           this.error = '';
           this.loading = false;
         },
@@ -67,9 +68,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPaginationData(): Pagination {
-    console.log('getPaginationData');
-
+  private getPaginationData(): Pagination {
     if (this.beers) {
       return {
         CurrentPage: this.beers.CurrentPage,
@@ -89,7 +88,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return '';
     }
