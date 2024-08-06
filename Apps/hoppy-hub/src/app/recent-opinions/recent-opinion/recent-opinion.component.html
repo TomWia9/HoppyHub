@@ -4,9 +4,11 @@
       @if (beer) {
         <div class="flex flex-col text-start">
           <a class="link-hover link card-title link-primary">{{ beer.name }}</a>
-          <a class="link-hover link link-accent my-2 text-start">{{
-            beer.brewery.name
-          }}</a>
+          <a
+            class="link-hover link link-accent my-2 text-start"
+            [routerLink]="['/breweries', beer.brewery.id]"
+            >{{ beer.brewery.name }}</a
+          >
         </div>
       }
       <a class="link-hover link link-primary align-top">{{

@@ -20,7 +20,9 @@
         </a>
       </div>
       <div class="stat-desc mt-2 text-success">
-        <a class="link-hover link">
+        <a
+          class="link-hover link"
+          [routerLink]="['/breweries', theMostPopularBeer?.brewery?.id]">
           {{ theMostPopularBeer?.brewery?.name }}
         </a>
       </div>

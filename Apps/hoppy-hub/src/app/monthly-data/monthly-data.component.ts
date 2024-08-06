@@ -10,12 +10,13 @@ import { User } from '../users/user.model';
 import { UsersService } from '../users/users.service';
 import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-monthly-data',
   standalone: true,
   templateUrl: './monthly-data.component.html',
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent]
+  imports: [LoadingSpinnerComponent, ErrorMessageComponent, RouterModule]
 })
 export class MonthlyDataComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);

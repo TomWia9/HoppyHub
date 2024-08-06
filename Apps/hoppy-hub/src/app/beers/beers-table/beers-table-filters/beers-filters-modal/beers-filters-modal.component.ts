@@ -84,8 +84,6 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.beersFiltersForm);
-
     const beersParams = new BeersParams(
       25,
       1,
