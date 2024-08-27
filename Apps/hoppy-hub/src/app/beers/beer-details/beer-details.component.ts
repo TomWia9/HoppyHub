@@ -1,15 +1,21 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { Beer } from '../beer.model';
 import { BeersService } from '../beers.service';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-beer-details',
   standalone: true,
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    RouterModule,
+    CommonModule
+  ],
   templateUrl: './beer-details.component.html'
 })
 export class BeerDetailsComponent implements OnInit, OnDestroy {
