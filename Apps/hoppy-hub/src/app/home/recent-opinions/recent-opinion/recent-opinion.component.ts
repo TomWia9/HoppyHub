@@ -1,10 +1,10 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
-import { Opinion } from '../../opinions/opinion.model';
 import { CommonModule } from '@angular/common';
-import { BeersService } from '../../beers/beers.service';
 import { Subscription } from 'rxjs';
-import { Beer } from '../../beers/beer.model';
 import { RouterModule } from '@angular/router';
+import { Beer } from '../../../beers/beer.model';
+import { BeersService } from '../../../beers/beers.service';
+import { Opinion } from '../../../opinions/opinion.model';
 
 @Component({
   selector: 'app-recent-opinion',

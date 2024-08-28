@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MonthlyDataComponent } from '../monthly-data/monthly-data.component';
-import { RecentOpinionsComponent } from '../recent-opinions/recent-opinions.component';
+import { MonthlyDataComponent } from './monthly-data/monthly-data.component';
+import { RecentOpinionsComponent } from './recent-opinions/recent-opinions.component';
 
 @Component({
   selector: 'app-home',

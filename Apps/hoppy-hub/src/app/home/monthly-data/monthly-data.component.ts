@@ -1,16 +1,16 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Opinion } from '../opinions/opinion.model';
-import { OpinionsParams } from '../opinions/opinions-params';
-import { OpinionsService } from '../opinions/opinions.service';
-import { PagedList } from '../shared/paged-list';
-import { BeersService } from '../beers/beers.service';
-import { Beer } from '../beers/beer.model';
-import { User } from '../users/user.model';
-import { UsersService } from '../users/users.service';
-import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
-import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
 import { RouterModule } from '@angular/router';
+import { Beer } from '../../beers/beer.model';
+import { BeersService } from '../../beers/beers.service';
+import { Opinion } from '../../opinions/opinion.model';
+import { OpinionsParams } from '../../opinions/opinions-params';
+import { OpinionsService } from '../../opinions/opinions.service';
+import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
+import { PagedList } from '../../shared/paged-list';
+import { User } from '../../users/user.model';
+import { UsersService } from '../../users/users.service';
 
 @Component({
   selector: 'app-monthly-data',
