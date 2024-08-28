@@ -28,7 +28,7 @@ export class RecentBeersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getBeersSubscription = this.beersService
-      .getBeers(new BeersParams(5, 1, 'releaseDate', 1))
+      .getBeers(new BeersParams(20, 1, 'releaseDate', 1))
       .subscribe({
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
