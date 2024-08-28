@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { RecentOpinionComponent } from './recent-opinion/recent-opinion.component';
-import { OpinionsService } from '../opinions/opinions.service';
 import { Subscription } from 'rxjs';
-import { Opinion } from '../opinions/opinion.model';
-import { PagedList } from '../shared/paged-list';
-import { OpinionsParams } from '../opinions/opinions-params';
-import { LoadingSpinnerComponent } from '../shared-components/loading-spinner/loading-spinner.component';
-import { ErrorMessageComponent } from '../shared-components/error-message/error-message.component';
+import { Opinion } from '../../opinions/opinion.model';
+import { OpinionsParams } from '../../opinions/opinions-params';
+import { OpinionsService } from '../../opinions/opinions.service';
+import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
+import { PagedList } from '../../shared/paged-list';
 
 @Component({
   selector: 'app-recent-opinions',

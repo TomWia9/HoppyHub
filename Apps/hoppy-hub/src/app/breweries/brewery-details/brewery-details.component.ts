@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { BreweriesService } from '../breweries.service';
 import { Brewery } from '../brewery.model';
@@ -21,7 +21,8 @@ import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-be
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     PaginationComponent,
-    BreweryBeersFiltersComponent
+    BreweryBeersFiltersComponent,
+    RouterModule
   ]
 })
 export class BreweryDetailsComponent implements OnInit, OnDestroy {

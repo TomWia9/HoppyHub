@@ -14,7 +14,7 @@ export class BeersService {
   private http: HttpClient = inject(HttpClient);
 
   paramsChanged = new BehaviorSubject<BeersParams>(
-    new BeersParams(25, 1, 'ReleaseDate', 1)
+    new BeersParams(10, 1, 'ReleaseDate', 1)
   );
 
   getBeerById(id: string): Observable<Beer> {

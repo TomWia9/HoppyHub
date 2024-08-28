@@ -26,14 +26,16 @@ import { RouterModule } from '@angular/router';
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
 
-  beersParams = new BeersParams(25, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
+  paginationData!: Pagination;
   error = '';
   loading = true;
   beersParamsSubscription!: Subscription;
   getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
+    this.beersService.paramsChanged.next(this.beersParams);
     this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
       (params: BeersParams) => {
         this.beersParams = params;
@@ -49,6 +51,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.paginationData = this.getPaginationData();
           this.error = '';
           this.loading = false;
         },
@@ -65,7 +68,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPaginationData(): Pagination {
+  private getPaginationData(): Pagination {
     if (this.beers) {
       return {
         CurrentPage: this.beers.CurrentPage,
@@ -85,7 +88,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return '';
     }

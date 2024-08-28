@@ -28,6 +28,7 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
 
   breweriesParams = new BreweriesParams(25, 1, 'Name', 1);
   breweries: PagedList<Brewery> | undefined;
+  paginationData!: Pagination;
   error = '';
   loading = true;
   breweriesParamsSubscription!: Subscription;
@@ -50,6 +51,7 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
         next: (breweries: PagedList<Brewery>) => {
           this.loading = true;
           this.breweries = breweries;
+          this.paginationData = this.getPaginationData();
           this.error = '';
           this.loading = false;
         },
@@ -66,7 +68,7 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPaginationData(): Pagination {
+  private getPaginationData(): Pagination {
     if (this.breweries) {
       return {
         CurrentPage: this.breweries.CurrentPage,
@@ -86,7 +88,7 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return '';
     }
