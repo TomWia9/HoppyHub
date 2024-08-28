@@ -15,7 +15,9 @@
     <div class="stat">
       <div class="stat-title text-xs sm:text-lg">The most popular beer</div>
       <div class="stat-value text-primary">
-        <a class="link-hover link text-2xl sm:text-5xl">
+        <a
+          class="link-hover link text-2xl sm:text-5xl"
+          [routerLink]="['/beers', theMostPopularBeer?.id]">
           {{ theMostPopularBeer?.name }}
         </a>
       </div>
