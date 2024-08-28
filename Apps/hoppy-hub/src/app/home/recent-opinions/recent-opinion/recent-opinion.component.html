@@ -3,10 +3,16 @@
     <div class="flex justify-between">
       @if (beer) {
         <div class="flex flex-col text-start">
-          <a class="link-hover link card-title link-primary">{{ beer.name }}</a>
-          <a class="link-hover link link-accent my-2 text-start">{{
-            beer.brewery.name
-          }}</a>
+          <a
+            class="link-hover link card-title link-primary"
+            [routerLink]="['/beers', beer.id]"
+            >{{ beer.name }}</a
+          >
+          <a
+            class="link-hover link link-accent my-2 text-start"
+            [routerLink]="['/breweries', beer.brewery.id]"
+            >{{ beer.brewery.name }}</a
+          >
         </div>
       }
       <a class="link-hover link link-primary align-top">{{
@@ -33,10 +39,12 @@
         <h2 class="">{{ opinion.created | date: 'short' }}</h2>
       </div>
     </div>
-    <div class="flex justify-center">
-      <figure class="mt-4 flex h-48 w-48 justify-center">
-        <img src="{{ opinion.imageUri }}" alt="beer image" />
-      </figure>
-    </div>
+    @if (opinion.imageUri) {
+      <div class="flex justify-center">
+        <figure class="mt-4 flex h-48 w-48 justify-center">
+          <img src="{{ opinion.imageUri }}" alt="beer image" />
+        </figure>
+      </div>
+    }
   </div>
 </div>

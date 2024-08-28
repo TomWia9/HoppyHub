@@ -1,0 +1,74 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="container mx-auto p-4">
+    <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
+      <div class="mb-6 mt-2 flex flex-row items-center justify-around">
+        <div class="avatar w-1/3">
+          <div class="mask mask-squircle h-32 w-32">
+            <img src="{{ beer.imageUri }}" alt="Beer image" />
+          </div>
+        </div>
+        <div class="w-2/3 max-w-96">
+          <h1 class="mb-2 text-3xl font-bold">{{ beer.name }}</h1>
+          <p class="mb-2">({{ beer.beerStyle.name }})</p>
+          <p class="mb-4">{{ beer.description }}</p>
+        </div>
+      </div>
+
+      <div class="my-4 flex flex-row justify-between">
+        <div class="flex w-1/3 flex-col items-center border-l-2">
+          <p class="my-1 w-2/3">
+            <strong>Brewery: </strong>
+            <a
+              class="link-hover link link-accent my-2 text-start"
+              [routerLink]="['/breweries', beer.brewery.id]"
+              >{{ beer.brewery.name }}</a
+            >
+          </p>
+          <p class="my-1 w-2/3">
+            <strong>Release date:</strong> {{ beer.releaseDate }}
+          </p>
+        </div>
+        <div class="flex w-1/3 flex-col items-center border-l-2 border-r-2">
+          <p class="my-1">
+            <strong>AVG Rating: </strong>
+            <span
+              [ngClass]="{
+                'text-error': beer.rating > 0 && beer.rating < 5,
+                'text-warning': beer.rating < 7.5,
+                'text-success': beer.rating >= 7.5
+              }"
+              >{{ beer.rating }}/10</span
+            >
+          </p>
+          <p class="my-1">
+            <strong>Opinions Count:</strong> {{ beer.opinionsCount }}
+          </p>
+          <p class="my-1">
+            <strong>Favorites Count:</strong> {{ beer.favoritesCount }}
+          </p>
+        </div>
+        <div class="flex w-1/3 flex-col border-r-2">
+          <p class="my-1"><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
+          <p class="my-1"><strong>BLG:</strong> {{ beer.blg }}</p>
+          <p class="my-1"><strong>IBU:</strong> {{ beer.ibu }}</p>
+        </div>
+      </div>
+
+      <div class="my-4 flex flex-row justify-between">
+        <p class="my-1"><strong>Composition:</strong> {{ beer.composition }}</p>
+      </div>
+
+      <div class="collapse collapse-arrow bg-base-200">
+        <input type="checkbox" />
+        <div class="collapse-title text-xl font-medium">Show Opinions</div>
+        <div class="collapse-content">
+          <p>TODO</p>
+        </div>
+      </div>
+    </div>
+  </div>
+}

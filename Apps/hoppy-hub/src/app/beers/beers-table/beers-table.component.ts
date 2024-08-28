@@ -9,6 +9,7 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
 import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-beers-table',
@@ -17,22 +18,24 @@ import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-fi
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     PaginationComponent,
-    BeersTableFiltersComponent
+    BeersTableFiltersComponent,
+    RouterModule
   ],
   templateUrl: './beers-table.component.html'
 })
 export class BeersTableComponent implements OnInit, OnDestroy {
   private beersService: BeersService = inject(BeersService);
 
-  beersParams = new BeersParams(25, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
   beers: PagedList<Beer> | undefined;
+  paginationData!: Pagination;
   error = '';
   loading = true;
   beersParamsSubscription!: Subscription;
   getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
-    this.getBeers();
+    this.beersService.paramsChanged.next(this.beersParams);
     this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
       (params: BeersParams) => {
         this.beersParams = params;
@@ -48,6 +51,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.paginationData = this.getPaginationData();
           this.error = '';
           this.loading = false;
         },
@@ -64,7 +68,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPaginationData(): Pagination {
+  private getPaginationData(): Pagination {
     if (this.beers) {
       return {
         CurrentPage: this.beers.CurrentPage,
@@ -84,7 +88,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return '';
     }
@@ -101,5 +105,6 @@ export class BeersTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.getBeersSubscription.unsubscribe();
+    this.beersParamsSubscription.unsubscribe();
   }
 }

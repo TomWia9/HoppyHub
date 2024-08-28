@@ -1,0 +1,63 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="container mx-auto p-4">
+    <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
+      <h1 class="mb-2 text-3xl font-bold">{{ brewery.name }}</h1>
+      <p class="mb-4">{{ brewery.description }}</p>
+      <div class="flex flex-row justify-evenly align-middle">
+        <div class="flex flex-col">
+          <p><strong>Address:</strong></p>
+          <p>{{ brewery.address.street }} {{ brewery.address.number }}</p>
+          <p>{{ brewery.address.city }} {{ brewery.address.postCode }}</p>
+          <p>{{ brewery.address.country }}, {{ brewery.address.state }}</p>
+        </div>
+        <div class="flex flex-col">
+          <p><strong>Foundation year:</strong> {{ brewery.foundationYear }}</p>
+          <p><strong>Beers number:</strong> {{ beers?.TotalCount }}</p>
+          <a href="{{ brewery.websiteUrl }}" class="text-blue-500 underline"
+            >Website</a
+          >
+        </div>
+      </div>
+
+      <h1 class="my-6 text-left text-lg">Brewery Beers:</h1>
+      <app-brewery-beers-filters
+        [params]="beersParams"
+        [paginationData]="getPaginationData()"></app-brewery-beers-filters>
+
+      <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        @for (beer of beers?.items; track beer.id) {
+          <a
+            [routerLink]="['/beers', beer.id]"
+            class="transform transition-transform duration-300 hover:scale-105">
+            <div class="card h-full bg-base-100 shadow-xl">
+              <figure class="h-60">
+                <img src="{{ beer.imageUri }}" alt="Beer 1" />
+              </figure>
+              <div class="card-body items-center text-center">
+                <h2 class="card-title font-bold">{{ beer.name }}</h2>
+                <p class="mb-2">({{ beer.beerStyle.name }})</p>
+                <p>{{ beer.description }}</p>
+
+                <div class="flex flex-row space-x-6 font-light">
+                  <p>ABV: {{ beer.alcoholByVolume }}%</p>
+                  <p>{{ beer.blg }} BLG</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+
+      @if (beers?.HasNext || beers?.HasPrevious) {
+        <app-pagination
+          [params]="beersParams"
+          [paginationData]="getPaginationData()"
+          size="md"></app-pagination>
+      }
+    </div>
+  </div>
+}

@@ -47,8 +47,8 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
             x => x.FavoritesCount >= request.MinFavoritesCount && x.FavoritesCount <= request.MaxFavoritesCount,
             x => (x.Blg >= request.MinExtract && x.Blg <= request.MaxExtract) || x.Blg == null,
             x => (x.Ibu >= request.MinIbu && x.Ibu <= request.MaxIbu) || x.Ibu == null,
-            x => (x.ReleaseDate != null && x.ReleaseDate.Value >= DateOnly.Parse(request.MinReleaseDate) &&
-                  x.ReleaseDate.Value <= DateOnly.Parse(request.MaxReleaseDate)) || x.ReleaseDate == null
+            x => (x.ReleaseDate != null && x.ReleaseDate.Value >= request.MinReleaseDate &&
+                  x.ReleaseDate.Value <= request.MaxReleaseDate) || x.ReleaseDate == null
         };
 
         if (!string.IsNullOrWhiteSpace(request.Name))

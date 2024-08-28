@@ -1,0 +1,12 @@
+<h2 class="my-4 text-lg font-semibold">Recent beers</h2>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  @if (beers && beers.TotalCount > 0) {
+    @for (beer of beers.items; track beer.id) {
+      <app-recent-beer [beer]="beer"></app-recent-beer>
+    }
+  }
+}

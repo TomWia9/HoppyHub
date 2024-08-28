@@ -3,7 +3,7 @@
 } @else {
   <app-beers-table-filters
     [params]="beersParams"
-    [paginationData]="getPaginationData()"></app-beers-table-filters>
+    [paginationData]="paginationData"></app-beers-table-filters>
   @if (error) {
     <app-error-message [message]="error"></app-error-message>
   } @else {
@@ -23,26 +23,27 @@
           <tbody>
             @if (beers && beers.TotalCount > 0) {
               @for (beer of beers.items; track beer.id) {
-                <tr>
+                <tr
+                  class="hover cursor-pointer"
+                  [routerLink]="[beer.id]"
+                  routerLinkActive="active">
                   <td>
                     <div class="my-4 flex items-center gap-3">
                       <div class="avatar">
                         <div
                           class="mask mask-squircle h-10 w-10 sm:h-16 sm:w-16 md:h-32 md:w-32">
-                          <a class="link font-bold">
-                            <img src="{{ beer.imageUri }}" alt="Beer image" />
-                          </a>
+                          <img src="{{ beer.imageUri }}" alt="Beer image" />
                         </div>
                       </div>
-                      <a class="link-hover link ml-4 font-bold">{{
-                        beer.name
-                      }}</a>
+                      {{ beer.name }}
                     </div>
                   </td>
                   <td>
-                    <a class="link-hover link font-bold">{{
-                      beer.brewery.name
-                    }}</a>
+                    <a
+                      class="link-hover link font-bold"
+                      [routerLink]="['/breweries', beer.brewery.id]"
+                      >{{ beer.brewery.name }}</a
+                    >
                   </td>
                   <td>
                     <div>
@@ -70,7 +71,7 @@
     <div class="my-4">
       <app-pagination
         [params]="beersParams"
-        [paginationData]="getPaginationData()"
+        [paginationData]="paginationData"
         size="md"></app-pagination>
     </div>
   }

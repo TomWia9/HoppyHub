@@ -7,26 +7,34 @@
   <div
     class="stats stats-vertical w-full bg-neutral text-neutral-content shadow">
     <div class="stat">
-      <div class="stat-title">Total beers rated</div>
-      <div class="stat-value text-success">
+      <div class="stat-title text-xs sm:text-lg">Total beers rated</div>
+      <div class="stat-value text-2xl text-success sm:text-5xl">
         {{ totalBeersRated }}
       </div>
     </div>
     <div class="stat">
-      <div class="stat-title">The most popular beer</div>
+      <div class="stat-title text-xs sm:text-lg">The most popular beer</div>
       <div class="stat-value text-primary">
-        <a class="link-hover link"> {{ theMostPopularBeer?.name }} </a>
+        <a
+          class="link-hover link text-2xl sm:text-5xl"
+          [routerLink]="['/beers', theMostPopularBeer?.id]">
+          {{ theMostPopularBeer?.name }}
+        </a>
       </div>
       <div class="stat-desc mt-2 text-success">
-        <a class="link-hover link">
+        <a
+          class="link-hover link"
+          [routerLink]="['/breweries', theMostPopularBeer?.brewery?.id]">
           {{ theMostPopularBeer?.brewery?.name }}
         </a>
       </div>
     </div>
     <div class="stat">
-      <div class="stat-title">The most active user</div>
+      <div class="stat-title text-xs sm:text-lg">The most active user</div>
       <div class="stat-value text-primary">
-        <a class="link-hover link">{{ theMostActiveUser?.username }}</a>
+        <a class="link-hover link text-2xl sm:text-5xl">{{
+          theMostActiveUser?.username
+        }}</a>
       </div>
       @if (theMostActiveUser) {
         <div class="stat-desc mt-2 text-success">

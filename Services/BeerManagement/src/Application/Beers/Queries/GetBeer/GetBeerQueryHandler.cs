@@ -41,7 +41,9 @@ public class GetBeerQueryHandler : IRequestHandler<GetBeerQuery, BeerDto>
     /// <param name="cancellationToken">The cancellation token</param>
     public async Task<BeerDto> Handle(GetBeerQuery request, CancellationToken cancellationToken)
     {
-        var beer = await _context.Beers.Include(x => x.Brewery).Include(x => x.BeerImage)
+        var beer = await _context.Beers.Include(x => x.Brewery)
+            .Include(x => x.BeerImage)
+            .Include(x => x.BeerStyle)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (beer is null)
