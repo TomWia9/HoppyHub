@@ -39,6 +39,7 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
               this.loading = true;
               this.beer = beer;
               this.error = '';
+              window.scrollTo({ top: 0, behavior: 'smooth' });
               this.loading = false;
             },
             error: () => {
