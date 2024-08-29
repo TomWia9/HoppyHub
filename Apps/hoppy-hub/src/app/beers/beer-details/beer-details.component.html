@@ -5,14 +5,14 @@
 } @else {
   <div class="container mx-auto p-4">
     <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
-      <div class="mb-6 mt-2 flex flex-row items-center justify-around">
+      <div class="mb-6 mt-2 flex flex-row justify-around">
         <div class="avatar mr-2 w-1/3">
           <div class="mask mask-squircle h-32 w-32">
             <img src="{{ beer.imageUri }}" alt="Beer image" />
           </div>
         </div>
         <div class="w-2/3 max-w-96">
-          <h1 class="mb-2 text-3xl font-bold">{{ beer.name }}</h1>
+          <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
           <p class="mb-2">({{ beer.beerStyle.name }})</p>
           <p class="mb-4">{{ beer.description }}</p>
         </div>
