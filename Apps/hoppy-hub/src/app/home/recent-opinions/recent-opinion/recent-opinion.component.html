@@ -23,12 +23,12 @@
     <div class="mt-4 flex justify-between">
       <div class="justify-start text-start">
         <div class="md: rating-mdmt-2 rating rating-sm">
-          @for (star of getStars(opinion.rating); track star) {
+          @for (star of getStars(opinion.rating); track $index) {
             <input
               class="mask mask-star-2 cursor-default bg-green-500"
               disabled />
           }
-          @for (star of getEmptyStars(opinion.rating); track star) {
+          @for (star of getEmptyStars(opinion.rating); track $index) {
             <input
               class="mask mask-star-2 cursor-default bg-gray-400"
               disabled />
