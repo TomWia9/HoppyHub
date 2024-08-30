@@ -1,2 +1,3 @@
-<p>beer-opinions works!</p>
-<p>id: {{ beerId }}</p>
+@for (opinion of opinions?.items; track opinion.id) {
+  <app-opinion [beer]="beer" [opinion]="opinion"></app-opinion>
+}

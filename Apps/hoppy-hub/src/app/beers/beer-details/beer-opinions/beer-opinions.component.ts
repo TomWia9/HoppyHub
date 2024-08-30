@@ -12,15 +12,17 @@ import { Opinion } from '../../../opinions/opinion.model';
 import { Subscription } from 'rxjs';
 import { PagedList } from '../../../shared/paged-list';
 import { Pagination } from '../../../shared/pagination';
+import { Beer } from '../../beer.model';
+import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 
 @Component({
   selector: 'app-beer-opinions',
   standalone: true,
-  imports: [],
+  imports: [OpinionComponent],
   templateUrl: './beer-opinions.component.html'
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
-  @Input({ required: true }) beerId!: string;
+  @Input({ required: true }) beer!: Beer;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
 
@@ -41,7 +43,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.opinionsParams.beerId = this.beerId;
+    this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
   }
 
