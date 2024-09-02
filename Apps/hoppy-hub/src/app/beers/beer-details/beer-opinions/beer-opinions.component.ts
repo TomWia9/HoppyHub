@@ -15,11 +15,12 @@ import { Pagination } from '../../../shared/pagination';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
+import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 
 @Component({
   selector: 'app-beer-opinions',
   standalone: true,
-  imports: [OpinionComponent, FormsModule],
+  imports: [OpinionComponent, FormsModule, PaginationComponent],
   templateUrl: './beer-opinions.component.html'
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {

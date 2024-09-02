@@ -5,6 +5,8 @@ import { BeersParams } from '../../beers/beers-params';
 import { Pagination } from '../../shared/pagination';
 import { BreweriesParams } from '../../breweries/breweries-params';
 import { BreweriesService } from '../../breweries/breweries.service';
+import { OpinionsParams } from '../../opinions/opinions-params';
+import { OpinionsService } from '../../opinions/opinions.service';
 
 @Component({
   selector: 'app-pagination',
@@ -13,7 +15,10 @@ import { BreweriesService } from '../../breweries/breweries.service';
   templateUrl: './pagination.component.html'
 })
 export class PaginationComponent implements OnInit {
-  @Input({ required: true }) params!: BeersParams | BreweriesParams;
+  @Input({ required: true }) params!:
+    | BeersParams
+    | BreweriesParams
+    | OpinionsParams;
   @Input({ required: true }) paginationData!: Pagination;
   @Input() size: string = 'lg';
 
@@ -21,6 +26,7 @@ export class PaginationComponent implements OnInit {
 
   private beersService: BeersService = inject(BeersService);
   private breweriesService: BreweriesService = inject(BreweriesService);
+  private opinionsService: OpinionsService = inject(OpinionsService);
 
   ngOnInit(): void {
     switch (this.size) {
@@ -41,6 +47,7 @@ export class PaginationComponent implements OnInit {
   onChangePage(pageNumber: number): void {
     this.params.pageNumber = pageNumber;
     this.getData();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   private getData(): void {
@@ -49,6 +56,9 @@ export class PaginationComponent implements OnInit {
     }
     if (this.params instanceof BreweriesParams) {
       this.breweriesService.paramsChanged.next(this.params);
+    }
+    if (this.params instanceof OpinionsParams) {
+      this.opinionsService.paramsChanged.next(this.params);
     }
   }
 }

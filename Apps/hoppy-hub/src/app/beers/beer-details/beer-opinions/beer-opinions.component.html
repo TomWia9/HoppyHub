@@ -1,11 +1,19 @@
-<div class="grid-col-1 grid sm:grid-cols-2">
+<div
+  class="grid place-items-center md:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
+  <div class="my-2">
+    <button class="btn btn-primary">Add Opinion [TODO]</button>
+  </div>
   @if (opinions && opinions.items.length > 0) {
-    <div class="my-2 sm:text-left">
-      <button class="btn btn-primary">Add Opinion [TODO]</button>
+    <div
+      class="my-2 place-self-center xl:order-last xl:col-span-2 2xl:col-auto">
+      <app-pagination
+        [params]="opinionsParams"
+        [paginationData]="paginationData"
+        size="sm"></app-pagination>
     </div>
-    <div class="tooltip tooltip-top my-2 sm:text-right" data-tip="Sort by...">
+    <div class="tooltip tooltip-top my-2" data-tip="Sort by...">
       <select
-        class="select select-bordered w-56"
+        class="select select-bordered"
         [(ngModel)]="selectedSortOptionIndex"
         (change)="onSort()">
         @for (option of sortOptions; track $index) {
@@ -20,4 +28,13 @@
 
 @for (opinion of opinions?.items; track opinion.id) {
   <app-opinion [beer]="beer" [opinion]="opinion"></app-opinion>
+}
+
+@if (opinions && opinions.items.length > 0) {
+  <div class="my-2">
+    <app-pagination
+      [params]="opinionsParams"
+      [paginationData]="paginationData"
+      size="sm"></app-pagination>
+  </div>
 }
