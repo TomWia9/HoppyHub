@@ -14,11 +14,12 @@ import { PagedList } from '../../../shared/paged-list';
 import { Pagination } from '../../../shared/pagination';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-beer-opinions',
   standalone: true,
-  imports: [OpinionComponent],
+  imports: [OpinionComponent, FormsModule],
   templateUrl: './beer-opinions.component.html'
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
@@ -26,6 +27,21 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
 
   private opinionsService: OpinionsService = inject(OpinionsService);
 
+  sortOptions = [
+    {
+      label: 'Created (New to Old)',
+      value: 'Created',
+      direction: 0
+    },
+    {
+      label: 'Created (Old to New)',
+      value: 'Created',
+      direction: 1
+    },
+    { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
+    { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
+  ];
+  selectedSortOptionIndex: number = 0;
   opinionsParams = new OpinionsParams(10, 1, 'created', 1);
   opinions: PagedList<Opinion> | undefined;
   paginationData!: Pagination;
@@ -45,6 +61,26 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
+  }
+
+  onSort() {
+    this.opinionsParams.sortBy =
+      this.sortOptions[this.selectedSortOptionIndex].value;
+    this.opinionsParams.sortDirection =
+      this.sortOptions[this.selectedSortOptionIndex].direction;
+    this.opinionsService.paramsChanged.next(this.opinionsParams);
+  }
+
+  onFiltersClear() {
+    this.selectedSortOptionIndex = 0;
+    this.opinionsParams = new OpinionsParams(10, 1, 'created', 1);
+
+    if (
+      JSON.stringify(this.opinionsService.paramsChanged.value) !=
+      JSON.stringify(this.opinionsParams)
+    ) {
+      this.opinionsService.paramsChanged.next(this.opinionsParams);
+    }
   }
 
   private getOpinions(): void {

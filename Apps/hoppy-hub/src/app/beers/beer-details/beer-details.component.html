@@ -61,17 +61,13 @@
         </div>
       </div>
 
-      <div class="my-4 flex flex-row justify-between">
-        <p class="my-1"><strong>Composition:</strong> {{ beer.composition }}</p>
-      </div>
-
-      <div class="collapse collapse-arrow bg-base-200">
-        <input type="checkbox" />
-        <div class="collapse-title text-xl font-medium">Show Opinions</div>
-        <div class="collapse-content">
-          <app-beer-opinions [beer]="beer"></app-beer-opinions>
-        </div>
-      </div>
+      <p class="my-5 text-start">
+        <strong>Composition:</strong> {{ beer.composition }}
+      </p>
+      <p class="my-5 text-xl">
+        <strong>Opinions:</strong>
+      </p>
+      <app-beer-opinions [beer]="beer"></app-beer-opinions>
     </div>
   </div>
 }
