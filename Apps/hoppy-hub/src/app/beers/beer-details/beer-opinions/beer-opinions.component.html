@@ -1,11 +1,18 @@
-<div
-  class="grid place-items-center md:grid-cols-3 xl:grid-cols-2 2xl:grid-cols-3">
-  <div class="my-2">
-    <button class="btn btn-primary">Add Opinion [TODO]</button>
-  </div>
-  @if (opinions && opinions.items.length > 0) {
-    <div
-      class="my-2 place-self-center xl:order-last xl:col-span-2 2xl:col-auto">
+<div class="my-2">
+  <button class="btn btn-outline btn-success w-9/12">Add Opinion [TODO]</button>
+</div>
+<div class="my-4">
+  <button class="btn btn-outline btn-primary w-9/12" (click)="toggleOpinions()">
+    @if (!showOpinions) {
+      Show Opinions
+    } @else {
+      Hide Opinions
+    }
+  </button>
+</div>
+<div class="grid place-items-center sm:grid-cols-2">
+  @if (showOpinions && opinions && opinions.items.length > 0) {
+    <div class="my-2">
       <app-pagination
         [params]="opinionsParams"
         [paginationData]="paginationData"
@@ -26,18 +33,27 @@
   }
 </div>
 
-@for (opinion of opinions?.items; track opinion.id) {
-  <app-opinion
-    [beer]="beer"
-    [opinion]="opinion"
-    [showName]="false"></app-opinion>
-}
+@if (showOpinions) {
+  @for (opinion of opinions?.items; track opinion.id) {
+    <app-opinion
+      [beer]="beer"
+      [opinion]="opinion"
+      [showName]="false"></app-opinion>
+  }
 
-@if (opinions && opinions.items.length > 0) {
-  <div class="my-2">
-    <app-pagination
-      [params]="opinionsParams"
-      [paginationData]="paginationData"
-      size="sm"></app-pagination>
-  </div>
+  @if (opinions && opinions.items.length > 0) {
+    <div class="my-2">
+      <app-pagination
+        [params]="opinionsParams"
+        [paginationData]="paginationData"
+        size="sm"></app-pagination>
+    </div>
+    <div class="my-4">
+      <button
+        class="btn btn-outline btn-primary w-9/12"
+        (click)="toggleOpinions()">
+        Hide Opinions
+      </button>
+    </div>
+  }
 }

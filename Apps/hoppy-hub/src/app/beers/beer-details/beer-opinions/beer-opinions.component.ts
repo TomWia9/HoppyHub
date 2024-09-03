@@ -50,6 +50,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   loading = true;
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;
+  showOpinions = false;
 
   ngOnInit(): void {
     this.opinionsParamsSubscription =
@@ -82,6 +83,13 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     ) {
       this.opinionsService.paramsChanged.next(this.opinionsParams);
     }
+  }
+
+  toggleOpinions() {
+    if (this.showOpinions) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    this.showOpinions = !this.showOpinions;
   }
 
   private getOpinions(): void {
