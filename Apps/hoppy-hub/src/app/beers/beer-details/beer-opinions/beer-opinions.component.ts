@@ -1,10 +1,12 @@
 import {
   Component,
+  ElementRef,
   inject,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit
+  OnInit,
+  ViewChild
 } from '@angular/core';
 import { OpinionsService } from '../../../opinions/opinions.service';
 import { OpinionsParams } from '../../../opinions/opinions-params';
@@ -25,6 +27,7 @@ import { PaginationComponent } from '../../../shared-components/pagination/pagin
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) beer!: Beer;
+  @ViewChild('opinionsSection') opinionsSection!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
 
@@ -91,6 +94,17 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     this.showOpinions = !this.showOpinions;
+  }
+
+  scrollToTop() {
+    const elementPosition =
+      this.opinionsSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
+
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
   }
 
   private getOpinions(): void {

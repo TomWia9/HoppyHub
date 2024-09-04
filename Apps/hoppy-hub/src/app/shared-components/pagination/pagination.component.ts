@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  inject
+} from '@angular/core';
 import { BeersService } from '../../beers/beers.service';
 import { BeersParams } from '../../beers/beers-params';
 import { Pagination } from '../../shared/pagination';
@@ -21,6 +28,7 @@ export class PaginationComponent implements OnInit {
     | OpinionsParams;
   @Input({ required: true }) paginationData!: Pagination;
   @Input() size: string = 'lg';
+  @Output() scrollTo = new EventEmitter<void>();
 
   paginationSize = 'lg';
 
@@ -47,7 +55,7 @@ export class PaginationComponent implements OnInit {
   onChangePage(pageNumber: number): void {
     this.params.pageNumber = pageNumber;
     this.getData();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.scrollTo.emit();
   }
 
   private getData(): void {

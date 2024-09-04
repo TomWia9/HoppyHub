@@ -1,7 +1,7 @@
 <div class="my-2">
   <button class="btn btn-outline btn-success w-9/12">Add Opinion [TODO]</button>
 </div>
-<div class="my-4">
+<div class="my-4" #opinionsSection>
   <button class="btn btn-outline btn-primary w-9/12" (click)="toggleOpinions()">
     @if (!showOpinions) {
       Show Opinions
@@ -44,6 +44,7 @@
   @if (opinions && opinions.items.length > 0) {
     <div class="my-2">
       <app-pagination
+        (scrollTo)="scrollToTop()"
         [params]="opinionsParams"
         [paginationData]="paginationData"
         size="sm"></app-pagination>
