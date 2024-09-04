@@ -66,6 +66,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onSort() {
+    this.opinionsParams.pageNumber = 1;
     this.opinionsParams.sortBy =
       this.sortOptions[this.selectedSortOptionIndex].value;
     this.opinionsParams.sortDirection =
