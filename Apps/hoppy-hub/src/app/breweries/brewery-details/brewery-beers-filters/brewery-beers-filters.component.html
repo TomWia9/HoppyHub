@@ -1,8 +1,8 @@
 <div
-  class="mx-4 mb-4 flex flex-col items-center justify-evenly space-y-4 md:flex-row md:space-y-0 xl:flex-col xl:space-y-4 2xl:flex-row 2xl:space-y-0">
-  <div class="tooltip tooltip-top" data-tip="Clear the filters">
+  class="mx-4 mb-4 grid space-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2">
+  <div class="tooltip tooltip-top mt-4" data-tip="Clear the filters">
     <button
-      class="btn btn-outline btn-primary join-item btn-sm"
+      class="btn btn-outline btn-primary join-item btn-sm w-2/3"
       (click)="onFiltersClear()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -18,33 +18,39 @@
       </svg>
     </button>
   </div>
-  <div class="flex flex-col items-center">
-    <div class="tooltip tooltip-top" data-tip="Sort by...">
-      <select
-        class="select select-bordered select-sm w-56"
-        [(ngModel)]="selectedSortOptionIndex"
-        (change)="onSort()">
-        @for (option of sortOptions; track $index) {
-          <option [value]="$index">
-            {{ option.label }}
-          </option>
-        }
-      </select>
-    </div>
+
+  <div class="tooltip tooltip-top" data-tip="Sort by...">
+    <select
+      class="select select-bordered select-sm w-56"
+      [(ngModel)]="selectedSortOptionIndex"
+      (change)="onSort()">
+      @for (option of sortOptions; track $index) {
+        <option [value]="$index">
+          {{ option.label }}
+        </option>
+      }
+    </select>
   </div>
-  <div>
+
+  <div class="sm:order-last lg:order-none xl:order-last">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="join">
         <input
           type="text"
           id="brewery_beers_filters_search"
           formControlName="search"
-          class="input join-item input-bordered input-sm w-40"
+          class="input input-sm join-item input-bordered w-40"
           placeholder="Search..." />
         <button class="btn btn-primary join-item btn-sm rounded-r-full">
           Search
         </button>
       </div>
     </form>
+  </div>
+  <div class="mb-4 lg:col-span-3 lg:place-self-center xl:col-auto">
+    <app-pagination
+      [params]="params"
+      [paginationData]="paginationData"
+      size="sm"></app-pagination>
   </div>
 </div>

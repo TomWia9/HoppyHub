@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <h1 class="my-6 text-left text-lg">Brewery Beers:</h1>
+      <h1 class="my-2 text-left text-lg" #details>Brewery Beers:</h1>
       <app-brewery-beers-filters
         [params]="beersParams"
         [paginationData]="getPaginationData()"></app-brewery-beers-filters>
@@ -56,7 +56,8 @@
         <app-pagination
           [params]="beersParams"
           [paginationData]="getPaginationData()"
-          size="md"></app-pagination>
+          size="md"
+          (scrollTo)="scrollToDetails()"></app-pagination>
       }
     </div>
   </div>
