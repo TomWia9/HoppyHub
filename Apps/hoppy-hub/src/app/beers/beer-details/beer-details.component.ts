@@ -6,6 +6,7 @@ import { BeersService } from '../beers.service';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
+import { BeerOpinionsComponent } from './beer-opinions/beer-opinions.component';
 
 @Component({
   selector: 'app-beer-details',
@@ -14,7 +15,8 @@ import { CommonModule } from '@angular/common';
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     RouterModule,
-    CommonModule
+    CommonModule,
+    BeerOpinionsComponent
   ],
   templateUrl: './beer-details.component.html'
 })

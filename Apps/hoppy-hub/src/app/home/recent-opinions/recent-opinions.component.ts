@@ -1,27 +1,26 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { RecentOpinionComponent } from './recent-opinion/recent-opinion.component';
-import { Subscription } from 'rxjs';
+import { OpinionComponent } from '../../opinions/opinion/opinion.component';
+import { forkJoin, map, Subscription, switchMap } from 'rxjs';
 import { Opinion } from '../../opinions/opinion.model';
 import { OpinionsParams } from '../../opinions/opinions-params';
 import { OpinionsService } from '../../opinions/opinions.service';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { PagedList } from '../../shared/paged-list';
+import { BeersService } from '../../beers/beers.service';
+import { Beer } from '../../beers/beer.model';
 
 @Component({
   selector: 'app-recent-opinions',
   standalone: true,
   templateUrl: './recent-opinions.component.html',
-  imports: [
-    RecentOpinionComponent,
-    LoadingSpinnerComponent,
-    ErrorMessageComponent
-  ]
+  imports: [OpinionComponent, LoadingSpinnerComponent, ErrorMessageComponent]
 })
 export class RecentOpinionsComponent implements OnInit, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private beersService: BeersService = inject(BeersService);
 
-  opinions: PagedList<Opinion> | undefined;
+  opinionBeerPairs: { opinion: Opinion; beer: Beer }[] = [];
   error = '';
   loading = true;
   getOpinionsSubscription!: Subscription;
@@ -29,10 +28,20 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getOpinionsSubscription = this.opinionsService
       .getOpinions(new OpinionsParams(5, 1, 'lastModified', 1))
+      .pipe(
+        switchMap((opinions: PagedList<Opinion>) => {
+          const beerRequests = opinions.items.map(opinion =>
+            this.beersService
+              .getBeerById(opinion.beerId)
+              .pipe(map(beer => ({ opinion, beer })))
+          );
+          return forkJoin(beerRequests);
+        })
+      )
       .subscribe({
-        next: (opinions: PagedList<Opinion>) => {
+        next: (results: { opinion: Opinion; beer: Beer }[]) => {
           this.loading = true;
-          this.opinions = opinions;
+          this.opinionBeerPairs = results;
           this.error = '';
           this.loading = false;
         },

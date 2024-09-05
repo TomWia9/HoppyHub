@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
 import { BeersService } from '../beers.service';
 import { Beer } from '../beer.model';
 import { PagedList } from '../../shared/paged-list';
@@ -24,6 +31,7 @@ import { RouterModule } from '@angular/router';
   templateUrl: './beers-table.component.html'
 })
 export class BeersTableComponent implements OnInit, OnDestroy {
+  @ViewChild('topSection') topSection!: ElementRef;
   private beersService: BeersService = inject(BeersService);
 
   beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
@@ -101,6 +109,17 @@ export class BeersTableComponent implements OnInit, OnDestroy {
     }
 
     return ': ' + errorMessage;
+  }
+
+  scrollToTop() {
+    const elementPosition =
+      this.topSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
+
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
   }
 
   ngOnDestroy(): void {
