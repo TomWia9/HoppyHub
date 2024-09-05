@@ -33,7 +33,7 @@ import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-be
   ]
 })
 export class BreweryDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('filtersSection') filtersSection!: ElementRef;
+  @ViewChild('details') details!: ElementRef;
   brewery!: Brewery;
   error = '';
   loading = true;
@@ -61,6 +61,7 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
               this.loading = true;
               this.brewery = brewery;
               this.error = '';
+              this.scrollToDetails(-350);
               this.loading = false;
             },
             error: () => {
@@ -114,10 +115,11 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
     };
   }
 
-  scrollToTop() {
+  scrollToDetails(offset: number = 0) {
     const elementPosition =
-      this.filtersSection.nativeElement.getBoundingClientRect().top +
-      window.scrollY;
+      this.details.nativeElement.getBoundingClientRect().top +
+      window.scrollY +
+      offset;
 
     window.scrollTo({
       top: elementPosition,
