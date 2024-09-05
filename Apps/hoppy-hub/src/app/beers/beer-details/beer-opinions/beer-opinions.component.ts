@@ -18,6 +18,7 @@ import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { ModalService, ModalType } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -30,6 +31,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('opinionsSection') opinionsSection!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private modalService: ModalService = inject(ModalService);
 
   sortOptions = [
     {
@@ -105,6 +107,10 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       top: elementPosition,
       behavior: 'smooth'
     });
+  }
+
+  onAddOpinionModalOpen() {
+    this.modalService.openModal(ModalType.AddOpinion);
   }
 
   private getOpinions(): void {

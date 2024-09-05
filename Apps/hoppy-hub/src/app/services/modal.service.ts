@@ -5,7 +5,8 @@ export enum ModalType {
   Login,
   Register,
   BeersFilters,
-  BreweriesFilters
+  BreweriesFilters,
+  AddOpinion
 }
 
 @Injectable({

@@ -1,5 +1,9 @@
 <div class="my-2">
-  <button class="btn btn-outline btn-success w-9/12">Add Opinion [TODO]</button>
+  <button
+    class="btn btn-outline btn-success w-9/12"
+    (click)="onAddOpinionModalOpen()">
+    Add Opinion
+  </button>
 </div>
 <div class="my-4" #opinionsSection>
   <button class="btn btn-outline btn-primary w-9/12" (click)="toggleOpinions()">
