@@ -10,11 +10,12 @@ import { BeersService } from '../../../beers/beers.service';
 import { BeersParams } from '../../../beers/beers-params';
 import { Subscription, map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 
 @Component({
   selector: 'app-brewery-beers-filters',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule, PaginationComponent],
   templateUrl: './brewery-beers-filters.component.html'
 })
 export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {

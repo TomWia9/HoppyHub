@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -26,6 +33,7 @@ import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-be
   ]
 })
 export class BreweryDetailsComponent implements OnInit, OnDestroy {
+  @ViewChild('filtersSection') filtersSection!: ElementRef;
   brewery!: Brewery;
   error = '';
   loading = true;
@@ -104,6 +112,17 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
       TotalPages: 0,
       TotalCount: 0
     };
+  }
+
+  scrollToTop() {
+    const elementPosition =
+      this.filtersSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
+
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
   }
 
   private resetBreweryDetails(breweryId: string): void {
