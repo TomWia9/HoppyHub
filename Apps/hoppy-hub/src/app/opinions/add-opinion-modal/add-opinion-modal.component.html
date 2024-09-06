@@ -23,14 +23,29 @@
                   type="radio"
                   formControlName="rating"
                   class="mask mask-star-2 bg-orange-400"
+                  [class.bg-orange-400]="
+                    opinionForm.get('rating')?.value >= ratingValue
+                  "
                   [value]="ratingValue" />
               }
             </div>
           </div>
           <div class="mt-4">
             <textarea
-              class="textarea textarea-primary max-h-96 w-full"
+              formControlName="comment"
+              class="textarea textarea-primary w-full"
               placeholder="Comment (optional)"></textarea>
+            <div class="label text-center">
+              @if (
+                opinionForm.get('comment')!.errors &&
+                opinionForm.get('comment')!.hasError('maxlength') &&
+                opinionForm.get('comment')!.touched
+              ) {
+                <span class="label-text-alt text-error"
+                  >Comment can contain a maximum of 1000 characters</span
+                >
+              }
+            </div>
           </div>
           <div class="">
             <label class="form-control mb-6 w-full max-w-xs">
@@ -38,13 +53,12 @@
                 <span class="label-text">Add image (optional)</span>
               </div>
               <input
+                formControlName="image"
                 type="file"
                 class="file-input file-input-bordered w-full" />
             </label>
           </div>
         </div>
-
-        <!-- Buttons -->
         <div class="mt-2 flex items-center justify-evenly">
           <button
             type="submit"

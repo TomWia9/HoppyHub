@@ -8,7 +8,12 @@ import {
 } from '@angular/core';
 import { OpinionsService } from '../opinions.service';
 import { ModalService, ModalType } from '../../services/modal.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
@@ -58,6 +63,10 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    console.log(this.opinionForm.value.rating);
+    console.log(this.opinionForm.value.comment);
+    console.log(this.opinionForm.value.image);
+
     // const opinion = new CreateOpinionCommand(
 
     // );
@@ -70,8 +79,8 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
 
   private getOpinionForm(): FormGroup {
     return new FormGroup({
-      rating: new FormControl(''),
-      comment: new FormControl(''),
+      rating: new FormControl(null, Validators.required),
+      comment: new FormControl('', Validators.maxLength(1000)),
       image: new FormControl(null)
     });
   }
