@@ -33,6 +33,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   error = '';
   loading = false;
   addOpinionSubscription!: Subscription;
+  ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
