@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   inject,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild
@@ -17,6 +18,8 @@ import {
 import { Subscription } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { CreateOpinionCommand } from '../create-opinion-command.model';
+import { Beer } from '../../beers/beer.model';
 
 @Component({
   selector: 'app-add-opinion-modal',
@@ -29,6 +32,8 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
   templateUrl: './add-opinion-modal.component.html'
 })
 export class AddOpinionModalComponent implements OnInit, OnDestroy {
+  @Input({ required: true }) beer!: Beer;
+
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
 
@@ -86,7 +91,11 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.modalOppenedSubscription) {
     this.modalOppenedSubscription.unsubscribe();
+    }
+    if (this.addOpinionSubscription) {
     this.addOpinionSubscription.unsubscribe();
+    }
   }
 }

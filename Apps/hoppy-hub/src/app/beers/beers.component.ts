@@ -9,7 +9,6 @@ import { BeersTableComponent } from './beers-table/beers-table.component';
 import { BeerDetailsComponent } from './beer-details/beer-details.component';
 import { BeersFiltersModalComponent } from './beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 import { Subscription, filter } from 'rxjs';
-import { AddOpinionModalComponent } from '../opinions/add-opinion-modal/add-opinion-modal.component';
 
 @Component({
   selector: 'app-beers',
@@ -18,8 +17,7 @@ import { AddOpinionModalComponent } from '../opinions/add-opinion-modal/add-opin
     RouterOutlet,
     BeersTableComponent,
     BeerDetailsComponent,
-    BeersFiltersModalComponent,
-    AddOpinionModalComponent
+    BeersFiltersModalComponent
   ],
   templateUrl: './beers.component.html'
 })

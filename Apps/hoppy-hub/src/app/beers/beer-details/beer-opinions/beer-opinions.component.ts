@@ -19,11 +19,17 @@ import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { ModalService, ModalType } from '../../../services/modal.service';
+import { AddOpinionModalComponent } from '../../../opinions/add-opinion-modal/add-opinion-modal.component';
 
 @Component({
   selector: 'app-beer-opinions',
   standalone: true,
-  imports: [OpinionComponent, FormsModule, PaginationComponent],
+  imports: [
+    OpinionComponent,
+    FormsModule,
+    PaginationComponent,
+    AddOpinionModalComponent
+  ],
   templateUrl: './beer-opinions.component.html'
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
