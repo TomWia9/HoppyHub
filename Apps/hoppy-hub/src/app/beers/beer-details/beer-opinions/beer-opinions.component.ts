@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { ModalService, ModalType } from '../../../services/modal.service';
 import { AddOpinionModalComponent } from '../../../opinions/add-opinion-modal/add-opinion-modal.component';
+import { AuthService } from '../../../auth/auth.service';
+import { AuthUser } from '../../../auth/auth-user.model';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -38,6 +40,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
+  private authService: AuthService = inject(AuthService);
 
   sortOptions = [
     {
@@ -61,7 +64,9 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   loading = true;
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;
+  userSubscription!: Subscription;
   showOpinions = false;
+  userLoggedIn = false;
 
   ngOnInit(): void {
     this.opinionsParamsSubscription =
@@ -69,6 +74,13 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
         this.opinionsParams = params;
         this.getOpinions();
       });
+    this.userSubscription = this.authService.user.subscribe(
+      (user: AuthUser | null) => {
+        if (user?.token) {
+          this.userLoggedIn = true;
+        }
+      }
+    );
   }
 
   ngOnChanges() {
@@ -116,7 +128,11 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onAddOpinionModalOpen() {
-    this.modalService.openModal(ModalType.AddOpinion);
+    if (this.userLoggedIn) {
+      this.modalService.openModal(ModalType.AddOpinion);
+    } else {
+      this.modalService.openModal(ModalType.Login);
+    }
   }
 
   private getOpinions(): void {

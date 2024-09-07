@@ -29,8 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  isUserLoggedIn: boolean = false;
-
   openLoginModal() {
     this.modalService.openModal(ModalType.Login);
   }
