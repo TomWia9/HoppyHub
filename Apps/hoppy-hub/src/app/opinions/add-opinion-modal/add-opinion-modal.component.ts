@@ -24,6 +24,7 @@ import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
+import { OpinionsParams } from '../opinions-params';
 
 @Component({
   selector: 'app-add-opinion-modal',
@@ -48,6 +49,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   error = '';
   loading = false;
   addOpinionSubscription!: Subscription;
+  opinionsParams: OpinionsParams = new OpinionsParams(10, 1, 'created', 1);
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
 
   ngOnInit(): void {
@@ -58,6 +60,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
     );
 
     this.opinionForm = this.getOpinionForm();
+    this.opinionsParams.beerId = this.beer.id;
   }
 
   onModalHide() {
@@ -82,6 +85,8 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.opinionForm.reset();
           this.alertService.openAlert(AlertType.Success, 'Opinion created');
+
+          this.opinionsService.paramsChanged.next(this.opinionsParams);
         },
         error: error => {
           let errorMessage = null;
