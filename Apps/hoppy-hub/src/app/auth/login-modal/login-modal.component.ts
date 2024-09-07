@@ -71,9 +71,9 @@ export class LoginModalComponent implements OnInit, OnDestroy {
                 AlertType.Error,
                 'Something went wrong'
               );
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }

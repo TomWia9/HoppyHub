@@ -94,9 +94,9 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
 
             if (error.error && error.error.errors) {
               errorMessage = this.getErrorMessage(error.error.errors);
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }
