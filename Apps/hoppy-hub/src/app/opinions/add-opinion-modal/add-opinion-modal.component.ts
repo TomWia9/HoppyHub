@@ -68,15 +68,32 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log(this.opinionForm.value.rating);
-    console.log(this.opinionForm.value.comment);
-    console.log(this.opinionForm.value.image);
+    if (this.opinionForm.valid) {
+      const createOpinionCommand = this.opinionForm
+        .value as CreateOpinionCommand;
+      createOpinionCommand.beerId = this.beer.id;
 
-    // const opinion = new CreateOpinionCommand(
+      this.opinionsService.CreateOpinion(createOpinionCommand).subscribe({
+        next: () => {
+          this.opinionForm.reset();
+          //TODO: Opinion created alert
+        },
+        error: error => {
+          console.log(error);
 
-    // );
+          // const errorMessage = error.error.errors[0];
 
-    // this.opinionsService.CreateOpinion();
+          // if (!errorMessage) {
+          //   this.alertService.openAlert(
+          //     AlertType.Error,
+          //     'Something went wrong'
+          //   );
+          // }
+
+          // this.alertService.openAlert(AlertType.Error, errorMessage);
+        }
+      });
+    }
 
     this.onModalHide();
     this.opinionForm.reset();
@@ -92,10 +109,10 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.modalOppenedSubscription) {
-    this.modalOppenedSubscription.unsubscribe();
+      this.modalOppenedSubscription.unsubscribe();
     }
     if (this.addOpinionSubscription) {
-    this.addOpinionSubscription.unsubscribe();
+      this.addOpinionSubscription.unsubscribe();
     }
   }
 }
