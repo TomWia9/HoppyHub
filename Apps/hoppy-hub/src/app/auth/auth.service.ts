@@ -97,7 +97,7 @@ export class AuthService {
       user.email,
       user.role,
       user._token,
-      user._tokenExpirationDate
+      user.tokenExpirationDate
     );
 
     if (loadedUser.token) {
