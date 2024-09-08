@@ -3,7 +3,11 @@
   <button
     class="btn btn-outline btn-success w-9/12"
     (click)="onAddOpinionModalOpen()">
-    Add Opinion
+    @if (opinionAlreadyAdded && user) {
+      Edit Opinion [TODO]
+    } @else {
+      Add Opinion
+    }
   </button>
 </div>
 <div class="my-4" #opinionsSection>
