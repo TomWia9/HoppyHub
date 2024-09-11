@@ -44,6 +44,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   private alertService: AlertService = inject(AlertService);
 
   @ViewChild('addOpinionModal') modalRef!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   modalOppenedSubscription!: Subscription;
   opinionForm!: FormGroup;
   error = '';
@@ -66,6 +67,8 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
 
   onModalHide() {
     if (this.modalRef) {
+      this.fileInput.nativeElement.value = '';
+      this.selectedImage = null;
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
@@ -87,7 +90,6 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.opinionForm.reset();
           this.alertService.openAlert(AlertType.Success, 'Opinion created');
-
           this.opinionsService.paramsChanged.next(this.opinionsParams);
         },
         error: error => {
