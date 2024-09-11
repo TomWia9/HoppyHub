@@ -1,10 +1,12 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   inject,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { OpinionsService } from '../opinions.service';
@@ -38,6 +40,7 @@ import { OpinionsParams } from '../opinions-params';
 })
 export class AddOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) beer!: Beer;
+  @Output() beerCreated = new EventEmitter<void>();
 
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
@@ -90,8 +93,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.opinionForm.reset();
           this.alertService.openAlert(AlertType.Success, 'Opinion created');
-          this.opinionsParams.beerId = this.beer.id;
-          this.opinionsService.paramsChanged.next(this.opinionsParams);
+          this.beerCreated.emit();
         },
         error: error => {
           let errorMessage = null;

@@ -74,6 +74,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.opinionsParamsSubscription =
       this.opinionsService.paramsChanged.subscribe((params: OpinionsParams) => {
         this.opinionsParams = params;
+        this.opinionsParams.beerId = this.beer.id;
         this.getOpinions();
       });
     this.userSubscription = this.authService.user.subscribe(
@@ -85,6 +86,10 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
+    this.refreshOpinions();
+  }
+
+  refreshOpinions() {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.opinionAlreadyAdded = false;

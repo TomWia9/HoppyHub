@@ -1,4 +1,6 @@
-<app-add-opinion-modal [beer]="beer"></app-add-opinion-modal>
+<app-add-opinion-modal
+  [beer]="beer"
+  (beerCreated)="refreshOpinions()"></app-add-opinion-modal>
 <div class="grid place-items-center sm:grid-cols-2">
   @if (opinionAlreadyAdded && user) {
     <button class="btn btn-outline btn-warning my-2 w-9/12">
