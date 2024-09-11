@@ -133,10 +133,6 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   onAddOpinionModalOpen() {
     if (this.user && !this.opinionAlreadyAdded) {
       this.modalService.openModal(ModalType.AddOpinion);
-    } else if (this.user && this.opinionAlreadyAdded) {
-      this.modalService.openModal(ModalType.EditOpinion);
-    } else {
-      this.modalService.openModal(ModalType.Login);
     }
   }
 

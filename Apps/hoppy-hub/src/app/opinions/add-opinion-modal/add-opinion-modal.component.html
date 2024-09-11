@@ -47,13 +47,13 @@
               }
             </div>
           </div>
-          <div class="">
+          <div>
             <label class="form-control mb-6 w-full max-w-xs">
               <div class="label">
                 <span class="label-text">Add image (optional)</span>
               </div>
               <input
-                formControlName="image"
+                (change)="onFileSelected($event)"
                 type="file"
                 class="file-input file-input-bordered w-full" />
             </label>

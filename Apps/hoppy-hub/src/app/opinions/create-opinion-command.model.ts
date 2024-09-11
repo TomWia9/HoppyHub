@@ -3,6 +3,6 @@ export class CreateOpinionCommand {
     public beerId: string,
     public rating: number,
     public comment: string,
-    public image: File
+    public image: File | null
   ) {}
 }

@@ -51,6 +51,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   addOpinionSubscription!: Subscription;
   opinionsParams: OpinionsParams = new OpinionsParams(10, 1, 'created', 1);
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
+  selectedImage: File | null = null;
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -80,6 +81,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
       const createOpinionCommand = this.opinionForm
         .value as CreateOpinionCommand;
       createOpinionCommand.beerId = this.beer.id;
+      createOpinionCommand.image = this.selectedImage;
 
       this.opinionsService.CreateOpinion(createOpinionCommand).subscribe({
         next: () => {
@@ -113,11 +115,16 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
     this.opinionForm.reset();
   }
 
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedImage = input.files[0];
+    }
+  }
   private getOpinionForm(): FormGroup {
     return new FormGroup({
       rating: new FormControl(null, Validators.required),
-      comment: new FormControl('', Validators.maxLength(1000)),
-      image: new FormControl(null)
+      comment: new FormControl('', Validators.maxLength(1000))
     });
   }
 

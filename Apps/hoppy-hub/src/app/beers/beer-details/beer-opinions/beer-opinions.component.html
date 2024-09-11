@@ -1,16 +1,21 @@
 <app-add-opinion-modal [beer]="beer"></app-add-opinion-modal>
-<div class="my-2">
-  <button
-    class="btn btn-outline btn-success w-9/12"
-    (click)="onAddOpinionModalOpen()">
-    @if (opinionAlreadyAdded && user) {
+<div class="grid place-items-center sm:grid-cols-2">
+  @if (opinionAlreadyAdded && user) {
+    <button class="btn btn-outline btn-warning my-2 w-9/12">
       Edit Opinion [TODO]
-    } @else {
+    </button>
+    <button class="btn btn-outline btn-error my-2 w-9/12">
+      Delete Opinion [TODO]
+    </button>
+  } @else {
+    <button
+      class="btn btn-outline btn-success col-span-2 my-2 w-9/12 place-self-center"
+      (click)="onAddOpinionModalOpen()">
       Add Opinion
-    }
-  </button>
+    </button>
+  }
 </div>
-<div class="my-4" #opinionsSection>
+<div class="my-2" #opinionsSection>
   <button class="btn btn-outline btn-primary w-9/12" (click)="toggleOpinions()">
     @if (!showOpinions) {
       Show Opinions
