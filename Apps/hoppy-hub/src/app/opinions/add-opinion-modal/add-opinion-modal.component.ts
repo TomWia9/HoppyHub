@@ -90,6 +90,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.opinionForm.reset();
           this.alertService.openAlert(AlertType.Success, 'Opinion created');
+          this.opinionsParams.beerId = this.beer.id;
           this.opinionsService.paramsChanged.next(this.opinionsParams);
         },
         error: error => {
