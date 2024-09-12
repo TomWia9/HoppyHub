@@ -29,24 +29,24 @@ import {
 import { OpinionsParams } from '../opinions-params';
 
 @Component({
-  selector: 'app-add-opinion-modal',
+  selector: 'app-upsert-opinion-modal',
   standalone: true,
   imports: [
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     ReactiveFormsModule
   ],
-  templateUrl: './add-opinion-modal.component.html'
+  templateUrl: './upsert-opinion-modal.component.html'
 })
-export class AddOpinionModalComponent implements OnInit, OnDestroy {
+export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) beer!: Beer;
-  @Output() beerCreated = new EventEmitter<void>();
+  @Output() opinionUpserted = new EventEmitter<void>();
 
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
   private alertService: AlertService = inject(AlertService);
 
-  @ViewChild('addOpinionModal') modalRef!: ElementRef;
+  @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   modalOppenedSubscription!: Subscription;
   opinionForm!: FormGroup;
@@ -77,7 +77,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onShowModal(modalType: ModalType) {
-    if (modalType === ModalType.AddOpinion && this.modalRef) {
+    if (modalType === ModalType.UpsertOpinion && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
@@ -94,7 +94,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.opinionForm.reset();
           this.alertService.openAlert(AlertType.Success, 'Opinion created');
-          this.beerCreated.emit();
+          this.opinionUpserted.emit();
         },
         error: error => {
           let errorMessage = null;

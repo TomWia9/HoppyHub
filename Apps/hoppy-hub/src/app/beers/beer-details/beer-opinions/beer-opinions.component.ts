@@ -19,7 +19,7 @@ import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { ModalService, ModalType } from '../../../services/modal.service';
-import { AddOpinionModalComponent } from '../../../opinions/add-opinion-modal/add-opinion-modal.component';
+import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
 import { AuthService } from '../../../auth/auth.service';
 import { AuthUser } from '../../../auth/auth-user.model';
 
@@ -30,7 +30,7 @@ import { AuthUser } from '../../../auth/auth-user.model';
     OpinionComponent,
     FormsModule,
     PaginationComponent,
-    AddOpinionModalComponent
+    UpsertOpinionModalComponent
   ],
   templateUrl: './beer-opinions.component.html'
 })
@@ -135,9 +135,9 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  onAddOpinionModalOpen() {
+  onUpsertOpinionModalOpen() {
     if (this.user && !this.opinionAlreadyAdded) {
-      this.modalService.openModal(ModalType.AddOpinion);
+      this.modalService.openModal(ModalType.UpsertOpinion);
     } else {
       this.modalService.openModal(ModalType.Login);
     }
