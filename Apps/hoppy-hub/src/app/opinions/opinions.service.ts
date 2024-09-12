@@ -71,14 +71,19 @@ export class OpinionsService {
     if (upsertOpinionCommand.id) {
       formData.append('Id', upsertOpinionCommand.id);
     }
-    formData.append('BeerId', upsertOpinionCommand.beerId);
-    formData.append('Rating', upsertOpinionCommand.rating.toString());
-    formData.append('Comment', upsertOpinionCommand.comment);
-    formData.append('DeleteImage', upsertOpinionCommand.deleteImage.toString());
-
     if (upsertOpinionCommand.image) {
       formData.append('Image', upsertOpinionCommand.image);
     }
+    if (upsertOpinionCommand.deleteImage) {
+      formData.append(
+        'DeleteImage',
+        upsertOpinionCommand.deleteImage.toString()
+      );
+    }
+    formData.append('BeerId', upsertOpinionCommand.beerId);
+    formData.append('Rating', upsertOpinionCommand.rating.toString());
+    formData.append('Comment', upsertOpinionCommand.comment);
+
     return formData;
   }
 }

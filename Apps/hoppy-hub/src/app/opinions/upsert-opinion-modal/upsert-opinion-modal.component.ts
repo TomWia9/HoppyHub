@@ -26,7 +26,6 @@ import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
-import { OpinionsParams } from '../opinions-params';
 import { Opinion } from '../opinion.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -51,13 +50,14 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
 
   @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   modalOppenedSubscription!: Subscription;
   opinionForm!: FormGroup;
   error = '';
   loading = false;
   showImage = true;
+  imageUri: string | null = null;
   addOpinionSubscription!: Subscription;
-  opinionsParams: OpinionsParams = new OpinionsParams(10, 1, 'created', 1);
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   selectedImage: File | null = null;
 
@@ -68,11 +68,10 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
     this.opinionForm = this.existingOpinion
       ? this.getExistingOpinionForm()
       : this.getOpinionForm();
-
-    this.opinionsParams.beerId = this.beer.id;
     this.setShowImage();
   }
 
@@ -110,6 +109,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.opinionForm.reset();
+              this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
               this.alertService.openAlert(AlertType.Success, 'Opinion updated');
               this.opinionUpserted.emit();
             },
