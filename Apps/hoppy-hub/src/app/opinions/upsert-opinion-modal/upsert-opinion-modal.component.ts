@@ -27,6 +27,7 @@ import {
   AlertType
 } from '../../shared-components/alert/alert.service';
 import { OpinionsParams } from '../opinions-params';
+import { Opinion } from '../opinion.model';
 
 @Component({
   selector: 'app-upsert-opinion-modal',
@@ -40,6 +41,7 @@ import { OpinionsParams } from '../opinions-params';
 })
 export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) beer!: Beer;
+  @Input({ required: true }) existingOpinion!: Opinion | null;
   @Output() opinionUpserted = new EventEmitter<void>();
 
   private modalService = inject(ModalService);
@@ -58,6 +60,8 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   selectedImage: File | null = null;
 
   ngOnInit(): void {
+    console.log(this.existingOpinion);
+
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
       (modalType: ModalType) => {
         this.onShowModal(modalType);
@@ -127,6 +131,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
       this.selectedImage = input.files[0];
     }
   }
+
   private getOpinionForm(): FormGroup {
     return new FormGroup({
       rating: new FormControl(null, Validators.required),

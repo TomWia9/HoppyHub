@@ -1,76 +1,85 @@
-<app-upsert-opinion-modal
-  [beer]="beer"
-  (opinionUpserted)="refreshOpinions()"></app-upsert-opinion-modal>
-<div class="grid place-items-center sm:grid-cols-2">
-  @if (opinionAlreadyAdded && user) {
-    <button class="btn btn-outline btn-warning my-2 w-9/12">
-      Edit Opinion [TODO]
-    </button>
-    <button class="btn btn-outline btn-error my-2 w-9/12">
-      Delete Opinion [TODO]
-    </button>
-  } @else {
-    <button
-      class="btn btn-outline btn-success col-span-2 my-2 w-9/12 place-self-center"
-      (click)="onUpsertOpinionModalOpen()">
-      Add Opinion
-    </button>
-  }
-</div>
-<div class="my-2" #opinionsSection>
-  <button class="btn btn-outline btn-primary w-9/12" (click)="toggleOpinions()">
-    @if (!showOpinions) {
-      Show Opinions
-    } @else {
-      Hide Opinions
-    }
-  </button>
-</div>
-<div class="grid place-items-center sm:grid-cols-2">
-  @if (showOpinions && opinions && opinions.items.length > 0) {
-    <div class="my-2">
-      <app-pagination
-        [params]="opinionsParams"
-        [paginationData]="paginationData"
-        size="sm"></app-pagination>
-    </div>
-    <div class="tooltip tooltip-top my-2" data-tip="Sort by...">
-      <select
-        class="select select-bordered"
-        [(ngModel)]="selectedSortOptionIndex"
-        (change)="onSort()">
-        @for (option of sortOptions; track $index) {
-          <option [value]="$index">
-            {{ option.label }}
-          </option>
-        }
-      </select>
-    </div>
-  }
-</div>
-
-@if (showOpinions) {
-  @for (opinion of opinions?.items; track opinion.id) {
-    <app-opinion
-      [beer]="beer"
-      [opinion]="opinion"
-      [showName]="false"></app-opinion>
-  }
-
-  @if (opinions && opinions.items.length > 0) {
-    <div class="my-2">
-      <app-pagination
-        (scrollTo)="scrollToTop()"
-        [params]="opinionsParams"
-        [paginationData]="paginationData"
-        size="sm"></app-pagination>
-    </div>
-    <div class="my-4">
+@if (opinionsLoading || existingOpinionloading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <app-upsert-opinion-modal
+    [beer]="beer"
+    [existingOpinion]="existingOpinion"
+    (opinionUpserted)="refreshOpinions()"></app-upsert-opinion-modal>
+  <div class="grid place-items-center sm:grid-cols-2">
+    @if (existingOpinion && user) {
       <button
-        class="btn btn-outline btn-primary w-9/12"
-        (click)="toggleOpinions()">
-        Hide Opinions
+        class="btn btn-outline btn-warning my-2 w-9/12"
+        (click)="onUpsertOpinionModalOpen()">
+        Edit Opinion [TODO]
       </button>
-    </div>
+      <button class="btn btn-outline btn-error my-2 w-9/12">
+        Delete Opinion [TODO]
+      </button>
+    } @else {
+      <button
+        class="btn btn-outline btn-success col-span-2 my-2 w-9/12 place-self-center"
+        (click)="onUpsertOpinionModalOpen()">
+        Add Opinion
+      </button>
+    }
+  </div>
+  <div class="my-2" #opinionsSection>
+    <button
+      class="btn btn-outline btn-primary w-9/12"
+      (click)="toggleOpinions()">
+      @if (!showOpinions) {
+        Show Opinions
+      } @else {
+        Hide Opinions
+      }
+    </button>
+  </div>
+  <div class="grid place-items-center sm:grid-cols-2">
+    @if (showOpinions && opinions && opinions.items.length > 0) {
+      <div class="my-2">
+        <app-pagination
+          [params]="opinionsParams"
+          [paginationData]="paginationData"
+          size="sm"></app-pagination>
+      </div>
+      <div class="tooltip tooltip-top my-2" data-tip="Sort by...">
+        <select
+          class="select select-bordered"
+          [(ngModel)]="selectedSortOptionIndex"
+          (change)="onSort()">
+          @for (option of sortOptions; track $index) {
+            <option [value]="$index">
+              {{ option.label }}
+            </option>
+          }
+        </select>
+      </div>
+    }
+  </div>
+
+  @if (showOpinions) {
+    @for (opinion of opinions?.items; track opinion.id) {
+      <app-opinion
+        [beer]="beer"
+        [opinion]="opinion"
+        [showName]="false"></app-opinion>
+    }
+
+    @if (opinions && opinions.items.length > 0) {
+      <div class="my-2">
+        <app-pagination
+          (scrollTo)="scrollToTop()"
+          [params]="opinionsParams"
+          [paginationData]="paginationData"
+          size="sm"></app-pagination>
+      </div>
+      <div class="my-4">
+        <button
+          class="btn btn-outline btn-primary w-9/12"
+          (click)="toggleOpinions()">
+          Hide Opinions
+        </button>
+      </div>
+    }
   }
 }

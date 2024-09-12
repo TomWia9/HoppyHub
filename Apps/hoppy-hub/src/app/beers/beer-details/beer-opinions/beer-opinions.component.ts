@@ -22,6 +22,7 @@ import { ModalService, ModalType } from '../../../services/modal.service';
 import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
 import { AuthService } from '../../../auth/auth.service';
 import { AuthUser } from '../../../auth/auth-user.model';
+import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -30,7 +31,8 @@ import { AuthUser } from '../../../auth/auth-user.model';
     OpinionComponent,
     FormsModule,
     PaginationComponent,
-    UpsertOpinionModalComponent
+    UpsertOpinionModalComponent,
+    LoadingSpinnerComponent
   ],
   templateUrl: './beer-opinions.component.html'
 })
@@ -61,14 +63,15 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   opinions: PagedList<Opinion> | undefined;
   paginationData!: Pagination;
   error = '';
-  loading = true;
+  opinionsLoading = true;
+  existingOpinionloading = true;
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;
   userSubscription!: Subscription;
   getUserOpinionsSubscription!: Subscription;
   showOpinions = false;
   user: AuthUser | null | undefined;
-  opinionAlreadyAdded = false;
+  existingOpinion: Opinion | null = null;
 
   ngOnInit(): void {
     this.opinionsParamsSubscription =
@@ -92,7 +95,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   refreshOpinions() {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
-    this.opinionAlreadyAdded = false;
+    this.existingOpinion = null;
     this.checkIfUserAlreadyAddedOpinion();
   }
 
@@ -136,7 +139,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   onUpsertOpinionModalOpen() {
-    if (this.user && !this.opinionAlreadyAdded) {
+    if (this.user) {
       this.modalService.openModal(ModalType.UpsertOpinion);
     } else {
       this.modalService.openModal(ModalType.Login);
@@ -144,33 +147,38 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private checkIfUserAlreadyAddedOpinion(): void {
-    if (!this.user) return;
-
-    this.getUserOpinionsSubscription = this.opinionsService
-      .getOpinions(
-        new OpinionsParams(
-          1,
-          1,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          this.beer.id,
-          this.user.id
+    this.existingOpinionloading = true;
+    if (!this.user) {
+      this.existingOpinion = null;
+      this.existingOpinionloading = false;
+    } else {
+      this.getUserOpinionsSubscription = this.opinionsService
+        .getOpinions(
+          new OpinionsParams(
+            1,
+            1,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            undefined,
+            this.beer.id,
+            this.user.id
+          )
         )
-      )
-      .pipe(
-        take(1),
-        map(opinions => opinions.TotalCount > 0),
-        tap(opinionAdded => {
-          this.opinionAlreadyAdded = opinionAdded;
-        })
-      )
-      .subscribe();
+        .pipe(
+          take(1),
+          map(opinions => (opinions.TotalCount > 0 ? opinions.items[0] : null)),
+          tap(opinion => {
+            this.existingOpinion = opinion;
+            this.existingOpinionloading = false;
+          })
+        )
+        .subscribe();
+    }
   }
 
   private getOpinions(): void {
@@ -178,11 +186,11 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       .getOpinions(this.opinionsParams)
       .subscribe({
         next: (opinions: PagedList<Opinion>) => {
-          this.loading = true;
+          this.opinionsLoading = true;
           this.opinions = opinions;
           this.paginationData = this.getPaginationData();
           this.error = '';
-          this.loading = false;
+          this.opinionsLoading = false;
         },
         error: error => {
           this.error = 'An error occurred while loading the opinions';
@@ -192,7 +200,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
             this.error += errorMessage;
           }
 
-          this.loading = false;
+          this.opinionsLoading = false;
         }
       });
   }
