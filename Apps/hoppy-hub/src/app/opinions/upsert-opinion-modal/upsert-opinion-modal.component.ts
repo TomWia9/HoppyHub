@@ -55,14 +55,13 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   opinionForm!: FormGroup;
   error = '';
   loading = false;
+  showImage = true;
   addOpinionSubscription!: Subscription;
   opinionsParams: OpinionsParams = new OpinionsParams(10, 1, 'created', 1);
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   selectedImage: File | null = null;
 
   ngOnInit(): void {
-    console.log(this.existingOpinion);
-
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
       (modalType: ModalType) => {
         this.onShowModal(modalType);
@@ -74,12 +73,16 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
       : this.getOpinionForm();
 
     this.opinionsParams.beerId = this.beer.id;
+    this.setShowImage();
   }
 
   onModalHide() {
     if (this.modalRef) {
       this.fileInput.nativeElement.value = '';
       this.selectedImage = null;
+
+      this.setShowImage();
+
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
@@ -100,7 +103,8 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
 
       if (this.existingOpinion) {
         upsertOpinionCommand.id = this.existingOpinion.id;
-
+        upsertOpinionCommand.deleteImage =
+          !this.selectedImage && !this.showImage ? true : false;
         this.opinionsService
           .UpdateOpinion(this.existingOpinion.id, upsertOpinionCommand)
           .subscribe({
@@ -135,6 +139,14 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       this.selectedImage = input.files[0];
+    }
+  }
+
+  onRemoveImage() {
+    this.selectedImage = null;
+    this.showImage = false;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
     }
   }
 
@@ -175,6 +187,14 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     } else {
       this.alertService.openAlert(AlertType.Error, errorMessage);
     }
+  }
+
+  private setShowImage() {
+    this.showImage =
+      this.existingOpinion?.imageUri &&
+      this.existingOpinion?.imageUri.length > 0
+        ? true
+        : false;
   }
 
   ngOnDestroy(): void {

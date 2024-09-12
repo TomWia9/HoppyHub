@@ -55,26 +55,48 @@
             </div>
           </div>
           <div>
-            <label class="form-control mb-6 w-full max-w-xs">
-              <div class="label">
-                <span class="label-text">Add image (optional)</span>
-              </div>
-              <input
-                #fileInput
-                (change)="onFileSelected($event)"
-                type="file"
-                class="file-input file-input-bordered w-full" />
-            </label>
+            @if (
+              !existingOpinion ||
+              !existingOpinion.imageUri ||
+              existingOpinion.imageUri.length < 1 ||
+              !showImage
+            ) {
+              <label class="form-control mb-6 w-full max-w-xs">
+                <div class="label">
+                  <span class="label-text">Add image (optional)</span>
+                </div>
+                <input
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                  type="file"
+                  class="file-input file-input-bordered w-full" />
+              </label>
+            } @else {
+              <figure class="flex items-center justify-center">
+                <div class="mask mask-squircle h-52 w-52">
+                  <img src="{{ existingOpinion.imageUri }}" alt="Beer image" />
+                </div>
+              </figure>
+              <button
+                type="button"
+                class="btn btn-outline btn-error my-4"
+                (click)="onRemoveImage()">
+                Remove image
+              </button>
+            }
           </div>
         </div>
         <div class="mt-2 flex items-center justify-evenly">
           <button
             type="submit"
-            class="btn btn-accent"
+            class="btn btn-success w-48"
             [disabled]="!opinionForm.valid">
             Save opinion
           </button>
-          <button type="button" class="btn btn-neutral" (click)="onModalHide()">
+          <button
+            type="button"
+            class="btn btn-neutral w-48"
+            (click)="onModalHide()">
             Cancel
           </button>
         </div>

@@ -74,6 +74,7 @@ export class OpinionsService {
     formData.append('BeerId', upsertOpinionCommand.beerId);
     formData.append('Rating', upsertOpinionCommand.rating.toString());
     formData.append('Comment', upsertOpinionCommand.comment);
+    formData.append('DeleteImage', upsertOpinionCommand.deleteImage.toString());
 
     if (upsertOpinionCommand.image) {
       formData.append('Image', upsertOpinionCommand.image);

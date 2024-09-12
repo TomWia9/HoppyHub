@@ -4,6 +4,7 @@ export class UpsertOpinionCommand {
     public beerId: string,
     public rating: number,
     public comment: string,
-    public image: File | null
+    public image: File | null,
+    public deleteImage: boolean
   ) {}
 }
