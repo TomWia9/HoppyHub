@@ -6,7 +6,7 @@ import { OpinionsParams } from './opinions-params';
 import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
-import { CreateOpinionCommand } from './create-opinion-command.model';
+import { UpsertOpinionCommand } from './upsert-opinion-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,9 +44,9 @@ export class OpinionsService {
   }
 
   CreateOpinion(
-    createOpinionCommand: CreateOpinionCommand
+    upsertOpinionCommand: UpsertOpinionCommand
   ): Observable<Opinion> {
-    const formData = this.buildFormData(createOpinionCommand);
+    const formData = this.buildFormData(upsertOpinionCommand);
 
     return this.http.post<Opinion>(
       `${environment.opinionManagementApiUrl}/opinions`,
@@ -54,14 +54,29 @@ export class OpinionsService {
     );
   }
 
-  private buildFormData(createOpinionCommand: CreateOpinionCommand): FormData {
-    const formData = new FormData();
-    formData.append('BeerId', createOpinionCommand.beerId);
-    formData.append('Rating', createOpinionCommand.rating.toString());
-    formData.append('Comment', createOpinionCommand.comment);
+  UpdateOpinion(
+    opinionId: string,
+    upsertOpinionCommand: UpsertOpinionCommand
+  ): Observable<void> {
+    const formData = this.buildFormData(upsertOpinionCommand);
 
-    if (createOpinionCommand.image) {
-      formData.append('Image', createOpinionCommand.image);
+    return this.http.put<void>(
+      `${environment.opinionManagementApiUrl}/opinions/${opinionId}`,
+      formData
+    );
+  }
+
+  private buildFormData(upsertOpinionCommand: UpsertOpinionCommand): FormData {
+    const formData = new FormData();
+    if (upsertOpinionCommand.id) {
+      formData.append('Id', upsertOpinionCommand.id);
+    }
+    formData.append('BeerId', upsertOpinionCommand.beerId);
+    formData.append('Rating', upsertOpinionCommand.rating.toString());
+    formData.append('Comment', upsertOpinionCommand.comment);
+
+    if (upsertOpinionCommand.image) {
+      formData.append('Image', upsertOpinionCommand.image);
     }
     return formData;
   }

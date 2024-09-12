@@ -1,5 +1,6 @@
-export class CreateOpinionCommand {
+export class UpsertOpinionCommand {
   constructor(
+    public id: string | null,
     public beerId: string,
     public rating: number,
     public comment: string,

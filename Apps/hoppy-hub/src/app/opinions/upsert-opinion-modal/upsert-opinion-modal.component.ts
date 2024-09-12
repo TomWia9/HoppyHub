@@ -20,7 +20,7 @@ import {
 import { Subscription } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
-import { CreateOpinionCommand } from '../create-opinion-command.model';
+import { UpsertOpinionCommand } from '../upsert-opinion-command.model';
 import { Beer } from '../../beers/beer.model';
 import {
   AlertService,
@@ -28,6 +28,7 @@ import {
 } from '../../shared-components/alert/alert.service';
 import { OpinionsParams } from '../opinions-params';
 import { Opinion } from '../opinion.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-upsert-opinion-modal',
@@ -68,7 +69,10 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.opinionForm = this.getOpinionForm();
+    this.opinionForm = this.existingOpinion
+      ? this.getExistingOpinionForm()
+      : this.getOpinionForm();
+
     this.opinionsParams.beerId = this.beer.id;
   }
 
@@ -88,37 +92,39 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.opinionForm.valid) {
-      const createOpinionCommand = this.opinionForm
-        .value as CreateOpinionCommand;
+      const upsertOpinionCommand = this.opinionForm
+        .value as UpsertOpinionCommand;
 
-      createOpinionCommand.beerId = this.beer.id;
-      createOpinionCommand.image = this.selectedImage;
+      upsertOpinionCommand.beerId = this.beer.id;
+      upsertOpinionCommand.image = this.selectedImage;
 
-      this.opinionsService.CreateOpinion(createOpinionCommand).subscribe({
-        next: () => {
-          this.opinionForm.reset();
-          this.alertService.openAlert(AlertType.Success, 'Opinion created');
-          this.opinionUpserted.emit();
-        },
-        error: error => {
-          let errorMessage = null;
+      if (this.existingOpinion) {
+        upsertOpinionCommand.id = this.existingOpinion.id;
 
-          if (error.error) {
-            const firstKey = Object.keys(error.error?.errors)[0] ?? null;
-            const firstValueArray = error.error?.errors[firstKey] as string[];
-            errorMessage = firstValueArray[0];
+        this.opinionsService
+          .UpdateOpinion(this.existingOpinion.id, upsertOpinionCommand)
+          .subscribe({
+            next: () => {
+              this.opinionForm.reset();
+              this.alertService.openAlert(AlertType.Success, 'Opinion updated');
+              this.opinionUpserted.emit();
+            },
+            error: error => {
+              this.handleError(error);
+            }
+          });
+      } else {
+        this.opinionsService.CreateOpinion(upsertOpinionCommand).subscribe({
+          next: () => {
+            this.opinionForm.reset();
+            this.alertService.openAlert(AlertType.Success, 'Opinion created');
+            this.opinionUpserted.emit();
+          },
+          error: error => {
+            this.handleError(error);
           }
-
-          if (!errorMessage) {
-            this.alertService.openAlert(
-              AlertType.Error,
-              'Something went wrong'
-            );
-          } else {
-            this.alertService.openAlert(AlertType.Error, errorMessage);
-          }
-        }
-      });
+        });
+      }
     }
 
     this.onModalHide();
@@ -140,6 +146,35 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
         validators: [Validators.maxLength(1000)]
       })
     });
+  }
+
+  private getExistingOpinionForm(): FormGroup {
+    return new FormGroup({
+      rating: new FormControl(
+        this.existingOpinion?.rating,
+        Validators.required
+      ),
+      comment: new FormControl(this.existingOpinion?.comment, {
+        nonNullable: true,
+        validators: [Validators.maxLength(1000)]
+      })
+    });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = null;
+
+    if (error.error) {
+      const firstKey = Object.keys(error.error?.errors)[0] ?? null;
+      const firstValueArray = error.error?.errors[firstKey] as string[];
+      errorMessage = firstValueArray[0];
+    }
+
+    if (!errorMessage) {
+      this.alertService.openAlert(AlertType.Error, 'Something went wrong');
+    } else {
+      this.alertService.openAlert(AlertType.Error, errorMessage);
+    }
   }
 
   ngOnDestroy(): void {

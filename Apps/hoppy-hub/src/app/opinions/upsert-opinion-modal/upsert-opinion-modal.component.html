@@ -12,7 +12,14 @@
     } @else if (error) {
       <app-error-message [message]="error"></app-error-message>
     } @else {
-      <h3 class="mb-2 text-2xl font-bold">Create opinion</h3>
+      <h3 class="mb-2 text-2xl font-bold">
+        @if (existingOpinion) {
+          Edit
+        } @else {
+          Create
+        }
+        opinion
+      </h3>
       <form [formGroup]="opinionForm" (ngSubmit)="onSubmit()">
         <div class="my-2 grid place-content-center">
           <div class="text-center">
