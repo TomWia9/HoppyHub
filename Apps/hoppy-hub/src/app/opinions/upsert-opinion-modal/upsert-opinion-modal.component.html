@@ -86,16 +86,16 @@
             }
           </div>
         </div>
-        <div class="mt-2 flex items-center justify-evenly">
+        <div class="mt-2 grid place-items-center sm:grid-cols-2">
           <button
             type="submit"
-            class="btn btn-success w-48"
+            class="btn btn-success my-2 w-48"
             [disabled]="!opinionForm.valid">
             Save opinion
           </button>
           <button
             type="button"
-            class="btn btn-neutral w-48"
+            class="btn btn-neutral my-2 w-48"
             (click)="onModalHide()">
             Cancel
           </button>

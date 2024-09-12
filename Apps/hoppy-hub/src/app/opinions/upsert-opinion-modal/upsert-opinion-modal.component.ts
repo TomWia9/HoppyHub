@@ -77,8 +77,10 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
 
   onModalHide() {
     if (this.modalRef) {
-      this.fileInput.nativeElement.value = '';
-      this.selectedImage = null;
+      if (this.fileInput) {
+        this.fileInput.nativeElement.value = '';
+        this.selectedImage = null;
+      }
 
       this.setShowImage();
 
@@ -93,6 +95,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.loading = true;
     if (this.opinionForm.valid) {
       const upsertOpinionCommand = this.opinionForm
         .value as UpsertOpinionCommand;
@@ -112,6 +115,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
               this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
               this.alertService.openAlert(AlertType.Success, 'Opinion updated');
               this.opinionUpserted.emit();
+              this.loading = false;
             },
             error: error => {
               this.handleError(error);
@@ -123,6 +127,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
             this.opinionForm.reset();
             this.alertService.openAlert(AlertType.Success, 'Opinion created');
             this.opinionUpserted.emit();
+            this.loading = false;
           },
           error: error => {
             this.handleError(error);
@@ -187,6 +192,8 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     } else {
       this.alertService.openAlert(AlertType.Error, errorMessage);
     }
+
+    this.loading = false;
   }
 
   private setShowImage() {
