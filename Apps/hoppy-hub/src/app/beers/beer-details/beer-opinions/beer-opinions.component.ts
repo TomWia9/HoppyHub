@@ -60,6 +60,11 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
     { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
   ];
+
+  opinionsParamsSubscription!: Subscription;
+  getOpinionsSubscription!: Subscription;
+  userSubscription!: Subscription;
+  getUserOpinionsSubscription!: Subscription;
   selectedSortOptionIndex: number = 0;
   opinionsParams = new OpinionsParams(10, 1, 'created', 1);
   opinions: PagedList<Opinion> | undefined;
@@ -67,10 +72,6 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   error = '';
   opinionsLoading = true;
   existingOpinionloading = true;
-  opinionsParamsSubscription!: Subscription;
-  getOpinionsSubscription!: Subscription;
-  userSubscription!: Subscription;
-  getUserOpinionsSubscription!: Subscription;
   showOpinions = false;
   user: AuthUser | null | undefined;
   existingOpinion: Opinion | null = null;

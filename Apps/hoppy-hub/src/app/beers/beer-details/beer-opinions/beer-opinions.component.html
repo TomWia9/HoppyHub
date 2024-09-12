@@ -12,6 +12,13 @@
   }
   <div class="grid place-items-center sm:grid-cols-2">
     @if (existingOpinion && user) {
+      <div class="col-span-2 justify-self-center sm:w-3/4">
+        <p class="text-xl">Your opinion:</p>
+        <app-opinion
+          [beer]="beer"
+          [opinion]="existingOpinion"
+          [showName]="false"></app-opinion>
+      </div>
       <button
         class="btn btn-outline btn-warning my-2 w-9/12"
         (click)="onUpsertOpinionModalOpen()">
@@ -35,7 +42,7 @@
       class="btn btn-outline btn-primary w-9/12"
       (click)="toggleOpinions()">
       @if (!showOpinions) {
-        Show Opinions
+        Show All Opinions
       } @else {
         Hide Opinions
       }

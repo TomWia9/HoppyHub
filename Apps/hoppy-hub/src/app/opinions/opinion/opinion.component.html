@@ -1,4 +1,5 @@
-<div class="md:text-md card my-4 bg-neutral text-xs shadow-xl lg:text-lg">
+<div
+  class="md:text-md card my-4 bg-neutral bg-opacity-85 text-xs shadow-xl lg:text-lg">
   <div class="card-body">
     <div class="flex justify-between">
       @if (beer && showName) {
@@ -20,9 +21,9 @@
       }}</a>
     </div>
     <p class="text-justify">{{ opinion.comment }}</p>
-    <div class="mt-4 flex justify-between">
-      <div class="justify-start text-start">
-        <div class="md: rating-mdmt-2 rating rating-sm">
+    <div class="mt-4 grid place-items-center gap-4 sm:grid-cols-2">
+      <div>
+        <div class="rating rating-sm">
           @for (star of getStars(opinion.rating); track $index) {
             <input
               class="mask mask-star-2 cursor-default bg-green-500"
@@ -35,9 +36,7 @@
           }
         </div>
       </div>
-      <div>
-        <h2 class="">{{ opinion.created | date: 'short' }}</h2>
-      </div>
+      <h2 class="">{{ opinion.created | date: 'short' }}</h2>
     </div>
     @if (opinion.imageUri) {
       <div class="flex justify-center">

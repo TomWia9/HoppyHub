@@ -43,21 +43,20 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) existingOpinion!: Opinion | null;
   @Output() opinionUpserted = new EventEmitter<void>();
+  @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
   private alertService: AlertService = inject(AlertService);
 
-  @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
-  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-
   modalOppenedSubscription!: Subscription;
+  addOpinionSubscription!: Subscription;
   opinionForm!: FormGroup;
   error = '';
   loading = false;
   showImage = true;
   imageUri: string | null = null;
-  addOpinionSubscription!: Subscription;
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
   selectedImage: File | null = null;
 
@@ -85,12 +84,6 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
       this.setShowImage();
 
       (this.modalRef.nativeElement as HTMLDialogElement).close();
-    }
-  }
-
-  onShowModal(modalType: ModalType) {
-    if (modalType === ModalType.UpsertOpinion && this.modalRef) {
-      (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
@@ -152,6 +145,12 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     this.showImage = false;
     if (this.fileInput) {
       this.fileInput.nativeElement.value = '';
+    }
+  }
+
+  private onShowModal(modalType: ModalType) {
+    if (modalType === ModalType.UpsertOpinion && this.modalRef) {
+      (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
