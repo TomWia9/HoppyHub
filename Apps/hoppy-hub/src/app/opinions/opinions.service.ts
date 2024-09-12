@@ -57,8 +57,9 @@ export class OpinionsService {
   private buildFormData(createOpinionCommand: CreateOpinionCommand): FormData {
     const formData = new FormData();
     formData.append('BeerId', createOpinionCommand.beerId);
-    formData.append('rating', createOpinionCommand.rating.toString());
-    formData.append('comment', createOpinionCommand.comment);
+    formData.append('Rating', createOpinionCommand.rating.toString());
+    formData.append('Comment', createOpinionCommand.comment);
+
     if (createOpinionCommand.image) {
       formData.append('Image', createOpinionCommand.image);
     }

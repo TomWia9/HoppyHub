@@ -86,6 +86,7 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
     if (this.opinionForm.valid) {
       const createOpinionCommand = this.opinionForm
         .value as CreateOpinionCommand;
+
       createOpinionCommand.beerId = this.beer.id;
       createOpinionCommand.image = this.selectedImage;
 
@@ -129,7 +130,10 @@ export class AddOpinionModalComponent implements OnInit, OnDestroy {
   private getOpinionForm(): FormGroup {
     return new FormGroup({
       rating: new FormControl(null, Validators.required),
-      comment: new FormControl('', Validators.maxLength(1000))
+      comment: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.maxLength(1000)]
+      })
     });
   }
 

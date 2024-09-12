@@ -46,12 +46,12 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     {
       label: 'Created (New to Old)',
       value: 'Created',
-      direction: 0
+      direction: 1
     },
     {
       label: 'Created (Old to New)',
       value: 'Created',
-      direction: 1
+      direction: 0
     },
     { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
     { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
