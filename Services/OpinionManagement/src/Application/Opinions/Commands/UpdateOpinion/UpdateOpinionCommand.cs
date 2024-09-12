@@ -12,4 +12,9 @@ public record UpdateOpinionCommand : BaseOpinionCommand, IRequest
     ///     The opinion id.
     /// </summary>
     public Guid Id { get; init; }
+
+    /// <summary>
+    ///     The delete image flag.
+    /// </summary>
+    public bool DeleteImage { get; set; }
 }
