@@ -1,0 +1,80 @@
+<dialog #addOpinionModal class="modal modal-middle">
+  <div class="modal-box w-11/12 max-w-xl">
+    <form method="dialog">
+      <button
+        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+        (click)="onModalHide()">
+        ✕
+      </button>
+    </form>
+    @if (loading) {
+      <app-loading-spinner></app-loading-spinner>
+    } @else if (error) {
+      <app-error-message [message]="error"></app-error-message>
+    } @else {
+      <h3 class="mb-2 text-2xl font-bold">Create opinion</h3>
+      <form [formGroup]="opinionForm" (ngSubmit)="onSubmit()">
+        <div class="my-2 grid place-content-center">
+          <div class="text-center">
+            <p class="my-2">Rating</p>
+            <div class="rating">
+              @for (ratingValue of ratingValues; track $index) {
+                <input
+                  type="radio"
+                  formControlName="rating"
+                  class="mask mask-star-2 bg-orange-400"
+                  [class.bg-orange-400]="
+                    opinionForm.get('rating')?.value >= ratingValue
+                  "
+                  [value]="ratingValue" />
+              }
+            </div>
+          </div>
+          <div class="mt-4">
+            <textarea
+              formControlName="comment"
+              class="textarea textarea-primary w-full"
+              placeholder="Comment (optional)"></textarea>
+            <div class="label text-center">
+              @if (
+                opinionForm.get('comment')!.errors &&
+                opinionForm.get('comment')!.hasError('maxlength') &&
+                opinionForm.get('comment')!.touched
+              ) {
+                <span class="label-text-alt text-error"
+                  >Comment can contain a maximum of 1000 characters</span
+                >
+              }
+            </div>
+          </div>
+          <div>
+            <label class="form-control mb-6 w-full max-w-xs">
+              <div class="label">
+                <span class="label-text">Add image (optional)</span>
+              </div>
+              <input
+                #fileInput
+                (change)="onFileSelected($event)"
+                type="file"
+                class="file-input file-input-bordered w-full" />
+            </label>
+          </div>
+        </div>
+        <div class="mt-2 flex items-center justify-evenly">
+          <button
+            type="submit"
+            class="btn btn-accent"
+            [disabled]="!opinionForm.valid">
+            Save opinion
+          </button>
+          <button type="button" class="btn btn-neutral" (click)="onModalHide()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="onModalHide()">close</button>
+  </form>
+</dialog>

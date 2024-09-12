@@ -15,7 +15,6 @@ import {
   Validators
 } from '@angular/forms';
 import { ModalService, ModalType } from '../../services/modal.service';
-import { Router } from '@angular/router';
 import {
   AlertService,
   AlertType
@@ -32,7 +31,6 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
-  private router: Router = inject(Router);
 
   @ViewChild('loginModal') myModalRef!: ElementRef;
   modalOpenedSubscription!: Subscription;
@@ -61,7 +59,10 @@ export class LoginModalComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.onFormReset();
-            this.router.navigate(['/']);
+            this.alertService.openAlert(
+              AlertType.Success,
+              'Logged in successfully'
+            );
           },
           error: error => {
             const errorMessage = error.error.errors[0];
@@ -71,9 +72,9 @@ export class LoginModalComponent implements OnInit, OnDestroy {
                 AlertType.Error,
                 'Something went wrong'
               );
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }

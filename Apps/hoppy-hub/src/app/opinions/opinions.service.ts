@@ -6,6 +6,7 @@ import { OpinionsParams } from './opinions-params';
 import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
+import { CreateOpinionCommand } from './create-opinion-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +41,28 @@ export class OpinionsService {
           );
         })
       );
+  }
+
+  CreateOpinion(
+    createOpinionCommand: CreateOpinionCommand
+  ): Observable<Opinion> {
+    const formData = this.buildFormData(createOpinionCommand);
+
+    return this.http.post<Opinion>(
+      `${environment.opinionManagementApiUrl}/opinions`,
+      formData
+    );
+  }
+
+  private buildFormData(createOpinionCommand: CreateOpinionCommand): FormData {
+    const formData = new FormData();
+    formData.append('BeerId', createOpinionCommand.beerId);
+    formData.append('Rating', createOpinionCommand.rating.toString());
+    formData.append('Comment', createOpinionCommand.comment);
+
+    if (createOpinionCommand.image) {
+      formData.append('Image', createOpinionCommand.image);
+    }
+    return formData;
   }
 }

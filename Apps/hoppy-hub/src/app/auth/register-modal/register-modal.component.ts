@@ -15,7 +15,6 @@ import {
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ModalService, ModalType } from '../../services/modal.service';
-import { Router } from '@angular/router';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../auth.service';
 import {
@@ -33,7 +32,6 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
-  private router: Router = inject(Router);
 
   @ViewChild('registerModal') myModalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
@@ -87,16 +85,19 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.onFormReset();
-            this.router.navigate(['/']);
+            this.alertService.openAlert(
+              AlertType.Success,
+              'Successfully registered'
+            );
           },
           error: error => {
             let errorMessage = 'Something went wrong';
 
             if (error.error && error.error.errors) {
               errorMessage = this.getErrorMessage(error.error.errors);
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }

@@ -116,15 +116,17 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
   }
 
   scrollToDetails(offset: number = 0) {
-    const elementPosition =
-      this.details.nativeElement.getBoundingClientRect().top +
-      window.scrollY +
-      offset;
+    if (this.details) {
+      const elementPosition =
+        this.details.nativeElement.getBoundingClientRect().top +
+        window.scrollY +
+        offset;
 
-    window.scrollTo({
-      top: elementPosition,
-      behavior: 'smooth'
-    });
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
+    }
   }
 
   private resetBreweryDetails(breweryId: string): void {

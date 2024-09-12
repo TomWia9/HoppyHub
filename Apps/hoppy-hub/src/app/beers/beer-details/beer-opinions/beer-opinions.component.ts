@@ -11,18 +11,27 @@ import {
 import { OpinionsService } from '../../../opinions/opinions.service';
 import { OpinionsParams } from '../../../opinions/opinions-params';
 import { Opinion } from '../../../opinions/opinion.model';
-import { Subscription } from 'rxjs';
+import { map, Subscription, take, tap } from 'rxjs';
 import { PagedList } from '../../../shared/paged-list';
 import { Pagination } from '../../../shared/pagination';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { ModalService, ModalType } from '../../../services/modal.service';
+import { AddOpinionModalComponent } from '../../../opinions/add-opinion-modal/add-opinion-modal.component';
+import { AuthService } from '../../../auth/auth.service';
+import { AuthUser } from '../../../auth/auth-user.model';
 
 @Component({
   selector: 'app-beer-opinions',
   standalone: true,
-  imports: [OpinionComponent, FormsModule, PaginationComponent],
+  imports: [
+    OpinionComponent,
+    FormsModule,
+    PaginationComponent,
+    AddOpinionModalComponent
+  ],
   templateUrl: './beer-opinions.component.html'
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
@@ -30,17 +39,19 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('opinionsSection') opinionsSection!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private modalService: ModalService = inject(ModalService);
+  private authService: AuthService = inject(AuthService);
 
   sortOptions = [
     {
       label: 'Created (New to Old)',
       value: 'Created',
-      direction: 0
+      direction: 1
     },
     {
       label: 'Created (Old to New)',
       value: 'Created',
-      direction: 1
+      direction: 0
     },
     { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
     { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
@@ -53,19 +64,36 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   loading = true;
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;
+  userSubscription!: Subscription;
+  getUserOpinionsSubscription!: Subscription;
   showOpinions = false;
+  user: AuthUser | null | undefined;
+  opinionAlreadyAdded = false;
 
   ngOnInit(): void {
     this.opinionsParamsSubscription =
       this.opinionsService.paramsChanged.subscribe((params: OpinionsParams) => {
         this.opinionsParams = params;
+        this.opinionsParams.beerId = this.beer.id;
         this.getOpinions();
       });
+    this.userSubscription = this.authService.user.subscribe(
+      (user: AuthUser | null) => {
+        this.user = user;
+        this.checkIfUserAlreadyAddedOpinion();
+      }
+    );
   }
 
   ngOnChanges() {
+    this.refreshOpinions();
+  }
+
+  refreshOpinions() {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
+    this.opinionAlreadyAdded = false;
+    this.checkIfUserAlreadyAddedOpinion();
   }
 
   onSort() {
@@ -105,6 +133,44 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       top: elementPosition,
       behavior: 'smooth'
     });
+  }
+
+  onAddOpinionModalOpen() {
+    if (this.user && !this.opinionAlreadyAdded) {
+      this.modalService.openModal(ModalType.AddOpinion);
+    } else {
+      this.modalService.openModal(ModalType.Login);
+    }
+  }
+
+  private checkIfUserAlreadyAddedOpinion(): void {
+    if (!this.user) return;
+
+    this.getUserOpinionsSubscription = this.opinionsService
+      .getOpinions(
+        new OpinionsParams(
+          1,
+          1,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          this.beer.id,
+          this.user.id
+        )
+      )
+      .pipe(
+        take(1),
+        map(opinions => opinions.TotalCount > 0),
+        tap(opinionAdded => {
+          this.opinionAlreadyAdded = opinionAdded;
+        })
+      )
+      .subscribe();
   }
 
   private getOpinions(): void {
@@ -169,5 +235,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.getOpinionsSubscription.unsubscribe();
     this.opinionsParamsSubscription.unsubscribe();
+    this.userSubscription.unsubscribe();
+    this.getUserOpinionsSubscription.unsubscribe();
   }
 }
