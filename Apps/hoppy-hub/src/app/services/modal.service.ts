@@ -6,7 +6,8 @@ export enum ModalType {
   Register,
   BeersFilters,
   BreweriesFilters,
-  UpsertOpinion
+  UpsertOpinion,
+  DeleteOpinion
 }
 
 @Injectable({

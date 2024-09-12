@@ -66,6 +66,12 @@ export class OpinionsService {
     );
   }
 
+  DeleteOpinion(opinionId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.opinionManagementApiUrl}/opinions/${opinionId}`
+    );
+  }
+
   private buildFormData(upsertOpinionCommand: UpsertOpinionCommand): FormData {
     const formData = new FormData();
     if (upsertOpinionCommand.id) {

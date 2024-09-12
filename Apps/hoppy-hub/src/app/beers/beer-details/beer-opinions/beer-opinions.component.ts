@@ -23,6 +23,7 @@ import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-mo
 import { AuthService } from '../../../auth/auth.service';
 import { AuthUser } from '../../../auth/auth-user.model';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
+import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -32,7 +33,8 @@ import { LoadingSpinnerComponent } from '../../../shared-components/loading-spin
     FormsModule,
     PaginationComponent,
     UpsertOpinionModalComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    DeleteOpinionModalComponent
   ],
   templateUrl: './beer-opinions.component.html'
 })
@@ -143,6 +145,12 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       this.modalService.openModal(ModalType.UpsertOpinion);
     } else {
       this.modalService.openModal(ModalType.Login);
+    }
+  }
+
+  onDeleteOpinionModalOpen() {
+    if (this.user) {
+      this.modalService.openModal(ModalType.DeleteOpinion);
     }
   }
 
