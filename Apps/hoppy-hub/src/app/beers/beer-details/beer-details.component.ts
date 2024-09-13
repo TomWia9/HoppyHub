@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Subscription, map, take, tap } from 'rxjs';
 import { Beer } from '../beer.model';
 import { BeersService } from '../beers.service';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
@@ -17,6 +17,8 @@ import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
+import { FavoritesParams } from '../../favorites/favorites-params';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-beer-details',
@@ -35,6 +37,7 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   beer!: Beer;
   error = '';
   loading = true;
+  favoriteLoading = true;
   favorite = false;
   user: AuthUser | null = null;
   routeSubscription!: Subscription;
@@ -42,6 +45,7 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   createFavoriteSubscription!: Subscription;
   deleteFavoriteSubscription!: Subscription;
+  getUserFavoritesSubsciption!: Subscription;
   faStarr = faStar;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
@@ -52,12 +56,6 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   private alertService: AlertService = inject(AlertService);
 
   ngOnInit(): void {
-    this.userSubscription = this.authService.user.subscribe(
-      (user: AuthUser | null) => {
-        this.user = user;
-        //TODO this.checkIfUserAlreadyAddedBeerToFavorites();
-      }
-    );
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
       .subscribe(beerId => {
@@ -70,6 +68,12 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
               this.error = '';
               window.scrollTo({ top: 0, behavior: 'smooth' });
               this.loading = false;
+              this.userSubscription = this.authService.user.subscribe(
+                (user: AuthUser | null) => {
+                  this.user = user;
+                  this.checkIfUserAlreadyAddedBeerToFavorites();
+                }
+              );
             },
             error: () => {
               this.error = 'An error occurred while loading the beer';
@@ -95,12 +99,8 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
             );
             this.loading = false;
           },
-          error: () => {
-            this.alertService.openAlert(
-              AlertType.Error,
-              'An error occurred while adding to favorites'
-            );
-            this.loading = false;
+          error: error => {
+            this.handleError(error);
           }
         });
     } else {
@@ -116,15 +116,61 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
             );
             this.loading = false;
           },
-          error: () => {
-            this.alertService.openAlert(
-              AlertType.Error,
-              'An error occurred while removing from favorites'
-            );
-            this.loading = false;
+          error: error => {
+            this.handleError(error);
           }
         });
     }
+  }
+
+  private checkIfUserAlreadyAddedBeerToFavorites() {
+    this.favoriteLoading = true;
+    if (!this.user) {
+      this.favorite = false;
+      this.favoriteLoading = false;
+    } else {
+      this.getUserFavoritesSubsciption = this.favoritesService
+        .getFavorites(
+          new FavoritesParams(
+            1,
+            1,
+            undefined,
+            undefined,
+            undefined,
+            this.beer.id,
+            this.user.id
+          )
+        )
+        .pipe(
+          take(1),
+          map(beers => (beers.TotalCount > 0 ? true : false)),
+          tap(favorite => {
+            console.log(favorite);
+
+            this.favorite = favorite;
+            this.favoriteLoading = false;
+          })
+        )
+        .subscribe();
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = null;
+
+    if (error.error) {
+      const firstKey = Object.keys(error.error?.errors)[0] ?? null;
+      const firstValueArray = error.error?.errors[firstKey] as string[];
+      errorMessage = firstValueArray[0];
+    }
+
+    if (!errorMessage) {
+      this.alertService.openAlert(AlertType.Error, 'Something went wrong');
+    } else {
+      this.alertService.openAlert(AlertType.Error, errorMessage);
+    }
+
+    this.loading = false;
   }
 
   ngOnDestroy(): void {
@@ -142,6 +188,9 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.deleteFavoriteSubscription) {
       this.deleteFavoriteSubscription.unsubscribe();
+    }
+    if (this.getUserFavoritesSubsciption) {
+      this.getUserFavoritesSubsciption.unsubscribe();
     }
   }
 }

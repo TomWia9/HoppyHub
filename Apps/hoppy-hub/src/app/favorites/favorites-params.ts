@@ -8,6 +8,7 @@ export class FavoritesParams implements Params {
     public sortBy?: string,
     public sortDirection?: number,
     public searchQuery?: string,
+    public beerId?: string,
     public userId?: string
   ) {}
 
@@ -24,6 +25,9 @@ export class FavoritesParams implements Params {
     }
     if (this.searchQuery && this.searchQuery.trim() !== '') {
       params = params.append('searchQuery', this.searchQuery);
+    }
+    if (this.beerId && this.beerId.trim() != '') {
+      params = params.append('beerId', this.beerId);
     }
     if (this.userId && this.userId.trim() != '') {
       params = params.append('userId', this.userId);
