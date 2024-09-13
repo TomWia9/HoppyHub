@@ -58,7 +58,7 @@ public class GetFavoritesQueryHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var beerId = Guid.NewGuid();
-        var request = new GetFavoritesQuery { PageNumber = 1, PageSize = 10, UserId = userId };
+        var request = new GetFavoritesQuery { PageNumber = 1, PageSize = 10, UserId = userId, BeerId = beerId};
         var beers = new List<Beer>
         {
             new()

@@ -11,6 +11,11 @@ namespace Application.Favorites.Queries.GetFavorites;
 public record GetFavoritesQuery : QueryParameters, IRequest<PaginatedList<BeerDto>>
 {
     /// <summary>
+    ///     The beer id.
+    /// </summary>
+    public Guid? BeerId { get; init; }
+    
+    /// <summary>
     ///     The user id.
     /// </summary>
     public Guid UserId { get; init; }
