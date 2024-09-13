@@ -31,7 +31,7 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   error = '';
   loading = true;
   favorite = false;
-  user: AuthUser | null | undefined;
+  user: AuthUser | null = null;
   routeSubscription!: Subscription;
   beerSubscription!: Subscription;
   userSubscription!: Subscription;
