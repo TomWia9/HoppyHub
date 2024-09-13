@@ -7,6 +7,11 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { CommonModule } from '@angular/common';
 import { BeerOpinionsComponent } from './beer-opinions/beer-opinions.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../auth/auth.service';
+import { ModalService, ModalType } from '../../services/modal.service';
+import { AuthUser } from '../../auth/auth-user.model';
 
 @Component({
   selector: 'app-beer-details',
@@ -16,7 +21,8 @@ import { BeerOpinionsComponent } from './beer-opinions/beer-opinions.component';
     ErrorMessageComponent,
     RouterModule,
     CommonModule,
-    BeerOpinionsComponent
+    BeerOpinionsComponent,
+    FontAwesomeModule
   ],
   templateUrl: './beer-details.component.html'
 })
@@ -24,13 +30,25 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   beer!: Beer;
   error = '';
   loading = true;
+  favorite = false;
+  user: AuthUser | null | undefined;
   routeSubscription!: Subscription;
   beerSubscription!: Subscription;
+  userSubscription!: Subscription;
+  faStarr = faStar;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
   private beersService: BeersService = inject(BeersService);
+  private modalService: ModalService = inject(ModalService);
+  private authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
+    this.userSubscription = this.authService.user.subscribe(
+      (user: AuthUser | null) => {
+        this.user = user;
+        //TODO: Check if user already added beer to favorites
+      }
+    );
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
       .subscribe(beerId => {
@@ -52,6 +70,20 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  onToggleFavorite() {
+    if (!this.user) {
+      this.modalService.openModal(ModalType.Login);
+    } else if (!this.favorite) {
+      console.log('Add to favorites');
+      //favoritesService.AddToFavorites
+      this.favorite = true;
+    } else {
+      console.log('Remove from favorites');
+      //favoritesService.RemoveFromFavorites
+      this.favorite = false;
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.beerSubscription) {
       this.beerSubscription.unsubscribe();
@@ -59,6 +91,10 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
 
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
     }
   }
 }
