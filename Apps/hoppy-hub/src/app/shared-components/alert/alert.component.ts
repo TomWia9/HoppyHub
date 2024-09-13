@@ -45,6 +45,11 @@ export class AlertComponent implements OnInit, OnDestroy {
 
     this.message = alert.message;
     this.showAlert = true;
+    if (alert.alertType != AlertType.Error) {
+      setTimeout(() => {
+        this.showAlert = false;
+      }, 3500);
+    }
   }
 
   onAlertClose() {
