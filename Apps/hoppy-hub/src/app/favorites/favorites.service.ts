@@ -10,7 +10,7 @@ import { FavoritesParams } from './favorites-params';
 @Injectable({
   providedIn: 'root'
 })
-export class FavoritesServiceService {
+export class FavoritesService {
   private http: HttpClient = inject(HttpClient);
 
   paramsChanged = new BehaviorSubject<FavoritesParams>(
@@ -42,16 +42,16 @@ export class FavoritesServiceService {
       );
   }
 
-  CreateFavorite(beerId: string): Observable<void> {
+  createFavorite(beerId: string): Observable<void> {
     return this.http.post<void>(
       `${environment.favoriteManagementApiUrl}/favorites/${beerId}`,
       beerId
     );
   }
 
-  DeleteFavorite(beerId: string): Observable<void> {
+  deleteFavorite(beerId: string): Observable<void> {
     return this.http.delete<void>(
-      `${environment.opinionManagementApiUrl}/favorites/${beerId}`
+      `${environment.favoriteManagementApiUrl}/favorites/${beerId}`
     );
   }
 }

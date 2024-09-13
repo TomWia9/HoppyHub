@@ -12,6 +12,11 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from '../../auth/auth.service';
 import { ModalService, ModalType } from '../../services/modal.service';
 import { AuthUser } from '../../auth/auth-user.model';
+import { FavoritesService } from '../../favorites/favorites.service';
+import {
+  AlertService,
+  AlertType
+} from '../../shared-components/alert/alert.service';
 
 @Component({
   selector: 'app-beer-details',
@@ -35,18 +40,22 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   routeSubscription!: Subscription;
   beerSubscription!: Subscription;
   userSubscription!: Subscription;
+  createFavoriteSubscription!: Subscription;
+  deleteFavoriteSubscription!: Subscription;
   faStarr = faStar;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private favoritesService: FavoritesService = inject(FavoritesService);
   private beersService: BeersService = inject(BeersService);
   private modalService: ModalService = inject(ModalService);
   private authService: AuthService = inject(AuthService);
+  private alertService: AlertService = inject(AlertService);
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(
       (user: AuthUser | null) => {
         this.user = user;
-        //TODO: Check if user already added beer to favorites
+        //TODO this.checkIfUserAlreadyAddedBeerToFavorites();
       }
     );
     this.routeSubscription = this.route.paramMap
@@ -74,13 +83,47 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
     if (!this.user) {
       this.modalService.openModal(ModalType.Login);
     } else if (!this.favorite) {
-      console.log('Add to favorites');
-      //favoritesService.AddToFavorites
-      this.favorite = true;
+      this.loading = true;
+      this.createFavoriteSubscription = this.favoritesService
+        .createFavorite(this.beer.id)
+        .subscribe({
+          next: () => {
+            this.favorite = true;
+            this.alertService.openAlert(
+              AlertType.Success,
+              'Successfully added to favorites'
+            );
+            this.loading = false;
+          },
+          error: () => {
+            this.alertService.openAlert(
+              AlertType.Error,
+              'An error occurred while adding to favorites'
+            );
+            this.loading = false;
+          }
+        });
     } else {
-      console.log('Remove from favorites');
-      //favoritesService.RemoveFromFavorites
-      this.favorite = false;
+      this.loading = true;
+      this.deleteFavoriteSubscription = this.favoritesService
+        .deleteFavorite(this.beer.id)
+        .subscribe({
+          next: () => {
+            this.favorite = false;
+            this.alertService.openAlert(
+              AlertType.Success,
+              'Successfully removed from favorites'
+            );
+            this.loading = false;
+          },
+          error: () => {
+            this.alertService.openAlert(
+              AlertType.Error,
+              'An error occurred while removing from favorites'
+            );
+            this.loading = false;
+          }
+        });
     }
   }
 
@@ -88,13 +131,17 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
     if (this.beerSubscription) {
       this.beerSubscription.unsubscribe();
     }
-
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
     }
-
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.createFavoriteSubscription) {
+      this.createFavoriteSubscription.unsubscribe();
+    }
+    if (this.deleteFavoriteSubscription) {
+      this.deleteFavoriteSubscription.unsubscribe();
     }
   }
 }
