@@ -74,11 +74,13 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
         try
         {
-            if (request.Image is null && !string.IsNullOrEmpty(entity.ImageUri))
+            if (request is { DeleteImage: true, Image: null } && !string.IsNullOrEmpty(entity.ImageUri))
             {
                 var opinionImagePath = $"Opinions/{entity.Beer!.BreweryId}/{entity.BeerId}/{entity.Id}";
 
                 await _storageContainerService.DeleteFromPathAsync(opinionImagePath);
+                
+                entity.ImageUri = null;
             }
 
             if (request.Image is not null)
@@ -95,10 +97,6 @@ public class UpdateOpinionCommandHandler : IRequestHandler<UpdateOpinionCommand>
 
                 entity.ImageUri = imageUri;
                 await _context.SaveChangesAsync(cancellationToken);
-            }
-            else
-            {
-                entity.ImageUri = null;
             }
 
             entity.Rating = request.Rating;

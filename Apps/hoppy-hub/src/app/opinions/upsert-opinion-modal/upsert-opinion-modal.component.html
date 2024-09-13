@@ -1,4 +1,4 @@
-<dialog #addOpinionModal class="modal modal-middle">
+<dialog #upsertOpinionModal class="modal modal-middle">
   <div class="modal-box w-11/12 max-w-xl">
     <form method="dialog">
       <button
@@ -12,7 +12,14 @@
     } @else if (error) {
       <app-error-message [message]="error"></app-error-message>
     } @else {
-      <h3 class="mb-2 text-2xl font-bold">Create opinion</h3>
+      <h3 class="mb-2 text-2xl font-bold">
+        @if (existingOpinion) {
+          Edit
+        } @else {
+          Create
+        }
+        opinion
+      </h3>
       <form [formGroup]="opinionForm" (ngSubmit)="onSubmit()">
         <div class="my-2 grid place-content-center">
           <div class="text-center">
@@ -48,26 +55,48 @@
             </div>
           </div>
           <div>
-            <label class="form-control mb-6 w-full max-w-xs">
-              <div class="label">
-                <span class="label-text">Add image (optional)</span>
-              </div>
-              <input
-                #fileInput
-                (change)="onFileSelected($event)"
-                type="file"
-                class="file-input file-input-bordered w-full" />
-            </label>
+            @if (
+              !existingOpinion ||
+              !existingOpinion.imageUri ||
+              existingOpinion.imageUri.length < 1 ||
+              !showImage
+            ) {
+              <label class="form-control mb-6 w-full max-w-xs">
+                <div class="label">
+                  <span class="label-text">Add image (optional)</span>
+                </div>
+                <input
+                  #fileInput
+                  (change)="onFileSelected($event)"
+                  type="file"
+                  class="file-input file-input-bordered w-full" />
+              </label>
+            } @else {
+              <figure class="flex items-center justify-center">
+                <div class="mask mask-squircle h-52 w-52">
+                  <img [src]="imageUri" alt="Beer image" />
+                </div>
+              </figure>
+              <button
+                type="button"
+                class="btn btn-outline btn-error my-4"
+                (click)="onRemoveImage()">
+                Remove image
+              </button>
+            }
           </div>
         </div>
-        <div class="mt-2 flex items-center justify-evenly">
+        <div class="mt-2 grid place-items-center sm:grid-cols-2">
           <button
             type="submit"
-            class="btn btn-accent"
+            class="btn btn-success my-2 w-48"
             [disabled]="!opinionForm.valid">
             Save opinion
           </button>
-          <button type="button" class="btn btn-neutral" (click)="onModalHide()">
+          <button
+            type="button"
+            class="btn btn-neutral my-2 w-48"
+            (click)="onModalHide()">
             Cancel
           </button>
         </div>

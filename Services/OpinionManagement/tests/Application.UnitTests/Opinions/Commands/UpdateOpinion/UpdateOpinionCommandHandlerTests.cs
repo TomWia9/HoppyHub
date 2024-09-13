@@ -115,11 +115,11 @@ public class UpdateOpinionCommandHandlerTests
     /// <summary>
     ///     Tests that Handle method updates opinion, deletes image and publishes BeerOpinionChanged event
     ///     when user updates his own opinion and opinion exists and opinion contains image
-    ///     and updated opinion does not contains image.
+    ///     and updated opinion does not contain image and DeleteImage is set to true.
     /// </summary>
     [Fact]
     public async Task
-        Handle_ShouldUpdateOpinionAndDeleteImageAndPublishBeerOpinionChangedEvent_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndOpinionContainsImageAndUpdatedOpinionDoesNotContainsImage()
+        Handle_ShouldUpdateOpinionAndDeleteImageAndPublishBeerOpinionChangedEvent_WhenUserUpdatesHisOwnOpinionAndOpinionExistsAndOpinionContainsImageAndUpdatedOpinionDoesNotContainsImageAndDeleteImageIsSetToTrue()
     {
         // Arrange
         const string imageUri = "test.com";
@@ -144,7 +144,8 @@ public class UpdateOpinionCommandHandlerTests
             Id = opinionId,
             Rating = 7,
             Comment = "New comment",
-            Image = null
+            Image = null,
+            DeleteImage = true
         };
 
         // Act
