@@ -63,7 +63,7 @@ export class AuthService {
       );
   }
 
-  handleAuthentication(token: string) {
+  handleAuthentication(token: string): void {
     const decodedToken: TokenClaims = jwtDecode(token);
     const expirationDate = new Date(+decodedToken.exp * 1000);
     const user = new AuthUser(

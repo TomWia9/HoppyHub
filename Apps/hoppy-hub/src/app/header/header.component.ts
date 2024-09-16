@@ -8,6 +8,10 @@ import { Roles } from '../auth/roles';
 import { AuthUser } from '../auth/auth-user.model';
 import { faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  AlertService,
+  AlertType
+} from '../shared-components/alert/alert.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +21,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
+
   authService: AuthService = inject(AuthService);
+  alertService: AlertService = inject(AlertService);
+
   user: AuthUser | null | undefined;
   userSubscription!: Subscription;
   adminAccess: boolean = false;
@@ -32,16 +39,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  openLoginModal() {
+  openLoginModal(): void {
     this.modalService.openModal(ModalType.Login);
   }
 
-  openRegisterModal() {
+  openRegisterModal(): void {
     this.modalService.openModal(ModalType.Register);
   }
 
-  onLogout() {
+  onLogout(): void {
     this.authService.logout();
+    this.alertService.openAlert(AlertType.Info, 'Logged out successfully.');
   }
 
   ngOnDestroy(): void {
