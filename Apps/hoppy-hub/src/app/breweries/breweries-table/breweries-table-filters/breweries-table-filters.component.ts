@@ -5,12 +5,14 @@ import { Pagination } from '../../../shared/pagination';
 import { BreweriesParams } from '../../breweries-params';
 import { BreweriesService } from '../../breweries.service';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-breweries-table-filters',
   standalone: true,
   templateUrl: './breweries-table-filters.component.html',
-  imports: [PaginationComponent, ReactiveFormsModule]
+  imports: [PaginationComponent, ReactiveFormsModule, FontAwesomeModule]
 })
 export class BreweriesTableFiltersComponent implements OnInit {
   @Input({ required: true }) params!: BreweriesParams;
@@ -20,6 +22,7 @@ export class BreweriesTableFiltersComponent implements OnInit {
   private modalService: ModalService = inject(ModalService);
 
   searchForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({

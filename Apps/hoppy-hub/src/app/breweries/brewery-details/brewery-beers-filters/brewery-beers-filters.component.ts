@@ -11,17 +11,25 @@ import { BeersParams } from '../../../beers/beers-params';
 import { Subscription, map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-brewery-beers-filters',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, PaginationComponent],
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    PaginationComponent,
+    FontAwesomeModule
+  ],
   templateUrl: './brewery-beers-filters.component.html'
 })
 export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {
   @Input({ required: true }) params!: BeersParams;
   @Input({ required: true }) paginationData!: Pagination;
 
+  faX = faX;
   breweryId: string = '';
   sortOptions = [
     {

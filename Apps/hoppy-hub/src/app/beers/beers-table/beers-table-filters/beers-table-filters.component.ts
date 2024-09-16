@@ -5,11 +5,13 @@ import { BeersParams } from '../../beers-params';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BeersService } from '../../beers.service';
 import { ModalService, ModalType } from '../../../services/modal.service';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-beers-table-filters',
   standalone: true,
-  imports: [PaginationComponent, ReactiveFormsModule],
+  imports: [PaginationComponent, ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './beers-table-filters.component.html'
 })
 export class BeersTableFiltersComponent implements OnInit {
@@ -20,6 +22,7 @@ export class BeersTableFiltersComponent implements OnInit {
   private modalService: ModalService = inject(ModalService);
 
   searchForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({

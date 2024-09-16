@@ -3,11 +3,18 @@ import { AlertService, AlertType } from './alert.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Alert } from './alert.model';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faCircleCheck,
+  faCircleInfo,
+  faExclamation,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-alert',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './alert.component.html'
 })
 export class AlertComponent implements OnInit, OnDestroy {
@@ -18,6 +25,10 @@ export class AlertComponent implements OnInit, OnDestroy {
   alertType: string = '';
   showAlert: boolean = false;
   alertOpenedSubscription!: Subscription;
+  faCircleCheck = faCircleCheck;
+  faXmark = faXmark;
+  faExclamation = faExclamation;
+  faCircleInfo = faCircleInfo;
 
   ngOnInit(): void {
     this.alertOpenedSubscription = this.alertService.alertOpened.subscribe(
