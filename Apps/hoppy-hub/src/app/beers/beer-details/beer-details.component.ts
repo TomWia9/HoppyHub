@@ -64,6 +64,14 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
+  onFavoritesCountChanged(favoritesCountChange: number) {
+    this.beer.favoritesCount += favoritesCountChange;
+  }
+
+  onOpinionsCountChanged(opinionsCountChange: number) {
+    this.beer.opinionsCount += opinionsCountChange;
+  }
+
   ngOnDestroy(): void {
     if (this.beerSubscription) {
       this.beerSubscription.unsubscribe();

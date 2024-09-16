@@ -66,10 +66,20 @@
           <strong>Composition:</strong> {{ beer.composition }}
         </p>
 
-        <app-favorite [beer]="beer" [user]="user"></app-favorite>
+        <app-favorite
+          [beer]="beer"
+          [user]="user"
+          (favoritesCountChanged)="onFavoritesCountChanged($event)"
+          >></app-favorite
+        >
       </div>
 
-      <app-beer-opinions [beer]="beer" [user]="user"></app-beer-opinions>
+      <app-beer-opinions
+        [beer]="beer"
+        [user]="user"
+        (opinionsCountChanged)="
+          onOpinionsCountChanged($event)
+        "></app-beer-opinions>
     </div>
   </div>
 }

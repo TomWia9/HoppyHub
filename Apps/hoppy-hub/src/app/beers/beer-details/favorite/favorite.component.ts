@@ -1,10 +1,11 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
-  OnInit
+  Output
 } from '@angular/core';
 import { AuthUser } from '../../../auth/auth-user.model';
 import { Beer } from '../../beer.model';
@@ -26,9 +27,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [FontAwesomeModule],
   templateUrl: './favorite.component.html'
 })
-export class FavoriteComponent implements OnInit, OnDestroy, OnChanges {
+export class FavoriteComponent implements OnDestroy, OnChanges {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
+  @Output() favoritesCountChanged = new EventEmitter<number>();
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private alertService: AlertService = inject(AlertService);
@@ -40,11 +42,6 @@ export class FavoriteComponent implements OnInit, OnDestroy, OnChanges {
   deleteFavoriteSubscription!: Subscription;
   getUserFavoritesSubsciption!: Subscription;
   faStarr = faStar;
-
-  ngOnInit(): void {
-    return;
-    this.checkIfUserAlreadyAddedBeerToFavorites();
-  }
 
   ngOnChanges(): void {
     this.checkIfUserAlreadyAddedBeerToFavorites();
@@ -59,6 +56,7 @@ export class FavoriteComponent implements OnInit, OnDestroy, OnChanges {
         .createFavorite(this.beer.id)
         .subscribe({
           next: () => {
+            this.favoritesCountChanged.emit(1);
             this.favorite = true;
             this.alertService.openAlert(
               AlertType.Success,
@@ -76,6 +74,7 @@ export class FavoriteComponent implements OnInit, OnDestroy, OnChanges {
         .deleteFavorite(this.beer.id)
         .subscribe({
           next: () => {
+            this.favoritesCountChanged.emit(-1);
             this.favorite = false;
             this.alertService.openAlert(
               AlertType.Success,

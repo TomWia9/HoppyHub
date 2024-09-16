@@ -26,7 +26,7 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 })
 export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) opinionId!: string;
-  @Output() opinionDeleted = new EventEmitter<void>();
+  @Output() opinionDeleted = new EventEmitter<number>();
   @ViewChild('deleteOpinionModal') modalRef!: ElementRef;
 
   private modalService = inject(ModalService);
@@ -55,7 +55,7 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
     this.opinionsService.DeleteOpinion(this.opinionId).subscribe({
       next: () => {
         this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
-        this.opinionDeleted.emit();
+        this.opinionDeleted.emit(-1);
       },
       error: error => {
         let errorMessage = null;

@@ -1,11 +1,13 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { OpinionsService } from '../../../opinions/opinions.service';
@@ -40,6 +42,7 @@ import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-mo
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
+  @Output() opinionsCountChanged = new EventEmitter<number>();
   @ViewChild('opinionsSection') opinionsSection!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
@@ -86,13 +89,14 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.refreshOpinions();
+    this.refreshOpinions(0);
   }
 
-  refreshOpinions() {
+  refreshOpinions(opinionsCountChange: number) {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.existingOpinion = null;
+    this.opinionsCountChanged.emit(opinionsCountChange);
     this.checkIfUserAlreadyAddedOpinion();
   }
 
