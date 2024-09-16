@@ -88,11 +88,11 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.checkIfUserAlreadyAddedOpinion();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.refreshOpinions(0);
   }
 
-  refreshOpinions(opinionsCountChange: number) {
+  refreshOpinions(opinionsCountChange: number): void {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.existingOpinion = null;
@@ -100,7 +100,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.checkIfUserAlreadyAddedOpinion();
   }
 
-  onSort() {
+  onSort(): void {
     this.opinionsParams.pageNumber = 1;
     this.opinionsParams.sortBy =
       this.sortOptions[this.selectedSortOptionIndex].value;
@@ -109,7 +109,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.opinionsService.paramsChanged.next(this.opinionsParams);
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.selectedSortOptionIndex = 0;
     this.opinionsParams = new OpinionsParams(10, 1, 'created', 1);
 
@@ -121,14 +121,14 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  toggleOpinions() {
+  toggleOpinions(): void {
     if (this.showOpinions) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     this.showOpinions = !this.showOpinions;
   }
 
-  scrollToTop() {
+  scrollToTop(): void {
     const elementPosition =
       this.opinionsSection.nativeElement.getBoundingClientRect().top +
       window.scrollY;
@@ -139,7 +139,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  onUpsertOpinionModalOpen() {
+  onUpsertOpinionModalOpen(): void {
     if (this.user) {
       this.modalService.openModal(ModalType.UpsertOpinion);
     } else {
@@ -147,7 +147,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onDeleteOpinionModalOpen() {
+  onDeleteOpinionModalOpen(): void {
     if (this.user) {
       this.modalService.openModal(ModalType.DeleteOpinion);
     }
@@ -248,8 +248,14 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getOpinionsSubscription.unsubscribe();
-    this.opinionsParamsSubscription.unsubscribe();
-    this.getUserOpinionsSubscription.unsubscribe();
+    if (this.getOpinionsSubscription) {
+      this.getOpinionsSubscription.unsubscribe();
+    }
+    if (this.opinionsParamsSubscription) {
+      this.opinionsParamsSubscription.unsubscribe();
+    }
+    if (this.getUserOpinionsSubscription) {
+      this.getUserOpinionsSubscription.unsubscribe();
+    }
   }
 }
