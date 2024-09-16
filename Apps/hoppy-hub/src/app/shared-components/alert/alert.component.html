@@ -4,21 +4,10 @@
     class="top-1/5 -translate-y-1/5 alert fixed left-1/2 z-50 grid w-2/3 -translate-x-1/2 transform grid-cols-3 gap-4 sm:w-auto"
     [ngClass]="alertClass">
     <div class="justify-self-start">
-      @if (alertType === 'success') {
-        <fa-icon [icon]="faCircleCheck"></fa-icon>
-      }
-      @if (alertType === 'error') {
-        <fa-icon [icon]="faXmark"></fa-icon>exclamation
-      }
-      @if (alertType === 'warning') {
-        <fa-icon [icon]="faExclamation"></fa-icon>
-      }
-      @if (alertType === 'info') {
-        <fa-icon [icon]="faCircleInfo"></fa-icon>
-      }
+      <fa-icon [icon]="icon"></fa-icon>
     </div>
 
-    <span class="justify-self-center">{{ message }}</span>
+    <span class="justify-self-center text-pretty text-xl">{{ message }}</span>
     <button
       class="btn btn-circle btn-ghost btn-sm justify-self-end"
       (click)="onAlertClose()">
