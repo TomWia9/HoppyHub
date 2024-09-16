@@ -64,6 +64,7 @@ public class FavoritesFilteringHelperTests
         // Arrange
         var request = new GetFavoritesQuery
         {
+            BeerId = Guid.NewGuid(),
             UserId = Guid.NewGuid(),
             SearchQuery = "test"
         };
@@ -72,7 +73,7 @@ public class FavoritesFilteringHelperTests
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(2);
+        result.Should().HaveCount(3);
     }
 
     /// <summary>

@@ -1,11 +1,13 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   inject,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild
 } from '@angular/core';
 import { OpinionsService } from '../../../opinions/opinions.service';
@@ -20,7 +22,6 @@ import { FormsModule } from '@angular/forms';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { ModalService, ModalType } from '../../../services/modal.service';
 import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
-import { AuthService } from '../../../auth/auth.service';
 import { AuthUser } from '../../../auth/auth-user.model';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
@@ -40,11 +41,12 @@ import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-mo
 })
 export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) beer!: Beer;
+  @Input({ required: true }) user!: AuthUser | null;
+  @Output() opinionsCountChanged = new EventEmitter<number>();
   @ViewChild('opinionsSection') opinionsSection!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
-  private authService: AuthService = inject(AuthService);
 
   sortOptions = [
     {
@@ -73,7 +75,6 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   opinionsLoading = true;
   existingOpinionloading = true;
   showOpinions = false;
-  user: AuthUser | null | undefined;
   existingOpinion: Opinion | null = null;
 
   ngOnInit(): void {
@@ -83,22 +84,19 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
         this.opinionsParams.beerId = this.beer.id;
         this.getOpinions();
       });
-    this.userSubscription = this.authService.user.subscribe(
-      (user: AuthUser | null) => {
-        this.user = user;
-        this.checkIfUserAlreadyAddedOpinion();
-      }
-    );
+
+    this.checkIfUserAlreadyAddedOpinion();
   }
 
   ngOnChanges() {
-    this.refreshOpinions();
+    this.refreshOpinions(0);
   }
 
-  refreshOpinions() {
+  refreshOpinions(opinionsCountChange: number) {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.existingOpinion = null;
+    this.opinionsCountChanged.emit(opinionsCountChange);
     this.checkIfUserAlreadyAddedOpinion();
   }
 
@@ -252,7 +250,6 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.getOpinionsSubscription.unsubscribe();
     this.opinionsParamsSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
     this.getUserOpinionsSubscription.unsubscribe();
   }
 }

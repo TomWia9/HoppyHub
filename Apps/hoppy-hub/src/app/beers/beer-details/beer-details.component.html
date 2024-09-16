@@ -61,10 +61,25 @@
         </div>
       </div>
 
-      <p class="my-5 text-start">
-        <strong>Composition:</strong> {{ beer.composition }}
-      </p>
-      <app-beer-opinions [beer]="beer"></app-beer-opinions>
+      <div class="grid grid-cols-2 place-items-center gap-4">
+        <p class="my-5 text-start">
+          <strong>Composition:</strong> {{ beer.composition }}
+        </p>
+
+        <app-favorite
+          [beer]="beer"
+          [user]="user"
+          (favoritesCountChanged)="onFavoritesCountChanged($event)"
+          >></app-favorite
+        >
+      </div>
+
+      <app-beer-opinions
+        [beer]="beer"
+        [user]="user"
+        (opinionsCountChanged)="
+          onOpinionsCountChanged($event)
+        "></app-beer-opinions>
     </div>
   </div>
 }
