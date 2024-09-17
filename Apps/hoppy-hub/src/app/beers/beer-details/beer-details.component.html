@@ -3,83 +3,68 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <div class="container mx-auto p-4">
-    <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
-      <div class="mb-6 mt-2 flex flex-row justify-around">
-        <div class="avatar mr-2 w-1/3">
-          <div class="mask mask-squircle h-32 w-32">
-            <img src="{{ beer.imageUri }}" alt="Beer image" />
-          </div>
-        </div>
-        <div class="w-2/3 max-w-96">
-          <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
-          <p class="mb-2">({{ beer.beerStyle.name }})</p>
-          <p class="mb-4">{{ beer.description }}</p>
-        </div>
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
+      <div class="mask mask-squircle h-32 w-32">
+        <img src="{{ beer.imageUri }}" alt="Beer image" />
       </div>
-
-      <div
-        class="my-4 grid grid-cols-2 gap-1 text-xs sm:grid-cols-3 sm:text-sm md:text-base">
-        <div
-          class="ml-6 break-words border-r-2 sm:ml-auto sm:border-l-2 md:w-5/6">
-          <p class="my-1">
-            <strong>Brewery: </strong>
-            <a
-              class="link-hover link link-accent my-2"
-              [routerLink]="['/breweries', beer.brewery.id]"
-              >{{ beer.brewery.name }}</a
-            >
-          </p>
-          <p class="my-1">
-            <strong>Release date:</strong> {{ beer.releaseDate }}
-          </p>
-        </div>
-        <div class="text-wrap break-words sm:border-r-2">
-          <p class="my-1">
-            <strong>AVG Rating: </strong>
-            <span
-              [ngClass]="{
-                'text-error': beer.rating > 0 && beer.rating < 5,
-                'text-warning': beer.rating < 7.5,
-                'text-success': beer.rating >= 7.5
-              }"
-              >{{ beer.rating }}/10</span
-            >
-          </p>
-          <p class="my-1">
-            <strong>Opinions Count:</strong> {{ beer.opinionsCount }}
-          </p>
-          <p class="my-1">
-            <strong>Favorites Count:</strong> {{ beer.favoritesCount }}
-          </p>
-        </div>
-        <div
-          class="col-span-2 border-b-2 border-t-2 sm:col-auto sm:border-b-0 sm:border-r-2 sm:border-t-0">
-          <p class="my-1"><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
-          <p class="my-1"><strong>BLG:</strong> {{ beer.blg }}</p>
-          <p class="my-1"><strong>IBU:</strong> {{ beer.ibu }}</p>
-        </div>
+      <div>
+        <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
+        <p class="mb-2">({{ beer.beerStyle.name }})</p>
+        <p class="mb-4">{{ beer.description }}</p>
       </div>
-
-      <div class="grid grid-cols-2 place-items-center gap-4">
-        <p class="my-5 text-start">
-          <strong>Composition:</strong> {{ beer.composition }}
-        </p>
-
-        <app-favorite
-          [beer]="beer"
-          [user]="user"
-          (favoritesCountChanged)="onFavoritesCountChanged($event)"
-          >></app-favorite
-        >
-      </div>
-
-      <app-beer-opinions
-        [beer]="beer"
-        [user]="user"
-        (opinionsCountChanged)="
-          onOpinionsCountChanged($event)
-        "></app-beer-opinions>
     </div>
+
+    <div class="grid grid-cols-2 place-items-center gap-4 sm:grid-cols-3">
+      <div class="space-y-1">
+        <p>
+          <strong>Brewery: </strong>
+          <a
+            class="link-hover link link-accent"
+            [routerLink]="['/breweries', beer.brewery.id]"
+            >{{ beer.brewery.name }}</a
+          >
+        </p>
+        <p><strong>Release date:</strong> {{ beer.releaseDate }}</p>
+      </div>
+      <div class="space-y-1">
+        <p>
+          <strong>AVG Rating: </strong>
+          <span
+            [ngClass]="{
+              'text-error': beer.rating > 0 && beer.rating < 5,
+              'text-warning': beer.rating < 7.5,
+              'text-success': beer.rating >= 7.5
+            }"
+            >{{ beer.rating }}/10</span
+          >
+        </p>
+        <p><strong>Opinions Count:</strong> {{ beer.opinionsCount }}</p>
+        <p><strong>Favorites Count:</strong> {{ beer.favoritesCount }}</p>
+      </div>
+      <div class="space-y-1">
+        <p><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
+        <p><strong>BLG:</strong> {{ beer.blg }}</p>
+        <p><strong>IBU:</strong> {{ beer.ibu }}</p>
+      </div>
+      <div class="space-y-1 sm:col-span-3">
+        <p><strong>Composition:</strong> {{ beer.composition }}</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <app-favorite
+      [beer]="beer"
+      [user]="user"
+      (favoritesCountChanged)="onFavoritesCountChanged($event)"
+      >></app-favorite
+    >
+    <app-beer-opinions
+      [beer]="beer"
+      [user]="user"
+      (opinionsCountChanged)="
+        onOpinionsCountChanged($event)
+      "></app-beer-opinions>
   </div>
 }
