@@ -6,12 +6,12 @@ import { Subscription } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { Roles } from '../auth/roles';
 import { AuthUser } from '../auth/auth-user.model';
-import { faSquareCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   AlertService,
   AlertType
 } from '../shared-components/alert/alert.service';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   user: AuthUser | null | undefined;
   userSubscription!: Subscription;
   adminAccess: boolean = false;
-  faSquareCaretDown = faSquareCaretDown;
+  faBars = faBars;
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(
