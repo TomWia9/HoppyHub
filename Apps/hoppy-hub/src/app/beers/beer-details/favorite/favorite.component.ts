@@ -97,15 +97,12 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
     } else {
       this.getUserFavoritesSubsciption = this.favoritesService
         .getFavorites(
-          new FavoritesParams(
-            1,
-            1,
-            undefined,
-            undefined,
-            undefined,
-            this.beer.id,
-            this.user.id
-          )
+          new FavoritesParams({
+            pageSize: 10,
+            pageNumber: 1,
+            beerId: this.beer.id,
+            userId: this.user.id
+          })
         )
         .pipe(
           take(1),

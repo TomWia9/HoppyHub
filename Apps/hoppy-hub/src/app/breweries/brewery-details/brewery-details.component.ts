@@ -46,7 +46,12 @@ export class BreweryDetailsComponent
   brewerySubscription!: Subscription;
   beersSubscription!: Subscription;
   beersParamsSubscription!: Subscription;
-  beersParams = new BeersParams(9, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams({
+    pageSize: 9,
+    pageNumber: 1,
+    sortBy: 'releaseDate',
+    sortDirection: 1
+  });
   beers: PagedList<Beer> | undefined;
   paginationData!: Pagination;
 
@@ -137,7 +142,12 @@ export class BreweryDetailsComponent
 
   ngOnDestroy(): void {
     this.beersService.paramsChanged.next(
-      new BeersParams(25, 1, 'ReleaseDate', 1)
+      new BeersParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'releaseDate',
+        sortDirection: 1
+      })
     );
     this.resetBreweryDetails(this.brewery.id);
 

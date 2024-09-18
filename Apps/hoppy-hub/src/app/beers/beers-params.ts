@@ -2,30 +2,53 @@ import { HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 
 export class BeersParams implements Params {
-  constructor(
-    public pageSize: number,
-    public pageNumber: number,
-    public sortBy?: string,
-    public sortDirection?: number,
-    public searchQuery?: string,
-    public name?: string,
-    public breweryId?: string,
-    public beerStyleId?: string,
-    public minAlcoholByVolume?: number,
-    public maxAlcoholByVolume?: number,
-    public minExtract?: number,
-    public maxExtract?: number,
-    public minIbu?: number,
-    public maxIbu?: number,
-    public minReleaseDate?: string,
-    public maxReleaseDate?: string,
-    public minRating?: number,
-    public maxRating?: number,
-    public minFavoritesCount?: number,
-    public maxFavoritesCount?: number,
-    public minOpinionsCount?: number,
-    public maxOpinionsCount?: number
-  ) {}
+  public pageSize: number;
+  public pageNumber: number;
+  public sortBy?: string;
+  public sortDirection?: number;
+  public searchQuery?: string;
+  public name?: string;
+  public breweryId?: string;
+  public beerStyleId?: string;
+  public minAlcoholByVolume?: number;
+  public maxAlcoholByVolume?: number;
+  public minExtract?: number;
+  public maxExtract?: number;
+  public minIbu?: number;
+  public maxIbu?: number;
+  public minReleaseDate?: string;
+  public maxReleaseDate?: string;
+  public minRating?: number;
+  public maxRating?: number;
+  public minFavoritesCount?: number;
+  public maxFavoritesCount?: number;
+  public minOpinionsCount?: number;
+  public maxOpinionsCount?: number;
+
+  constructor(params: Partial<BeersParams> = {}) {
+    this.pageSize = params.pageSize ?? 10;
+    this.pageNumber = params.pageNumber ?? 1;
+    this.sortBy = params.sortBy;
+    this.sortDirection = params.sortDirection;
+    this.searchQuery = params.searchQuery;
+    this.name = params.name;
+    this.breweryId = params.breweryId;
+    this.beerStyleId = params.beerStyleId;
+    this.minAlcoholByVolume = params.minAlcoholByVolume;
+    this.maxAlcoholByVolume = params.maxAlcoholByVolume;
+    this.minExtract = params.minExtract;
+    this.maxExtract = params.maxExtract;
+    this.minIbu = params.minIbu;
+    this.maxIbu = params.maxIbu;
+    this.minReleaseDate = params.minReleaseDate;
+    this.maxReleaseDate = params.maxReleaseDate;
+    this.minRating = params.minRating;
+    this.maxRating = params.maxRating;
+    this.minFavoritesCount = params.minFavoritesCount;
+    this.maxFavoritesCount = params.maxFavoritesCount;
+    this.minOpinionsCount = params.minOpinionsCount;
+    this.maxOpinionsCount = params.maxOpinionsCount;
+  }
 
   getHttpParams(): HttpParams {
     let params = new HttpParams();

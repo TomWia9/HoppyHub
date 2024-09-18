@@ -72,7 +72,12 @@ export class BeerOpinionsComponent
   userSubscription!: Subscription;
   getUserOpinionsSubscription!: Subscription;
   selectedSortOptionIndex: number = 0;
-  opinionsParams = new OpinionsParams(10, 1, 'created', 1);
+  opinionsParams = new OpinionsParams({
+    pageSize: 10,
+    pageNumber: 1,
+    sortBy: 'created',
+    sortDirection: 1
+  });
   opinions: PagedList<Opinion> | undefined;
   paginationData!: Pagination;
   error = '';
@@ -115,7 +120,12 @@ export class BeerOpinionsComponent
 
   onFiltersClear(): void {
     this.selectedSortOptionIndex = 0;
-    this.opinionsParams = new OpinionsParams(10, 1, 'created', 1);
+    this.opinionsParams = new OpinionsParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'created',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.opinionsService.paramsChanged.value) !=
@@ -165,20 +175,12 @@ export class BeerOpinionsComponent
     } else {
       this.getUserOpinionsSubscription = this.opinionsService
         .getOpinions(
-          new OpinionsParams(
-            1,
-            1,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            this.beer.id,
-            this.user.id
-          )
+          new OpinionsParams({
+            pageSize: 1,
+            pageNumber: 1,
+            beerId: this.beer.id,
+            userId: this.user.id
+          })
         )
         .pipe(
           take(1),

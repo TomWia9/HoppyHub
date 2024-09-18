@@ -30,7 +30,12 @@ export class BreweriesTableComponent
 {
   private breweriesService: BreweriesService = inject(BreweriesService);
 
-  breweriesParams = new BreweriesParams(25, 1, 'Name', 1);
+  breweriesParams = new BreweriesParams({
+    pageSize: 25,
+    pageNumber: 1,
+    sortBy: 'Name',
+    sortDirection: 1
+  });
   breweries: PagedList<Brewery> | undefined;
   paginationData!: Pagination;
   error = '';

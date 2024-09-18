@@ -124,15 +124,13 @@ export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {
   onFiltersClear() {
     this.searchForm.reset();
     this.selectedSortOptionIndex = 0;
-    this.params = new BeersParams(
-      9,
-      1,
-      'ReleaseDate',
-      1,
-      undefined,
-      undefined,
-      this.breweryId
-    );
+    this.params = new BeersParams({
+      pageSize: 9,
+      pageNumber: 1,
+      sortBy: 'releaseDate',
+      sortDirection: 1,
+      breweryId: this.breweryId
+    });
 
     if (
       JSON.stringify(this.beersService.paramsChanged.value) !=

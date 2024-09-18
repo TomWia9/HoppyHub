@@ -2,19 +2,31 @@ import { HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 
 export class BreweriesParams implements Params {
-  constructor(
-    public pageSize: number,
-    public pageNumber: number,
-    public sortBy?: string,
-    public sortDirection?: number,
-    public searchQuery?: string,
-    public name?: string,
-    public country?: string,
-    public state?: string,
-    public city?: string,
-    public minFoundationYear?: number,
-    public maxFoundationYear?: number
-  ) {}
+  public pageSize: number;
+  public pageNumber: number;
+  public sortBy?: string;
+  public sortDirection?: number;
+  public searchQuery?: string;
+  public name?: string;
+  public country?: string;
+  public state?: string;
+  public city?: string;
+  public minFoundationYear?: number;
+  public maxFoundationYear?: number;
+
+  constructor(params: Partial<BreweriesParams> = {}) {
+    this.pageSize = params.pageSize ?? 10;
+    this.pageNumber = params.pageNumber ?? 1;
+    this.sortBy = params.sortBy;
+    this.sortDirection = params.sortDirection;
+    this.searchQuery = params.searchQuery;
+    this.name = params.name;
+    this.country = params.country;
+    this.state = params.state;
+    this.city = params.city;
+    this.minFoundationYear = params.minFoundationYear;
+    this.maxFoundationYear = params.maxFoundationYear;
+  }
 
   getHttpParams(): HttpParams {
     let params = new HttpParams();

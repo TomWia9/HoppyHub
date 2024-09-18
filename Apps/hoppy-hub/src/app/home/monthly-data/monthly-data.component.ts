@@ -45,17 +45,14 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
 
     this.getOpinionsSubscription = this.opinionsService
       .getOpinions(
-        new OpinionsParams(
-          50,
-          pageNumber,
-          'lastModified',
-          1,
-          undefined,
-          undefined,
-          undefined,
-          from.toDateString(),
-          to.toDateString()
-        )
+        new OpinionsParams({
+          pageSize: 50,
+          pageNumber: pageNumber,
+          sortBy: 'lastModified',
+          sortDirection: 1,
+          from: from.toDateString(),
+          to: to.toDateString()
+        })
       )
       .subscribe({
         next: (opinions: PagedList<Opinion>) => {

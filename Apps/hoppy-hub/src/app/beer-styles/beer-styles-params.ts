@@ -2,14 +2,21 @@ import { HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 
 export class BeerStylesParams implements Params {
-  constructor(
-    public pageSize: number,
-    public pageNumber: number,
-    public sortBy?: string,
-    public sortDirection?: number,
-    public searchQuery?: string,
-    public countryOfOrigin?: string
-  ) {}
+  public pageSize: number;
+  public pageNumber: number;
+  public sortBy?: string;
+  public sortDirection?: number;
+  public searchQuery?: string;
+  public countryOfOrigin?: string;
+
+  constructor(params: Partial<BeerStylesParams> = {}) {
+    this.pageSize = params.pageSize ?? 10;
+    this.pageNumber = params.pageNumber ?? 1;
+    this.sortBy = params.sortBy;
+    this.sortDirection = params.sortDirection;
+    this.searchQuery = params.searchQuery;
+    this.countryOfOrigin = params.countryOfOrigin;
+  }
 
   getHttpParams(): HttpParams {
     let params = new HttpParams();

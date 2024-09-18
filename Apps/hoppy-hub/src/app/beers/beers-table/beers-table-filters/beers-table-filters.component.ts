@@ -32,13 +32,13 @@ export class BeersTableFiltersComponent implements OnInit {
 
   onSearch() {
     if (this.searchForm.value.search) {
-      this.params = new BeersParams(
-        25,
-        1,
-        'ReleaseDate',
-        1,
-        this.searchForm.value.search
-      );
+      this.params = new BeersParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'releaseDate',
+        sortDirection: 1,
+        searchQuery: this.searchForm.value.search
+      });
       this.beersService.paramsChanged.next(this.params);
     }
   }
@@ -49,7 +49,12 @@ export class BeersTableFiltersComponent implements OnInit {
 
   onFiltersClear() {
     this.searchForm.reset();
-    this.params = new BeersParams(10, 1, 'ReleaseDate', 1);
+    this.params = new BeersParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'releaseDate',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.beersService.paramsChanged.value) !=

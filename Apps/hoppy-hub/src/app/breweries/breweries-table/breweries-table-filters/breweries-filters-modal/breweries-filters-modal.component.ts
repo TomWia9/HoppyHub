@@ -58,19 +58,18 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const breweriesParams = new BreweriesParams(
-      25,
-      1,
-      this.breweriesFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      this.breweriesFiltersForm.value.sortDirection,
-      undefined,
-      this.breweriesFiltersForm.value.name,
-      this.breweriesFiltersForm.value.country,
-      undefined,
-      undefined,
-      this.breweriesFiltersForm.value.foundationYears.minFoundationYear,
-      this.breweriesFiltersForm.value.foundationYears.maxFoundationYear
-    );
+    const breweriesParams = new BreweriesParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: this.breweriesFiltersForm.value.sortBy?.replace(/\s/g, ''),
+      sortDirection: this.breweriesFiltersForm.value.sortDirection,
+      name: this.breweriesFiltersForm.value.name,
+      country: this.breweriesFiltersForm.value.country,
+      minFoundationYear:
+        this.breweriesFiltersForm.value.foundationYears.minFoundationYear,
+      maxFoundationYear:
+        this.breweriesFiltersForm.value.foundationYears.maxFoundationYear
+    });
 
     this.breweriesService.paramsChanged.next(breweriesParams);
 

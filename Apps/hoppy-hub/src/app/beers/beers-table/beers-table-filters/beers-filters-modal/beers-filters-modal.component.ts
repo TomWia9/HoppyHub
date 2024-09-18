@@ -84,30 +84,30 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    const beersParams = new BeersParams(
-      25,
-      1,
-      this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      this.beersFiltersForm.value.sortDirection,
-      undefined,
-      undefined,
-      this.beersFiltersForm.value.brewery,
-      this.beersFiltersForm.value.beerStyle,
-      this.beersFiltersForm.value.abv.minAbv,
-      this.beersFiltersForm.value.abv.maxAbv,
-      this.beersFiltersForm.value.extract.minExtract,
-      this.beersFiltersForm.value.extract.maxExtract,
-      this.beersFiltersForm.value.ibu.minIbu,
-      this.beersFiltersForm.value.ibu.maxIbu,
-      this.beersFiltersForm.value.releaseDates.minReleaseDate,
-      this.beersFiltersForm.value.releaseDates.maxReleaseDate,
-      this.beersFiltersForm.value.rating.minRating,
-      this.beersFiltersForm.value.rating.maxRating,
-      this.beersFiltersForm.value.favorites.minFavoritesCount,
-      this.beersFiltersForm.value.favorites.maxFavoritesCount,
-      this.beersFiltersForm.value.opinions.minOpinionsCount,
-      this.beersFiltersForm.value.opinions.maxOpinionsCount
-    );
+    const beersParams = new BeersParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
+      sortDirection: this.beersFiltersForm.value.sortDirection,
+      breweryId: this.beersFiltersForm.value.brewery,
+      beerStyleId: this.beersFiltersForm.value.beerStyle,
+      minAlcoholByVolume: this.beersFiltersForm.value.abv.minAbv,
+      maxAlcoholByVolume: this.beersFiltersForm.value.abv.maxAbv,
+      minExtract: this.beersFiltersForm.value.extract.minExtract,
+      maxExtract: this.beersFiltersForm.value.extract.maxExtract,
+      minIbu: this.beersFiltersForm.value.ibu.minIbu,
+      maxIbu: this.beersFiltersForm.value.ibu.maxIbu,
+      minReleaseDate: this.beersFiltersForm.value.releaseDates.minReleaseDate,
+      maxReleaseDate: this.beersFiltersForm.value.releaseDates.maxReleaseDate,
+      minRating: this.beersFiltersForm.value.rating.minRating,
+      maxRating: this.beersFiltersForm.value.rating.maxRating,
+      minFavoritesCount:
+        this.beersFiltersForm.value.favorites.minFavoritesCount,
+      maxFavoritesCount:
+        this.beersFiltersForm.value.favorites.maxFavoritesCount,
+      minOpinionsCount: this.beersFiltersForm.value.opinions.minOpinionsCount,
+      maxOpinionsCount: this.beersFiltersForm.value.opinions.maxOpinionsCount
+    });
 
     this.beersService.paramsChanged.next(beersParams);
 
@@ -132,7 +132,9 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
   fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
     this.getBreweriesSubscription = this.breweriesService
-      .getBreweries(new BreweriesParams(50, pageNumber))
+      .getBreweries(
+        new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
+      )
       .subscribe({
         next: (breweries: PagedList<Brewery>) => {
           this.loading = true;
@@ -154,7 +156,9 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
   fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
     this.getBeerStylesSubscription = this.beerStylesService
-      .getBeerStyles(new BeerStylesParams(50, pageNumber))
+      .getBeerStyles(
+        new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
+      )
       .subscribe({
         next: (beerStyles: PagedList<BeerStyle>) => {
           this.loading = true;

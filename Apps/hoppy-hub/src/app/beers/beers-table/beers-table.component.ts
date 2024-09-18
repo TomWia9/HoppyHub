@@ -38,7 +38,12 @@ export class BeersTableComponent
   @ViewChild('topSection') topSection!: ElementRef;
   private beersService: BeersService = inject(BeersService);
 
-  beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams({
+    pageSize: 10,
+    pageNumber: 1,
+    sortBy: 'releaseDate',
+    sortDirection: 1
+  });
   beers: PagedList<Beer> | undefined;
   paginationData!: Pagination;
   error = '';

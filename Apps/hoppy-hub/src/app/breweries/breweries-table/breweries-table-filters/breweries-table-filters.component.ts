@@ -32,13 +32,13 @@ export class BreweriesTableFiltersComponent implements OnInit {
 
   onSearch() {
     if (this.searchForm.value.search) {
-      this.params = new BreweriesParams(
-        25,
-        1,
-        'Name',
-        1,
-        this.searchForm.value.search
-      );
+      this.params = new BreweriesParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'Name',
+        sortDirection: 1,
+        searchQuery: this.searchForm.value.search
+      });
       this.breweriesService.paramsChanged.next(this.params);
     }
   }
@@ -49,7 +49,12 @@ export class BreweriesTableFiltersComponent implements OnInit {
 
   onFiltersClear() {
     this.searchForm.reset();
-    this.params = new BreweriesParams(25, 1, 'Name', 1);
+    this.params = new BreweriesParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: 'Name',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.breweriesService.paramsChanged.value) !=
