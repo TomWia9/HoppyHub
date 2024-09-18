@@ -25,6 +25,7 @@ import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-mo
 import { AuthUser } from '../../../auth/auth-user.model';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
+import { DataHelper } from '../../../shared/data-helper';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -39,7 +40,10 @@ import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-mo
   ],
   templateUrl: './beer-opinions.component.html'
 })
-export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
+export class BeerOpinionsComponent
+  extends DataHelper
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
   @Output() opinionsCountChanged = new EventEmitter<number>();
@@ -195,7 +199,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
         next: (opinions: PagedList<Opinion>) => {
           this.opinionsLoading = true;
           this.opinions = opinions;
-          this.paginationData = this.getPaginationData();
+          this.paginationData = this.getPaginationData(opinions);
           this.error = '';
           this.opinionsLoading = false;
         },
@@ -203,48 +207,15 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
           this.error = 'An error occurred while loading the opinions';
 
           if (error.error && error.error.errors) {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            const errorMessage = this.getValidationErrorMessage(
+              error.error.errors
+            );
             this.error += errorMessage;
           }
 
           this.opinionsLoading = false;
         }
       });
-  }
-
-  private getPaginationData(): Pagination {
-    if (this.opinions) {
-      return {
-        CurrentPage: this.opinions.CurrentPage,
-        HasNext: this.opinions.HasNext,
-        HasPrevious: this.opinions.HasPrevious,
-        TotalPages: this.opinions.TotalPages,
-        TotalCount: this.opinions.TotalCount
-      };
-    }
-
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  private getErrorMessage(array: { [key: string]: string }[]): string {
-    if (array.length === 0) {
-      return '';
-    }
-
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
-
-    if (!errorMessage) {
-      return '';
-    }
-
-    return ': ' + errorMessage;
   }
 
   ngOnDestroy(): void {

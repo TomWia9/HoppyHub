@@ -10,6 +10,7 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
 import { Pagination } from '../../shared/pagination';
 import { BreweriesTableFiltersComponent } from './breweries-table-filters/breweries-table-filters.component';
 import { RouterModule } from '@angular/router';
+import { DataHelper } from '../../shared/data-helper';
 
 @Component({
   selector: 'app-breweries-table',
@@ -23,7 +24,10 @@ import { RouterModule } from '@angular/router';
     BreweriesTableFiltersComponent
   ]
 })
-export class BreweriesTableComponent implements OnInit, OnDestroy {
+export class BreweriesTableComponent
+  extends DataHelper
+  implements OnInit, OnDestroy
+{
   private breweriesService: BreweriesService = inject(BreweriesService);
 
   breweriesParams = new BreweriesParams(25, 1, 'Name', 1);
@@ -51,7 +55,7 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
         next: (breweries: PagedList<Brewery>) => {
           this.loading = true;
           this.breweries = breweries;
-          this.paginationData = this.getPaginationData();
+          this.paginationData = this.getPaginationData(breweries);
           this.error = '';
           this.loading = false;
         },
@@ -59,7 +63,9 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
           this.error = 'An error occurred while loading the breweries';
 
           if (error.error && error.error.errors) {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            const errorMessage = this.getValidationErrorMessage(
+              error.error.errors
+            );
             this.error += errorMessage;
           }
 
@@ -68,43 +74,12 @@ export class BreweriesTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getPaginationData(): Pagination {
-    if (this.breweries) {
-      return {
-        CurrentPage: this.breweries.CurrentPage,
-        HasNext: this.breweries.HasNext,
-        HasPrevious: this.breweries.HasPrevious,
-        TotalPages: this.breweries.TotalPages,
-        TotalCount: this.breweries.TotalCount
-      };
-    }
-
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  private getErrorMessage(array: { [key: string]: string }[]): string {
-    if (array.length === 0) {
-      return '';
-    }
-
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
-
-    if (!errorMessage) {
-      return '';
-    }
-
-    return ': ' + errorMessage;
-  }
-
   ngOnDestroy(): void {
-    this.getBreweriesSubscription.unsubscribe();
-    this.breweriesParamsSubscription.unsubscribe();
+    if (this.getBreweriesSubscription) {
+      this.getBreweriesSubscription.unsubscribe();
+    }
+    if (this.breweriesParamsSubscription) {
+      this.breweriesParamsSubscription.unsubscribe();
+    }
   }
 }

@@ -17,6 +17,7 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
 import { Pagination } from '../../shared/pagination';
 import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
 import { RouterModule } from '@angular/router';
+import { DataHelper } from '../../shared/data-helper';
 
 @Component({
   selector: 'app-beers-table',
@@ -30,7 +31,10 @@ import { RouterModule } from '@angular/router';
   ],
   templateUrl: './beers-table.component.html'
 })
-export class BeersTableComponent implements OnInit, OnDestroy {
+export class BeersTableComponent
+  extends DataHelper
+  implements OnInit, OnDestroy
+{
   @ViewChild('topSection') topSection!: ElementRef;
   private beersService: BeersService = inject(BeersService);
 
@@ -59,7 +63,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
-          this.paginationData = this.getPaginationData();
+          this.paginationData = this.getPaginationData(beers);
           this.error = '';
           this.loading = false;
         },
@@ -67,48 +71,15 @@ export class BeersTableComponent implements OnInit, OnDestroy {
           this.error = 'An error occurred while loading the beers';
 
           if (error.error && error.error.errors) {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            const errorMessage = this.getValidationErrorMessage(
+              error.error.errors
+            );
             this.error += errorMessage;
           }
 
           this.loading = false;
         }
       });
-  }
-
-  private getPaginationData(): Pagination {
-    if (this.beers) {
-      return {
-        CurrentPage: this.beers.CurrentPage,
-        HasNext: this.beers.HasNext,
-        HasPrevious: this.beers.HasPrevious,
-        TotalPages: this.beers.TotalPages,
-        TotalCount: this.beers.TotalCount
-      };
-    }
-
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  private getErrorMessage(array: { [key: string]: string }[]): string {
-    if (array.length === 0) {
-      return '';
-    }
-
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
-
-    if (!errorMessage) {
-      return '';
-    }
-
-    return ': ' + errorMessage;
   }
 
   scrollToTop() {

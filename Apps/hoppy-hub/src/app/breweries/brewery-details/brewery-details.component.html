@@ -26,7 +26,7 @@
       <h1 class="my-2 text-left text-lg font-bold" #details>Brewery Beers:</h1>
       <app-brewery-beers-filters
         [params]="beersParams"
-        [paginationData]="getPaginationData()"></app-brewery-beers-filters>
+        [paginationData]="paginationData"></app-brewery-beers-filters>
 
       <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         @for (beer of beers?.items; track beer.id) {
@@ -55,7 +55,7 @@
       @if (beers?.HasNext || beers?.HasPrevious) {
         <app-pagination
           [params]="beersParams"
-          [paginationData]="getPaginationData()"
+          [paginationData]="paginationData"
           size="md"
           (scrollTo)="scrollToDetails()"></app-pagination>
       }
