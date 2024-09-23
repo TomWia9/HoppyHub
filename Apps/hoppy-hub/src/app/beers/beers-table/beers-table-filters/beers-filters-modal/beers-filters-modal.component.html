@@ -41,7 +41,7 @@
                   placeholder="Min ABV"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('abv.minAbv')!.invalid &&
@@ -94,7 +94,7 @@
                   placeholder="Max ABV"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('abv.maxAbv')!.invalid &&
@@ -148,7 +148,7 @@
                   placeholder="Min BLG"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('extract.minExtract')!.invalid &&
@@ -205,7 +205,7 @@
                   placeholder="Max BLG"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('extract.maxExtract')!.invalid &&
@@ -264,7 +264,7 @@
                   placeholder="Min IBU"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('ibu.minIbu')!.invalid &&
@@ -317,7 +317,7 @@
                   placeholder="Max IBU"
                   min="0"
                   max="100"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('ibu.maxIbu')!.invalid &&
@@ -387,7 +387,7 @@
                   placeholder="Min rating"
                   min="0"
                   max="10"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('rating.minRating')!.invalid &&
@@ -444,7 +444,7 @@
                   placeholder="Max rating"
                   min="0"
                   max="10"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('rating.maxRating')!.invalid &&
@@ -504,7 +504,7 @@
                   formControlName="minFavoritesCount"
                   placeholder="Min favorites"
                   min="0"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('favorites.minFavoritesCount')!
@@ -554,7 +554,7 @@
                   formControlName="maxFavoritesCount"
                   placeholder="Max favorites"
                   min="0"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('favorites.maxFavoritesCount')!
@@ -606,7 +606,7 @@
                   formControlName="minOpinionsCount"
                   placeholder="Min opinions"
                   min="0"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('opinions.minOpinionsCount')!
@@ -654,7 +654,7 @@
                   formControlName="maxOpinionsCount"
                   placeholder="Max opinions"
                   min="0"
-                  class="input input-bordered input-primary input-sm w-36"
+                  class="input input-sm input-bordered input-primary w-36"
                   [ngClass]="{
                     'input-error':
                       (beersFiltersForm.get('opinions.maxOpinionsCount')!
@@ -710,7 +710,7 @@
               type="date"
               id="minReleaseDate"
               formControlName="minReleaseDate"
-              class="input input-bordered input-primary input-sm w-full"
+              class="input input-sm input-bordered input-primary w-full"
               [ngClass]="{
                 'input-error':
                   (beersFiltersForm.get('releaseDates.minReleaseDate')!
@@ -748,7 +748,7 @@
               type="date"
               id="maxReleaseDate"
               formControlName="maxReleaseDate"
-              class="input input-bordered input-primary input-sm w-full"
+              class="input input-sm input-bordered input-primary w-full"
               [ngClass]="{
                 'input-error':
                   (beersFiltersForm.get('releaseDates.maxReleaseDate')!
@@ -779,33 +779,19 @@
           </label>
         </div>
         <!-- 4 -->
-        <div
-          class="my-4 flex flex-col items-start justify-between space-y-4 md:flex-row md:space-x-4 md:space-y-0">
-          <label class="form-control w-full">
+        <div class="my-4 text-center">
+          <label class="form-control flex w-full items-center">
             <div class="label">
               <span class="label-text">Sort by</span>
             </div>
             <select
               id="sortBy"
               formControlName="sortBy"
-              class="select select-primary select-sm w-full">
+              class="select select-primary select-sm w-full"
+              [(ngModel)]="selectedSortOptionIndex">
               <option value="" selected class="font-bold">---</option>
-              @for (sortBy of sortByOptions; track $index) {
-                <option [value]="sortBy">{{ sortBy }}</option>
-              }
-            </select>
-          </label>
-          <label class="form-control w-full">
-            <div class="label">
-              <span class="label-text">Sort direction</span>
-            </div>
-            <select
-              id="sortDirection"
-              formControlName="sortDirection"
-              class="select select-primary select-sm w-full">
-              <option value="" selected class="font-bold">---</option>
-              @for (sortDirection of sortDirectionOptions; track $index) {
-                <option [value]="sortDirection">{{ sortDirection }}</option>
+              @for (option of sortOptions; track $index) {
+                <option [value]="$index">{{ option.label }}</option>
               }
             </select>
           </label>

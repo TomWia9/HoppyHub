@@ -52,20 +52,7 @@ export class BeerOpinionsComponent
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
 
-  sortOptions = [
-    {
-      label: 'Created (New to Old)',
-      value: 'Created',
-      direction: 1
-    },
-    {
-      label: 'Created (Old to New)',
-      value: 'Created',
-      direction: 0
-    },
-    { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
-    { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
-  ];
+  sortOptions = OpinionsParams.sortOptions;
 
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;

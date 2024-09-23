@@ -42,33 +42,23 @@ import { CustomValidators } from '../../../../shared/custom-validators';
   ]
 })
 export class BeersFiltersModalComponent implements OnInit, OnDestroy {
+  @ViewChild('beersFiltersModal') modalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private beersService = inject(BeersService);
   private breweriesService = inject(BreweriesService);
   private beerStylesService = inject(BeerStylesService);
 
-  @ViewChild('beersFiltersModal') modalRef!: ElementRef;
-  modalOppenedSubscription!: Subscription;
   beersFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
   beerStyles: BeerStyle[] = [];
   error = '';
   loading = true;
+  modalOppenedSubscription!: Subscription;
   getBreweriesSubscription!: Subscription;
   getBeerStylesSubscription!: Subscription;
-  sortByOptions: string[] = [
-    'Name',
-    'Brewery',
-    'Beer style',
-    'Alcohol by volume',
-    'Blg',
-    'Ibu',
-    'Rating',
-    'Opinions count',
-    'Favorites count',
-    'Release date'
-  ];
-  sortDirectionOptions: string[] = ['Asc', 'Desc'];
+  sortOptions = BeersParams.sortOptions;
+  selectedSortOptionIndex: number = 0;
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
@@ -87,8 +77,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     const beersParams = new BeersParams({
       pageSize: 25,
       pageNumber: 1,
-      sortBy: this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      sortDirection: this.beersFiltersForm.value.sortDirection,
+      sortBy: this.sortOptions[this.selectedSortOptionIndex].value,
+      sortDirection: this.sortOptions[this.selectedSortOptionIndex].direction,
       breweryId: this.beersFiltersForm.value.brewery,
       beerStyleId: this.beersFiltersForm.value.beerStyle,
       minAlcoholByVolume: this.beersFiltersForm.value.abv.minAbv,

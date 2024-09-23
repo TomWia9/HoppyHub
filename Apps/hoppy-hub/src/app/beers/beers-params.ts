@@ -118,4 +118,57 @@ export class BeersParams implements Params {
 
     return params;
   }
+
+  static sortOptions = [
+    {
+      label: 'Release date (New to Old)',
+      value: 'ReleaseDate',
+      direction: 0
+    },
+    {
+      label: 'Release date (Old to New)',
+      value: 'ReleaseDate',
+      direction: 1
+    },
+    { label: 'Name (A to Z)', value: 'Name', direction: 0 },
+    { label: 'Name (Z to A)', value: 'Name', direction: 1 },
+    { label: 'Beer style (A to Z)', value: 'BeerStyle', direction: 0 },
+    { label: 'Beer style (Z to A)', value: 'BeerStyle', direction: 1 },
+    {
+      label: 'Alcohol by volume (Low to High)',
+      value: 'AlcoholByVolume',
+      direction: 0
+    },
+    {
+      label: 'Alcohol by volume (High to Low)',
+      value: 'AlcoholByVolume',
+      direction: 1
+    },
+    { label: 'BLG (Low to High)', value: 'BLG', direction: 0 },
+    { label: 'BLG (High to Low)', value: 'BLG', direction: 1 },
+    { label: 'IBU (Low to High)', value: 'IBU', direction: 0 },
+    { label: 'IBU (High to Low)', value: 'IBU', direction: 1 },
+    { label: 'Rating (Low to High)', value: 'Rating', direction: 0 },
+    { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
+    {
+      label: 'Opinions count (Low to High)',
+      value: 'OpinionsCount',
+      direction: 0
+    },
+    {
+      label: 'Opinions count (High to Low)',
+      value: 'OpinionsCount',
+      direction: 1
+    },
+    {
+      label: 'Favorites count (Low to High)',
+      value: 'FavoritesCount',
+      direction: 0
+    },
+    {
+      label: 'Favorites count (High to Low)',
+      value: 'FavoritesCount',
+      direction: 1
+    }
+  ];
 }

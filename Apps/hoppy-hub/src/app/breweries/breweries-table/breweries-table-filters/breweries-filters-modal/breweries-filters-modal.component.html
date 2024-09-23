@@ -20,7 +20,7 @@
                 placeholder="Brewery Name"
                 type="text"
                 formControlName="name"
-                class="input input-bordered input-primary input-sm w-36"
+                class="input input-sm input-bordered input-primary w-36"
                 [ngClass]="{
                   'input-error':
                     breweriesFiltersForm.get('name')!.invalid &&
@@ -46,7 +46,7 @@
                 placeholder="Country"
                 type="text"
                 formControlName="country"
-                class="input input-bordered input-primary input-sm w-36"
+                class="input input-sm input-bordered input-primary w-36"
                 [ngClass]="{
                   'input-error':
                     breweriesFiltersForm.get('country')!.invalid &&
@@ -80,7 +80,7 @@
                 placeholder="Min Foundation Year"
                 min="0"
                 max="{{ currentYear }}"
-                class="input input-bordered input-primary input-sm w-36 text-xs"
+                class="input input-sm input-bordered input-primary w-36 text-xs"
                 [ngClass]="{
                   'input-error':
                     (breweriesFiltersForm.get(
@@ -154,7 +154,7 @@
                 placeholder="Max Foundation Year"
                 min="0"
                 max="{{ currentYear }}"
-                class="input input-bordered input-primary input-sm w-36 text-xs"
+                class="input input-sm input-bordered input-primary w-36 text-xs"
                 [ngClass]="{
                   'input-error':
                     (breweriesFiltersForm.get(
@@ -228,26 +228,11 @@
             <select
               id="sortBy"
               formControlName="sortBy"
-              class="select select-primary select-sm w-72">
+              class="select select-primary select-sm w-72"
+              [(ngModel)]="selectedSortOptionIndex">
               <option value="" selected class="font-bold">---</option>
-              @for (sortBy of sortByOptions; track $index) {
-                <option [value]="sortBy">{{ sortBy }}</option>
-              }
-            </select>
-          </label>
-          <label class="form-control w-full max-w-xs items-center">
-            <div class="label">
-              <span class="label-text">Sort direction</span>
-            </div>
-            <select
-              id="sortDirection"
-              formControlName="sortDirection"
-              class="select select-primary select-sm w-72">
-              <option value="" selected class="font-bold">---</option>
-              @for (sortDirection of sortDirectionOptions; track $index) {
-                <option [value]="sortDirection">
-                  {{ sortDirection }}
-                </option>
+              @for (option of sortOptions; track $index) {
+                <option [value]="$index">{{ option.label }}</option>
               }
             </select>
           </label>

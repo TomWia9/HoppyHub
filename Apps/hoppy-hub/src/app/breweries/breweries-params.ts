@@ -63,4 +63,19 @@ export class BreweriesParams implements Params {
 
     return params;
   }
+
+  static sortOptions = [
+    { label: 'Name (A to Z)', value: 'Name', direction: 0 },
+    { label: 'Name (Z to A)', value: 'Name', direction: 1 },
+    {
+      label: 'Foundation year (New to Old)',
+      value: 'FoundationYear',
+      direction: 0
+    },
+    {
+      label: 'Foundation year (Old to New)',
+      value: 'FoundationYear',
+      direction: 1
+    }
+  ];
 }
