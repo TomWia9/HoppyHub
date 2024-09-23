@@ -30,7 +30,7 @@ export class BeersTableFiltersComponent implements OnInit {
     });
   }
 
-  onSearch() {
+  onSearch(): void {
     if (this.searchForm.value.search) {
       this.params = new BeersParams({
         pageSize: 25,
@@ -43,11 +43,11 @@ export class BeersTableFiltersComponent implements OnInit {
     }
   }
 
-  onFiltersModalOpen() {
+  onFiltersModalOpen(): void {
     this.modalService.openModal(ModalType.BeersFilters);
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.searchForm.reset();
     this.params = new BeersParams({
       pageSize: 10,

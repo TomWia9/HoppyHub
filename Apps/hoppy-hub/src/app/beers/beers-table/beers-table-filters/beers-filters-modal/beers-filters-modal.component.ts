@@ -73,7 +73,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.beersFiltersForm = this.getBeerFiltersForm();
   }
 
-  onSubmit() {
+  onSubmit(): void {
     const beersParams = new BeersParams({
       pageSize: 25,
       pageNumber: 1,
@@ -104,23 +104,26 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.onModalHide();
   }
 
-  onModalHide() {
+  onModalHide(): void {
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onShowModal(modalType: ModalType) {
+  onShowModal(modalType: ModalType): void {
     if (modalType === ModalType.BeersFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
-  onClearFilters() {
+  onClearFilters(): void {
     this.beersFiltersForm.reset();
   }
 
-  fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
+  private fetchAllBreweries(
+    pageNumber: number = 1,
+    allBreweries: Brewery[] = []
+  ): void {
     this.getBreweriesSubscription = this.breweriesService
       .getBreweries(
         new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
@@ -144,7 +147,10 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
+  private fetchAllBeerStyles(
+    pageNumber: number = 1,
+    allBeerStyles: BeerStyle[] = []
+  ): void {
     this.getBeerStylesSubscription = this.beerStylesService
       .getBeerStyles(
         new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
@@ -174,7 +180,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.getBeerStylesSubscription.unsubscribe();
   }
 
-  getBeerFiltersForm(): FormGroup {
+  private getBeerFiltersForm(): FormGroup {
     return new FormGroup({
       brewery: new FormControl(''),
       abv: new FormGroup(

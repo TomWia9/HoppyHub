@@ -30,7 +30,7 @@ export class BreweriesTableFiltersComponent implements OnInit {
     });
   }
 
-  onSearch() {
+  onSearch(): void {
     if (this.searchForm.value.search) {
       this.params = new BreweriesParams({
         pageSize: 25,
@@ -43,11 +43,11 @@ export class BreweriesTableFiltersComponent implements OnInit {
     }
   }
 
-  onFiltersModalOpen() {
+  onFiltersModalOpen(): void {
     this.modalService.openModal(ModalType.BreweriesFilters);
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.searchForm.reset();
     this.params = new BreweriesParams({
       pageSize: 25,

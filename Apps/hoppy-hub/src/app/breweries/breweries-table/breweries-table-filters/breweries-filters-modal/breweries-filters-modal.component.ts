@@ -97,7 +97,7 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
     this.modalOppenedSubscription.unsubscribe();
   }
 
-  getBreweriesFiltersForm(): FormGroup {
+  private getBreweriesFiltersForm(): FormGroup {
     return new FormGroup({
       name: new FormControl('', [Validators.maxLength(500)]),
       country: new FormControl('', [Validators.maxLength(50)]),

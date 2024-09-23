@@ -45,13 +45,13 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
     );
   }
 
-  onModalHide() {
+  onModalHide(): void {
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onDelete() {
+  onDelete(): void {
     this.opinionsService.DeleteOpinion(this.opinionId).subscribe({
       next: () => {
         this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
@@ -75,7 +75,7 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  private onShowModal(modalType: ModalType) {
+  private onShowModal(modalType: ModalType): void {
     if (modalType === ModalType.DeleteOpinion && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }

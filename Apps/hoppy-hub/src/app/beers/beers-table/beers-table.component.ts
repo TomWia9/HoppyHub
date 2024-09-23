@@ -87,7 +87,7 @@ export class BeersTableComponent
       });
   }
 
-  scrollToTop() {
+  scrollToTop(): void {
     const elementPosition =
       this.topSection.nativeElement.getBoundingClientRect().top +
       window.scrollY;
@@ -99,7 +99,11 @@ export class BeersTableComponent
   }
 
   ngOnDestroy(): void {
-    this.getBeersSubscription.unsubscribe();
-    this.beersParamsSubscription.unsubscribe();
+    if (this.getBeersSubscription) {
+      this.getBeersSubscription.unsubscribe();
+    }
+    if (this.beersParamsSubscription) {
+      this.beersParamsSubscription.unsubscribe();
+    }
   }
 }

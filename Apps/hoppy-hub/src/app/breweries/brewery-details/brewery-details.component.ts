@@ -107,7 +107,7 @@ export class BreweryDetailsComponent
       });
   }
 
-  scrollToDetails(offset: number = 0) {
+  scrollToDetails(offset: number = 0): void {
     if (this.details) {
       const elementPosition =
         this.details.nativeElement.getBoundingClientRect().top +

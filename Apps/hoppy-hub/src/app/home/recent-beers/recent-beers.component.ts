@@ -51,6 +51,8 @@ export class RecentBeersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getBeersSubscription.unsubscribe();
+    if (this.getBeersSubscription) {
+      this.getBeersSubscription.unsubscribe();
+    }
   }
 }

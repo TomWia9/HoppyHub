@@ -193,6 +193,8 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getOpinionsSubscription.unsubscribe();
+    if (this.getOpinionsSubscription) {
+      this.getOpinionsSubscription.unsubscribe();
+    }
   }
 }
