@@ -3,11 +3,18 @@ import { AlertService, AlertType } from './alert.service';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Alert } from './alert.model';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faCircleCheck,
+  faCircleInfo,
+  faExclamation,
+  faXmark
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-alert',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   templateUrl: './alert.component.html'
 })
 export class AlertComponent implements OnInit, OnDestroy {
@@ -18,6 +25,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   alertType: string = '';
   showAlert: boolean = false;
   alertOpenedSubscription!: Subscription;
+  icon = faCircleCheck;
 
   ngOnInit(): void {
     this.alertOpenedSubscription = this.alertService.alertOpened.subscribe(
@@ -26,32 +34,34 @@ export class AlertComponent implements OnInit, OnDestroy {
       }
     );
   }
-  openAlert(alert: Alert) {
+
+  openAlert(alert: Alert): void {
     switch (alert.alertType) {
       case AlertType.Success:
         this.alertClass = 'alert-success';
-        this.alertType = 'success';
+        this.icon = faCircleCheck;
         break;
       case AlertType.Error:
         this.alertClass = 'alert-error';
-        this.alertType = 'error';
+        this.icon = faXmark;
         break;
       case AlertType.Warning:
         this.alertClass = 'alert-warning';
-        this.alertType = 'warning';
+        this.icon = faExclamation;
         break;
       case AlertType.Info:
         this.alertClass = 'alert-info';
-        this.alertType = 'info';
+        this.icon = faCircleInfo;
         break;
       default:
         this.alertClass = '';
-        this.alertType = '';
+        this.icon = faCircleInfo;
         break;
     }
 
     this.message = alert.message;
     this.showAlert = true;
+
     if (alert.alertType != AlertType.Error) {
       setTimeout(() => {
         this.onAlertClose();
@@ -59,13 +69,15 @@ export class AlertComponent implements OnInit, OnDestroy {
     }
   }
 
-  onAlertClose() {
+  onAlertClose(): void {
     this.message = '';
     this.alertClass = '';
     this.showAlert = false;
   }
 
   ngOnDestroy(): void {
-    this.alertOpenedSubscription.unsubscribe();
+    if (this.alertOpenedSubscription) {
+      this.alertOpenedSubscription.unsubscribe();
+    }
   }
 }

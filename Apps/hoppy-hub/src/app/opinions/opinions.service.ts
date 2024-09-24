@@ -15,7 +15,12 @@ export class OpinionsService {
   private http: HttpClient = inject(HttpClient);
 
   paramsChanged = new BehaviorSubject<OpinionsParams>(
-    new OpinionsParams(10, 1, 'created', 1)
+    new OpinionsParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'created',
+      sortDirection: 1
+    })
   );
 
   getOpinions(opinionsParams: OpinionsParams): Observable<PagedList<Opinion>> {

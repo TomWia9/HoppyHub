@@ -29,11 +29,12 @@ import {
   templateUrl: './register-modal.component.html'
 })
 export class RegisterModalComponent implements OnInit, OnDestroy {
+  @ViewChild('registerModal') myModalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
 
-  @ViewChild('registerModal') myModalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   registerForm!: FormGroup;
 
@@ -67,14 +68,14 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFormReset() {
+  onFormReset(): void {
     this.registerForm.reset();
     if (this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.registerForm.valid) {
       this.authService
         .register(
@@ -103,18 +104,18 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSignIn() {
+  onSignIn(): void {
     this.onFormReset();
     this.modalService.openModal(ModalType.Login);
   }
 
-  showModal(modalType: ModalType) {
+  private showModal(modalType: ModalType): void {
     if (modalType === ModalType.Register && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return 'Something went wrong';
     }

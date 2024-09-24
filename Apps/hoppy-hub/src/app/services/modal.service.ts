@@ -16,7 +16,7 @@ export enum ModalType {
 export class ModalService {
   modalOpened = new Subject<ModalType>();
 
-  openModal(modalType: ModalType) {
+  openModal(modalType: ModalType): void {
     this.modalOpened.next(modalType);
   }
 }

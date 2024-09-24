@@ -14,7 +14,7 @@ export class FavoritesService {
   private http: HttpClient = inject(HttpClient);
 
   paramsChanged = new BehaviorSubject<FavoritesParams>(
-    new FavoritesParams(10, 1)
+    new FavoritesParams({ pageSize: 10, pageNumber: 1 })
   );
 
   getFavorites(favoritesParams: FavoritesParams): Observable<PagedList<Beer>> {

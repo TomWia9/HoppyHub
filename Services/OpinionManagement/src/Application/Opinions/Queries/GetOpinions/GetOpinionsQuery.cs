@@ -31,9 +31,14 @@ public record GetOpinionsQuery : QueryParameters, IRequest<PaginatedList<Opinion
     public DateTimeOffset To { get; init; } = DateTimeOffset.Now;
 
     /// <summary>
-    ///     Indicates whether opinions have images.
+    ///     Indicates whether opinion has an image.
     /// </summary>
-    public bool? HaveImages { get; init; }
+    public bool? HasImage { get; init; }
+
+    /// <summary>
+    ///     Indicates whether opinion has a comment.
+    /// </summary>
+    public bool? HasComment { get; init; }
 
     /// <summary>
     ///     Beer id.

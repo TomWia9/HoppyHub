@@ -74,7 +74,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     this.setShowImage();
   }
 
-  onModalHide() {
+  onModalHide(): void {
     if (this.modalRef) {
       if (this.fileInput) {
         this.fileInput.nativeElement.value = '';
@@ -87,7 +87,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.loading = true;
     if (this.opinionForm.valid) {
       const upsertOpinionCommand = this.opinionForm
@@ -133,14 +133,14 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     this.opinionForm.reset();
   }
 
-  onFileSelected(event: Event) {
+  onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       this.selectedImage = input.files[0];
     }
   }
 
-  onRemoveImage() {
+  onRemoveImage(): void {
     this.selectedImage = null;
     this.showImage = false;
     if (this.fileInput) {
@@ -148,7 +148,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onShowModal(modalType: ModalType) {
+  private onShowModal(modalType: ModalType): void {
     if (modalType === ModalType.UpsertOpinion && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
@@ -195,7 +195,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  private setShowImage() {
+  private setShowImage(): void {
     this.showImage =
       this.existingOpinion?.imageUri &&
       this.existingOpinion?.imageUri.length > 0

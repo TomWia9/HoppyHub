@@ -64,11 +64,11 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
       });
   }
 
-  onFavoritesCountChanged(favoritesCountChange: number) {
+  onFavoritesCountChanged(favoritesCountChange: number): void {
     this.beer.favoritesCount += favoritesCountChange;
   }
 
-  onOpinionsCountChanged(opinionsCountChange: number) {
+  onOpinionsCountChanged(opinionsCountChange: number): void {
     this.beer.opinionsCount += opinionsCountChange;
   }
 

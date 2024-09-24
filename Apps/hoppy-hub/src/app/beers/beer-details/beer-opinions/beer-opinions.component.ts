@@ -25,6 +25,7 @@ import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-mo
 import { AuthUser } from '../../../auth/auth-user.model';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
+import { DataHelper } from '../../../shared/data-helper';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -39,7 +40,10 @@ import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-mo
   ],
   templateUrl: './beer-opinions.component.html'
 })
-export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
+export class BeerOpinionsComponent
+  extends DataHelper
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
   @Output() opinionsCountChanged = new EventEmitter<number>();
@@ -48,27 +52,19 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
 
-  sortOptions = [
-    {
-      label: 'Created (New to Old)',
-      value: 'Created',
-      direction: 1
-    },
-    {
-      label: 'Created (Old to New)',
-      value: 'Created',
-      direction: 0
-    },
-    { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
-    { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
-  ];
+  sortOptions = OpinionsParams.sortOptions;
 
   opinionsParamsSubscription!: Subscription;
   getOpinionsSubscription!: Subscription;
   userSubscription!: Subscription;
   getUserOpinionsSubscription!: Subscription;
   selectedSortOptionIndex: number = 0;
-  opinionsParams = new OpinionsParams(10, 1, 'created', 1);
+  opinionsParams = new OpinionsParams({
+    pageSize: 10,
+    pageNumber: 1,
+    sortBy: 'created',
+    sortDirection: 1
+  });
   opinions: PagedList<Opinion> | undefined;
   paginationData!: Pagination;
   error = '';
@@ -84,15 +80,13 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
         this.opinionsParams.beerId = this.beer.id;
         this.getOpinions();
       });
-
-    this.checkIfUserAlreadyAddedOpinion();
   }
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.refreshOpinions(0);
   }
 
-  refreshOpinions(opinionsCountChange: number) {
+  refreshOpinions(opinionsCountChange: number): void {
     this.opinionsParams.beerId = this.beer.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.existingOpinion = null;
@@ -100,7 +94,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.checkIfUserAlreadyAddedOpinion();
   }
 
-  onSort() {
+  onSort(): void {
     this.opinionsParams.pageNumber = 1;
     this.opinionsParams.sortBy =
       this.sortOptions[this.selectedSortOptionIndex].value;
@@ -109,9 +103,14 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     this.opinionsService.paramsChanged.next(this.opinionsParams);
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.selectedSortOptionIndex = 0;
-    this.opinionsParams = new OpinionsParams(10, 1, 'created', 1);
+    this.opinionsParams = new OpinionsParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'created',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.opinionsService.paramsChanged.value) !=
@@ -121,14 +120,14 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  toggleOpinions() {
+  toggleOpinions(): void {
     if (this.showOpinions) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
     this.showOpinions = !this.showOpinions;
   }
 
-  scrollToTop() {
+  scrollToTop(): void {
     const elementPosition =
       this.opinionsSection.nativeElement.getBoundingClientRect().top +
       window.scrollY;
@@ -139,7 +138,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     });
   }
 
-  onUpsertOpinionModalOpen() {
+  onUpsertOpinionModalOpen(): void {
     if (this.user) {
       this.modalService.openModal(ModalType.UpsertOpinion);
     } else {
@@ -147,7 +146,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  onDeleteOpinionModalOpen() {
+  onDeleteOpinionModalOpen(): void {
     if (this.user) {
       this.modalService.openModal(ModalType.DeleteOpinion);
     }
@@ -161,20 +160,12 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.getUserOpinionsSubscription = this.opinionsService
         .getOpinions(
-          new OpinionsParams(
-            1,
-            1,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            undefined,
-            this.beer.id,
-            this.user.id
-          )
+          new OpinionsParams({
+            pageSize: 1,
+            pageNumber: 1,
+            beerId: this.beer.id,
+            userId: this.user.id
+          })
         )
         .pipe(
           take(1),
@@ -195,7 +186,7 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
         next: (opinions: PagedList<Opinion>) => {
           this.opinionsLoading = true;
           this.opinions = opinions;
-          this.paginationData = this.getPaginationData();
+          this.paginationData = this.getPaginationData(opinions);
           this.error = '';
           this.opinionsLoading = false;
         },
@@ -203,7 +194,9 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
           this.error = 'An error occurred while loading the opinions';
 
           if (error.error && error.error.errors) {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            const errorMessage = this.getValidationErrorMessage(
+              error.error.errors
+            );
             this.error += errorMessage;
           }
 
@@ -212,44 +205,15 @@ export class BeerOpinionsComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  private getPaginationData(): Pagination {
-    if (this.opinions) {
-      return {
-        CurrentPage: this.opinions.CurrentPage,
-        HasNext: this.opinions.HasNext,
-        HasPrevious: this.opinions.HasPrevious,
-        TotalPages: this.opinions.TotalPages,
-        TotalCount: this.opinions.TotalCount
-      };
-    }
-
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  private getErrorMessage(array: { [key: string]: string }[]): string {
-    if (array.length === 0) {
-      return '';
-    }
-
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
-
-    if (!errorMessage) {
-      return '';
-    }
-
-    return ': ' + errorMessage;
-  }
-
   ngOnDestroy(): void {
-    this.getOpinionsSubscription.unsubscribe();
-    this.opinionsParamsSubscription.unsubscribe();
-    this.getUserOpinionsSubscription.unsubscribe();
+    if (this.getOpinionsSubscription) {
+      this.getOpinionsSubscription.unsubscribe();
+    }
+    if (this.opinionsParamsSubscription) {
+      this.opinionsParamsSubscription.unsubscribe();
+    }
+    if (this.getUserOpinionsSubscription) {
+      this.getUserOpinionsSubscription.unsubscribe();
+    }
   }
 }
