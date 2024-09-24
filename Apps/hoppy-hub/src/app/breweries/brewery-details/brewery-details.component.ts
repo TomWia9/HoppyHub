@@ -41,7 +41,8 @@ export class BreweryDetailsComponent
 
   brewery!: Brewery;
   error = '';
-  loading = true;
+  breweryLoading = true;
+  breweryBeersLoading = true;
   routeSubscription!: Subscription;
   brewerySubscription!: Subscription;
   beersSubscription!: Subscription;
@@ -69,15 +70,15 @@ export class BreweryDetailsComponent
           .getBreweryById(breweryId as string)
           .subscribe({
             next: (brewery: Brewery) => {
-              this.loading = true;
+              this.breweryLoading = true;
               this.brewery = brewery;
               this.error = '';
               this.scrollToDetails(-350);
-              this.loading = false;
+              this.breweryLoading = false;
             },
             error: () => {
               this.error = 'An error occurred while loading the brewery';
-              this.loading = false;
+              this.breweryLoading = false;
             }
           });
 
@@ -90,19 +91,19 @@ export class BreweryDetailsComponent
   }
 
   private getBeers(): void {
+    this.breweryBeersLoading = true;
     this.beersSubscription = this.beersService
       .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
-          this.loading = true;
           this.beers = beers;
           this.paginationData = this.getPaginationData(beers);
           this.error = '';
-          this.loading = false;
+          this.breweryBeersLoading = false;
         },
         error: () => {
           this.error = 'An error occurred while loading the beers';
-          this.loading = false;
+          this.breweryBeersLoading = false;
         }
       });
   }
