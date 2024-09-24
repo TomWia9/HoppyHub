@@ -228,8 +228,7 @@
             <select
               id="sortBy"
               formControlName="sortBy"
-              class="select select-primary select-sm w-72"
-              [(ngModel)]="selectedSortOptionIndex">
+              class="select select-primary select-sm w-72">
               <option value="" selected class="font-bold">---</option>
               @for (option of sortOptions; track $index) {
                 <option [value]="$index">{{ option.label }}</option>

@@ -45,7 +45,6 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
   getBreweriesSubscription!: Subscription;
   modalOppenedSubscription!: Subscription;
   sortOptions = BreweriesParams.sortOptions;
-  selectedSortOptionIndex: number = 0;
   currentYear = new Date().getFullYear();
 
   ngOnInit(): void {
@@ -62,8 +61,9 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
     const breweriesParams = new BreweriesParams({
       pageSize: 25,
       pageNumber: 1,
-      sortBy: this.sortOptions[this.selectedSortOptionIndex].value,
-      sortDirection: this.sortOptions[this.selectedSortOptionIndex].direction,
+      sortBy: this.sortOptions[this.breweriesFiltersForm.value.sortBy].value,
+      sortDirection:
+        this.sortOptions[this.breweriesFiltersForm.value.sortBy].direction,
       name: this.breweriesFiltersForm.value.name,
       country: this.breweriesFiltersForm.value.country,
       minFoundationYear:
