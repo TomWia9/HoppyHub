@@ -29,10 +29,7 @@ export class BeersService {
   }
 
   getBeers(beersParams: BeersParams): Observable<PagedList<Beer>> {
-    console.log(beersParams);
-
     const params: HttpParams = beersParams.getHttpParams();
-    console.log(params);
 
     return this.http
       .get<Beer[]>(`${environment.beerManagementApiUrl}/beers`, {

@@ -80,8 +80,6 @@ export class BeerOpinionsComponent
         this.opinionsParams.beerId = this.beer.id;
         this.getOpinions();
       });
-
-    this.checkIfUserAlreadyAddedOpinion();
   }
 
   ngOnChanges(): void {
