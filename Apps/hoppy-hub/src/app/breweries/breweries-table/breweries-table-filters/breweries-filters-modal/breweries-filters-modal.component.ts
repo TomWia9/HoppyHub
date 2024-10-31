@@ -34,17 +34,17 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
+  @ViewChild('breweriesFiltersModal') modalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private breweriesService = inject(BreweriesService);
 
-  @ViewChild('breweriesFiltersModal') modalRef!: ElementRef;
-  modalOppenedSubscription!: Subscription;
   breweriesFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
   error = '';
   getBreweriesSubscription!: Subscription;
-  sortByOptions: string[] = ['Name', 'Foundation year'];
-  sortDirectionOptions: string[] = ['Asc', 'Desc'];
+  modalOppenedSubscription!: Subscription;
+  sortOptions = BreweriesParams.sortOptions;
   currentYear = new Date().getFullYear();
 
   ngOnInit(): void {
@@ -57,39 +57,39 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
     this.breweriesFiltersForm = this.getBreweriesFiltersForm();
   }
 
-  onSubmit() {
-    const breweriesParams = new BreweriesParams(
-      25,
-      1,
-      this.breweriesFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      this.breweriesFiltersForm.value.sortDirection,
-      undefined,
-      this.breweriesFiltersForm.value.name,
-      this.breweriesFiltersForm.value.country,
-      undefined,
-      undefined,
-      this.breweriesFiltersForm.value.foundationYears.minFoundationYear,
-      this.breweriesFiltersForm.value.foundationYears.maxFoundationYear
-    );
+  onSubmit(): void {
+    const breweriesParams = new BreweriesParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: this.sortOptions[this.breweriesFiltersForm.value.sortBy].value,
+      sortDirection:
+        this.sortOptions[this.breweriesFiltersForm.value.sortBy].direction,
+      name: this.breweriesFiltersForm.value.name,
+      country: this.breweriesFiltersForm.value.country,
+      minFoundationYear:
+        this.breweriesFiltersForm.value.foundationYears.minFoundationYear,
+      maxFoundationYear:
+        this.breweriesFiltersForm.value.foundationYears.maxFoundationYear
+    });
 
     this.breweriesService.paramsChanged.next(breweriesParams);
 
     this.onModalHide();
   }
 
-  onModalHide() {
+  onModalHide(): void {
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onShowModal(modalType: ModalType) {
+  onShowModal(modalType: ModalType): void {
     if (modalType === ModalType.BreweriesFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
-  onClearFilters() {
+  onClearFilters(): void {
     this.breweriesFiltersForm.reset();
   }
 
@@ -97,7 +97,7 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
     this.modalOppenedSubscription.unsubscribe();
   }
 
-  getBreweriesFiltersForm(): FormGroup {
+  private getBreweriesFiltersForm(): FormGroup {
     return new FormGroup({
       name: new FormControl('', [Validators.maxLength(500)]),
       country: new FormControl('', [Validators.maxLength(50)]),

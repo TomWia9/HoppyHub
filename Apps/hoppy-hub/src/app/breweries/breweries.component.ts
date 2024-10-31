@@ -9,6 +9,8 @@ import {
   RouterOutlet
 } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-breweries',
@@ -18,12 +20,14 @@ import { Subscription, filter } from 'rxjs';
     RouterOutlet,
     BreweriesTableComponent,
     BreweryDetailsComponent,
-    BreweriesFiltersModalComponent
+    BreweriesFiltersModalComponent,
+    FontAwesomeModule
   ]
 })
 export class BreweriesComponent implements OnInit, OnDestroy {
   brewerySelected: boolean = false;
   routeSubscription!: Subscription;
+  faInfoCircle = faInfoCircle;
 
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);

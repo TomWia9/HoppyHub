@@ -19,6 +19,7 @@ import { BeersParams } from '../../beers/beers-params';
 import { Pagination } from '../../shared/pagination';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-beers-filters.component';
+import { DataHelper } from '../../shared/data-helper';
 
 @Component({
   selector: 'app-brewery-details',
@@ -32,17 +33,28 @@ import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-be
     RouterModule
   ]
 })
-export class BreweryDetailsComponent implements OnInit, OnDestroy {
+export class BreweryDetailsComponent
+  extends DataHelper
+  implements OnInit, OnDestroy
+{
   @ViewChild('details') details!: ElementRef;
+
   brewery!: Brewery;
   error = '';
-  loading = true;
+  breweryLoading = true;
+  breweryBeersLoading = true;
   routeSubscription!: Subscription;
   brewerySubscription!: Subscription;
   beersSubscription!: Subscription;
   beersParamsSubscription!: Subscription;
-  beersParams = new BeersParams(9, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams({
+    pageSize: 9,
+    pageNumber: 1,
+    sortBy: 'releaseDate',
+    sortDirection: 1
+  });
   beers: PagedList<Beer> | undefined;
+  paginationData!: Pagination;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
   private breweriesService: BreweriesService = inject(BreweriesService);
@@ -58,15 +70,15 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
           .getBreweryById(breweryId as string)
           .subscribe({
             next: (brewery: Brewery) => {
-              this.loading = true;
+              this.breweryLoading = true;
               this.brewery = brewery;
               this.error = '';
               this.scrollToDetails(-350);
-              this.loading = false;
+              this.breweryLoading = false;
             },
             error: () => {
               this.error = 'An error occurred while loading the brewery';
-              this.loading = false;
+              this.breweryLoading = false;
             }
           });
 
@@ -79,43 +91,24 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getBeers(): void {
+    this.breweryBeersLoading = true;
     this.beersSubscription = this.beersService
       .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
-          this.loading = true;
           this.beers = beers;
+          this.paginationData = this.getPaginationData(beers);
           this.error = '';
-          this.loading = false;
+          this.breweryBeersLoading = false;
         },
         error: () => {
           this.error = 'An error occurred while loading the beers';
-          this.loading = false;
+          this.breweryBeersLoading = false;
         }
       });
   }
 
-  getPaginationData(): Pagination {
-    if (this.beers) {
-      return {
-        CurrentPage: this.beers.CurrentPage,
-        HasNext: this.beers.HasNext,
-        HasPrevious: this.beers.HasPrevious,
-        TotalPages: this.beers.TotalPages,
-        TotalCount: this.beers.TotalCount
-      };
-    }
-
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  scrollToDetails(offset: number = 0) {
+  scrollToDetails(offset: number = 0): void {
     if (this.details) {
       const elementPosition =
         this.details.nativeElement.getBoundingClientRect().top +
@@ -150,7 +143,12 @@ export class BreweryDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.beersService.paramsChanged.next(
-      new BeersParams(25, 1, 'ReleaseDate', 1)
+      new BeersParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'releaseDate',
+        sortDirection: 1
+      })
     );
     this.resetBreweryDetails(this.brewery.id);
 

@@ -28,11 +28,12 @@ import { AuthService } from '../auth.service';
   templateUrl: './login-modal.component.html'
 })
 export class LoginModalComponent implements OnInit, OnDestroy {
+  @ViewChild('loginModal') myModalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
 
-  @ViewChild('loginModal') myModalRef!: ElementRef;
   modalOpenedSubscription!: Subscription;
   loginForm!: FormGroup;
 
@@ -52,7 +53,7 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.loginForm.valid) {
       this.authService
         .login(this.loginForm.value.email, this.loginForm.value.password)
@@ -80,25 +81,27 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSignUp() {
+  onSignUp(): void {
     this.onFormReset();
     this.modalService.openModal(ModalType.Register);
   }
 
-  onFormReset() {
+  onFormReset(): void {
     this.loginForm.reset();
     if (this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  showModal(modalType: ModalType) {
+  private showModal(modalType: ModalType): void {
     if (modalType === ModalType.Login && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
   ngOnDestroy(): void {
-    this.modalOpenedSubscription.unsubscribe();
+    if (this.modalOpenedSubscription) {
+      this.modalOpenedSubscription.unsubscribe();
+    }
   }
 }

@@ -30,7 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 export class FavoriteComponent implements OnDestroy, OnChanges {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
-  @Output() favoritesCountChanged = new EventEmitter<number>();
+  @Output() favoritesCountChanged = new EventEmitter<void>();
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private alertService: AlertService = inject(AlertService);
@@ -56,7 +56,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
         .createFavorite(this.beer.id)
         .subscribe({
           next: () => {
-            this.favoritesCountChanged.emit(1);
+            this.favoritesCountChanged.emit();
             this.favorite = true;
             this.alertService.openAlert(
               AlertType.Success,
@@ -74,7 +74,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
         .deleteFavorite(this.beer.id)
         .subscribe({
           next: () => {
-            this.favoritesCountChanged.emit(-1);
+            this.favoritesCountChanged.emit();
             this.favorite = false;
             this.alertService.openAlert(
               AlertType.Success,
@@ -97,15 +97,12 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
     } else {
       this.getUserFavoritesSubsciption = this.favoritesService
         .getFavorites(
-          new FavoritesParams(
-            1,
-            1,
-            undefined,
-            undefined,
-            undefined,
-            this.beer.id,
-            this.user.id
-          )
+          new FavoritesParams({
+            pageSize: 10,
+            pageNumber: 1,
+            beerId: this.beer.id,
+            userId: this.user.id
+          })
         )
         .pipe(
           take(1),

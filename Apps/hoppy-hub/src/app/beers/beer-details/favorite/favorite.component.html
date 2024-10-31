@@ -1,15 +1,17 @@
 @if (!loading) {
-  <button
-    type="button"
-    class="btn btn-outline btn-warning flex h-auto items-center justify-self-end p-4"
-    (click)="onToggleFavorite()">
-    <fa-icon class="text-yellow-400" [icon]="faStarr"></fa-icon>
-    <span>
-      @if (!favorite) {
-        Add To Favorites
-      } @else {
-        Remove From Favorites
-      }
-    </span>
-  </button>
+  <div class="my-2 grid place-items-center">
+    <button
+      type="button"
+      class="btn btn-outline btn-warning flex h-auto w-3/4 items-center p-4"
+      (click)="onToggleFavorite()">
+      <fa-icon class="text-yellow-400" [icon]="faStarr"></fa-icon>
+      <span>
+        @if (!favorite) {
+          Add To Favorites
+        } @else {
+          Remove From Favorites
+        }
+      </span>
+    </button>
+  </div>
 }

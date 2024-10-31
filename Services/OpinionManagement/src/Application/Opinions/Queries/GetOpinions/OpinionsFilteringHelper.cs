@@ -45,8 +45,11 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
         if (request.UserId is not null)
             delegates.Add(x => x.CreatedBy == request.UserId);
 
-        if (request.HaveImages is not null)
-            delegates.Add(x => !string.IsNullOrEmpty(x.ImageUri) == request.HaveImages);
+        if (request.HasImage is not null)
+            delegates.Add(x => !string.IsNullOrEmpty(x.ImageUri) == request.HasImage);
+
+        if (request.HasComment is not null)
+            delegates.Add(x => !string.IsNullOrEmpty(x.Comment) == request.HasComment);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {

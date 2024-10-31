@@ -27,7 +27,15 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getOpinionsSubscription = this.opinionsService
-      .getOpinions(new OpinionsParams(5, 1, 'lastModified', 1))
+      .getOpinions(
+        new OpinionsParams({
+          pageSize: 10,
+          pageNumber: 1,
+          sortBy: 'lastModified',
+          sortDirection: 1,
+          hasComment: true
+        })
+      )
       .pipe(
         switchMap((opinions: PagedList<Opinion>) => {
           const beerRequests = opinions.items.map(opinion =>
@@ -53,6 +61,8 @@ export class RecentOpinionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getOpinionsSubscription.unsubscribe();
+    if (this.getOpinionsSubscription) {
+      this.getOpinionsSubscription.unsubscribe();
+    }
   }
 }

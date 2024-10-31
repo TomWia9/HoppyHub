@@ -5,12 +5,14 @@ import { Pagination } from '../../../shared/pagination';
 import { BreweriesParams } from '../../breweries-params';
 import { BreweriesService } from '../../breweries.service';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-breweries-table-filters',
   standalone: true,
   templateUrl: './breweries-table-filters.component.html',
-  imports: [PaginationComponent, ReactiveFormsModule]
+  imports: [PaginationComponent, ReactiveFormsModule, FontAwesomeModule]
 })
 export class BreweriesTableFiltersComponent implements OnInit {
   @Input({ required: true }) params!: BreweriesParams;
@@ -20,6 +22,7 @@ export class BreweriesTableFiltersComponent implements OnInit {
   private modalService: ModalService = inject(ModalService);
 
   searchForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -27,26 +30,31 @@ export class BreweriesTableFiltersComponent implements OnInit {
     });
   }
 
-  onSearch() {
+  onSearch(): void {
     if (this.searchForm.value.search) {
-      this.params = new BreweriesParams(
-        25,
-        1,
-        'Name',
-        1,
-        this.searchForm.value.search
-      );
+      this.params = new BreweriesParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'Name',
+        sortDirection: 1,
+        searchQuery: this.searchForm.value.search
+      });
       this.breweriesService.paramsChanged.next(this.params);
     }
   }
 
-  onFiltersModalOpen() {
+  onFiltersModalOpen(): void {
     this.modalService.openModal(ModalType.BreweriesFilters);
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.searchForm.reset();
-    this.params = new BreweriesParams(25, 1, 'Name', 1);
+    this.params = new BreweriesParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: 'Name',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.breweriesService.paramsChanged.value) !=
