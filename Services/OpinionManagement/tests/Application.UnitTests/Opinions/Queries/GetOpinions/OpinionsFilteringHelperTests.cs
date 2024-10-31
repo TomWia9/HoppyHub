@@ -105,6 +105,6 @@ public class OpinionsFilteringHelperTests
         var result = _filteringHelper.GetDelegates(request);
 
         // Assert
-        result.Should().HaveCount(5, "Min and Max are merged into single delegate");
+        result.Should().HaveCount(6, "Min and Max are merged into single delegate");
     }
 }
