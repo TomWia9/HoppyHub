@@ -30,7 +30,7 @@ export class BeerOpinionsListComponent
   implements OnChanges, OnDestroy
 {
   @Input({ required: true }) beer!: Beer;
-  @ViewChild('opinionsSection') opinionsSection!: ElementRef;
+  @ViewChild('#showOpinionsButton') showOpinionsButton!: ElementRef;
   private opinionsService: OpinionsService = inject(OpinionsService);
 
   sortOptions = OpinionsParams.sortOptions;
@@ -103,7 +103,7 @@ export class BeerOpinionsListComponent
 
   scrollToTop(): void {
     const elementPosition =
-      this.opinionsSection.nativeElement.getBoundingClientRect().top +
+      this.showOpinionsButton.nativeElement.getBoundingClientRect().top +
       window.scrollY;
 
     window.scrollTo({

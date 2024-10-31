@@ -38,6 +38,10 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
   private authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
+    this.getBeer();
+  }
+
+  getBeer(): void {
     this.loading = true;
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
@@ -62,14 +66,6 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
             }
           });
       });
-  }
-
-  onFavoritesCountChanged(favoritesCountChange: number): void {
-    this.beer.favoritesCount += favoritesCountChange;
-  }
-
-  onOpinionsCountChanged(opinionsCountChange: number): void {
-    this.beer.opinionsCount += opinionsCountChange;
   }
 
   ngOnDestroy(): void {

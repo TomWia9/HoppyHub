@@ -59,14 +59,12 @@
     <app-favorite
       [beer]="beer"
       [user]="user"
-      (favoritesCountChanged)="onFavoritesCountChanged($event)"
+      (favoritesCountChanged)="getBeer()"
       >></app-favorite
     >
     <app-beer-opinions
       [beer]="beer"
       [user]="user"
-      (opinionsCountChanged)="
-        onOpinionsCountChanged($event)
-      "></app-beer-opinions>
+      (opinionsCountChanged)="getBeer()"></app-beer-opinions>
   </div>
 }

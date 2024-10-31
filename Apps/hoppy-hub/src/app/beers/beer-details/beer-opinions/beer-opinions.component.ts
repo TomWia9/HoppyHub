@@ -39,7 +39,7 @@ import { BeerOpinionsListComponent } from './beer-opinions-list/beer-opinions-li
 export class BeerOpinionsComponent implements OnDestroy, OnChanges {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
-  @Output() opinionsCountChanged = new EventEmitter<number>();
+  @Output() opinionsCountChanged = new EventEmitter<void>();
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
@@ -52,9 +52,9 @@ export class BeerOpinionsComponent implements OnDestroy, OnChanges {
     this.checkIfUserAlreadyAddedOpinion();
   }
 
-  refreshOpinionsCount(opinionsCountChange: number): void {
+  refreshOpinionsCount(): void {
     this.existingOpinion = null;
-    this.opinionsCountChanged.emit(opinionsCountChange);
+    this.opinionsCountChanged.emit();
     this.checkIfUserAlreadyAddedOpinion();
   }
 

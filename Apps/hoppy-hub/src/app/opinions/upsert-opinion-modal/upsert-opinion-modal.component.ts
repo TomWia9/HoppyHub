@@ -42,7 +42,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) existingOpinion!: Opinion | null;
-  @Output() opinionUpserted = new EventEmitter<number>();
+  @Output() opinionUpserted = new EventEmitter<void>();
   @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
@@ -107,7 +107,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
               this.opinionForm.reset();
               this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
               this.alertService.openAlert(AlertType.Success, 'Opinion updated');
-              this.opinionUpserted.emit(0);
+              this.opinionUpserted.emit();
               this.loading = false;
             },
             error: error => {
@@ -119,7 +119,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
           next: () => {
             this.opinionForm.reset();
             this.alertService.openAlert(AlertType.Success, 'Opinion created');
-            this.opinionUpserted.emit(1);
+            this.opinionUpserted.emit();
             this.loading = false;
           },
           error: error => {
