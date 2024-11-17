@@ -5,6 +5,8 @@ import { BreweriesComponent } from './breweries/breweries.component';
 import { BreweryDetailsComponent } from './breweries/brewery-details/brewery-details.component';
 import { BeerDetailsComponent } from './beers/beer-details/beer-details.component';
 import { BeersComponent } from './beers/beers.component';
+import { UserDetailsComponent } from './users/user-details/user-details.component';
+import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
   {
@@ -20,6 +22,11 @@ export const routes: Routes = [
     path: 'beers',
     component: BeersComponent,
     children: [{ path: ':id', component: BeerDetailsComponent }]
+  },
+  {
+    path: 'users',
+    component: UsersComponent,
+    children: [{ path: ':id', component: UserDetailsComponent }]
   },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }
