@@ -13,17 +13,27 @@ import { Opinion } from '../../../opinions/opinion.model';
 import { faBeerMugEmpty } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faHeart } from '@fortawesome/free-regular-svg-icons';
+import { UsersService } from '../../users.service';
+import { User } from '../../user.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-info',
   standalone: true,
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent, FontAwesomeModule],
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    FontAwesomeModule,
+    CommonModule
+  ],
   templateUrl: './user-info.component.html'
 })
 export class UserInfoComponent implements OnInit, OnDestroy {
   routeSubscription!: Subscription;
+  usersSubscription!: Subscription;
   favoritesSubscription!: Subscription;
   opinionsSubscription!: Subscription;
+  user!: User;
   userFavoritesCount: number = 0;
   userBeersRatedCount: number = 0;
   error = '';
@@ -32,6 +42,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   faHeart = faHeart;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private usersService: UsersService = inject(UsersService);
   private favoritesService: FavoritesService = inject(FavoritesService);
   private opinionsService: OpinionsService = inject(OpinionsService);
 
@@ -39,6 +50,19 @@ export class UserInfoComponent implements OnInit, OnDestroy {
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
       .subscribe(userId => {
+        this.usersSubscription = this.usersService
+          .getUserById(userId as string)
+          .subscribe({
+            next: (user: User) => {
+              this.user = user;
+              this.error = '';
+              this.loading = false;
+            },
+            error: () => {
+              this.error = 'An error occurred while loading the user';
+              this.loading = false;
+            }
+          });
         this.favoritesSubscription = this.favoritesService
           .getFavorites(new FavoritesParams({ userId: userId as string }))
           .subscribe({
@@ -72,6 +96,9 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.routeSubscription) {
       this.routeSubscription.unsubscribe();
+    }
+    if (this.usersSubscription) {
+      this.usersSubscription.unsubscribe();
     }
     if (this.favoritesSubscription) {
       this.favoritesSubscription.unsubscribe();

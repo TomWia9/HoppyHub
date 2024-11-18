@@ -4,7 +4,9 @@
   <app-error-message [message]="error"></app-error-message>
 } @else {
   <div class="text-center">
-    <p class="my-2 text-2xl font-bold">[TODO: Add username] Profile</p>
+    <p class="my-2 text-2xl font-bold">
+      {{ user.username | uppercase }} Profile
+    </p>
     <div class="stats my-2 bg-neutral shadow">
       <div class="stat">
         <div class="stat-title text-xl">Beers Rated</div>
