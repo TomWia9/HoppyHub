@@ -16,9 +16,11 @@
           >
         </div>
       }
-      <a class="link-hover link link-primary align-top">{{
-        opinion.username
-      }}</a>
+      <a
+        class="link-hover link link-primary align-top"
+        [routerLink]="['/users', opinion.createdBy]"
+        >{{ opinion.username }}</a
+      >
     </div>
     <p class="text-justify">{{ opinion.comment }}</p>
     <div class="mt-4 grid place-items-center gap-4 sm:grid-cols-2">
