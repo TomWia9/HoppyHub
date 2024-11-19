@@ -43,4 +43,19 @@ export class FavoritesParams implements Params {
 
     return params;
   }
+
+  static sortOptions = [
+    {
+      label: 'Last Added (New to Old)',
+      value: 'LastModified',
+      direction: 1
+    },
+    {
+      label: 'Last Added (Old to New)',
+      value: 'LastModified',
+      direction: 0
+    },
+    { label: 'Beer Name (A to Z)', value: 'Beer', direction: 1 },
+    { label: 'Beer Name (Z to A)', value: 'Beer', direction: 0 }
+  ];
 }
