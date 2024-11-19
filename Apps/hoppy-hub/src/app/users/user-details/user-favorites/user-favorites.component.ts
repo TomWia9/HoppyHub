@@ -11,11 +11,17 @@ import { User } from '../../user.model';
 import { BeerCardComponent } from '../../../beers/beer-card/beer-card.component';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
+import { UserFavoritesFiltersComponent } from './user-favorites-filters/user-favorites-filters.component';
 
 @Component({
   selector: 'app-user-favorites',
   standalone: true,
-  imports: [BeerCardComponent, PaginationComponent, LoadingSpinnerComponent],
+  imports: [
+    BeerCardComponent,
+    PaginationComponent,
+    LoadingSpinnerComponent,
+    UserFavoritesFiltersComponent
+  ],
   templateUrl: './user-favorites.component.html'
 })
 export class UserFavoritesComponent
@@ -52,8 +58,6 @@ export class UserFavoritesComponent
     this.favoriteBeersParamsSubscription =
       this.favoritesService.paramsChanged.subscribe(
         (params: FavoritesParams) => {
-          console.log('fsa');
-
           this.favoriteBeersParams = params;
           this.favoriteBeersParams.userId = this.user.id;
           this.getUserFavoriteBeers();

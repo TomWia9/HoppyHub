@@ -1,10 +1,10 @@
 @if (loading) {
   <app-loading-spinner></app-loading-spinner>
 } @else {
-  TODO: FILTERS
-  <!-- <app-user-favorite-beers-filters
-      [params]="beersParams"
-      [paginationData]="paginationData"></app-user-favorite-beers-filters> -->
+  <app-user-favorites-filters
+    [paginationData]="paginationData"
+    [favoriteBeersParams]="favoriteBeersParams"
+    [userId]="user.id"></app-user-favorites-filters>
 
   <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
     @for (beer of favoriteBeers; track beer.id) {

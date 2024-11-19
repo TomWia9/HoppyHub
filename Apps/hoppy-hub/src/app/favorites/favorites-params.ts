@@ -55,7 +55,7 @@ export class FavoritesParams implements Params {
       value: 'LastModified',
       direction: 0
     },
-    { label: 'Beer Name (A to Z)', value: 'Beer', direction: 1 },
-    { label: 'Beer Name (Z to A)', value: 'Beer', direction: 0 }
+    { label: 'Beer Name (A to Z)', value: 'Beer', direction: 0 },
+    { label: 'Beer Name (Z to A)', value: 'Beer', direction: 1 }
   ];
 }
