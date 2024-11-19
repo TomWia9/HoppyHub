@@ -1,9 +1,15 @@
-<!-- filters-modal -->
-<app-user-info></app-user-info>
-<section class="my-2 grid grid-cols-1 gap-x-4 text-center xl:grid-cols-2">
-  <div class="order-last my-4 xl:order-first">User Opinions [TODO]</div>
-  <div class="order-first my-4 xl:order-last">
-    <div>User Favorites List [TODO]</div>
-    <div>Top Rated Beers [TODO]</div>
-  </div>
-</section>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <!-- filters-modal -->
+  <app-user-info [user]="user"></app-user-info>
+  <section class="my-2 grid grid-cols-1 gap-x-4 text-center xl:grid-cols-2">
+    <div class="order-last my-4 xl:order-first">User Opinions [TODO]</div>
+    <div class="order-first my-4 xl:order-last">
+      <div>User Favorites List [TODO]</div>
+      <div>Top Rated Beers [TODO]</div>
+    </div>
+  </section>
+}
