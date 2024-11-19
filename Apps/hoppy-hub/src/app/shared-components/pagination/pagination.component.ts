@@ -14,6 +14,8 @@ import { BreweriesParams } from '../../breweries/breweries-params';
 import { BreweriesService } from '../../breweries/breweries.service';
 import { OpinionsParams } from '../../opinions/opinions-params';
 import { OpinionsService } from '../../opinions/opinions.service';
+import { FavoritesParams } from '../../favorites/favorites-params';
+import { FavoritesService } from '../../favorites/favorites.service';
 
 @Component({
   selector: 'app-pagination',
@@ -25,7 +27,8 @@ export class PaginationComponent implements OnInit {
   @Input({ required: true }) params!:
     | BeersParams
     | BreweriesParams
-    | OpinionsParams;
+    | OpinionsParams
+    | FavoritesParams;
   @Input({ required: true }) paginationData!: Pagination;
   @Input() size: string = 'lg';
   @Output() scrollTo = new EventEmitter<void>();
@@ -35,6 +38,7 @@ export class PaginationComponent implements OnInit {
   private beersService: BeersService = inject(BeersService);
   private breweriesService: BreweriesService = inject(BreweriesService);
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private favoritesService: FavoritesService = inject(FavoritesService);
 
   ngOnInit(): void {
     switch (this.size) {
@@ -67,6 +71,9 @@ export class PaginationComponent implements OnInit {
     }
     if (this.params instanceof OpinionsParams) {
       this.opinionsService.paramsChanged.next(this.params);
+    }
+    if (this.params instanceof FavoritesParams) {
+      this.favoritesService.paramsChanged.next(this.params);
     }
   }
 }

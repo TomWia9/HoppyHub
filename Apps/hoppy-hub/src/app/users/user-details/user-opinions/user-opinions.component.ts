@@ -50,11 +50,12 @@ export class UserOpinionsComponent
   refreshOpinions(): void {
     this.opinionsParams.userId = this.user.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
-    this.opinionsService.paramsChanged.subscribe((params: OpinionsParams) => {
-      this.opinionsParams = params;
-      this.opinionsParams.userId = this.user.id;
-      this.getUserOpinions();
-    });
+    this.opinionsParamsSubscription =
+      this.opinionsService.paramsChanged.subscribe((params: OpinionsParams) => {
+        this.opinionsParams = params;
+        this.opinionsParams.userId = this.user.id;
+        this.getUserOpinions();
+      });
   }
 
   onSort(): void {

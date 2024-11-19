@@ -1,1 +1,23 @@
-<p>user-favorites works!</p>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  TODO: FILTERS
+  <!-- <app-user-favorite-beers-filters
+      [params]="beersParams"
+      [paginationData]="paginationData"></app-user-favorite-beers-filters> -->
+
+  <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    @for (beer of favoriteBeers; track beer.id) {
+      <div class="transform transition-transform duration-300 hover:scale-105">
+        <app-beer-card [beer]="beer"></app-beer-card>
+      </div>
+    }
+  </div>
+
+  @if (paginationData.HasNext || paginationData.HasPrevious) {
+    <app-pagination
+      [params]="favoriteBeersParams"
+      [paginationData]="paginationData"
+      size="md"></app-pagination>
+  }
+}

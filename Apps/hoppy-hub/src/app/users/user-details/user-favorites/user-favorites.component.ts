@@ -8,11 +8,14 @@ import { DataHelper } from '../../../shared/data-helper';
 import { PagedList } from '../../../shared/paged-list';
 import { Pagination } from '../../../shared/pagination';
 import { User } from '../../user.model';
+import { BeerCardComponent } from '../../../beers/beer-card/beer-card.component';
+import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
+import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-user-favorites',
   standalone: true,
-  imports: [],
+  imports: [BeerCardComponent, PaginationComponent, LoadingSpinnerComponent],
   templateUrl: './user-favorites.component.html'
 })
 export class UserFavoritesComponent
@@ -29,7 +32,7 @@ export class UserFavoritesComponent
   sortOptions = FavoritesParams.sortOptions;
   selectedSortOptionIndex: number = 0;
   favoriteBeersParams = new FavoritesParams({
-    pageSize: 10,
+    pageSize: 6,
     pageNumber: 1,
     sortBy: 'LastModified',
     sortDirection: 1
@@ -46,11 +49,16 @@ export class UserFavoritesComponent
   refreshFavoriteBeers(): void {
     this.favoriteBeersParams.userId = this.user.id;
     this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-    this.favoritesService.paramsChanged.subscribe((params: FavoritesParams) => {
-      this.favoriteBeersParams = params;
-      this.favoriteBeersParams.userId = this.user.id;
-      this.getUserFavoriteBeers();
-    });
+    this.favoriteBeersParamsSubscription =
+      this.favoritesService.paramsChanged.subscribe(
+        (params: FavoritesParams) => {
+          console.log('fsa');
+
+          this.favoriteBeersParams = params;
+          this.favoriteBeersParams.userId = this.user.id;
+          this.getUserFavoriteBeers();
+        }
+      );
   }
 
   onSort(): void {
@@ -65,7 +73,7 @@ export class UserFavoritesComponent
   onFiltersClear(): void {
     this.selectedSortOptionIndex = 0;
     this.favoriteBeersParams = new FavoritesParams({
-      pageSize: 10,
+      pageSize: 6,
       pageNumber: 1,
       sortBy: 'created',
       sortDirection: 1

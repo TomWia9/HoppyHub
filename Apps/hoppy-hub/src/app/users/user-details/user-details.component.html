@@ -8,11 +8,15 @@
   <section class="my-2 grid grid-cols-1 gap-x-4 text-center xl:grid-cols-2">
     <div class="order-last my-4 xl:order-first">
       <p class="my-2 text-3xl text-primary">User Opinions</p>
-      <!-- <app-user-opinions [user]="user"></app-user-opinions> -->
+      <app-user-opinions [user]="user"></app-user-opinions>
     </div>
     <div class="order-first my-4 xl:order-last">
       <p class="my-2 text-3xl text-primary">User Favorite Beers</p>
-      <app-user-favorites [user]="user"></app-user-favorites>
+      <div class="container mx-auto p-4">
+        <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
+          <app-user-favorites [user]="user"></app-user-favorites>
+        </div>
+      </div>
     </div>
   </section>
 }
