@@ -13,7 +13,8 @@ import { Opinion } from '../opinion.model';
 export class OpinionComponent {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) opinion!: Opinion;
-  @Input() showName: boolean = true;
+  @Input() showBeerName: boolean = true;
+  @Input() showUsername: boolean = true;
 
   getStars(rating: number): number[] {
     return Array.from({ length: rating }, (_, index) => index + 1);

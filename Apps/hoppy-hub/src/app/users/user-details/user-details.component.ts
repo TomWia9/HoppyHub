@@ -6,11 +6,17 @@ import { User } from '../user.model';
 import { UsersService } from '../users.service';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
+import { UserOpinionsComponent } from './user-opinions/user-opinions.component';
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [UserInfoComponent, LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [
+    UserInfoComponent,
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    UserOpinionsComponent
+  ],
   templateUrl: './user-details.component.html'
 })
 export class UserDetailsComponent implements OnInit, OnDestroy {

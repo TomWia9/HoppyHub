@@ -14,7 +14,6 @@ import { map, Subscription, take, tap } from 'rxjs';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
-import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { ModalService, ModalType } from '../../../services/modal.service';
 import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
 import { AuthUser } from '../../../auth/auth-user.model';
@@ -28,7 +27,6 @@ import { BeerOpinionsListComponent } from './beer-opinions-list/beer-opinions-li
   imports: [
     OpinionComponent,
     FormsModule,
-    PaginationComponent,
     UpsertOpinionModalComponent,
     LoadingSpinnerComponent,
     DeleteOpinionModalComponent,
