@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
 import { User } from '../../user.model';
-import { forkJoin, map, Subscription, switchMap } from 'rxjs';
+import { forkJoin, map, of, Subscription, switchMap } from 'rxjs';
 import { Opinion } from '../../../opinions/opinion.model';
 import { OpinionsParams } from '../../../opinions/opinions-params';
 import { OpinionsService } from '../../../opinions/opinions.service';
@@ -12,11 +12,17 @@ import { FormsModule } from '@angular/forms';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { Beer } from '../../../beers/beer.model';
 import { BeersService } from '../../../beers/beers.service';
+import { UserOpinionsFiltersComponent } from './user-opinions-filters/user-opinions-filters.component';
 
 @Component({
   selector: 'app-user-opinions',
   standalone: true,
-  imports: [PaginationComponent, FormsModule, OpinionComponent],
+  imports: [
+    PaginationComponent,
+    FormsModule,
+    OpinionComponent,
+    UserOpinionsFiltersComponent
+  ],
   templateUrl: './user-opinions.component.html'
 })
 export class UserOpinionsComponent
@@ -95,6 +101,10 @@ export class UserOpinionsComponent
               .pipe(map(beer => ({ opinion, beer })))
           );
           this.paginationData = this.getPaginationData(opinions);
+
+          if (opinions.items.length === 0) {
+            return of([]);
+          }
 
           return forkJoin(beerRequests);
         })

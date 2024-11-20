@@ -11,7 +11,7 @@
   <div class="tooltip tooltip-top" data-tip="Sort by...">
     <select
       class="select select-bordered select-sm w-56"
-      [(ngModel)]="selectedSortIndex"
+      [(ngModel)]="selectedSortOptionIndex"
       (change)="onSort()">
       @for (option of sortOptions; track $index) {
         <option [value]="$index">
@@ -40,7 +40,7 @@
   </div>
   <div class="mb-4 lg:col-span-3 lg:place-self-center xl:col-auto">
     <app-pagination
-      [params]="favoriteBeersParams"
+      [params]="opinionsParams"
       [paginationData]="paginationData"
       size="sm"></app-pagination>
   </div>

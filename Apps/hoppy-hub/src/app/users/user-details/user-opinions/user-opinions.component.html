@@ -1,25 +1,7 @@
-<div class="grid place-items-center sm:grid-cols-2">
-  @if (opinionBeerPairs && opinionBeerPairs.length > 0) {
-    <div class="my-2">
-      <app-pagination
-        [params]="opinionsParams"
-        [paginationData]="paginationData"
-        size="sm"></app-pagination>
-    </div>
-    <div class="tooltip tooltip-top my-2" data-tip="Sort by...">
-      <select
-        class="select select-bordered"
-        [(ngModel)]="selectedSortOptionIndex"
-        (change)="onSort()">
-        @for (option of sortOptions; track $index) {
-          <option [value]="$index">
-            {{ option.label }}
-          </option>
-        }
-      </select>
-    </div>
-  }
-</div>
+<app-user-opinions-filters
+  [opinionsParams]="opinionsParams"
+  [paginationData]="paginationData"
+  [userId]="user.id"></app-user-opinions-filters>
 
 @if (!loading) {
   @for (pair of opinionBeerPairs; track $index) {

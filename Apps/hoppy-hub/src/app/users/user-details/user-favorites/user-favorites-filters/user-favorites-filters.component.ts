@@ -33,7 +33,7 @@ export class UserFavoritesFiltersComponent implements OnInit {
   searchForm: FormGroup = new FormGroup({
     search: new FormControl('')
   });
-  selectedSortOptionIndex: number = 0;
+  selectedSortIndex: number = 0;
   sortOptions = FavoritesParams.sortOptions;
 
   ngOnInit(): void {
@@ -54,15 +54,15 @@ export class UserFavoritesFiltersComponent implements OnInit {
 
   onSort(): void {
     this.favoriteBeersParams.sortBy =
-      this.sortOptions[this.selectedSortOptionIndex].value;
+      this.sortOptions[this.selectedSortIndex].value;
     this.favoriteBeersParams.sortDirection =
-      this.sortOptions[this.selectedSortOptionIndex].direction;
+      this.sortOptions[this.selectedSortIndex].direction;
     this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
   }
 
   onFiltersClear(): void {
     this.searchForm.reset();
-    this.selectedSortOptionIndex = 0;
+    this.selectedSortIndex = 0;
     this.favoriteBeersParams = new FavoritesParams({
       pageSize: 6,
       pageNumber: 1,
