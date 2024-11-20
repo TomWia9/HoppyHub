@@ -2,7 +2,7 @@ import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { Beer } from '../../../beers/beer.model';
-import { Subscription, switchMap, forkJoin } from 'rxjs';
+import { Subscription, switchMap, forkJoin, of } from 'rxjs';
 import { BeersService } from '../../../beers/beers.service';
 import { DataHelper } from '../../../shared/data-helper';
 import { PagedList } from '../../../shared/paged-list';
@@ -101,6 +101,10 @@ export class UserFavoritesComponent
           );
 
           this.paginationData = this.getPaginationData(favoriteBeers);
+
+          if (favoriteBeers.items.length === 0) {
+            return of([]);
+          }
 
           return forkJoin(beerRequests);
         })
