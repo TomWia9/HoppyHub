@@ -55,7 +55,10 @@ export class BreweryBeersFiltersComponent implements OnInit, OnDestroy {
   }
 
   onSearch(): void {
-    if (this.searchForm.value.search) {
+    if (
+      this.beersService.paramsChanged.value.searchQuery !==
+      this.searchForm.value.search
+    ) {
       this.params.searchQuery = this.searchForm.value.search;
       this.beersService.paramsChanged.next(this.params);
     }

@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnChanges } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Pagination } from '../../../../shared/pagination';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -23,7 +23,7 @@ import { PaginationComponent } from '../../../../shared-components/pagination/pa
   ],
   templateUrl: './user-favorites-filters.component.html'
 })
-export class UserFavoritesFiltersComponent implements OnChanges {
+export class UserFavoritesFiltersComponent implements OnInit {
   @Input({ required: true }) favoriteBeersParams!: FavoritesParams;
   @Input({ required: true }) paginationData!: Pagination;
   @Input({ required: true }) userId!: string;
@@ -36,14 +36,17 @@ export class UserFavoritesFiltersComponent implements OnChanges {
   selectedSortOptionIndex: number = 0;
   sortOptions = FavoritesParams.sortOptions;
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     this.searchForm = new FormGroup({
       search: new FormControl('')
     });
   }
 
   onSearch(): void {
-    if (this.searchForm.value.search) {
+    if (
+      this.favoritesService.paramsChanged.value.searchQuery !==
+      this.searchForm.value.search
+    ) {
       this.favoriteBeersParams.searchQuery = this.searchForm.value.search;
       this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
     }
