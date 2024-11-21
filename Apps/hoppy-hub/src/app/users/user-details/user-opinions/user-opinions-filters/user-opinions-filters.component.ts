@@ -26,7 +26,6 @@ import { Pagination } from '../../../../shared/pagination';
 export class UserOpinionsFiltersComponent implements OnInit {
   @Input({ required: true }) opinionsParams!: OpinionsParams;
   @Input({ required: true }) paginationData!: Pagination;
-  @Input({ required: true }) userId!: string;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   faX = faX;
@@ -86,26 +85,5 @@ export class UserOpinionsFiltersComponent implements OnInit {
     this.opinionsParams.sortDirection =
       this.sortOptions[this.selectedSortOptionIndex].direction;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
-  }
-
-  onFiltersClear(): void {
-    this.searchForm.reset();
-    this.selectedSortOptionIndex = 0;
-    this.opinionsParams = new OpinionsParams({
-      pageSize: 10,
-      pageNumber: 1,
-      sortBy: 'created',
-      sortDirection: 1,
-      hasImage: undefined,
-      hasComment: undefined,
-      userId: this.userId
-    });
-
-    if (
-      JSON.stringify(this.opinionsService.paramsChanged.value) !=
-      JSON.stringify(this.opinionsParams)
-    ) {
-      this.opinionsService.paramsChanged.next(this.opinionsParams);
-    }
   }
 }

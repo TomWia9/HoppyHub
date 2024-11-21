@@ -5,8 +5,7 @@
 } @else {
   <app-user-opinions-filters
     [opinionsParams]="opinionsParams"
-    [paginationData]="paginationData"
-    [userId]="user.id"></app-user-opinions-filters>
+    [paginationData]="paginationData"></app-user-opinions-filters>
 
   @for (pair of opinionBeerPairs; track $index) {
     <app-opinion

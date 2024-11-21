@@ -26,7 +26,6 @@ import { PaginationComponent } from '../../../../shared-components/pagination/pa
 export class UserFavoritesFiltersComponent implements OnInit {
   @Input({ required: true }) favoriteBeersParams!: FavoritesParams;
   @Input({ required: true }) paginationData!: Pagination;
-  @Input({ required: true }) userId!: string;
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   faX = faX;
@@ -58,24 +57,5 @@ export class UserFavoritesFiltersComponent implements OnInit {
     this.favoriteBeersParams.sortDirection =
       this.sortOptions[this.selectedSortIndex].direction;
     this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-  }
-
-  onFiltersClear(): void {
-    this.searchForm.reset();
-    this.selectedSortIndex = 0;
-    this.favoriteBeersParams = new FavoritesParams({
-      pageSize: 6,
-      pageNumber: 1,
-      sortBy: 'LastModified',
-      sortDirection: 1,
-      userId: this.userId
-    });
-
-    if (
-      JSON.stringify(this.favoritesService.paramsChanged.value) !=
-      JSON.stringify(this.favoriteBeersParams)
-    ) {
-      this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-    }
   }
 }

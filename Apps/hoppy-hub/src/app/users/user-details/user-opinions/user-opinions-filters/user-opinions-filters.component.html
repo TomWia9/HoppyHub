@@ -1,51 +1,5 @@
-<div
-  class="mx-4 mb-4 grid space-y-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2">
-  <div class="tooltip tooltip-top mt-4" data-tip="Clear the filters">
-    <button
-      class="btn btn-outline btn-primary join-item btn-sm w-2/3"
-      (click)="onFiltersClear()">
-      <fa-icon [icon]="faX"></fa-icon>
-    </button>
-  </div>
-
-  <div class="tooltip tooltip-top" data-tip="Sort by...">
-    <select
-      class="select select-bordered select-sm w-56"
-      [(ngModel)]="selectedSortOptionIndex"
-      (change)="onSort()">
-      @for (option of sortOptions; track $index) {
-        <option [value]="$index">
-          {{ option.label }}
-        </option>
-      }
-    </select>
-  </div>
-
-  <div class="form-control">
-    <label class="label flex cursor-pointer justify-center">
-      <span class="label-text mx-2">Opinions with images</span>
-      <input
-        type="checkbox"
-        class="toggle toggle-primary mx-2"
-        [checked]="onlyOpinionsWithImages"
-        [(ngModel)]="onlyOpinionsWithImages"
-        (change)="onShowOnlyOpinionsWithImages()" />
-    </label>
-  </div>
-
-  <div class="form-control">
-    <label class="label flex cursor-pointer justify-center">
-      <span class="label-text mx-2">Opinions with comments</span>
-      <input
-        type="checkbox"
-        class="toggle toggle-primary mx-2"
-        [checked]="onlyOpinionsWithComments"
-        [(ngModel)]="onlyOpinionsWithComments"
-        (change)="onShowOnlyOpinionsWithComments()" />
-    </label>
-  </div>
-
-  <div class="sm:order-last lg:order-none xl:order-last">
+<div class="mx-4 my-4 mb-4 grid sm:grid-cols-2">
+  <div class="my-2 sm:my-auto">
     <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
       <div class="join">
         <input
@@ -62,7 +16,47 @@
       </div>
     </form>
   </div>
-  <div class="mb-4 lg:col-span-3 lg:place-self-center xl:col-auto">
+
+  <div class="my-2 sm:my-auto">
+    <div class="tooltip tooltip-top" data-tip="Sort by...">
+      <select
+        class="select select-bordered select-sm w-56"
+        [(ngModel)]="selectedSortOptionIndex"
+        (change)="onSort()">
+        @for (option of sortOptions; track $index) {
+          <option [value]="$index">
+            {{ option.label }}
+          </option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="form-control sm:my-2">
+    <label class="label flex cursor-pointer justify-center">
+      <span class="label-text mx-2">Opinions with images</span>
+      <input
+        type="checkbox"
+        class="toggle toggle-primary mx-2"
+        [checked]="onlyOpinionsWithImages"
+        [(ngModel)]="onlyOpinionsWithImages"
+        (change)="onShowOnlyOpinionsWithImages()" />
+    </label>
+  </div>
+
+  <div class="form-control sm:my-2">
+    <label class="label flex cursor-pointer justify-center">
+      <span class="label-text mx-2">Opinions with comments</span>
+      <input
+        type="checkbox"
+        class="toggle toggle-primary mx-2"
+        [checked]="onlyOpinionsWithComments"
+        [(ngModel)]="onlyOpinionsWithComments"
+        (change)="onShowOnlyOpinionsWithComments()" />
+    </label>
+  </div>
+
+  <div class="mb-4 mt-3 sm:col-span-2 sm:mt-4 sm:place-self-center">
     <app-pagination
       [params]="opinionsParams"
       [paginationData]="paginationData"

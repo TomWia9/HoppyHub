@@ -5,16 +5,22 @@
 } @else {
   <app-user-favorites-filters
     [paginationData]="paginationData"
-    [favoriteBeersParams]="favoriteBeersParams"
-    [userId]="user.id"></app-user-favorites-filters>
+    [favoriteBeersParams]="favoriteBeersParams"></app-user-favorites-filters>
 
-  <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-    @for (beer of favoriteBeers; track beer.id) {
-      <div class="transform transition-transform duration-300 hover:scale-105">
-        <app-beer-card [beer]="beer"></app-beer-card>
+  @if (favoriteBeers.length > 0) {
+    <div class="container mx-auto p-4">
+      <div class="mb-6 rounded-lg bg-neutral p-6 shadow-md">
+        <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          @for (beer of favoriteBeers; track beer.id) {
+            <div
+              class="transform transition-transform duration-300 hover:scale-105">
+              <app-beer-card [beer]="beer"></app-beer-card>
+            </div>
+          }
+        </div>
       </div>
-    }
-  </div>
+    </div>
+  }
 
   @if (paginationData.HasNext || paginationData.HasPrevious) {
     <app-pagination
