@@ -31,7 +31,10 @@ export class BeersTableFiltersComponent implements OnInit {
   }
 
   onSearch(): void {
-    if (this.searchForm.value.search) {
+    if (
+      this.beersService.paramsChanged.value.searchQuery !==
+      this.searchForm.value.search
+    ) {
       this.params = new BeersParams({
         pageSize: 25,
         pageNumber: 1,

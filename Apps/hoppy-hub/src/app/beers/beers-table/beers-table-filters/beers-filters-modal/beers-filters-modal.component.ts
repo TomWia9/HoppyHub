@@ -288,8 +288,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
         ]
       ),
 
-      sortBy: new FormControl(''),
-      sortDirection: new FormControl('')
+      sortBy: new FormControl(0),
+      sortDirection: new FormControl(0)
     });
   }
 }

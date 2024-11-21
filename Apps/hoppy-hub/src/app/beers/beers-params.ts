@@ -123,12 +123,12 @@ export class BeersParams implements Params {
     {
       label: 'Release date (New to Old)',
       value: 'ReleaseDate',
-      direction: 0
+      direction: 1
     },
     {
       label: 'Release date (Old to New)',
       value: 'ReleaseDate',
-      direction: 1
+      direction: 0
     },
     { label: 'Name (A to Z)', value: 'Name', direction: 0 },
     { label: 'Name (Z to A)', value: 'Name', direction: 1 },
