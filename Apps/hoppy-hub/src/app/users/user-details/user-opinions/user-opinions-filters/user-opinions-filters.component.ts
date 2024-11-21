@@ -35,6 +35,8 @@ export class UserOpinionsFiltersComponent implements OnInit {
   });
   selectedSortOptionIndex: number = 0;
   sortOptions = OpinionsParams.sortOptions;
+  onlyOpinionsWithImages: boolean = false;
+  onlyOpinionsWithComments: boolean = false;
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -48,6 +50,32 @@ export class UserOpinionsFiltersComponent implements OnInit {
       this.searchForm.value.search
     ) {
       this.opinionsParams.searchQuery = this.searchForm.value.search;
+      this.opinionsService.paramsChanged.next(this.opinionsParams);
+    }
+  }
+
+  onShowOnlyOpinionsWithImages(): void {
+    if (
+      this.opinionsService.paramsChanged.value.hasImage !==
+      this.onlyOpinionsWithImages
+    ) {
+      this.opinionsParams.hasImage =
+        this.onlyOpinionsWithImages == false
+          ? undefined
+          : this.onlyOpinionsWithImages;
+      this.opinionsService.paramsChanged.next(this.opinionsParams);
+    }
+  }
+
+  onShowOnlyOpinionsWithComments(): void {
+    if (
+      this.opinionsService.paramsChanged.value.hasComment !==
+      this.onlyOpinionsWithImages
+    ) {
+      this.opinionsParams.hasComment =
+        this.onlyOpinionsWithComments == false
+          ? undefined
+          : this.onlyOpinionsWithComments;
       this.opinionsService.paramsChanged.next(this.opinionsParams);
     }
   }
@@ -68,6 +96,8 @@ export class UserOpinionsFiltersComponent implements OnInit {
       pageNumber: 1,
       sortBy: 'created',
       sortDirection: 1,
+      hasImage: undefined,
+      hasComment: undefined,
       userId: this.userId
     });
 
