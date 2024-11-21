@@ -58,9 +58,8 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
 
         var searchQuery = request.SearchQuery.Trim().ToUpper();
 
-        //TODO: Search also in beer name
         Expression<Func<Opinion, bool>> searchDelegate =
-            x => x.Comment != null && x.Comment.ToUpper().Contains(searchQuery);
+            x => x.Beer != null && x.Beer.Name != null && x.Beer.Name.ToUpper().Contains(searchQuery);
 
         delegates.Add(searchDelegate);
 
