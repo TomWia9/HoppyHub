@@ -6,6 +6,9 @@
       <img src="{{ beer.imageUri }}" alt="Beer 1" />
     </figure>
     <div class="card-body items-center text-center">
+      @if (showBrewery) {
+        <p class="font-bold text-accent">{{ beer.brewery.name }}</p>
+      }
       <h2 class="card-title font-bold">{{ beer.name }}</h2>
       <p class="mb-2">({{ beer.beerStyle.name }})</p>
       <p>{{ beer.description }}</p>

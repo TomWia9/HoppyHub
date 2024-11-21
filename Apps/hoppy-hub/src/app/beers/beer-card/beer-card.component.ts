@@ -10,4 +10,5 @@ import { RouterModule } from '@angular/router';
 })
 export class BeerCardComponent {
   @Input({ required: true }) beer!: Beer;
+  @Input() showBrewery: boolean = false;
 }

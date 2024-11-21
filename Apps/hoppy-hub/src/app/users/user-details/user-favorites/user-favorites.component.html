@@ -14,7 +14,7 @@
           @for (beer of favoriteBeers; track beer.id) {
             <div
               class="transform transition-transform duration-300 hover:scale-105">
-              <app-beer-card [beer]="beer"></app-beer-card>
+              <app-beer-card [beer]="beer" [showBrewery]="true"></app-beer-card>
             </div>
           }
         </div>
