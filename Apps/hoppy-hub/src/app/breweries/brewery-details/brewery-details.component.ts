@@ -92,11 +92,11 @@ export class BreweryDetailsComponent
   }
 
   private getBeers(): void {
-    this.breweryBeersLoading = true;
     this.beersSubscription = this.beersService
       .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
+          this.breweryBeersLoading = true;
           this.beers = beers;
           this.paginationData = this.getPaginationData(beers);
           this.error = '';
