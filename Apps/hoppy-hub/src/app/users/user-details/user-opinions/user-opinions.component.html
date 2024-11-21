@@ -1,9 +1,13 @@
-<app-user-opinions-filters
-  [opinionsParams]="opinionsParams"
-  [paginationData]="paginationData"
-  [userId]="user.id"></app-user-opinions-filters>
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <app-user-opinions-filters
+    [opinionsParams]="opinionsParams"
+    [paginationData]="paginationData"
+    [userId]="user.id"></app-user-opinions-filters>
 
-@if (!loading) {
   @for (pair of opinionBeerPairs; track $index) {
     <app-opinion
       [beer]="pair.beer"

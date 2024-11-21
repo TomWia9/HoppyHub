@@ -13,6 +13,8 @@ import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { Beer } from '../../../beers/beer.model';
 import { BeersService } from '../../../beers/beers.service';
 import { UserOpinionsFiltersComponent } from './user-opinions-filters/user-opinions-filters.component';
+import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 
 @Component({
   selector: 'app-user-opinions',
@@ -21,7 +23,9 @@ import { UserOpinionsFiltersComponent } from './user-opinions-filters/user-opini
     PaginationComponent,
     FormsModule,
     OpinionComponent,
-    UserOpinionsFiltersComponent
+    UserOpinionsFiltersComponent,
+    LoadingSpinnerComponent,
+    ErrorMessageComponent
   ],
   templateUrl: './user-opinions.component.html'
 })

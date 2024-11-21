@@ -70,7 +70,7 @@ export class UserOpinionsFiltersComponent implements OnInit {
   onShowOnlyOpinionsWithComments(): void {
     if (
       this.opinionsService.paramsChanged.value.hasComment !==
-      this.onlyOpinionsWithImages
+      this.onlyOpinionsWithComments
     ) {
       this.opinionsParams.hasComment =
         this.onlyOpinionsWithComments == false

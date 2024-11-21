@@ -12,6 +12,7 @@ import { BeerCardComponent } from '../../../beers/beer-card/beer-card.component'
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { UserFavoritesFiltersComponent } from './user-favorites-filters/user-favorites-filters.component';
+import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 
 @Component({
   selector: 'app-user-favorites',
@@ -20,7 +21,8 @@ import { UserFavoritesFiltersComponent } from './user-favorites-filters/user-fav
     BeerCardComponent,
     PaginationComponent,
     LoadingSpinnerComponent,
-    UserFavoritesFiltersComponent
+    UserFavoritesFiltersComponent,
+    ErrorMessageComponent
   ],
   templateUrl: './user-favorites.component.html'
 })
