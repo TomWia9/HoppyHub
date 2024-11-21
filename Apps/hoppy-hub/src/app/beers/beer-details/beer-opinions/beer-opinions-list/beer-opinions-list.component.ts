@@ -18,11 +18,17 @@ import { PaginationComponent } from '../../../../shared-components/pagination/pa
 import { FormsModule } from '@angular/forms';
 import { OpinionComponent } from '../../../../opinions/opinion/opinion.component';
 import { Beer } from '../../../beer.model';
+import { BeerOpinionsListFiltersComponent } from './beer-opinions-list-filters/beer-opinions-list-filters.component';
 
 @Component({
   selector: 'app-beer-opinions-list',
   standalone: true,
-  imports: [PaginationComponent, FormsModule, OpinionComponent],
+  imports: [
+    PaginationComponent,
+    FormsModule,
+    OpinionComponent,
+    BeerOpinionsListFiltersComponent
+  ],
   templateUrl: './beer-opinions-list.component.html'
 })
 export class BeerOpinionsListComponent
