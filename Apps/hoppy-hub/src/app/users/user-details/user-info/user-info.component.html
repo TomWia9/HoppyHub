@@ -9,7 +9,9 @@
         <div class="stat-value text-3xl font-bold text-primary">
           {{ user.username | uppercase }}
         </div>
-        <div class="stat-desc mt-2 text-sm">Joined: TODO | shortDate</div>
+        <div class="stat-desc mt-2 text-lg">
+          Joined: {{ user.created | date: 'shortDate' }}
+        </div>
       </div>
     </div>
 
