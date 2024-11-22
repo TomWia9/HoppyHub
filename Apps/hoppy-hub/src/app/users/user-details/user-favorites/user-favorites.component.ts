@@ -1,4 +1,12 @@
-import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { Beer } from '../../../beers/beer.model';
@@ -30,6 +38,7 @@ export class UserFavoritesComponent
   extends DataHelper
   implements OnChanges, OnDestroy
 {
+  @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
 
   private favoritesService: FavoritesService = inject(FavoritesService);
@@ -37,8 +46,6 @@ export class UserFavoritesComponent
   private favoriteBeersParamsSubscription!: Subscription;
   private getFavoriteBeersSubscription!: Subscription;
 
-  sortOptions = FavoritesParams.sortOptions;
-  selectedSortOptionIndex: number = 0;
   favoriteBeersParams = new FavoritesParams({
     pageSize: 6,
     pageNumber: 1,
@@ -67,30 +74,15 @@ export class UserFavoritesComponent
       );
   }
 
-  onSort(): void {
-    this.favoriteBeersParams.pageNumber = 1;
-    this.favoriteBeersParams.sortBy =
-      this.sortOptions[this.selectedSortOptionIndex].value;
-    this.favoriteBeersParams.sortDirection =
-      this.sortOptions[this.selectedSortOptionIndex].direction;
-    this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-  }
+  scrollToTop(): void {
+    const elementPosition =
+      this.topSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
 
-  onFiltersClear(): void {
-    this.selectedSortOptionIndex = 0;
-    this.favoriteBeersParams = new FavoritesParams({
-      pageSize: 6,
-      pageNumber: 1,
-      sortBy: 'created',
-      sortDirection: 1
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
     });
-
-    if (
-      JSON.stringify(this.favoritesService.paramsChanged.value) !=
-      JSON.stringify(this.favoriteBeersParams)
-    ) {
-      this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-    }
   }
 
   private getUserFavoriteBeers(): void {

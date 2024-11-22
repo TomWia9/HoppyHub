@@ -1,4 +1,12 @@
-import { Component, inject, Input, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnChanges,
+  OnDestroy,
+  ViewChild
+} from '@angular/core';
 import { User } from '../../user.model';
 import { forkJoin, map, of, Subscription, switchMap } from 'rxjs';
 import { Opinion } from '../../../opinions/opinion.model';
@@ -33,6 +41,7 @@ export class UserOpinionsComponent
   extends DataHelper
   implements OnChanges, OnDestroy
 {
+  @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
@@ -40,8 +49,6 @@ export class UserOpinionsComponent
   private opinionsParamsSubscription!: Subscription;
   private getOpinionsSubscription!: Subscription;
 
-  sortOptions = OpinionsParams.sortOptions;
-  selectedSortOptionIndex: number = 0;
   opinionsParams = new OpinionsParams({
     pageSize: 10,
     pageNumber: 1,
@@ -68,30 +75,15 @@ export class UserOpinionsComponent
       });
   }
 
-  onSort(): void {
-    this.opinionsParams.pageNumber = 1;
-    this.opinionsParams.sortBy =
-      this.sortOptions[this.selectedSortOptionIndex].value;
-    this.opinionsParams.sortDirection =
-      this.sortOptions[this.selectedSortOptionIndex].direction;
-    this.opinionsService.paramsChanged.next(this.opinionsParams);
-  }
+  scrollToTop(): void {
+    const elementPosition =
+      this.topSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
 
-  onFiltersClear(): void {
-    this.selectedSortOptionIndex = 0;
-    this.opinionsParams = new OpinionsParams({
-      pageSize: 10,
-      pageNumber: 1,
-      sortBy: 'created',
-      sortDirection: 1
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
     });
-
-    if (
-      JSON.stringify(this.opinionsService.paramsChanged.value) !=
-      JSON.stringify(this.opinionsParams)
-    ) {
-      this.opinionsService.paramsChanged.next(this.opinionsParams);
-    }
   }
 
   private getUserOpinions(): void {

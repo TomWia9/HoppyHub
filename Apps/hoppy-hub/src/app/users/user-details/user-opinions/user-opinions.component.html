@@ -1,25 +1,28 @@
-@if (loading) {
-  <app-loading-spinner></app-loading-spinner>
-} @else if (error) {
-  <app-error-message [message]="error"></app-error-message>
-} @else {
-  <app-user-opinions-filters
-    [opinionsParams]="opinionsParams"
-    [paginationData]="paginationData"></app-user-opinions-filters>
+<div #topSection>
+  @if (loading) {
+    <app-loading-spinner></app-loading-spinner>
+  } @else if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  } @else {
+    <app-user-opinions-filters
+      [opinionsParams]="opinionsParams"
+      [paginationData]="paginationData"></app-user-opinions-filters>
 
-  @for (pair of opinionBeerPairs; track $index) {
-    <app-opinion
-      [beer]="pair.beer"
-      [opinion]="pair.opinion"
-      [showUsername]="false"></app-opinion>
-  }
+    @for (pair of opinionBeerPairs; track $index) {
+      <app-opinion
+        [beer]="pair.beer"
+        [opinion]="pair.opinion"
+        [showUsername]="false"></app-opinion>
+    }
 
-  @if (opinionBeerPairs && opinionBeerPairs.length > 0) {
-    <div class="my-2">
-      <app-pagination
-        [params]="opinionsParams"
-        [paginationData]="paginationData"
-        size="sm"></app-pagination>
-    </div>
+    @if (opinionBeerPairs && opinionBeerPairs.length > 0) {
+      <div class="my-2">
+        <app-pagination
+          [params]="opinionsParams"
+          [paginationData]="paginationData"
+          size="sm"
+          (scrollTo)="scrollToTop()"></app-pagination>
+      </div>
+    }
   }
-}
+</div>
