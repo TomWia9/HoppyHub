@@ -4,19 +4,27 @@
   <app-error-message [message]="error"></app-error-message>
 } @else {
   <div class="text-center">
-    <p class="my-2 text-2xl font-bold text-primary">
-      {{ user.username | uppercase }}
-    </p>
-    <div class="stats my-2 bg-neutral shadow">
+    <div class="stats mx-auto my-2 w-full max-w-lg bg-neutral shadow">
+      <div class="stat">
+        <div class="stat-value text-3xl font-bold text-primary">
+          {{ user.username | uppercase }}
+        </div>
+        <div class="stat-desc mt-2 text-sm">Joined: TODO | shortDate</div>
+      </div>
+    </div>
+
+    <div
+      class="g stats mx-auto grid w-full max-w-lg grid-cols-2 bg-neutral shadow">
       <div class="stat">
         <div class="stat-title text-xl">Beers Rated</div>
-        <div class="stat-value text-accent">
+        <div class="stat-value text-2xl text-accent">
           {{ userBeersRatedCount }} <fa-icon [icon]="faBeerMugEmpty"></fa-icon>
         </div>
       </div>
+
       <div class="stat">
         <div class="stat-title text-xl">Favorites Count</div>
-        <div class="stat-value text-secondary">
+        <div class="stat-value text-2xl text-secondary">
           {{ userFavoritesCount }} <fa-icon [icon]="faHeart"></fa-icon>
         </div>
       </div>
