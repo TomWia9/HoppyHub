@@ -7,7 +7,7 @@ namespace Infrastructure.Persistence.Configurations;
 /// <summary>
 ///     The application user entity configuration.
 /// </summary>
-public class OpinionConfiguration : IEntityTypeConfiguration<ApplicationUser>
+public class UserConfiguration : IEntityTypeConfiguration<ApplicationUser>
 {
     /// <summary>
     ///     Configures the application user entity.
