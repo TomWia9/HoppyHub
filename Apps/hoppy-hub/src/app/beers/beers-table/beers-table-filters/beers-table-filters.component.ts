@@ -4,9 +4,11 @@ import { Pagination } from '../../../shared/pagination';
 import { BeersParams } from '../../beers-params';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BeersService } from '../../beers.service';
-import { ModalService, ModalType } from '../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
 
 @Component({
   selector: 'app-beers-table-filters',
@@ -47,7 +49,7 @@ export class BeersTableFiltersComponent implements OnInit {
   }
 
   onFiltersModalOpen(): void {
-    this.modalService.openModal(ModalType.BeersFilters);
+    this.modalService.openModal(new ModalModel(ModalType.BeersFilters));
   }
 
   onFiltersClear(): void {

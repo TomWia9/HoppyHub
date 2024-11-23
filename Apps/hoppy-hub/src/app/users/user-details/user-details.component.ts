@@ -8,6 +8,8 @@ import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { UserOpinionsComponent } from './user-opinions/user-opinions.component';
 import { UserFavoritesComponent } from './user-favorites/user-favorites.component';
+import { AuthService } from '../../auth/auth.service';
+import { AuthUser } from '../../auth/auth-user.model';
 
 @Component({
   selector: 'app-user-details',
@@ -24,10 +26,13 @@ import { UserFavoritesComponent } from './user-favorites/user-favorites.componen
 export class UserDetailsComponent implements OnInit, OnDestroy {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private usersService: UsersService = inject(UsersService);
+  private authService: AuthService = inject(AuthService);
   private routeSubscription!: Subscription;
   private userSubscription!: Subscription;
+  private authUserSubscription!: Subscription;
 
   user!: User;
+  accountOwner: boolean = false;
   error = '';
   loading = true;
 
@@ -41,7 +46,12 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
             next: (user: User) => {
               this.user = user;
               this.error = '';
-              this.loading = false;
+              this.authUserSubscription = this.authService.user.subscribe(
+                (user: AuthUser | null) => {
+                  this.accountOwner = this.user.id === user?.id;
+                  this.loading = false;
+                }
+              );
             },
             error: () => {
               this.error = 'An error occurred while loading the user';
@@ -57,6 +67,9 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     }
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.authUserSubscription) {
+      this.authUserSubscription.unsubscribe();
     }
   }
 }

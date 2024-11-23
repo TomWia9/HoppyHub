@@ -2,12 +2,9 @@
   <app-loading-spinner></app-loading-spinner>
 } @else {
   <app-upsert-opinion-modal
-    [beer]="beer"
-    [existingOpinion]="existingOpinion"
     (opinionUpserted)="refreshOpinionsCount()"></app-upsert-opinion-modal>
   @if (existingOpinion && user) {
     <app-delete-opinion-modal
-      [opinionId]="existingOpinion.id"
       (opinionDeleted)="refreshOpinionsCount()"></app-delete-opinion-modal>
   }
   <div class="grid place-items-center sm:grid-cols-2">

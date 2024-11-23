@@ -1,3 +1,7 @@
+<app-upsert-opinion-modal
+  (opinionUpserted)="refreshOpinions()"></app-upsert-opinion-modal>
+<app-delete-opinion-modal
+  (opinionDeleted)="refreshOpinions()"></app-delete-opinion-modal>
 <div #topSection>
   @if (loading) {
     <app-loading-spinner></app-loading-spinner>
@@ -12,7 +16,8 @@
       <app-opinion
         [beer]="pair.beer"
         [opinion]="pair.opinion"
-        [showUsername]="false"></app-opinion>
+        [showUsername]="false"
+        [editMode]="accountOwner"></app-opinion>
     }
 
     @if (opinionBeerPairs && opinionBeerPairs.length > 0) {

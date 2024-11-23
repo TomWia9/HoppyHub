@@ -13,25 +13,21 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, ModalType } from '../../../../services/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 import { CustomValidators } from '../../../../shared/custom-validators';
 import { BreweriesParams } from '../../../breweries-params';
 import { BreweriesService } from '../../../breweries.service';
 import { Brewery } from '../../../brewery.model';
-import { LoadingSpinnerComponent } from '../../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared-components/error-message/error-message.component';
 import { CommonModule } from '@angular/common';
+import { ModalModel } from '../../../../shared/modal-model';
+import { ModalType } from '../../../../shared/model-type';
 
 @Component({
   selector: 'app-breweries-filters-modal',
   standalone: true,
   templateUrl: './breweries-filters-modal.component.html',
-  imports: [
-    LoadingSpinnerComponent,
-    ErrorMessageComponent,
-    ReactiveFormsModule,
-    CommonModule
-  ]
+  imports: [ErrorMessageComponent, ReactiveFormsModule, CommonModule]
 })
 export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
   @ViewChild('breweriesFiltersModal') modalRef!: ElementRef;
@@ -49,8 +45,8 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.onShowModal(modalType);
+      (modalModel: ModalModel) => {
+        this.onShowModal(modalModel);
       }
     );
 
@@ -83,8 +79,8 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onShowModal(modalType: ModalType): void {
-    if (modalType === ModalType.BreweriesFilters && this.modalRef) {
+  onShowModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.BreweriesFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }

@@ -52,6 +52,20 @@
           }
         </div>
         <p class="my-4 text-2xl">{{ opinion.created | date: 'short' }}</p>
+        @if (editMode) {
+          <div class="grid grid-cols-2">
+            <button
+              class="btn btn-outline btn-warning my-2 w-9/12"
+              (click)="onUpsertOpinionModalOpen()">
+              Edit
+            </button>
+            <button
+              class="btn btn-outline btn-error my-2 w-9/12"
+              (click)="onDeleteOpinionModalOpen()">
+              Delete
+            </button>
+          </div>
+        }
       </div>
     </div>
   </div>

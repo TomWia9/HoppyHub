@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-
-export enum ModalType {
-  Login,
-  Register,
-  BeersFilters,
-  BreweriesFilters,
-  UpsertOpinion,
-  DeleteOpinion
-}
+import { ModalModel } from '../shared/modal-model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalService {
-  modalOpened = new Subject<ModalType>();
+  modalOpened = new Subject<ModalModel>();
 
-  openModal(modalType: ModalType): void {
-    this.modalOpened.next(modalType);
+  openModal(modalModel: ModalModel): void {
+    this.modalOpened.next(modalModel);
   }
 }

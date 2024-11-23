@@ -23,6 +23,8 @@ import { BeersService } from '../../../beers/beers.service';
 import { UserOpinionsFiltersComponent } from './user-opinions-filters/user-opinions-filters.component';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
+import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
+import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
 
 @Component({
   selector: 'app-user-opinions',
@@ -33,7 +35,9 @@ import { ErrorMessageComponent } from '../../../shared-components/error-message/
     OpinionComponent,
     UserOpinionsFiltersComponent,
     LoadingSpinnerComponent,
-    ErrorMessageComponent
+    ErrorMessageComponent,
+    UpsertOpinionModalComponent,
+    DeleteOpinionModalComponent
   ],
   templateUrl: './user-opinions.component.html'
 })
@@ -43,6 +47,7 @@ export class UserOpinionsComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
+  @Input({ required: true }) accountOwner: boolean = false;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   private beersService: BeersService = inject(BeersService);
@@ -65,6 +70,9 @@ export class UserOpinionsComponent
   }
 
   refreshOpinions(): void {
+    if (this.opinionsParamsSubscription) {
+      this.opinionsParamsSubscription.unsubscribe();
+    }
     this.opinionsParams.userId = this.user.id;
     this.opinionsService.paramsChanged.next(this.opinionsParams);
     this.opinionsParamsSubscription =

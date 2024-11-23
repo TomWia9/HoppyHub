@@ -7,7 +7,9 @@
         ✕
       </button>
     </form>
-    @if (error) {
+    @if (loading) {
+      <app-loading-spinner></app-loading-spinner>
+    } @else if (error) {
       <app-error-message [message]="error"></app-error-message>
     } @else {
       <h3 class="my-2 text-2xl font-bold">
