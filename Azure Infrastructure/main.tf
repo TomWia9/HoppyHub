@@ -51,7 +51,7 @@ resource "azurerm_storage_account" "storage_account" {
 }
 resource "azurerm_storage_container" "blob_container" {
   name                  = local.blob_container_name
-  storage_account_name  = azurerm_storage_account.storage_account.name
+  storage_account_id    = azurerm_storage_account.storage_account.id
   container_access_type = "blob"
 }
 resource "azurerm_storage_blob" "temp_beer_image" {
