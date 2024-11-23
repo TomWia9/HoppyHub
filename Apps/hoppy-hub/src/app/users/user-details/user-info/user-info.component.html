@@ -6,27 +6,27 @@
   <div class="text-center">
     <div class="stats mx-auto my-2 w-full max-w-lg bg-neutral shadow">
       <div class="stat">
-        <div class="stat-value text-3xl font-bold text-primary">
+        <div class="stat-value text-2xl font-bold text-primary">
           {{ user.username | uppercase }}
         </div>
-        <div class="stat-desc mt-2 text-lg">
+        <div class="text-md stat-desc mt-2">
           Joined: {{ user.created | date: 'shortDate' }}
         </div>
       </div>
     </div>
 
     <div
-      class="g stats mx-auto grid w-full max-w-lg grid-cols-2 bg-neutral shadow">
+      class="stats mx-auto grid w-full max-w-lg grid-cols-2 bg-neutral shadow">
       <div class="stat">
-        <div class="stat-title text-xl">Beers Rated</div>
-        <div class="stat-value text-2xl text-accent">
+        <div class="stat-title text-lg">Beers Rated</div>
+        <div class="stat-value text-xl text-accent">
           {{ userBeersRatedCount }} <fa-icon [icon]="faBeerMugEmpty"></fa-icon>
         </div>
       </div>
 
       <div class="stat">
-        <div class="stat-title text-xl">Favorites Count</div>
-        <div class="stat-value text-2xl text-secondary">
+        <div class="stat-title text-lg">Favorites Count</div>
+        <div class="stat-value text-xl text-secondary">
           {{ userFavoritesCount }} <fa-icon [icon]="faHeart"></fa-icon>
         </div>
       </div>
