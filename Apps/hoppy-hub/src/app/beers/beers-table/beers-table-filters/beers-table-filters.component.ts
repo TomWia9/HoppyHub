@@ -4,12 +4,16 @@ import { Pagination } from '../../../shared/pagination';
 import { BeersParams } from '../../beers-params';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { BeersService } from '../../beers.service';
-import { ModalService, ModalType } from '../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
 
 @Component({
   selector: 'app-beers-table-filters',
   standalone: true,
-  imports: [PaginationComponent, ReactiveFormsModule],
+  imports: [PaginationComponent, ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './beers-table-filters.component.html'
 })
 export class BeersTableFiltersComponent implements OnInit {
@@ -20,6 +24,7 @@ export class BeersTableFiltersComponent implements OnInit {
   private modalService: ModalService = inject(ModalService);
 
   searchForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -27,26 +32,34 @@ export class BeersTableFiltersComponent implements OnInit {
     });
   }
 
-  onSearch() {
-    if (this.searchForm.value.search) {
-      this.params = new BeersParams(
-        25,
-        1,
-        'ReleaseDate',
-        1,
-        this.searchForm.value.search
-      );
+  onSearch(): void {
+    if (
+      this.beersService.paramsChanged.value.searchQuery !==
+      this.searchForm.value.search
+    ) {
+      this.params = new BeersParams({
+        pageSize: 25,
+        pageNumber: 1,
+        sortBy: 'releaseDate',
+        sortDirection: 1,
+        searchQuery: this.searchForm.value.search
+      });
       this.beersService.paramsChanged.next(this.params);
     }
   }
 
-  onFiltersModalOpen() {
-    this.modalService.openModal(ModalType.BeersFilters);
+  onFiltersModalOpen(): void {
+    this.modalService.openModal(new ModalModel(ModalType.BeersFilters));
   }
 
-  onFiltersClear() {
+  onFiltersClear(): void {
     this.searchForm.reset();
-    this.params = new BeersParams(25, 1, 'ReleaseDate', 1);
+    this.params = new BeersParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'releaseDate',
+      sortDirection: 1
+    });
 
     if (
       JSON.stringify(this.beersService.paramsChanged.value) !=

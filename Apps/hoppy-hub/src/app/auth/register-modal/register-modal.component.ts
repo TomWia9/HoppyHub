@@ -14,14 +14,15 @@ import {
   Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, ModalType } from '../../services/modal.service';
-import { Router } from '@angular/router';
+import { ModalService } from '../../services/modal.service';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../auth.service';
 import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
+import { ModalModel } from '../../shared/modal-model';
+import { ModalType } from '../../shared/model-type';
 
 @Component({
   selector: 'app-register-modal',
@@ -30,19 +31,19 @@ import {
   templateUrl: './register-modal.component.html'
 })
 export class RegisterModalComponent implements OnInit, OnDestroy {
+  @ViewChild('registerModal') myModalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
-  private router: Router = inject(Router);
 
-  @ViewChild('registerModal') myModalRef!: ElementRef;
   modalOppenedSubscription!: Subscription;
   registerForm!: FormGroup;
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.showModal(modalType);
+      (modalModel: ModalModel) => {
+        this.showModal(modalModel);
       }
     );
     this.registerForm = new FormGroup({
@@ -69,14 +70,14 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  onFormReset() {
+  onFormReset(): void {
     this.registerForm.reset();
     if (this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.registerForm.valid) {
       this.authService
         .register(
@@ -87,33 +88,36 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
         .subscribe({
           next: () => {
             this.onFormReset();
-            this.router.navigate(['/']);
+            this.alertService.openAlert(
+              AlertType.Success,
+              'Successfully registered'
+            );
           },
           error: error => {
             let errorMessage = 'Something went wrong';
 
             if (error.error && error.error.errors) {
               errorMessage = this.getErrorMessage(error.error.errors);
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }
   }
 
-  onSignIn() {
+  onSignIn(): void {
     this.onFormReset();
-    this.modalService.openModal(ModalType.Login);
+    this.modalService.openModal(new ModalModel(ModalType.Login));
   }
 
-  showModal(modalType: ModalType) {
-    if (modalType === ModalType.Register && this.myModalRef) {
+  private showModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.Register && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
-  getErrorMessage(array: { [key: string]: string }[]): string {
+  private getErrorMessage(array: { [key: string]: string }[]): string {
     if (array.length === 0) {
       return 'Something went wrong';
     }

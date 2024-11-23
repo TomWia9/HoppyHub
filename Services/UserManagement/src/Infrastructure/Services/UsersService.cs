@@ -165,7 +165,8 @@ public class UsersService : IUsersService
             Id = user.Id,
             Email = user.Email,
             Username = user.UserName,
-            Role = userRole.FirstOrDefault()
+            Role = userRole.FirstOrDefault(),
+            Created = user.Created
         };
     }
 
@@ -244,7 +245,8 @@ public class UsersService : IUsersService
         Dictionary<string, Expression<Func<ApplicationUser, object>>> sortingColumns = new()
         {
             { nameof(ApplicationUser.Email).ToUpper(), u => u.Email ?? string.Empty },
-            { nameof(ApplicationUser.UserName).ToUpper(), u => u.UserName ?? string.Empty }
+            { nameof(ApplicationUser.UserName).ToUpper(), u => u.UserName ?? string.Empty },
+            { nameof(ApplicationUser.Created).ToUpper(), u => u.Created }
         };
 
         return string.IsNullOrEmpty(sortBy) ? sortingColumns.First().Value : sortingColumns[sortBy.ToUpper()];

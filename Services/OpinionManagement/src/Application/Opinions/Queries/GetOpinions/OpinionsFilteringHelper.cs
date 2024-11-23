@@ -45,8 +45,11 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
         if (request.UserId is not null)
             delegates.Add(x => x.CreatedBy == request.UserId);
 
-        if (request.HaveImages is not null)
-            delegates.Add(x => !string.IsNullOrEmpty(x.ImageUri) == request.HaveImages);
+        if (request.HasImage is not null)
+            delegates.Add(x => !string.IsNullOrEmpty(x.ImageUri) == request.HasImage);
+
+        if (request.HasComment is not null)
+            delegates.Add(x => !string.IsNullOrEmpty(x.Comment) == request.HasComment);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {
@@ -56,7 +59,7 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
         var searchQuery = request.SearchQuery.Trim().ToUpper();
 
         Expression<Func<Opinion, bool>> searchDelegate =
-            x => x.Comment != null && x.Comment.ToUpper().Contains(searchQuery);
+            x => x.Beer != null && x.Beer.Name != null && x.Beer.Name.ToUpper().Contains(searchQuery);
 
         delegates.Add(searchDelegate);
 

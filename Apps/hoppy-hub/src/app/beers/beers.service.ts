@@ -14,7 +14,12 @@ export class BeersService {
   private http: HttpClient = inject(HttpClient);
 
   paramsChanged = new BehaviorSubject<BeersParams>(
-    new BeersParams(10, 1, 'ReleaseDate', 1)
+    new BeersParams({
+      pageSize: 10,
+      pageNumber: 1,
+      sortBy: 'releaseDate',
+      sortDirection: 1
+    })
   );
 
   getBeerById(id: string): Observable<Beer> {

@@ -1,0 +1,72 @@
+<div
+  class="md:text-md card my-4 bg-neutral bg-opacity-85 text-xs shadow-xl lg:text-lg">
+  <div class="card-body">
+    <div class="flex justify-between">
+      @if (beer && showBeerName) {
+        <div class="flex flex-col text-start">
+          <a
+            class="link-hover link card-title link-primary text-wrap"
+            [routerLink]="['/beers', beer.id]"
+            >{{ beer.name }}</a
+          >
+          <a
+            class="link-hover link link-accent my-2 text-start"
+            [routerLink]="['/breweries', beer.brewery.id]"
+            >{{ beer.brewery.name }}</a
+          >
+        </div>
+      }
+      @if (beer && showUsername) {
+        <a
+          class="link-hover link link-primary align-top"
+          [routerLink]="['/users', opinion.createdBy]"
+          >{{ opinion.username }}</a
+        >
+      }
+    </div>
+    <p class="text-justify">{{ opinion.comment }}</p>
+    <div
+      class="mt-4 grid grid-cols-1 place-content-between md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2"
+      [ngClass]="{
+        'place-content-between': opinion.imageUri,
+        'place-items-center': opinion.imageUri
+      }">
+      @if (opinion.imageUri) {
+        <div class="flex justify-center">
+          <figure class="mt-4 flex h-48 w-48 justify-center">
+            <img src="{{ opinion.imageUri }}" alt="beer image" />
+          </figure>
+        </div>
+      }
+      <div class="text-center md:text-left">
+        <div class="rating rating-md mt-6 md:mt-auto xl:mt-6 2xl:mt-auto">
+          @for (star of getStars(opinion.rating); track $index) {
+            <input
+              class="mask mask-star-2 cursor-default bg-green-500"
+              disabled />
+          }
+          @for (star of getEmptyStars(opinion.rating); track $index) {
+            <input
+              class="mask mask-star-2 cursor-default bg-gray-400"
+              disabled />
+          }
+        </div>
+        <p class="my-4 text-2xl">{{ opinion.created | date: 'short' }}</p>
+        @if (editMode) {
+          <div class="grid grid-cols-2">
+            <button
+              class="btn btn-outline btn-warning my-2 w-9/12"
+              (click)="onUpsertOpinionModalOpen()">
+              Edit
+            </button>
+            <button
+              class="btn btn-outline btn-error my-2 w-9/12"
+              (click)="onDeleteOpinionModalOpen()">
+              Delete
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

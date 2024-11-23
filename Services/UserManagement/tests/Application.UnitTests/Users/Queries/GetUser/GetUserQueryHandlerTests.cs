@@ -40,7 +40,11 @@ public class GetUserQueryHandlerTests
         // Arrange
         var userId = Guid.NewGuid();
         var query = new GetUserQuery { Id = userId };
-        var userDto = new UserDto { Id = userId, Email = "user@test.com", Username = "User", Role = Roles.User };
+        var userDto = new UserDto
+        {
+            Id = userId, Email = "user@test.com", Username = "User", Role = Roles.User,
+            Created = DateTimeOffset.UtcNow.AddYears(-2)
+        };
 
         _usersServiceMock.Setup(x => x.GetUserAsync(It.IsAny<Guid>()))
             .ReturnsAsync(userDto);

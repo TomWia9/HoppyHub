@@ -1,0 +1,35 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="text-center">
+    <div class="stats mx-auto my-2 w-full max-w-lg bg-neutral shadow">
+      <div class="stat">
+        <div class="stat-value text-2xl font-bold text-primary">
+          {{ user.username | uppercase }}
+        </div>
+        <div class="text-md stat-desc mt-2">
+          Joined: {{ user.created | date: 'shortDate' }}
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="stats mx-auto grid w-full max-w-lg grid-cols-2 bg-neutral shadow">
+      <div class="stat">
+        <div class="stat-title text-lg">Beers Rated</div>
+        <div class="stat-value text-xl text-accent">
+          {{ userBeersRatedCount }} <fa-icon [icon]="faBeerMugEmpty"></fa-icon>
+        </div>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title text-lg">Favorites Count</div>
+        <div class="stat-value text-xl text-secondary">
+          {{ userFavoritesCount }} <fa-icon [icon]="faHeart"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+}

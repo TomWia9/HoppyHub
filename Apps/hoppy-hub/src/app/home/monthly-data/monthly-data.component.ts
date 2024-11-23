@@ -28,32 +28,31 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   theMostPopularBeer!: Beer | null;
   theMostActiveUser!: User | null;
   theMostActiveUserBeersOpinionsCount!: number;
-
   error = '';
   loading = true;
   getOpinionsSubscription!: Subscription;
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.monthName = this.getPreviousMonthName();
     this.fetchAllOpinions();
   }
 
-  fetchAllOpinions(pageNumber: number = 1, allOpinions: Opinion[] = []) {
+  private fetchAllOpinions(
+    pageNumber: number = 1,
+    allOpinions: Opinion[] = []
+  ): void {
     const { from, to } = this.getPreviousMonthRange();
 
     this.getOpinionsSubscription = this.opinionsService
       .getOpinions(
-        new OpinionsParams(
-          50,
-          pageNumber,
-          'lastModified',
-          1,
-          undefined,
-          undefined,
-          undefined,
-          from.toDateString(),
-          to.toDateString()
-        )
+        new OpinionsParams({
+          pageSize: 50,
+          pageNumber: pageNumber,
+          sortBy: 'lastModified',
+          sortDirection: 1,
+          from: from.toDateString(),
+          to: to.toDateString()
+        })
       )
       .subscribe({
         next: (opinions: PagedList<Opinion>) => {
@@ -74,7 +73,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
       });
   }
 
-  getPreviousMonthRange(): { from: Date; to: Date } {
+  private getPreviousMonthRange(): { from: Date; to: Date } {
     const today = new Date();
     let year = today.getFullYear();
     let month = today.getMonth();
@@ -99,13 +98,13 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     };
   }
 
-  getLastMonthData(opinions: Opinion[]): void {
+  private getLastMonthData(opinions: Opinion[]): void {
     this.totalBeersRated = opinions.length;
     this.setTheMostPopularBeer(opinions);
     this.setTheMostActiveUser(opinions);
   }
 
-  setTheMostPopularBeer(opinions: Opinion[]): void {
+  private setTheMostPopularBeer(opinions: Opinion[]): void {
     const beerIdFrequencyMap = new Map<string, number>();
 
     opinions.forEach(opinion => {
@@ -136,7 +135,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     }
   }
 
-  setTheMostActiveUser(opinions: Opinion[]): void {
+  private setTheMostActiveUser(opinions: Opinion[]): void {
     const createdByFrequencyMap = new Map<string, number>();
 
     opinions.forEach(opinion => {
@@ -171,7 +170,7 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPreviousMonthName(): string {
+  private getPreviousMonthName(): string {
     const months = [
       'January',
       'February',
@@ -194,6 +193,8 @@ export class MonthlyDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.getOpinionsSubscription.unsubscribe();
+    if (this.getOpinionsSubscription) {
+      this.getOpinionsSubscription.unsubscribe();
+    }
   }
 }

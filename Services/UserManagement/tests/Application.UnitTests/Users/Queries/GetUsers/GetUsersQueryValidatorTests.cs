@@ -78,7 +78,7 @@ public class GetUsersQueryValidatorTests
 
         // Assert
         result.ShouldHaveValidationErrorFor(x => x.SortBy)
-            .WithErrorMessage("SortBy must be in [EMAIL, USERNAME]");
+            .WithErrorMessage("SortBy must be in [EMAIL, USERNAME, CREATED]");
     }
 
     /// <summary>
@@ -88,6 +88,7 @@ public class GetUsersQueryValidatorTests
     [Theory]
     [InlineData(nameof(UserDto.Email))]
     [InlineData(nameof(UserDto.Username))]
+    [InlineData(nameof(UserDto.Created))]
     [InlineData("")]
     [InlineData(null)]
     public void GetUsersQuery_ShouldNotHaveValidationErrorForSortBy_WhenSortByIsAllowedColumn(string? sortBy)

@@ -43,8 +43,8 @@ public static class ConfigureServices
                 {
                     cfg.Host(configuration.GetValue<string>("RabbitMQ:Host"), "/", h =>
                     {
-                        h.Username(configuration.GetValue<string>("RabbitMQ:Username"));
-                        h.Password(configuration.GetValue<string>("RabbitMQ:Password"));
+                        h.Username(configuration.GetValue<string>("RabbitMQ:Username") ?? "");
+                        h.Password(configuration.GetValue<string>("RabbitMQ:Password") ?? "");
                     });
 
                     cfg.ConfigureEndpoints(context,

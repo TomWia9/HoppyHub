@@ -5,18 +5,7 @@
       <button
         class="btn btn-outline btn-primary join-item btn-sm"
         (click)="onFiltersClear()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <fa-icon [icon]="faX"></fa-icon>
       </button>
     </div>
     <button
@@ -33,7 +22,7 @@
           type="text"
           id="beers_filters_search"
           formControlName="search"
-          class="input join-item input-bordered input-sm w-40"
+          class="input input-sm join-item input-bordered w-40"
           placeholder="Search breweries..." />
         <button class="btn btn-primary join-item btn-sm rounded-r-full">
           Search

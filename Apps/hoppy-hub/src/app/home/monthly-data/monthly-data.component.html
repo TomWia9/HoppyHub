@@ -16,7 +16,7 @@
       <div class="stat-title text-xs sm:text-lg">The most popular beer</div>
       <div class="stat-value text-primary">
         <a
-          class="link-hover link text-2xl sm:text-5xl"
+          class="link-hover link text-wrap text-2xl sm:text-4xl lg:text-3xl"
           [routerLink]="['/beers', theMostPopularBeer?.id]">
           {{ theMostPopularBeer?.name }}
         </a>
@@ -32,9 +32,11 @@
     <div class="stat">
       <div class="stat-title text-xs sm:text-lg">The most active user</div>
       <div class="stat-value text-primary">
-        <a class="link-hover link text-2xl sm:text-5xl">{{
-          theMostActiveUser?.username
-        }}</a>
+        <a
+          class="link-hover link text-wrap text-2xl sm:text-4xl lg:text-3xl"
+          [routerLink]="['/users', theMostActiveUser?.id]">
+          {{ theMostActiveUser?.username }}
+        </a>
       </div>
       @if (theMostActiveUser) {
         <div class="stat-desc mt-2 text-success">

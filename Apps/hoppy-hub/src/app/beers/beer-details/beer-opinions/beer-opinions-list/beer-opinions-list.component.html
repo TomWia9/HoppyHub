@@ -1,0 +1,47 @@
+<div class="my-2">
+  <button
+    class="btn btn-outline btn-primary w-9/12"
+    (click)="toggleOpinions()"
+    #showOpinionsButton>
+    @if (!showOpinions) {
+      Show All Opinions
+    } @else {
+      Hide Opinions
+    }
+  </button>
+</div>
+@if (showOpinions && !opinionsLoading) {
+  <app-beer-opinions-list-filters
+    [opinionsParams]="opinionsParams"
+    [paginationData]="paginationData"></app-beer-opinions-list-filters>
+}
+
+@if (showOpinions && !opinionsLoading) {
+  @for (opinion of opinions?.items; track opinion.id) {
+    <app-opinion
+      [beer]="beer"
+      [opinion]="opinion"
+      [showBeerName]="false"></app-opinion>
+  }
+
+  @if (opinions && opinions.items.length > 0) {
+    <div class="my-2">
+      <app-pagination
+        (scrollTo)="scrollToTop()"
+        [params]="opinionsParams"
+        [paginationData]="paginationData"
+        size="sm"></app-pagination>
+    </div>
+    <div class="my-4">
+      <button
+        class="btn btn-outline btn-primary w-9/12"
+        (click)="toggleOpinions()">
+        Hide Opinions
+      </button>
+    </div>
+  } @else {
+    <p class="my-4 text-xl">
+      There is no opinions for selected beer and filters
+    </p>
+  }
+}

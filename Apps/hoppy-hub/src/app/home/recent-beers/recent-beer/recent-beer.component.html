@@ -2,7 +2,7 @@
   <div class="card-body">
     @if (beer) {
       <div class="flex flex-row justify-evenly">
-        <div class="avatar w-1/4">
+        <div class="avatar mr-2 w-1/4">
           <div class="mask mask-squircle h-24 w-24 md:h-32 md:w-32">
             <img src="{{ beer.imageUri }}" alt="Beer image" />
           </div>
@@ -18,11 +18,11 @@
           <p>{{ beer.description }}</p>
         </div>
         <div class="w-1/4 text-right">
-          <p class="my-1"><strong>ABV:</strong> {{ beer.alcoholByVolume }}</p>
+          <p class="my-1"><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
           <p class="my-1"><strong>BLG:</strong> {{ beer.blg }}</p>
           <p class="my-1"><strong>IBU:</strong> {{ beer.ibu }}</p>
           <a
-            class="btn btn-outline btn-primary mt-4 w-2/3"
+            class="btn btn-outline btn-primary mt-4 w-3/4"
             [routerLink]="['/beers', beer.id]">
             Details
           </a>

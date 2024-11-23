@@ -24,4 +24,9 @@ public record UserDto
     ///     The role.
     /// </summary>
     public string? Role { get; set; }
+    
+    /// <summary>
+    ///     Date of account creation.
+    /// </summary>
+    public DateTimeOffset? Created { get; init; }
 }

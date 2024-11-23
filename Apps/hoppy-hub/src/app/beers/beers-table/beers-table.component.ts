@@ -1,4 +1,11 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject
+} from '@angular/core';
 import { BeersService } from '../beers.service';
 import { Beer } from '../beer.model';
 import { PagedList } from '../../shared/paged-list';
@@ -10,6 +17,7 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
 import { Pagination } from '../../shared/pagination';
 import { BeersTableFiltersComponent } from './beers-table-filters/beers-table-filters.component';
 import { RouterModule } from '@angular/router';
+import { DataHelper } from '../../shared/data-helper';
 
 @Component({
   selector: 'app-beers-table',
@@ -23,10 +31,19 @@ import { RouterModule } from '@angular/router';
   ],
   templateUrl: './beers-table.component.html'
 })
-export class BeersTableComponent implements OnInit, OnDestroy {
+export class BeersTableComponent
+  extends DataHelper
+  implements OnInit, OnDestroy
+{
+  @ViewChild('topSection') topSection!: ElementRef;
   private beersService: BeersService = inject(BeersService);
 
-  beersParams = new BeersParams(10, 1, 'ReleaseDate', 1);
+  beersParams = new BeersParams({
+    pageSize: 10,
+    pageNumber: 1,
+    sortBy: 'releaseDate',
+    sortDirection: 1
+  });
   beers: PagedList<Beer> | undefined;
   paginationData!: Pagination;
   error = '';
@@ -51,7 +68,7 @@ export class BeersTableComponent implements OnInit, OnDestroy {
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
-          this.paginationData = this.getPaginationData();
+          this.paginationData = this.getPaginationData(beers);
           this.error = '';
           this.loading = false;
         },
@@ -59,7 +76,9 @@ export class BeersTableComponent implements OnInit, OnDestroy {
           this.error = 'An error occurred while loading the beers';
 
           if (error.error && error.error.errors) {
-            const errorMessage = this.getErrorMessage(error.error.errors);
+            const errorMessage = this.getValidationErrorMessage(
+              error.error.errors
+            );
             this.error += errorMessage;
           }
 
@@ -68,43 +87,23 @@ export class BeersTableComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getPaginationData(): Pagination {
-    if (this.beers) {
-      return {
-        CurrentPage: this.beers.CurrentPage,
-        HasNext: this.beers.HasNext,
-        HasPrevious: this.beers.HasPrevious,
-        TotalPages: this.beers.TotalPages,
-        TotalCount: this.beers.TotalCount
-      };
-    }
+  scrollToTop(): void {
+    const elementPosition =
+      this.topSection.nativeElement.getBoundingClientRect().top +
+      window.scrollY;
 
-    return {
-      CurrentPage: 0,
-      HasNext: false,
-      HasPrevious: false,
-      TotalPages: 0,
-      TotalCount: 0
-    };
-  }
-
-  private getErrorMessage(array: { [key: string]: string }[]): string {
-    if (array.length === 0) {
-      return '';
-    }
-
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
-
-    if (!errorMessage) {
-      return '';
-    }
-
-    return ': ' + errorMessage;
+    window.scrollTo({
+      top: elementPosition,
+      behavior: 'smooth'
+    });
   }
 
   ngOnDestroy(): void {
-    this.getBeersSubscription.unsubscribe();
-    this.beersParamsSubscription.unsubscribe();
+    if (this.getBeersSubscription) {
+      this.getBeersSubscription.unsubscribe();
+    }
+    if (this.beersParamsSubscription) {
+      this.beersParamsSubscription.unsubscribe();
+    }
   }
 }

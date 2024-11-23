@@ -9,6 +9,8 @@ import { BeersTableComponent } from './beers-table/beers-table.component';
 import { BeerDetailsComponent } from './beer-details/beer-details.component';
 import { BeersFiltersModalComponent } from './beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 import { Subscription, filter } from 'rxjs';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-beers',
@@ -17,13 +19,15 @@ import { Subscription, filter } from 'rxjs';
     RouterOutlet,
     BeersTableComponent,
     BeerDetailsComponent,
-    BeersFiltersModalComponent
+    BeersFiltersModalComponent,
+    FontAwesomeModule
   ],
   templateUrl: './beers.component.html'
 })
 export class BeersComponent implements OnInit, OnDestroy {
   beerSelected: boolean = false;
   routeSubscription!: Subscription;
+  faInfoCircle = faInfoCircle;
 
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);

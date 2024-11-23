@@ -63,21 +63,6 @@ export class AuthService {
       );
   }
 
-  handleAuthentication(token: string) {
-    const decodedToken: TokenClaims = jwtDecode(token);
-    const expirationDate = new Date(+decodedToken.exp * 1000);
-    const user = new AuthUser(
-      decodedToken.sub,
-      decodedToken.email,
-      decodedToken.role,
-      token,
-      expirationDate
-    );
-    this.user.next(user);
-
-    localStorage.setItem('userData', JSON.stringify(user));
-  }
-
   logout(): void {
     this.user.next(null);
     this.router.navigate(['/']);
@@ -97,11 +82,26 @@ export class AuthService {
       user.email,
       user.role,
       user._token,
-      user._tokenExpirationDate
+      user.tokenExpirationDate
     );
 
     if (loadedUser.token) {
       this.user.next(loadedUser);
     }
+  }
+
+  private handleAuthentication(token: string): void {
+    const decodedToken: TokenClaims = jwtDecode(token);
+    const expirationDate = new Date(+decodedToken.exp * 1000);
+    const user = new AuthUser(
+      decodedToken.sub,
+      decodedToken.email,
+      decodedToken.role,
+      token,
+      expirationDate
+    );
+    this.user.next(user);
+
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 }

@@ -15,7 +15,8 @@ public class GetUsersQueryValidator : QueryValidator<GetUsersQuery>
     private readonly IEnumerable<string> _sortingColumns = new List<string>
     {
         nameof(UserDto.Email).ToUpper(),
-        nameof(UserDto.Username).ToUpper()
+        nameof(UserDto.Username).ToUpper(),
+        nameof(UserDto.Created).ToUpper()
     };
 
     /// <summary>

@@ -2,30 +2,53 @@ import { HttpParams } from '@angular/common/http';
 import { Params } from '@angular/router';
 
 export class BeersParams implements Params {
-  constructor(
-    public pageSize: number,
-    public pageNumber: number,
-    public sortBy?: string,
-    public sortDirection?: number,
-    public searchQuery?: string,
-    public name?: string,
-    public breweryId?: string,
-    public beerStyleId?: string,
-    public minAlcoholByVolume?: number,
-    public maxAlcoholByVolume?: number,
-    public minExtract?: number,
-    public maxExtract?: number,
-    public minIbu?: number,
-    public maxIbu?: number,
-    public minReleaseDate?: string,
-    public maxReleaseDate?: string,
-    public minRating?: number,
-    public maxRating?: number,
-    public minFavoritesCount?: number,
-    public maxFavoritesCount?: number,
-    public minOpinionsCount?: number,
-    public maxOpinionsCount?: number
-  ) {}
+  public pageSize: number;
+  public pageNumber: number;
+  public sortBy?: string;
+  public sortDirection?: number;
+  public searchQuery?: string;
+  public name?: string;
+  public breweryId?: string;
+  public beerStyleId?: string;
+  public minAlcoholByVolume?: number;
+  public maxAlcoholByVolume?: number;
+  public minExtract?: number;
+  public maxExtract?: number;
+  public minIbu?: number;
+  public maxIbu?: number;
+  public minReleaseDate?: string;
+  public maxReleaseDate?: string;
+  public minRating?: number;
+  public maxRating?: number;
+  public minFavoritesCount?: number;
+  public maxFavoritesCount?: number;
+  public minOpinionsCount?: number;
+  public maxOpinionsCount?: number;
+
+  constructor(params: Partial<BeersParams> = {}) {
+    this.pageSize = params.pageSize ?? 10;
+    this.pageNumber = params.pageNumber ?? 1;
+    this.sortBy = params.sortBy;
+    this.sortDirection = params.sortDirection;
+    this.searchQuery = params.searchQuery;
+    this.name = params.name;
+    this.breweryId = params.breweryId;
+    this.beerStyleId = params.beerStyleId;
+    this.minAlcoholByVolume = params.minAlcoholByVolume;
+    this.maxAlcoholByVolume = params.maxAlcoholByVolume;
+    this.minExtract = params.minExtract;
+    this.maxExtract = params.maxExtract;
+    this.minIbu = params.minIbu;
+    this.maxIbu = params.maxIbu;
+    this.minReleaseDate = params.minReleaseDate;
+    this.maxReleaseDate = params.maxReleaseDate;
+    this.minRating = params.minRating;
+    this.maxRating = params.maxRating;
+    this.minFavoritesCount = params.minFavoritesCount;
+    this.maxFavoritesCount = params.maxFavoritesCount;
+    this.minOpinionsCount = params.minOpinionsCount;
+    this.maxOpinionsCount = params.maxOpinionsCount;
+  }
 
   getHttpParams(): HttpParams {
     let params = new HttpParams();
@@ -95,4 +118,57 @@ export class BeersParams implements Params {
 
     return params;
   }
+
+  static sortOptions = [
+    {
+      label: 'Release date (New to Old)',
+      value: 'ReleaseDate',
+      direction: 1
+    },
+    {
+      label: 'Release date (Old to New)',
+      value: 'ReleaseDate',
+      direction: 0
+    },
+    { label: 'Name (A to Z)', value: 'Name', direction: 0 },
+    { label: 'Name (Z to A)', value: 'Name', direction: 1 },
+    { label: 'Beer style (A to Z)', value: 'BeerStyle', direction: 0 },
+    { label: 'Beer style (Z to A)', value: 'BeerStyle', direction: 1 },
+    {
+      label: 'Alcohol by volume (Low to High)',
+      value: 'AlcoholByVolume',
+      direction: 0
+    },
+    {
+      label: 'Alcohol by volume (High to Low)',
+      value: 'AlcoholByVolume',
+      direction: 1
+    },
+    { label: 'BLG (Low to High)', value: 'BLG', direction: 0 },
+    { label: 'BLG (High to Low)', value: 'BLG', direction: 1 },
+    { label: 'IBU (Low to High)', value: 'IBU', direction: 0 },
+    { label: 'IBU (High to Low)', value: 'IBU', direction: 1 },
+    { label: 'Rating (Low to High)', value: 'Rating', direction: 0 },
+    { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
+    {
+      label: 'Opinions count (Low to High)',
+      value: 'OpinionsCount',
+      direction: 0
+    },
+    {
+      label: 'Opinions count (High to Low)',
+      value: 'OpinionsCount',
+      direction: 1
+    },
+    {
+      label: 'Favorites count (Low to High)',
+      value: 'FavoritesCount',
+      direction: 0
+    },
+    {
+      label: 'Favorites count (High to Low)',
+      value: 'FavoritesCount',
+      direction: 1
+    }
+  ];
 }

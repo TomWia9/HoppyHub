@@ -1,0 +1,38 @@
+@if (existingOpinionloading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <app-upsert-opinion-modal
+    (opinionUpserted)="refreshOpinionsCount()"></app-upsert-opinion-modal>
+  @if (existingOpinion && user) {
+    <app-delete-opinion-modal
+      (opinionDeleted)="refreshOpinionsCount()"></app-delete-opinion-modal>
+  }
+  <div class="grid place-items-center sm:grid-cols-2">
+    @if (existingOpinion && user) {
+      <div class="col-span-2 justify-self-center sm:w-3/4">
+        <p class="text-xl">Your opinion:</p>
+        <app-opinion
+          [beer]="beer"
+          [opinion]="existingOpinion"
+          [showBeerName]="false"></app-opinion>
+      </div>
+      <button
+        class="btn btn-outline btn-warning my-2 w-9/12"
+        (click)="onUpsertOpinionModalOpen()">
+        Edit Opinion
+      </button>
+      <button
+        class="btn btn-outline btn-error my-2 w-9/12"
+        (click)="onDeleteOpinionModalOpen()">
+        Delete Opinion
+      </button>
+    } @else {
+      <button
+        class="btn btn-outline btn-success col-span-2 my-2 w-9/12 place-self-center"
+        (click)="onUpsertOpinionModalOpen()">
+        Add Opinion
+      </button>
+    }
+  </div>
+  <app-beer-opinions-list [beer]="beer"></app-beer-opinions-list>
+}

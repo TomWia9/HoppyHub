@@ -15,7 +15,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, ModalType } from '../../../../services/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
 import { Brewery } from '../../../../breweries/brewery.model';
 import { BreweriesService } from '../../../../breweries/breweries.service';
@@ -28,6 +28,8 @@ import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
 import { BeerStyle } from '../../../../beer-styles/beer-style.model';
 import { BeersParams } from '../../../beers-params';
 import { CustomValidators } from '../../../../shared/custom-validators';
+import { ModalModel } from '../../../../shared/modal-model';
+import { ModalType } from '../../../../shared/model-type';
 
 @Component({
   selector: 'app-beers-filters-modal',
@@ -42,38 +44,27 @@ import { CustomValidators } from '../../../../shared/custom-validators';
   ]
 })
 export class BeersFiltersModalComponent implements OnInit, OnDestroy {
+  @ViewChild('beersFiltersModal') modalRef!: ElementRef;
+
   private modalService = inject(ModalService);
   private beersService = inject(BeersService);
   private breweriesService = inject(BreweriesService);
   private beerStylesService = inject(BeerStylesService);
 
-  @ViewChild('beersFiltersModal') modalRef!: ElementRef;
-  modalOppenedSubscription!: Subscription;
   beersFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
   beerStyles: BeerStyle[] = [];
   error = '';
   loading = true;
+  modalOppenedSubscription!: Subscription;
   getBreweriesSubscription!: Subscription;
   getBeerStylesSubscription!: Subscription;
-  sortByOptions: string[] = [
-    'Name',
-    'Brewery',
-    'Beer style',
-    'Alcohol by volume',
-    'Blg',
-    'Ibu',
-    'Rating',
-    'Opinions count',
-    'Favorites count',
-    'Release date'
-  ];
-  sortDirectionOptions: string[] = ['Asc', 'Desc'];
+  sortOptions = BeersParams.sortOptions;
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.onShowModal(modalType);
+      (modalModel: ModalModel) => {
+        this.onShowModal(modalModel);
       }
     );
 
@@ -83,56 +74,62 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.beersFiltersForm = this.getBeerFiltersForm();
   }
 
-  onSubmit() {
-    const beersParams = new BeersParams(
-      25,
-      1,
-      this.beersFiltersForm.value.sortBy?.replace(/\s/g, ''),
-      this.beersFiltersForm.value.sortDirection,
-      undefined,
-      undefined,
-      this.beersFiltersForm.value.brewery,
-      this.beersFiltersForm.value.beerStyle,
-      this.beersFiltersForm.value.abv.minAbv,
-      this.beersFiltersForm.value.abv.maxAbv,
-      this.beersFiltersForm.value.extract.minExtract,
-      this.beersFiltersForm.value.extract.maxExtract,
-      this.beersFiltersForm.value.ibu.minIbu,
-      this.beersFiltersForm.value.ibu.maxIbu,
-      this.beersFiltersForm.value.releaseDates.minReleaseDate,
-      this.beersFiltersForm.value.releaseDates.maxReleaseDate,
-      this.beersFiltersForm.value.rating.minRating,
-      this.beersFiltersForm.value.rating.maxRating,
-      this.beersFiltersForm.value.favorites.minFavoritesCount,
-      this.beersFiltersForm.value.favorites.maxFavoritesCount,
-      this.beersFiltersForm.value.opinions.minOpinionsCount,
-      this.beersFiltersForm.value.opinions.maxOpinionsCount
-    );
+  onSubmit(): void {
+    const beersParams = new BeersParams({
+      pageSize: 25,
+      pageNumber: 1,
+      sortBy: this.sortOptions[this.beersFiltersForm.value.sortBy].value,
+      sortDirection:
+        this.sortOptions[this.beersFiltersForm.value.sortBy].direction,
+      breweryId: this.beersFiltersForm.value.brewery,
+      beerStyleId: this.beersFiltersForm.value.beerStyle,
+      minAlcoholByVolume: this.beersFiltersForm.value.abv.minAbv,
+      maxAlcoholByVolume: this.beersFiltersForm.value.abv.maxAbv,
+      minExtract: this.beersFiltersForm.value.extract.minExtract,
+      maxExtract: this.beersFiltersForm.value.extract.maxExtract,
+      minIbu: this.beersFiltersForm.value.ibu.minIbu,
+      maxIbu: this.beersFiltersForm.value.ibu.maxIbu,
+      minReleaseDate: this.beersFiltersForm.value.releaseDates.minReleaseDate,
+      maxReleaseDate: this.beersFiltersForm.value.releaseDates.maxReleaseDate,
+      minRating: this.beersFiltersForm.value.rating.minRating,
+      maxRating: this.beersFiltersForm.value.rating.maxRating,
+      minFavoritesCount:
+        this.beersFiltersForm.value.favorites.minFavoritesCount,
+      maxFavoritesCount:
+        this.beersFiltersForm.value.favorites.maxFavoritesCount,
+      minOpinionsCount: this.beersFiltersForm.value.opinions.minOpinionsCount,
+      maxOpinionsCount: this.beersFiltersForm.value.opinions.maxOpinionsCount
+    });
 
     this.beersService.paramsChanged.next(beersParams);
 
     this.onModalHide();
   }
 
-  onModalHide() {
+  onModalHide(): void {
     if (this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).close();
     }
   }
 
-  onShowModal(modalType: ModalType) {
-    if (modalType === ModalType.BeersFilters && this.modalRef) {
+  onShowModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.BeersFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
 
-  onClearFilters() {
+  onClearFilters(): void {
     this.beersFiltersForm.reset();
   }
 
-  fetchAllBreweries(pageNumber: number = 1, allBreweries: Brewery[] = []) {
+  private fetchAllBreweries(
+    pageNumber: number = 1,
+    allBreweries: Brewery[] = []
+  ): void {
     this.getBreweriesSubscription = this.breweriesService
-      .getBreweries(new BreweriesParams(50, pageNumber))
+      .getBreweries(
+        new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
+      )
       .subscribe({
         next: (breweries: PagedList<Brewery>) => {
           this.loading = true;
@@ -152,9 +149,14 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  fetchAllBeerStyles(pageNumber: number = 1, allBeerStyles: BeerStyle[] = []) {
+  private fetchAllBeerStyles(
+    pageNumber: number = 1,
+    allBeerStyles: BeerStyle[] = []
+  ): void {
     this.getBeerStylesSubscription = this.beerStylesService
-      .getBeerStyles(new BeerStylesParams(50, pageNumber))
+      .getBeerStyles(
+        new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
+      )
       .subscribe({
         next: (beerStyles: PagedList<BeerStyle>) => {
           this.loading = true;
@@ -180,7 +182,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.getBeerStylesSubscription.unsubscribe();
   }
 
-  getBeerFiltersForm(): FormGroup {
+  private getBeerFiltersForm(): FormGroup {
     return new FormGroup({
       brewery: new FormControl(''),
       abv: new FormGroup(
@@ -288,8 +290,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
         ]
       ),
 
-      sortBy: new FormControl(''),
-      sortDirection: new FormControl('')
+      sortBy: new FormControl(0),
+      sortDirection: new FormControl(0)
     });
   }
 }

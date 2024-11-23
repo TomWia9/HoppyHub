@@ -15,7 +15,7 @@ export enum AlertType {
 export class AlertService {
   alertOpened = new Subject<Alert>();
 
-  openAlert(alertType: AlertType, message: string) {
+  openAlert(alertType: AlertType, message: string): void {
     const alert: Alert = {
       alertType: alertType,
       message: message

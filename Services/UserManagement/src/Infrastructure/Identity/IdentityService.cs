@@ -54,7 +54,8 @@ public class IdentityService : IIdentityService
         var newUser = new ApplicationUser
         {
             Email = email,
-            UserName = username
+            UserName = username,
+            Created = DateTimeOffset.UtcNow
         };
 
         var createdUser = await _userManager.CreateAsync(newUser, password);
@@ -137,8 +138,7 @@ public class IdentityService : IIdentityService
     private async Task<AuthenticationResult> GenerateAuthenticationResult(ApplicationUser user)
     {
         var secret = _appConfiguration.JwtSecret;
-
-        if (secret.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(secret))
         {
             return AuthenticationResult.Failure(new List<string> { "Secret not found!" });
         }

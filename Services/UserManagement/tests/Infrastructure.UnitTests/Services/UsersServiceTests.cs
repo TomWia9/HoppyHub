@@ -57,7 +57,8 @@ public class UsersServiceTests
         {
             Id = Guid.NewGuid(),
             Email = "user@example.com",
-            UserName = "user"
+            UserName = "user",
+            Created = DateTimeOffset.UtcNow.AddYears(-2)
         };
 
         _userManagerMock.Setup(x => x.FindByIdAsync(user.Id.ToString()))
@@ -75,6 +76,7 @@ public class UsersServiceTests
         result.Email.Should().Be(user.Email);
         result.Username.Should().Be(user.UserName);
         result.Role.Should().Be(Roles.User);
+        result.Created.Should().Be(user.Created);
     }
 
     /// <summary>
@@ -180,10 +182,10 @@ public class UsersServiceTests
 
         var users = new List<ApplicationUser>
         {
-            new() { Id = Guid.NewGuid(), Email = "user1@example.com", UserName = "userA" },
-            new() { Id = Guid.NewGuid(), Email = "user112@example.com", UserName = "userB" },
-            new() { Id = Guid.NewGuid(), Email = "user1113@example.com", UserName = "userC" },
-            new() { Id = Guid.NewGuid(), Email = "user11114@example.com", UserName = "userD" }
+            new() { Id = Guid.NewGuid(), Email = "user1@example.com", UserName = "userA", Created = DateTimeOffset.UtcNow.AddYears(-5) },
+            new() { Id = Guid.NewGuid(), Email = "user112@example.com", UserName = "userB", Created = DateTimeOffset.UtcNow.AddYears(-4) },
+            new() { Id = Guid.NewGuid(), Email = "user1113@example.com", UserName = "userC", Created = DateTimeOffset.UtcNow.AddYears(-3) },
+            new() { Id = Guid.NewGuid(), Email = "user11114@example.com", UserName = "userD", Created = DateTimeOffset.UtcNow.AddYears(-2) }
         };
 
         _userManagerMock.Setup(x => x.Users).Returns(users.AsQueryable());

@@ -41,9 +41,21 @@ public class GetUsersQueryHandlerTests
         var query = new GetUsersQuery();
         var users = new List<UserDto>
         {
-            new() { Id = Guid.NewGuid(), Email = "admin@test.com", Username = "Admin", Role = Roles.Administrator },
-            new() { Id = Guid.NewGuid(), Email = "user1@test.com", Username = "User1", Role = Roles.User },
-            new() { Id = Guid.NewGuid(), Email = "user2@test.com", Username = "User2", Role = Roles.User }
+            new()
+            {
+                Id = Guid.NewGuid(), Email = "admin@test.com", Username = "Admin", Role = Roles.Administrator,
+                Created = DateTimeOffset.UtcNow.AddYears(-5)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Email = "user1@test.com", Username = "User1", Role = Roles.User,
+                Created = DateTimeOffset.UtcNow.AddYears(-3)
+            },
+            new()
+            {
+                Id = Guid.NewGuid(), Email = "user2@test.com", Username = "User2", Role = Roles.User,
+                Created = DateTimeOffset.UtcNow.AddYears(-1)
+            }
         };
         var paginatedList = PaginatedList<UserDto>.Create(users, 1, 10);
 

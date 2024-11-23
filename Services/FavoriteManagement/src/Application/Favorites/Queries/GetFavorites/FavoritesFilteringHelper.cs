@@ -33,8 +33,11 @@ public class FavoritesFilteringHelper : FilteringHelperBase<Favorite, GetFavorit
     {
         var delegates = new List<Expression<Func<Favorite, bool>>>
         {
-            x => x.CreatedBy == request.UserId
+            x => x.CreatedBy == request.UserId,
         };
+
+        if (request.BeerId is not null)
+            delegates.Add(x => x.Beer != null && x.Beer.Id == request.BeerId);
 
         if (string.IsNullOrWhiteSpace(request.SearchQuery))
         {

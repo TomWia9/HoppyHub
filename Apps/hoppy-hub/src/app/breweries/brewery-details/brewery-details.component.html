@@ -1,4 +1,4 @@
-@if (loading) {
+@if (breweryLoading) {
   <app-loading-spinner></app-loading-spinner>
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
@@ -22,41 +22,30 @@
           >
         </div>
       </div>
-
-      <h1 class="my-6 text-left text-lg">Brewery Beers:</h1>
-      <app-brewery-beers-filters
-        [params]="beersParams"
-        [paginationData]="getPaginationData()"></app-brewery-beers-filters>
-
-      <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        @for (beer of beers?.items; track beer.id) {
-          <a
-            [routerLink]="['/beers', beer.id]"
-            class="transform transition-transform duration-300 hover:scale-105">
-            <div class="card h-full bg-base-100 shadow-xl">
-              <figure class="h-60">
-                <img src="{{ beer.imageUri }}" alt="Beer 1" />
-              </figure>
-              <div class="card-body items-center text-center">
-                <h2 class="card-title font-bold">{{ beer.name }}</h2>
-                <p class="mb-2">({{ beer.beerStyle.name }})</p>
-                <p>{{ beer.description }}</p>
-
-                <div class="flex flex-row space-x-6 font-light">
-                  <p>ABV: {{ beer.alcoholByVolume }}%</p>
-                  <p>{{ beer.blg }} BLG</p>
-                </div>
-              </div>
-            </div>
-          </a>
-        }
-      </div>
-
-      @if (beers?.HasNext || beers?.HasPrevious) {
-        <app-pagination
+      <h1 class="my-2 text-left text-lg font-bold" #details>Brewery Beers:</h1>
+      @if (breweryBeersLoading) {
+        <app-loading-spinner></app-loading-spinner>
+      } @else {
+        <app-brewery-beers-filters
           [params]="beersParams"
-          [paginationData]="getPaginationData()"
-          size="md"></app-pagination>
+          [paginationData]="paginationData"></app-brewery-beers-filters>
+
+        <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          @for (beer of beers?.items; track beer.id) {
+            <div
+              class="transform transition-transform duration-300 hover:scale-105">
+              <app-beer-card [beer]="beer"></app-beer-card>
+            </div>
+          }
+        </div>
+
+        @if (beers?.HasNext || beers?.HasPrevious) {
+          <app-pagination
+            [params]="beersParams"
+            [paginationData]="paginationData"
+            size="md"
+            (scrollTo)="scrollToDetails()"></app-pagination>
+        }
       }
     </div>
   </div>
