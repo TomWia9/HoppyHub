@@ -138,8 +138,7 @@ public class IdentityService : IIdentityService
     private async Task<AuthenticationResult> GenerateAuthenticationResult(ApplicationUser user)
     {
         var secret = _appConfiguration.JwtSecret;
-
-        if (secret.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(secret))
         {
             return AuthenticationResult.Failure(new List<string> { "Secret not found!" });
         }

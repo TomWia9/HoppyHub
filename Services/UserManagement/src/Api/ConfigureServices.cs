@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Api.Filters;
 using FluentValidation.AspNetCore;
-using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Services;
@@ -25,7 +24,7 @@ public static class ConfigureServices
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();
         services.AddFluentValidationClientsideAdapters();
-        services.AddFluentValidationRulesToSwagger();
+        // services.AddFluentValidationRulesToSwagger(); //TODO: Wait for .NET 9 support.
         services.AddCors(options =>
         {
             options.AddPolicy("UIApp", builder =>
