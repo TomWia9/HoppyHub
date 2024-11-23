@@ -40,6 +40,7 @@ export class UserFavoritesComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
+  @Input({ required: true }) accountOwner: boolean = false;
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private beersService: BeersService = inject(BeersService);
@@ -62,6 +63,10 @@ export class UserFavoritesComponent
   }
 
   refreshFavoriteBeers(): void {
+    if (this.favoriteBeersParamsSubscription) {
+      this.favoriteBeersParamsSubscription.unsubscribe();
+    }
+
     this.favoriteBeersParams.userId = this.user.id;
     this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
     this.favoriteBeersParamsSubscription =

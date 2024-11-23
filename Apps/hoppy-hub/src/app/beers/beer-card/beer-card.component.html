@@ -17,6 +17,19 @@
         <p>ABV: {{ beer.alcoholByVolume }}%</p>
         <p>{{ beer.blg }} BLG</p>
       </div>
+      @if (editMode) {
+        <div class="tooltip mt-2" data-tip="Remove From Favorites">
+          <button
+            class="btn btn-circle"
+            (click)="
+              $event.preventDefault();
+              $event.stopPropagation();
+              onFavoriteDelete()
+            ">
+            <fa-icon class="text-red-400" [icon]="faX"></fa-icon>
+          </button>
+        </div>
+      }
     </div>
   </div>
 </a>

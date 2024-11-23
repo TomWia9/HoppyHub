@@ -4,14 +4,13 @@ import { RouterModule } from '@angular/router';
 import { Beer } from '../../beers/beer.model';
 import { Opinion } from '../opinion.model';
 import { ModalService } from '../../services/modal.service';
-import { UpsertOpinionModalComponent } from '../upsert-opinion-modal/upsert-opinion-modal.component';
 import { ModalType } from '../../shared/model-type';
 import { ModalModel } from '../../shared/modal-model';
 
 @Component({
   selector: 'app-opinion',
   standalone: true,
-  imports: [CommonModule, RouterModule, UpsertOpinionModalComponent],
+  imports: [CommonModule, RouterModule],
   templateUrl: './opinion.component.html'
 })
 export class OpinionComponent {

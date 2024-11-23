@@ -43,7 +43,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
   createFavoriteSubscription!: Subscription;
   deleteFavoriteSubscription!: Subscription;
   getUserFavoritesSubsciption!: Subscription;
-  faStarr = faStar;
+  faStar = faStar;
 
   ngOnChanges(): void {
     this.checkIfUserAlreadyAddedBeerToFavorites();

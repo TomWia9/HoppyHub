@@ -18,7 +18,9 @@
                 class="transform transition-transform duration-300 hover:scale-105">
                 <app-beer-card
                   [beer]="beer"
-                  [showBrewery]="true"></app-beer-card>
+                  [showBrewery]="true"
+                  [editMode]="accountOwner"
+                  (favoriteDeleted)="refreshFavoriteBeers()"></app-beer-card>
               </div>
             }
           </div>
