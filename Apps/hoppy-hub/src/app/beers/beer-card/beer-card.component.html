@@ -1,0 +1,35 @@
+<a
+  [routerLink]="['/beers', beer.id]"
+  class="transform transition-transform duration-300 hover:scale-105">
+  <div class="card h-full bg-base-100 shadow-xl">
+    <figure class="h-48">
+      <img src="{{ beer.imageUri }}" alt="Beer image" />
+    </figure>
+    <div class="card-body items-center text-center">
+      @if (showBrewery) {
+        <p class="font-bold text-accent">{{ beer.brewery.name }}</p>
+      }
+      <h2 class="card-title font-bold">{{ beer.name }}</h2>
+      <p class="mb-2">({{ beer.beerStyle.name }})</p>
+      <p>{{ beer.description }}</p>
+
+      <div class="flex flex-row space-x-6 font-light">
+        <p>ABV: {{ beer.alcoholByVolume }}%</p>
+        <p>{{ beer.blg }} BLG</p>
+      </div>
+      @if (editMode) {
+        <div class="tooltip mt-2" data-tip="Remove From Favorites">
+          <button
+            class="btn btn-circle"
+            (click)="
+              $event.preventDefault();
+              $event.stopPropagation();
+              onFavoriteDelete()
+            ">
+            <fa-icon class="text-red-400" [icon]="faX"></fa-icon>
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</a>

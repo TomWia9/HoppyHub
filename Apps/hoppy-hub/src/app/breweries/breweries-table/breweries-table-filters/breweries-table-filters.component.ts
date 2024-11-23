@@ -1,12 +1,14 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-import { ModalService, ModalType } from '../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
 import { Pagination } from '../../../shared/pagination';
 import { BreweriesParams } from '../../breweries-params';
 import { BreweriesService } from '../../breweries.service';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { ModalType } from '../../../shared/model-type';
+import { ModalModel } from '../../../shared/modal-model';
 
 @Component({
   selector: 'app-breweries-table-filters',
@@ -44,7 +46,7 @@ export class BreweriesTableFiltersComponent implements OnInit {
   }
 
   onFiltersModalOpen(): void {
-    this.modalService.openModal(ModalType.BreweriesFilters);
+    this.modalService.openModal(new ModalModel(ModalType.BreweriesFilters));
   }
 
   onFiltersClear(): void {

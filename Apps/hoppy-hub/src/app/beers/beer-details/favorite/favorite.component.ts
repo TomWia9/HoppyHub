@@ -14,12 +14,14 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { Subscription, map, take, tap } from 'rxjs';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { FavoritesService } from '../../../favorites/favorites.service';
-import { ModalService, ModalType } from '../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
 import {
   AlertService,
   AlertType
 } from '../../../shared-components/alert/alert.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
 
 @Component({
   selector: 'app-favorite',
@@ -41,7 +43,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
   createFavoriteSubscription!: Subscription;
   deleteFavoriteSubscription!: Subscription;
   getUserFavoritesSubsciption!: Subscription;
-  faStarr = faStar;
+  faStar = faStar;
 
   ngOnChanges(): void {
     this.checkIfUserAlreadyAddedBeerToFavorites();
@@ -49,7 +51,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
 
   onToggleFavorite(): void {
     if (!this.user) {
-      this.modalService.openModal(ModalType.Login);
+      this.modalService.openModal(new ModalModel(ModalType.Login));
     } else if (!this.favorite) {
       this.loading = true;
       this.createFavoriteSubscription = this.favoritesService

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalService, ModalType } from '../services/modal.service';
+import { ModalService } from '../services/modal.service';
 import { AuthService } from '../auth/auth.service';
 import { Subscription } from 'rxjs';
 import { RouterModule } from '@angular/router';
@@ -12,6 +12,8 @@ import {
   AlertType
 } from '../shared-components/alert/alert.service';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { ModalModel } from '../shared/modal-model';
+import { ModalType } from '../shared/model-type';
 
 @Component({
   selector: 'app-header',
@@ -40,11 +42,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.modalService.openModal(ModalType.Login);
+    this.modalService.openModal(new ModalModel(ModalType.Login));
   }
 
   openRegisterModal(): void {
-    this.modalService.openModal(ModalType.Register);
+    this.modalService.openModal(new ModalModel(ModalType.Register));
   }
 
   onLogout(): void {

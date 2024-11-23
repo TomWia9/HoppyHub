@@ -14,13 +14,15 @@ import {
   Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, ModalType } from '../../services/modal.service';
+import { ModalService } from '../../services/modal.service';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../auth.service';
 import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
+import { ModalModel } from '../../shared/modal-model';
+import { ModalType } from '../../shared/model-type';
 
 @Component({
   selector: 'app-register-modal',
@@ -40,8 +42,8 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.showModal(modalType);
+      (modalModel: ModalModel) => {
+        this.showModal(modalModel);
       }
     );
     this.registerForm = new FormGroup({
@@ -106,11 +108,11 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
 
   onSignIn(): void {
     this.onFormReset();
-    this.modalService.openModal(ModalType.Login);
+    this.modalService.openModal(new ModalModel(ModalType.Login));
   }
 
-  private showModal(modalType: ModalType): void {
-    if (modalType === ModalType.Register && this.myModalRef) {
+  private showModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.Register && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }

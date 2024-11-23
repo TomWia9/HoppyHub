@@ -14,13 +14,14 @@ import { map, Subscription, take, tap } from 'rxjs';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
-import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
-import { ModalService, ModalType } from '../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
 import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
 import { AuthUser } from '../../../auth/auth-user.model';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
 import { BeerOpinionsListComponent } from './beer-opinions-list/beer-opinions-list.component';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
 
 @Component({
   selector: 'app-beer-opinions',
@@ -28,7 +29,6 @@ import { BeerOpinionsListComponent } from './beer-opinions-list/beer-opinions-li
   imports: [
     OpinionComponent,
     FormsModule,
-    PaginationComponent,
     UpsertOpinionModalComponent,
     LoadingSpinnerComponent,
     DeleteOpinionModalComponent,
@@ -60,15 +60,24 @@ export class BeerOpinionsComponent implements OnDestroy, OnChanges {
 
   onUpsertOpinionModalOpen(): void {
     if (this.user) {
-      this.modalService.openModal(ModalType.UpsertOpinion);
+      this.modalService.openModal(
+        new ModalModel(ModalType.UpsertOpinion, {
+          beer: this.beer,
+          opinion: this.existingOpinion
+        })
+      );
     } else {
-      this.modalService.openModal(ModalType.Login);
+      this.modalService.openModal(new ModalModel(ModalType.Login));
     }
   }
 
   onDeleteOpinionModalOpen(): void {
     if (this.user) {
-      this.modalService.openModal(ModalType.DeleteOpinion);
+      this.modalService.openModal(
+        new ModalModel(ModalType.DeleteOpinion, {
+          opinionId: this.existingOpinion?.id
+        })
+      );
     }
   }
 

@@ -32,25 +32,10 @@
 
         <div class="my-6 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           @for (beer of beers?.items; track beer.id) {
-            <a
-              [routerLink]="['/beers', beer.id]"
+            <div
               class="transform transition-transform duration-300 hover:scale-105">
-              <div class="card h-full bg-base-100 shadow-xl">
-                <figure>
-                  <img src="{{ beer.imageUri }}" alt="Beer 1" />
-                </figure>
-                <div class="card-body items-center text-center">
-                  <h2 class="card-title font-bold">{{ beer.name }}</h2>
-                  <p class="mb-2">({{ beer.beerStyle.name }})</p>
-                  <p>{{ beer.description }}</p>
-
-                  <div class="flex flex-row space-x-6 font-light">
-                    <p>ABV: {{ beer.alcoholByVolume }}%</p>
-                    <p>{{ beer.blg }} BLG</p>
-                  </div>
-                </div>
-              </div>
-            </a>
+              <app-beer-card [beer]="beer"></app-beer-card>
+            </div>
           }
         </div>
 

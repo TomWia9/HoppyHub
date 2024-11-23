@@ -14,12 +14,14 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { ModalService, ModalType } from '../../services/modal.service';
+import { ModalService } from '../../services/modal.service';
 import {
   AlertService,
   AlertType
 } from '../../shared-components/alert/alert.service';
 import { AuthService } from '../auth.service';
+import { ModalModel } from '../../shared/modal-model';
+import { ModalType } from '../../shared/model-type';
 
 @Component({
   selector: 'app-login-modal',
@@ -39,8 +41,8 @@ export class LoginModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalOpenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.showModal(modalType);
+      (modalModel: ModalModel) => {
+        this.showModal(modalModel);
       }
     );
     this.loginForm = new FormGroup({
@@ -83,7 +85,7 @@ export class LoginModalComponent implements OnInit, OnDestroy {
 
   onSignUp(): void {
     this.onFormReset();
-    this.modalService.openModal(ModalType.Register);
+    this.modalService.openModal(new ModalModel(ModalType.Register));
   }
 
   onFormReset(): void {
@@ -93,8 +95,8 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private showModal(modalType: ModalType): void {
-    if (modalType === ModalType.Login && this.myModalRef) {
+  private showModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.Login && this.myModalRef) {
       (this.myModalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }

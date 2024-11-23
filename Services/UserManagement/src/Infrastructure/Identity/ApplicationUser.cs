@@ -7,4 +7,8 @@ namespace Infrastructure.Identity;
 /// </summary>
 public class ApplicationUser : IdentityUser<Guid>
 {
+    /// <summary>
+    ///     The date of account creation.
+    /// </summary>
+    public DateTimeOffset Created { get; set; }
 }

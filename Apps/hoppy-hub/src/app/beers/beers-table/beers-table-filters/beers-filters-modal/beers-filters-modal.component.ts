@@ -15,7 +15,7 @@ import {
   Validators
 } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ModalService, ModalType } from '../../../../services/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
 import { Brewery } from '../../../../breweries/brewery.model';
 import { BreweriesService } from '../../../../breweries/breweries.service';
@@ -28,6 +28,8 @@ import { BeerStylesParams } from '../../../../beer-styles/beer-styles-params';
 import { BeerStyle } from '../../../../beer-styles/beer-style.model';
 import { BeersParams } from '../../../beers-params';
 import { CustomValidators } from '../../../../shared/custom-validators';
+import { ModalModel } from '../../../../shared/modal-model';
+import { ModalType } from '../../../../shared/model-type';
 
 @Component({
   selector: 'app-beers-filters-modal',
@@ -61,8 +63,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.onShowModal(modalType);
+      (modalModel: ModalModel) => {
+        this.onShowModal(modalModel);
       }
     );
 
@@ -110,8 +112,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  onShowModal(modalType: ModalType): void {
-    if (modalType === ModalType.BeersFilters && this.modalRef) {
+  onShowModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.BeersFilters && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
@@ -288,8 +290,8 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
         ]
       ),
 
-      sortBy: new FormControl(''),
-      sortDirection: new FormControl('')
+      sortBy: new FormControl(0),
+      sortDirection: new FormControl(0)
     });
   }
 }

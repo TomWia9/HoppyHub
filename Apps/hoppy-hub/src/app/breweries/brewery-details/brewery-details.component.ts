@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription, map } from 'rxjs';
 import { BreweriesService } from '../breweries.service';
 import { Brewery } from '../brewery.model';
@@ -20,6 +20,7 @@ import { Pagination } from '../../shared/pagination';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { BreweryBeersFiltersComponent } from './brewery-beers-filters/brewery-beers-filters.component';
 import { DataHelper } from '../../shared/data-helper';
+import { BeerCardComponent } from '../../beers/beer-card/beer-card.component';
 
 @Component({
   selector: 'app-brewery-details',
@@ -30,7 +31,7 @@ import { DataHelper } from '../../shared/data-helper';
     ErrorMessageComponent,
     PaginationComponent,
     BreweryBeersFiltersComponent,
-    RouterModule
+    BeerCardComponent
   ]
 })
 export class BreweryDetailsComponent
@@ -91,11 +92,11 @@ export class BreweryDetailsComponent
   }
 
   private getBeers(): void {
-    this.breweryBeersLoading = true;
     this.beersSubscription = this.beersService
       .getBeers(this.beersParams)
       .subscribe({
         next: (beers: PagedList<Beer>) => {
+          this.breweryBeersLoading = true;
           this.beers = beers;
           this.paginationData = this.getPaginationData(beers);
           this.error = '';

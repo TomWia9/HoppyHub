@@ -10,35 +10,18 @@
     }
   </button>
 </div>
-<div class="grid place-items-center sm:grid-cols-2">
-  @if (showOpinions && opinions && opinions.items.length > 0) {
-    <div class="my-2">
-      <app-pagination
-        [params]="opinionsParams"
-        [paginationData]="paginationData"
-        size="sm"></app-pagination>
-    </div>
-    <div class="tooltip tooltip-top my-2" data-tip="Sort by...">
-      <select
-        class="select select-bordered"
-        [(ngModel)]="selectedSortOptionIndex"
-        (change)="onSort()">
-        @for (option of sortOptions; track $index) {
-          <option [value]="$index">
-            {{ option.label }}
-          </option>
-        }
-      </select>
-    </div>
-  }
-</div>
+@if (showOpinions && !opinionsLoading) {
+  <app-beer-opinions-list-filters
+    [opinionsParams]="opinionsParams"
+    [paginationData]="paginationData"></app-beer-opinions-list-filters>
+}
 
 @if (showOpinions && !opinionsLoading) {
   @for (opinion of opinions?.items; track opinion.id) {
     <app-opinion
       [beer]="beer"
       [opinion]="opinion"
-      [showName]="false"></app-opinion>
+      [showBeerName]="false"></app-opinion>
   }
 
   @if (opinions && opinions.items.length > 0) {
@@ -56,5 +39,9 @@
         Hide Opinions
       </button>
     </div>
+  } @else {
+    <p class="my-4 text-xl">
+      There is no opinions for selected beer and filters
+    </p>
   }
 }

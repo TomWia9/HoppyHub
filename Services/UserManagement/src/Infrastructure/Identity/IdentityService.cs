@@ -54,7 +54,8 @@ public class IdentityService : IIdentityService
         var newUser = new ApplicationUser
         {
             Email = email,
-            UserName = username
+            UserName = username,
+            Created = DateTimeOffset.UtcNow
         };
 
         var createdUser = await _userManager.CreateAsync(newUser, password);

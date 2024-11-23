@@ -3,14 +3,13 @@ import {
   ElementRef,
   EventEmitter,
   inject,
-  Input,
   OnDestroy,
   OnInit,
   Output,
   ViewChild
 } from '@angular/core';
 import { OpinionsService } from '../opinions.service';
-import { ModalService, ModalType } from '../../services/modal.service';
+import { ModalService } from '../../services/modal.service';
 import {
   FormControl,
   FormGroup,
@@ -28,6 +27,8 @@ import {
 } from '../../shared-components/alert/alert.service';
 import { Opinion } from '../opinion.model';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ModalType } from '../../shared/model-type';
+import { ModalModel } from '../../shared/modal-model';
 
 @Component({
   selector: 'app-upsert-opinion-modal',
@@ -40,8 +41,6 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './upsert-opinion-modal.component.html'
 })
 export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
-  @Input({ required: true }) beer!: Beer;
-  @Input({ required: true }) existingOpinion!: Opinion | null;
   @Output() opinionUpserted = new EventEmitter<void>();
   @ViewChild('upsertOpinionModal') modalRef!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
@@ -49,12 +48,15 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
   private alertService: AlertService = inject(AlertService);
+  private modalOppenedSubscription!: Subscription;
+  private addOpinionSubscription!: Subscription;
 
-  modalOppenedSubscription!: Subscription;
-  addOpinionSubscription!: Subscription;
+  beer!: Beer;
+  existingOpinion: Opinion | null = null;
+
   opinionForm!: FormGroup;
   error = '';
-  loading = false;
+  loading = true;
   showImage = true;
   imageUri: string | null = null;
   ratingValues: number[] = Array.from({ length: 10 }, (_, i) => i + 1);
@@ -62,16 +64,24 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalType: ModalType) => {
-        this.onShowModal(modalType);
+      (modalModel: ModalModel) => {
+        this.loading = true;
+
+        if (modalModel.modalData['beer']) {
+          this.beer = modalModel.modalData['beer'] as Beer;
+        }
+        this.existingOpinion = modalModel.modalData['opinion'] as Opinion;
+
+        this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
+        this.opinionForm = this.existingOpinion
+          ? this.getExistingOpinionForm()
+          : this.getOpinionForm();
+        this.setShowImage();
+
+        this.onShowModal(modalModel);
+        this.loading = false;
       }
     );
-
-    this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
-    this.opinionForm = this.existingOpinion
-      ? this.getExistingOpinionForm()
-      : this.getOpinionForm();
-    this.setShowImage();
   }
 
   onModalHide(): void {
@@ -148,8 +158,8 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onShowModal(modalType: ModalType): void {
-    if (modalType === ModalType.UpsertOpinion && this.modalRef) {
+  private onShowModal(modalModel: ModalModel): void {
+    if (modalModel.modalType === ModalType.UpsertOpinion && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
