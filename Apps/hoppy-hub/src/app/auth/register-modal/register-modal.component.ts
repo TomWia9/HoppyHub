@@ -98,9 +98,10 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
 
             if (error.error && error.error.errors) {
               errorMessage = this.getErrorMessage(error.error.errors);
-            } else {
-              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
+            console.log(errorMessage);
+
+            this.alertService.openAlert(AlertType.Error, errorMessage);
           }
         });
     }
@@ -121,8 +122,7 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
     if (array.length === 0) {
       return 'Something went wrong';
     }
-    const firstObject = Object.values(array)[0];
-    const errorMessage = Object.values(firstObject)[0];
+    const errorMessage = Object.values(array)[0] as unknown as string;
 
     if (!errorMessage) {
       return 'Something went wrong';
