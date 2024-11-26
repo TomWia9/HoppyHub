@@ -6,6 +6,7 @@ import { BreweryDetailsComponent } from './breweries/brewery-details/brewery-det
 import { BeerDetailsComponent } from './beers/beer-details/beer-details.component';
 import { BeersComponent } from './beers/beers.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
+import { AccountSettingsComponent } from './users/account-settings/account-settings.component';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,10 @@ export const routes: Routes = [
   {
     path: 'users/:id',
     component: UserDetailsComponent
+  },
+  {
+    path: 'account-settings',
+    component: AccountSettingsComponent
   },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }

@@ -1,0 +1,11 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <p>{{ user?.id }}</p>
+  <p>{{ user?.username }}</p>
+  <p>{{ user?.email }}</p>
+  <p>{{ user?.created }}</p>
+  <p>{{ user?.role }}</p>
+}
