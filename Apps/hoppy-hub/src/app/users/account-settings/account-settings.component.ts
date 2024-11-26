@@ -9,11 +9,24 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { ModalService } from '../../services/modal.service';
 import { ModalModel } from '../../shared/modal-model';
 import { ModalType } from '../../shared/model-type';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { CustomValidators } from '../../shared/custom-validators';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-account-settings',
   standalone: true,
-  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  imports: [
+    LoadingSpinnerComponent,
+    ErrorMessageComponent,
+    ReactiveFormsModule,
+    CommonModule
+  ],
   templateUrl: './account-settings.component.html'
 })
 export class AccountSettingsComponent implements OnInit, OnDestroy {
@@ -26,6 +39,8 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   loading: boolean = true;
   error: string = '';
   user: User | undefined;
+  updateUsernameForm!: FormGroup;
+  passwordForm!: FormGroup;
 
   ngOnInit(): void {
     this.authUserSubscription = this.authService.user.subscribe(
@@ -38,6 +53,12 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (user: User) => {
                 this.user = user;
+                this.updateUsernameForm = new FormGroup({
+                  userName: new FormControl(this.user?.username, [
+                    Validators.required,
+                    Validators.maxLength(256)
+                  ])
+                });
                 this.error = '';
                 this.loading = false;
               },
@@ -51,6 +72,26 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     );
+    this.passwordForm = new FormGroup({
+      currentPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [
+        Validators.minLength(8),
+        Validators.required,
+        Validators.pattern(CustomValidators.passwordPattern)
+      ])
+    });
+  }
+
+  updateUsername(): void {
+    console.log('updateUsername');
+  }
+
+  changePassword(): void {
+    console.log('changePassword');
+  }
+
+  deleteAccount(): void {
+    console.log('deleteAccount');
   }
 
   ngOnDestroy(): void {

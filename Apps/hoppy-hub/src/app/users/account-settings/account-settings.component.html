@@ -3,9 +3,157 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <p>{{ user?.id }}</p>
-  <p>{{ user?.username }}</p>
-  <p>{{ user?.email }}</p>
-  <p>{{ user?.created }}</p>
-  <p>{{ user?.role }}</p>
+  <div class="card bg-neutral shadow-xl">
+    <div class="card-body text-center">
+      <p class="card-title text-2xl">Account Settings</p>
+
+      <div class="grid">
+        <form
+          [formGroup]="updateUsernameForm"
+          (ngSubmit)="updateUsername()"
+          class="my-4">
+          <p class="text-xl">Change Username</p>
+          <label class="form-control w-full place-self-center md:max-w-3xl">
+            <div class="label">
+              <span class="label-text">New Username:</span>
+            </div>
+            <input
+              type="text"
+              formControlName="userName"
+              class="input input-bordered input-primary"
+              placeholder="Enter your new username"
+              [ngClass]="{
+                'input-error':
+                  updateUsernameForm.get('userName')!.invalid &&
+                  updateUsernameForm.get('userName')!.touched
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                updateUsernameForm.get('userName')!.invalid &&
+                updateUsernameForm.get('userName')!.hasError('required') &&
+                updateUsernameForm.get('userName')!.touched
+              ) {
+                <span class="label-text-alt">Username is required.</span>
+              }
+              @if (
+                updateUsernameForm.get('userName')!.invalid &&
+                updateUsernameForm.get('userName')!.hasError('maxlength') &&
+                updateUsernameForm.get('userName')!.touched
+              ) {
+                <span class="label-text-alt">
+                  The username can contain a maximum of 256 characters.
+                </span>
+              }
+            </div>
+          </label>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="
+              updateUsernameForm.invalid &&
+              updateUsernameForm.get('userName')!.touched
+            ">
+            Update Username
+          </button>
+        </form>
+
+        <div class="divider"></div>
+
+        <form
+          [formGroup]="passwordForm"
+          (ngSubmit)="changePassword()"
+          class="my-4">
+          <p class="text-xl">Change Password</p>
+          <label class="form-control w-full place-self-center md:max-w-3xl">
+            <div class="label">
+              <span class="label-text">Current Password:</span>
+            </div>
+            <input
+              type="password"
+              formControlName="currentPassword"
+              class="input input-bordered"
+              placeholder="Enter your current password"
+              [ngClass]="{
+                'input-error':
+                  passwordForm.get('currentPassword')!.invalid &&
+                  passwordForm.get('currentPassword')!.touched
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                passwordForm.get('currentPassword')!.invalid &&
+                passwordForm.get('currentPassword')!.hasError('required') &&
+                passwordForm.get('currentPassword')!.touched
+              ) {
+                <span class="label-text-alt">
+                  Current password is required.
+                </span>
+              }
+            </div>
+          </label>
+
+          <label class="form-control w-full place-self-center md:max-w-3xl">
+            <div class="label">
+              <span class="label-text">New Password:</span>
+            </div>
+            <input
+              type="password"
+              formControlName="newPassword"
+              class="input input-bordered"
+              placeholder="Enter your new password"
+              [ngClass]="{
+                'input-error':
+                  passwordForm.get('newPassword')!.invalid &&
+                  passwordForm.get('newPassword')!.touched
+              }" />
+            <div class="label flex flex-col text-center">
+              @if (
+                passwordForm.get('newPassword')!.invalid &&
+                passwordForm.get('newPassword')!.hasError('required') &&
+                passwordForm.get('newPassword')!.touched
+              ) {
+                <span class="label-text-alt">New password is required.</span>
+              }
+              @if (
+                passwordForm.get('newPassword')!.invalid &&
+                passwordForm.get('newPassword')!.hasError('minlength') &&
+                passwordForm.get('newPassword')!.touched
+              ) {
+                <span class="label-text-alt">
+                  The password must have at least 8 characters.
+                </span>
+              }
+              @if (
+                passwordForm.get('newPassword')!.invalid &&
+                passwordForm.get('newPassword')!.hasError('pattern') &&
+                passwordForm.get('newPassword')!.touched
+              ) {
+                <span class="label-text-alt">
+                  The password must have at least one non alphanumeric
+                  character, one digit and one uppercase.
+                </span>
+              }
+            </div>
+          </label>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="
+              passwordForm.invalid && passwordForm.get('newPassword')!.touched
+            ">
+            Change Password
+          </button>
+        </form>
+
+        <div class="divider"></div>
+
+        <div class="my-4">
+          <button
+            (click)="deleteAccount()"
+            class="btn btn-outline btn-error min-w-72">
+            Delete Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 }
