@@ -35,7 +35,7 @@ public class UpdateUsernameCommandHandlerTests
     private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
-    ///     Setups UpdateUserCommandHandlerTests.
+    ///     Setups UpdateUsernameCommandHandlerTests.
     /// </summary>
     public UpdateUsernameCommandHandlerTests()
     {

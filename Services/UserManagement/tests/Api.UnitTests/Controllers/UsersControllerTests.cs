@@ -1,6 +1,7 @@
 ﻿using Api.Controllers;
 using Application.Users.Commands.DeleteUser;
 using Application.Users.Commands.UpdateUsername;
+using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
@@ -90,7 +91,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
             .Returns(Task.CompletedTask);
 
         // Act
-        var result = await Controller.UpdateUser(userId, command);
+        var result = await Controller.UpdateUsername(userId, command);
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
@@ -108,7 +109,51 @@ public class UsersControllerTests : ControllerSetup<UsersController>
         var command = new UpdateUsernameCommand { UserId = Guid.NewGuid(), Username = "newUsername" };
 
         // Act
-        var result = await Controller.UpdateUser(userId, command);
+        var result = await Controller.UpdateUsername(userId, command);
+
+        // Assert
+        result.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserPassword endpoint returns NoContent when Id is valid.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserPassword_ShouldReturnNoContent_WhenIdIsValid()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new UpdateUserPasswordCommand
+            { UserId = userId, CurrentPassword = "oldPassword", NewPassword = "newPassword" };
+
+        MediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserPasswordCommand>(), default))
+            .Returns(Task.CompletedTask);
+
+        // Act
+        var result = await Controller.UpdateUserPassword(userId, command);
+
+        // Assert
+        result.Should().BeOfType<NoContentResult>();
+        MediatorMock.Verify(
+            m => m.Send(
+                It.Is<UpdateUserPasswordCommand>(c =>
+                    c.UserId == userId && c.CurrentPassword == command.CurrentPassword &&
+                    c.NewPassword == command.NewPassword), default), Times.Once);
+    }
+
+    /// <summary>
+    ///     Tests that UpdateUserPassword endpoint returns BadRequest when Id is invalid.
+    /// </summary>
+    [Fact]
+    public async Task UpdateUserPassword_ShouldReturnBadRequest_WhenIdIsInvalid()
+    {
+        // Arrange
+        var userId = Guid.NewGuid();
+        var command = new UpdateUserPasswordCommand
+            { UserId = Guid.NewGuid(), CurrentPassword = "oldPassword", NewPassword = "newPassword" };
+
+        // Act
+        var result = await Controller.UpdateUserPassword(userId, command);
 
         // Assert
         result.Should().BeOfType<BadRequestObjectResult>().Which.Value.Should().Be(ExpectedInvalidIdMessage);
