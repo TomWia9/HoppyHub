@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
@@ -77,50 +77,6 @@ public class UsersServiceTests
         result.Username.Should().Be(user.UserName);
         result.Role.Should().Be(Roles.User);
         result.Created.Should().Be(user.Created);
-    }
-
-    /// <summary>
-    ///     Tests that GetUsernameAsync method returns Username when Id is valid.
-    /// </summary>
-    [Fact]
-    public async Task GetUsernameAsync_ShouldReturnUsername_WhenIdIsValid()
-    {
-        // Arrange
-        var user = new ApplicationUser
-        {
-            Id = Guid.NewGuid(),
-            Email = "user@example.com",
-            UserName = "user"
-        };
-
-        _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
-            .ReturnsAsync(user);
-
-        // Act
-        var result = await _usersService.GetUsernameAsync(user.Id);
-
-        // Assert
-        result.Should().NotBeNull();
-        result.Should().Be(user.UserName);
-    }
-
-    /// <summary>
-    ///     Tests that GetUsernameAsync method returns null when user not found.
-    /// </summary>
-    [Fact]
-    public async Task GetUsernameAsync_ShouldReturnsNull_WhenUserNotFound()
-    {
-        // Arrange
-        var userId = Guid.NewGuid();
-
-        _userManagerMock.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
-            .ReturnsAsync((ApplicationUser?)null);
-
-        // Act
-        var result = await _usersService.GetUsernameAsync(userId);
-
-        // Assert
-        result.Should().BeNull();
     }
 
     /// <summary>
@@ -231,7 +187,7 @@ public class UsersServiceTests
     public async Task UpdateUserAsync_ShouldThrowNotFoundException_WhenUserNotFound()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid(),
             Username = "newUsername",
@@ -257,7 +213,7 @@ public class UsersServiceTests
     public async Task UpdateUserAsync_ShouldUpdateUsername_WhenNewUsernameProvided()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid(),
             Username = "newUsername"
@@ -290,7 +246,7 @@ public class UsersServiceTests
     public async Task UpdateUserAsync_ShouldThrowBadRequestException_WhenUpdateUserResultIsNotSucceeded()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid(),
             Username = "newUsername"
@@ -321,7 +277,7 @@ public class UsersServiceTests
     public async Task UpdateUserAsync_ShouldChangePassword_WhenNewPasswordIsProvided()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid(),
             CurrentPassword = "oldPassword",
@@ -356,7 +312,7 @@ public class UsersServiceTests
     public async Task UpdateUserAsync_ShouldChangePassword_WhenNewPasswordIsProvidedAndCurrentUserIsAdministrator()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid(),
             NewPassword = "newPassword"
@@ -392,7 +348,7 @@ public class UsersServiceTests
         UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsAdministratorAndRemovePasswordResultIsNotSucceeded()
     {
         // Arrange
-        var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
+        var request = new UpdateUsernameCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
         var user = new ApplicationUser { Id = request.UserId };
 
         _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
@@ -418,7 +374,7 @@ public class UsersServiceTests
         UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsAdministratorAndAddPasswordResultIsNotSucceeded()
     {
         // Arrange
-        var request = new UpdateUserCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
+        var request = new UpdateUsernameCommand { UserId = Guid.NewGuid(), NewPassword = "newPassword" };
         var user = new ApplicationUser { Id = request.UserId };
 
         _userManagerMock.Setup(x => x.FindByIdAsync(request.UserId.ToString()))
@@ -447,7 +403,7 @@ public class UsersServiceTests
         UpdateUserAsync_ShouldThrowBadRequestException_WhenCurrentUserIsUserAndChangePasswordResultIsNotSucceeded()
     {
         // Arrange
-        var request = new UpdateUserCommand
+        var request = new UpdateUsernameCommand
             { UserId = Guid.NewGuid(), CurrentPassword = "currentPassword", NewPassword = "newPassword" };
         var user = new ApplicationUser { Id = request.UserId };
 
