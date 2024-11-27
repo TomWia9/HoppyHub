@@ -108,6 +108,10 @@ public class UsersService : IUsersService
         }
     }
 
+    /// <summary>
+    ///     Changes user password.
+    /// </summary>
+    /// <param name="request">Update user password command</param>
     public async Task ChangePasswordAsync(UpdateUserPasswordCommand request)
     {
         var user = await GetUser(request.UserId.ToString());
