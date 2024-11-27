@@ -1,6 +1,6 @@
 ﻿using Api.Controllers;
 using Application.Users.Commands.DeleteUser;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
@@ -84,9 +84,9 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new UpdateUserCommand { UserId = userId, Username = "newUsername" };
+        var command = new UpdateUsernameCommand { UserId = userId, Username = "newUsername" };
 
-        MediatorMock.Setup(m => m.Send(It.IsAny<UpdateUserCommand>(), default))
+        MediatorMock.Setup(m => m.Send(It.IsAny<UpdateUsernameCommand>(), default))
             .Returns(Task.CompletedTask);
 
         // Act
@@ -94,7 +94,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
 
         // Assert
         result.Should().BeOfType<NoContentResult>();
-        MediatorMock.Verify(m => m.Send(It.Is<UpdateUserCommand>(c => c.UserId == userId), default), Times.Once);
+        MediatorMock.Verify(m => m.Send(It.Is<UpdateUsernameCommand>(c => c.UserId == userId), default), Times.Once);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class UsersControllerTests : ControllerSetup<UsersController>
     {
         // Arrange
         var userId = Guid.NewGuid();
-        var command = new UpdateUserCommand { UserId = Guid.NewGuid(), Username = "newUsername" };
+        var command = new UpdateUsernameCommand { UserId = Guid.NewGuid(), Username = "newUsername" };
 
         // Act
         var result = await Controller.UpdateUser(userId, command);

@@ -1,5 +1,6 @@
 ﻿using Application.Users.Commands.DeleteUser;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
+using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUsers;
@@ -41,13 +42,32 @@ public class UsersController : ApiControllerBase
     }
 
     /// <summary>
-    ///     Updates user.
+    ///     Updates user username.
     /// </summary>
     /// <param name="id">The user id</param>
-    /// <param name="command">The UpdateUserCommand</param>
+    /// <param name="nameCommand">The UpdateUsernameCommand</param>
     [Authorize(Policy = Policies.UserAccess)]
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserCommand command)
+    public async Task<IActionResult> UpdateUsername(Guid id, [FromBody] UpdateUsernameCommand nameCommand)
+    {
+        if (id != nameCommand.UserId)
+        {
+            return BadRequest(InvalidIdMessage);
+        }
+
+        await Mediator.Send(nameCommand);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    ///     Updates user password.
+    /// </summary>
+    /// <param name="id">The user id</param>
+    /// <param name="command">The UpdateUserPasswordCommand</param>
+    [Authorize(Policy = Policies.UserAccess)]
+    [HttpPut("{id:guid}/changePassword")]
+    public async Task<IActionResult> UpdateUserPassword(Guid id, [FromBody] UpdateUserPasswordCommand command)
     {
         if (id != command.UserId)
         {

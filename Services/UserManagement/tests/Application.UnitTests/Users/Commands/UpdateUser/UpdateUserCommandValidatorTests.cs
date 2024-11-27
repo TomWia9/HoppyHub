@@ -1,4 +1,4 @@
-﻿using Application.Users.Commands.UpdateUser;
+﻿using Application.Users.Commands.UpdateUsername;
 using FluentValidation.TestHelper;
 using Moq;
 using SharedUtilities.Interfaces;
@@ -37,7 +37,7 @@ public class UpdateUserCommandValidatorTests
     public void UpdateUserCommand_ShouldNotHaveValidationErrorForUsername_WhenUsernameLengthIsValid()
     {
         // Arrange
-        var command = new UpdateUserCommand { Username = "test" };
+        var command = new UpdateUsernameCommand { Username = "test" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -53,7 +53,7 @@ public class UpdateUserCommandValidatorTests
     public void UpdateUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsGreaterThanMaximum()
     {
         // Arrange
-        var command = new UpdateUserCommand { Username = new string('a', 257) };
+        var command = new UpdateUsernameCommand { Username = new string('a', 257) };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -70,7 +70,7 @@ public class UpdateUserCommandValidatorTests
         UpdateUserCommand_ShouldHaveValidationErrorForCurrentPassword_WhenCurrentPasswordLengthIsGreaterThanMaximum()
     {
         // Arrange
-        var command = new UpdateUserCommand { CurrentPassword = new string('a', 257) };
+        var command = new UpdateUsernameCommand { CurrentPassword = new string('a', 257) };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -86,7 +86,7 @@ public class UpdateUserCommandValidatorTests
     public void UpdateUserCommand_ShouldNotHaveValidationErrorForCurrentPassword_WhenCurrentPasswordIsValid()
     {
         // Arrange
-        var command = new UpdateUserCommand { CurrentPassword = "password" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "password" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -105,7 +105,7 @@ public class UpdateUserCommandValidatorTests
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
-        var command = new UpdateUserCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -124,7 +124,7 @@ public class UpdateUserCommandValidatorTests
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
-        var command = new UpdateUserCommand { NewPassword = "newPassword" };
+        var command = new UpdateUsernameCommand { NewPassword = "newPassword" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -143,7 +143,7 @@ public class UpdateUserCommandValidatorTests
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
-        var command = new UpdateUserCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -162,7 +162,7 @@ public class UpdateUserCommandValidatorTests
     {
         // Arrange
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
-        var command = new UpdateUserCommand { CurrentPassword = "currentPassword" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "currentPassword" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -179,7 +179,7 @@ public class UpdateUserCommandValidatorTests
         UpdateUserCommand_ShouldNotHaveValidationErrorForNewPassword_WhenNewPasswordDifferentFromCurrentPassword()
     {
         // Arrange
-        var command = new UpdateUserCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "currentPassword", NewPassword = "newPassword" };
 
         // Act
         var result = _validator.TestValidate(command);
@@ -195,7 +195,7 @@ public class UpdateUserCommandValidatorTests
     public void UpdateUserCommand_ShouldHaveValidationErrorForNewPassword_WhenNewPasswordSameAsCurrentPassword()
     {
         // Arrange
-        var command = new UpdateUserCommand { CurrentPassword = "password", NewPassword = "password" };
+        var command = new UpdateUsernameCommand { CurrentPassword = "password", NewPassword = "password" };
 
         // Act
         var result = _validator.TestValidate(command);

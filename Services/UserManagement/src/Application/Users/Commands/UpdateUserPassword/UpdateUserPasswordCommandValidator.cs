@@ -1,22 +1,19 @@
 ﻿using FluentValidation;
 using SharedUtilities.Interfaces;
 
-namespace Application.Users.Commands.UpdateUser;
+namespace Application.Users.Commands.UpdateUserPassword;
 
 /// <summary>
-///     UpdateUserCommand validator.
+///     UpdateUserPasswordCommand validator.
 /// </summary>
-public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+public class UpdateUserPasswordCommandValidator: AbstractValidator<UpdateUserPasswordCommand>
 {
     /// <summary>
-    ///     Initializes UpdateUserCommandValidator.
+    ///     Initializes UpdateUserPasswordCommandValidator.
     /// </summary>
     /// <param name="currentUserService">Current user service</param>
-    public UpdateUserCommandValidator(ICurrentUserService currentUserService)
+    public UpdateUserPasswordCommandValidator(ICurrentUserService currentUserService)
     {
-        RuleFor(x => x.Username)
-            .MaximumLength(256);
-
         RuleFor(x => x.CurrentPassword)
             .NotEmpty().When(x => !string.IsNullOrEmpty(x.NewPassword) && !currentUserService.AdministratorAccess,
                 ApplyConditionTo.CurrentValidator)
