@@ -17,6 +17,13 @@ import {
 } from '@angular/forms';
 import { CustomValidators } from '../../shared/custom-validators';
 import { CommonModule } from '@angular/common';
+import { UpdateUsernameCommand } from '../commands/update-username-command.model';
+import {
+  AlertService,
+  AlertType
+} from '../../shared-components/alert/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UpdateUserPasswordCommand } from '../commands/update-user-password-command.model';
 
 @Component({
   selector: 'app-account-settings',
@@ -33,7 +40,11 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   private authService: AuthService = inject(AuthService);
   private usersService: UsersService = inject(UsersService);
   private modalService: ModalService = inject(ModalService);
+  private alertService: AlertService = inject(AlertService);
   private userSubscription!: Subscription;
+  private updateUsernameSubscription!: Subscription;
+  private updateUserPasswordSubscription!: Subscription;
+  private deleteUserSubscription!: Subscription;
   private authUserSubscription!: Subscription;
 
   loading: boolean = true;
@@ -43,6 +54,66 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   passwordForm!: FormGroup;
 
   ngOnInit(): void {
+    this.getUser();
+
+    this.updateUsernameForm = new FormGroup({
+      userName: new FormControl(this.user?.username, [
+        Validators.required,
+        Validators.maxLength(256)
+      ])
+    });
+    this.passwordForm = new FormGroup({
+      currentPassword: new FormControl('', [Validators.required]),
+      newPassword: new FormControl('', [
+        Validators.minLength(8),
+        Validators.required,
+        Validators.pattern(CustomValidators.passwordPattern)
+      ])
+    });
+  }
+
+  updateUsername(): void {
+    const updateUsernameCommand = this.updateUsernameForm
+      .value as UpdateUsernameCommand;
+    updateUsernameCommand.userId = this.user!.id;
+    this.updateUsernameSubscription = this.usersService
+      .UpdateUsername(this.user!.id, updateUsernameCommand)
+      .subscribe({
+        next: () => {
+          this.updateUsernameForm.reset();
+          this.alertService.openAlert(AlertType.Success, 'Username changed');
+          this.loading = false;
+          this.getUser();
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
+  }
+
+  changePassword(): void {
+    const updateUserPasswordCommand = this.passwordForm
+      .value as UpdateUserPasswordCommand;
+    updateUserPasswordCommand.userId = this.user!.id;
+    this.updateUserPasswordSubscription = this.usersService
+      .UpdateUserPassword(this.user!.id, updateUserPasswordCommand)
+      .subscribe({
+        next: () => {
+          this.alertService.openAlert(AlertType.Success, 'Password changed');
+          this.loading = false;
+          this.passwordForm.reset();
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
+  }
+
+  deleteAccount(): void {
+    console.log('deleteAccount');
+  }
+
+  private getUser(): void {
     this.authUserSubscription = this.authService.user.subscribe(
       (user: AuthUser | null) => {
         if (!user) {
@@ -53,12 +124,9 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
             .subscribe({
               next: (user: User) => {
                 this.user = user;
-                this.updateUsernameForm = new FormGroup({
-                  userName: new FormControl(this.user?.username, [
-                    Validators.required,
-                    Validators.maxLength(256)
-                  ])
-                });
+                this.updateUsernameForm.controls['userName'].setValue(
+                  this.user?.username
+                );
                 this.error = '';
                 this.loading = false;
               },
@@ -72,26 +140,26 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     );
-    this.passwordForm = new FormGroup({
-      currentPassword: new FormControl('', [Validators.required]),
-      newPassword: new FormControl('', [
-        Validators.minLength(8),
-        Validators.required,
-        Validators.pattern(CustomValidators.passwordPattern)
-      ])
-    });
   }
 
-  updateUsername(): void {
-    console.log('updateUsername');
-  }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = null;
 
-  changePassword(): void {
-    console.log('changePassword');
-  }
+    if (error.error && error.error.errors) {
+      const firstKey = Object.keys(error.error?.errors)[0] ?? null;
+      const firstValueArray = error.error?.errors[firstKey] as string[];
+      errorMessage = firstValueArray[0];
+    } else if (error.error && error.error.detail) {
+      errorMessage = error.error.detail;
+    }
 
-  deleteAccount(): void {
-    console.log('deleteAccount');
+    if (!errorMessage) {
+      this.alertService.openAlert(AlertType.Error, 'Something went wrong');
+    } else {
+      this.alertService.openAlert(AlertType.Error, errorMessage);
+    }
+
+    this.loading = false;
   }
 
   ngOnDestroy(): void {
@@ -100,6 +168,15 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     }
     if (this.userSubscription) {
       this.userSubscription.unsubscribe();
+    }
+    if (this.updateUsernameSubscription) {
+      this.updateUsernameSubscription.unsubscribe();
+    }
+    if (this.updateUserPasswordSubscription) {
+      this.updateUserPasswordSubscription.unsubscribe();
+    }
+    if (this.deleteUserSubscription) {
+      this.deleteUserSubscription.unsubscribe();
     }
   }
 }
