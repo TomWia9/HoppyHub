@@ -5,6 +5,7 @@ import { User } from './user.model';
 import { environment } from '../../environments/environment';
 import { UpdateUserPasswordCommand } from './commands/update-user-password-command.model';
 import { UpdateUsernameCommand } from './commands/update-username-command.model';
+import { DeleteUserCommand } from './commands/delete-user-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,9 +39,13 @@ export class UsersService {
     );
   }
 
-  DeleteOpinion(userId: string): Observable<void> {
+  DeleteAccount(
+    userId: string,
+    deleteUserCommand: DeleteUserCommand
+  ): Observable<void> {
     return this.http.delete<void>(
-      `${environment.userManagementApiUrl}/users/${userId}`
+      `${environment.userManagementApiUrl}/users/${userId}`,
+      { body: deleteUserCommand }
     );
   }
 }

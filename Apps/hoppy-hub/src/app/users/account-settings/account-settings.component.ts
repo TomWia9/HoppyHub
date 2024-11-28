@@ -24,6 +24,7 @@ import {
 } from '../../shared-components/alert/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { UpdateUserPasswordCommand } from '../commands/update-user-password-command.model';
+import { DeleteAccountModalComponent } from './delete-account-modal/delete-account-modal.component';
 
 @Component({
   selector: 'app-account-settings',
@@ -32,7 +33,8 @@ import { UpdateUserPasswordCommand } from '../commands/update-user-password-comm
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    DeleteAccountModalComponent
   ],
   templateUrl: './account-settings.component.html'
 })
@@ -44,7 +46,6 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   private userSubscription!: Subscription;
   private updateUsernameSubscription!: Subscription;
   private updateUserPasswordSubscription!: Subscription;
-  private deleteUserSubscription!: Subscription;
   private authUserSubscription!: Subscription;
 
   loading: boolean = true;
@@ -99,9 +100,13 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
       .UpdateUserPassword(this.user!.id, updateUserPasswordCommand)
       .subscribe({
         next: () => {
-          this.alertService.openAlert(AlertType.Success, 'Password changed');
+          this.alertService.openAlert(
+            AlertType.Success,
+            'The password has been changed, please log in again.'
+          );
           this.loading = false;
           this.passwordForm.reset();
+          this.authService.logout();
         },
         error: error => {
           this.handleError(error);
@@ -110,7 +115,13 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   }
 
   deleteAccount(): void {
-    console.log('deleteAccount');
+    if (this.user) {
+      this.modalService.openModal(
+        new ModalModel(ModalType.DeleteOpinion, {
+          userId: this.user?.id
+        })
+      );
+    }
   }
 
   private getUser(): void {
@@ -174,9 +185,6 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     }
     if (this.updateUserPasswordSubscription) {
       this.updateUserPasswordSubscription.unsubscribe();
-    }
-    if (this.deleteUserSubscription) {
-      this.deleteUserSubscription.unsubscribe();
     }
   }
 }

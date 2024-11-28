@@ -3,6 +3,7 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
+  <app-delete-account-modal></app-delete-account-modal>
   <div class="card bg-neutral shadow-xl">
     <div class="card-body text-center">
       <p class="card-title text-2xl">Account Settings</p>
