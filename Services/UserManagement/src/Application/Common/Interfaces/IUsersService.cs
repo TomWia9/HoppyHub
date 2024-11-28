@@ -1,5 +1,6 @@
 ﻿using Application.Users.Commands.DeleteUser;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
+using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using SharedUtilities.Models;
@@ -24,16 +25,16 @@ public interface IUsersService
     Task<PaginatedList<UserDto>> GetUsersAsync(GetUsersQuery request);
 
     /// <summary>
-    ///     Gets username by user id.
-    /// </summary>
-    /// <param name="userId">The user id</param>
-    Task<string?> GetUsernameAsync(Guid userId);
-
-    /// <summary>
     ///     Updates user.
     /// </summary>
     /// <param name="request">Update user command</param>
-    Task UpdateUserAsync(UpdateUserCommand request);
+    Task UpdateUserAsync(UpdateUsernameCommand request);
+
+    /// <summary>
+    ///     Changes user password.
+    /// </summary>
+    /// <param name="request">Update user password command</param>
+    Task ChangePasswordAsync(UpdateUserPasswordCommand request);
 
     /// <summary>
     ///     Deletes user.

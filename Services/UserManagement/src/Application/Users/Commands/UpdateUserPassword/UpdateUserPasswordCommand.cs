@@ -1,11 +1,11 @@
 ﻿using MediatR;
 
-namespace Application.Users.Commands.UpdateUser;
+namespace Application.Users.Commands.UpdateUserPassword;
 
 /// <summary>
-///     UpdateUser command.
+///     UpdateUserPassword command.
 /// </summary>
-public record UpdateUserCommand : IRequest
+public record UpdateUserPasswordCommand : IRequest
 {
     /// <summary>
     ///     The user id.
@@ -13,15 +13,10 @@ public record UpdateUserCommand : IRequest
     public Guid UserId { get; init; }
 
     /// <summary>
-    ///     The username.
-    /// </summary>
-    public string? Username { get; init; }
-
-    /// <summary>
     ///     The user current password.
     /// </summary>
     public string? CurrentPassword { get; init; }
-
+    
     /// <summary>
     ///     The user new password.
     /// </summary>

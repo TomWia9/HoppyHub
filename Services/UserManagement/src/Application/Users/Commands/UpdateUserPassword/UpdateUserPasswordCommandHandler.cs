@@ -1,16 +1,14 @@
 ﻿using Application.Common.Interfaces;
-using MassTransit;
 using MediatR;
-using SharedEvents.Events;
 using SharedUtilities.Exceptions;
 using SharedUtilities.Interfaces;
 
-namespace Application.Users.Commands.UpdateUser;
+namespace Application.Users.Commands.UpdateUserPassword;
 
 /// <summary>
-///     UpdateUserCommand handler.
+///     UpdateUserPasswordCommand handler.
 /// </summary>
-public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
+public class UpdateUserPasswordCommandHandler : IRequestHandler<UpdateUserPasswordCommand>
 {
     /// <summary>
     ///     The current user service.
@@ -18,49 +16,33 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand>
     private readonly ICurrentUserService _currentUserService;
 
     /// <summary>
-    ///     The publish endpoint.
-    /// </summary>
-    private readonly IPublishEndpoint _publishEndpoint;
-
-    /// <summary>
     ///     The users service.
     /// </summary>
     private readonly IUsersService _usersService;
 
     /// <summary>
-    ///     Initializes UpdateUserCommandHandler.
+    ///     Initializes UpdateUserPasswordCommandHandler.
     /// </summary>
     /// <param name="currentUserService">The current user service</param>
     /// <param name="usersService">The users service</param>
-    /// <param name="publishEndpoint">The publish endpoint</param>
-    public UpdateUserCommandHandler(ICurrentUserService currentUserService, IUsersService usersService,
-        IPublishEndpoint publishEndpoint)
+    public UpdateUserPasswordCommandHandler(ICurrentUserService currentUserService, IUsersService usersService)
     {
         _currentUserService = currentUserService;
         _usersService = usersService;
-        _publishEndpoint = publishEndpoint;
     }
 
     /// <summary>
-    ///     Handles UpdateUserCommand.
+    ///     Handles UpdateUserPasswordCommand.
     /// </summary>
     /// <param name="request">The request</param>
     /// <param name="cancellationToken">The cancellation token</param>
-    public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateUserPasswordCommand request, CancellationToken cancellationToken)
     {
         var currentUserId = _currentUserService.UserId;
 
         if (request.UserId != currentUserId && !_currentUserService.AdministratorAccess)
             throw new ForbiddenAccessException();
 
-        await _usersService.UpdateUserAsync(request);
-
-        var userUpdatedEvent = new UserUpdated
-        {
-            Id = request.UserId,
-            Username = request.Username
-        };
-
-        await _publishEndpoint.Publish(userUpdatedEvent, cancellationToken);
+        await _usersService.ChangePasswordAsync(request);
     }
 }
