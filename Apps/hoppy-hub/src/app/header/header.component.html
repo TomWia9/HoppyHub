@@ -12,11 +12,17 @@
         }
         <li><a routerLink="/beers">Search beers</a></li>
         <li><a routerLink="/breweries">Search breweries</a></li>
-        <li><a>About</a></li>
+        <li><a routerLink="/about">About</a></li>
       </ul>
     </div>
-    <a class="btn btn-ghost text-xl" routerLink="/">HoppyHub</a>
+    <a routerLink="/">
+      <div class="flex items-center">
+        <img src="./../../assets/logo.png" alt="Logo" class="mr-2 h-16 w-16" />
+        <p class="btn btn-ghost text-xl">HoppyHub</p>
+      </div>
+    </a>
   </div>
+
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       @if (adminAccess) {
@@ -24,7 +30,7 @@
       }
       <li><a routerLink="/beers">Search beers</a></li>
       <li><a routerLink="/breweries">Search breweries</a></li>
-      <li><a>About</a></li>
+      <li><a routerLink="/about">About</a></li>
     </ul>
   </div>
   <div class="navbar-end flex-none gap-5">
@@ -47,7 +53,7 @@
         class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         @if (user) {
           <li><a [routerLink]="['/users', user.id]">Profile</a></li>
-          <li><a [routerLink]="['/account-settings']">Settings</a></li>
+          <li><a routerLink="account-settings">Settings</a></li>
           <li><button (click)="onLogout()">Logout</button></li>
         } @else {
           <li><button (click)="openLoginModal()">Login</button></li>

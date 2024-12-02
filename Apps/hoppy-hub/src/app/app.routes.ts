@@ -7,6 +7,7 @@ import { BeerDetailsComponent } from './beers/beer-details/beer-details.componen
 import { BeersComponent } from './beers/beers.component';
 import { UserDetailsComponent } from './users/user-details/user-details.component';
 import { AccountSettingsComponent } from './users/account-settings/account-settings.component';
+import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,7 @@ export const routes: Routes = [
     path: 'account-settings',
     component: AccountSettingsComponent
   },
+  { path: 'about', component: AboutComponent },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: '/not-found' }
 ];
