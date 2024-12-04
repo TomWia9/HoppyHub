@@ -39,7 +39,7 @@ export class BeerStylesTableComponent
   private getBeerStylesSubscription!: Subscription;
 
   beerStylesParams = new BeerStylesParams({
-    pageSize: 10,
+    pageSize: 15,
     pageNumber: 1
   });
   beerStyles: PagedList<BeerStyle> | undefined;

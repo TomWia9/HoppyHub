@@ -15,7 +15,7 @@ export class BeerStylesService {
 
   paramsChanged = new BehaviorSubject<BeerStylesParams>(
     new BeerStylesParams({
-      pageSize: 10,
+      pageSize: 15,
       pageNumber: 1
     })
   );
