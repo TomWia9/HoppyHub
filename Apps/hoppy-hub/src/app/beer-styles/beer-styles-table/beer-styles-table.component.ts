@@ -17,6 +17,7 @@ import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { RouterModule } from '@angular/router';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
+import { BeerStylesTableFiltersComponent } from './beer-styles-table-filters/beer-styles-table-filters.component';
 
 @Component({
   selector: 'app-beer-styles-table',
@@ -25,7 +26,8 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     RouterModule,
-    PaginationComponent
+    PaginationComponent,
+    BeerStylesTableFiltersComponent
   ],
   templateUrl: './beer-styles-table.component.html'
 })

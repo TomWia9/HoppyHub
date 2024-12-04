@@ -2,13 +2,15 @@
   @if (loading) {
     <app-loading-spinner></app-loading-spinner>
   } @else {
-    <!-- filters -->
+    <app-beer-styles-table-filters
+      [params]="beerStylesParams"
+      [paginationData]="paginationData"></app-beer-styles-table-filters>
     @if (error) {
       <app-error-message [message]="error"></app-error-message>
     } @else {
       <div class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
         <div class="overflow-x-auto">
-          <table class="table table-xs lg:table-lg xl:table-xs 2xl:table-sm">
+          <table class="table">
             <thead>
               <tr class="2xl:text-lg">
                 <th>Name</th>

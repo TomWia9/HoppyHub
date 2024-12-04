@@ -38,4 +38,19 @@ export class BeerStylesParams implements Params {
 
     return params;
   }
+
+  static sortOptions = [
+    { label: 'Name (A to Z)', value: 'Name', direction: 0 },
+    { label: 'Name (Z to A)', value: 'Name', direction: 1 },
+    {
+      label: 'Country Of Origin (A to Z)',
+      value: 'CountryOfOrigin',
+      direction: 0
+    },
+    {
+      label: 'Country Of Origin (Z to A)',
+      value: 'CountryOfOrigin',
+      direction: 1
+    }
+  ];
 }
