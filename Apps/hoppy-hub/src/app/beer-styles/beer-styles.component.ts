@@ -8,11 +8,12 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { filter, Subscription } from 'rxjs';
+import { BeerStylesTableComponent } from './beer-styles-table/beer-styles-table.component';
 
 @Component({
   selector: 'app-beer-styles',
   standalone: true,
-  imports: [RouterOutlet, FontAwesomeModule],
+  imports: [RouterOutlet, FontAwesomeModule, BeerStylesTableComponent],
   templateUrl: './beer-styles.component.html'
 })
 export class BeerStylesComponent implements OnInit, OnDestroy {
