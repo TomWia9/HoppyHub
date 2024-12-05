@@ -20,6 +20,7 @@ import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { BeerCardComponent } from '../../beers/beer-card/beer-card.component';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
+import { BeerStyleBeersFiltersComponent } from './beer-style-beers-filters/beer-style-beers-filters.component';
 
 @Component({
   selector: 'app-beer-style-details',
@@ -28,7 +29,8 @@ import { PaginationComponent } from '../../shared-components/pagination/paginati
     LoadingSpinnerComponent,
     ErrorMessageComponent,
     BeerCardComponent,
-    PaginationComponent
+    PaginationComponent,
+    BeerStyleBeersFiltersComponent
   ],
   templateUrl: './beer-style-details.component.html'
 })
@@ -47,9 +49,9 @@ export class BeerStyleDetailsComponent
   beersSubscription!: Subscription;
   beersParamsSubscription!: Subscription;
   beersParams = new BeersParams({
-    pageSize: 9,
+    pageSize: 6,
     pageNumber: 1,
-    sortBy: 'releaseDate',
+    sortBy: 'opinionsCount',
     sortDirection: 1
   });
   beers: PagedList<Beer> | undefined;
