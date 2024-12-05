@@ -11,7 +11,7 @@ import {
   AlertService,
   AlertType
 } from '../shared-components/alert/alert.service';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ModalModel } from '../shared/modal-model';
 import { ModalType } from '../shared/model-type';
 
@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   adminAccess: boolean = false;
   faBars = faBars;
+  faUser = faUser;
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(

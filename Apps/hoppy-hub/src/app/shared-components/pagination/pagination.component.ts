@@ -16,6 +16,8 @@ import { OpinionsParams } from '../../opinions/opinions-params';
 import { OpinionsService } from '../../opinions/opinions.service';
 import { FavoritesParams } from '../../favorites/favorites-params';
 import { FavoritesService } from '../../favorites/favorites.service';
+import { BeerStylesService } from '../../beer-styles/beer-styles.service';
+import { BeerStylesParams } from '../../beer-styles/beer-styles-params';
 
 @Component({
   selector: 'app-pagination',
@@ -27,6 +29,7 @@ export class PaginationComponent implements OnInit {
   @Input({ required: true }) params!:
     | BeersParams
     | BreweriesParams
+    | BeerStylesParams
     | OpinionsParams
     | FavoritesParams;
   @Input({ required: true }) paginationData!: Pagination;
@@ -37,6 +40,7 @@ export class PaginationComponent implements OnInit {
 
   private beersService: BeersService = inject(BeersService);
   private breweriesService: BreweriesService = inject(BreweriesService);
+  private beerStylesService: BeerStylesService = inject(BeerStylesService);
   private opinionsService: OpinionsService = inject(OpinionsService);
   private favoritesService: FavoritesService = inject(FavoritesService);
 
@@ -68,6 +72,10 @@ export class PaginationComponent implements OnInit {
     }
     if (this.params instanceof BreweriesParams) {
       this.breweriesService.paramsChanged.next(this.params);
+    }
+    if (this.params instanceof BeerStylesParams) {
+      console.log(this.params);
+      this.beerStylesService.paramsChanged.next(this.params);
     }
     if (this.params instanceof OpinionsParams) {
       this.opinionsService.paramsChanged.next(this.params);

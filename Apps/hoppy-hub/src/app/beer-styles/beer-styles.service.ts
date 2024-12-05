@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
@@ -12,6 +12,13 @@ import { BeerStyle } from './beer-style.model';
 })
 export class BeerStylesService {
   private http: HttpClient = inject(HttpClient);
+
+  paramsChanged = new BehaviorSubject<BeerStylesParams>(
+    new BeerStylesParams({
+      pageSize: 15,
+      pageNumber: 1
+    })
+  );
 
   getBeerStyles(
     beerStylesParams: BeerStylesParams
@@ -37,5 +44,11 @@ export class BeerStylesService {
           );
         })
       );
+  }
+
+  getBeerStyleById(id: string): Observable<BeerStyle> {
+    return this.http.get<BeerStyle>(
+      `${environment.beerManagementApiUrl}/beerstyles/${id}`
+    );
   }
 }

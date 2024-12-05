@@ -5,25 +5,19 @@ import {
   Router,
   RouterOutlet
 } from '@angular/router';
-import { BeersTableComponent } from './beers-table/beers-table.component';
-import { BeersFiltersModalComponent } from './beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
-import { Subscription, filter } from 'rxjs';
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { filter, Subscription } from 'rxjs';
+import { BeerStylesTableComponent } from './beer-styles-table/beer-styles-table.component';
 
 @Component({
-  selector: 'app-beers',
+  selector: 'app-beer-styles',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    BeersTableComponent,
-    BeersFiltersModalComponent,
-    FontAwesomeModule
-  ],
-  templateUrl: './beers.component.html'
+  imports: [RouterOutlet, FontAwesomeModule, BeerStylesTableComponent],
+  templateUrl: './beer-styles.component.html'
 })
-export class BeersComponent implements OnInit, OnDestroy {
-  beerSelected: boolean = false;
+export class BeerStylesComponent implements OnInit, OnDestroy {
+  beerStyleSelected: boolean = false;
   routeSubscription!: Subscription;
   faInfoCircle = faInfoCircle;
 
@@ -45,10 +39,10 @@ export class BeersComponent implements OnInit, OnDestroy {
 
     if (childRoute) {
       childRoute.paramMap.subscribe(paramMap => {
-        this.beerSelected = paramMap.has('id');
+        this.beerStyleSelected = paramMap.has('id');
       });
     } else {
-      this.beerSelected = false;
+      this.beerStyleSelected = false;
     }
   }
 

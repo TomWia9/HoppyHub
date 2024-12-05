@@ -12,6 +12,7 @@
         }
         <li><a routerLink="/beers">Search beers</a></li>
         <li><a routerLink="/breweries">Search breweries</a></li>
+        <li><a routerLink="/beer-styles">Search beer styles</a></li>
         <li><a routerLink="/about">About</a></li>
       </ul>
     </div>
@@ -30,10 +31,11 @@
       }
       <li><a routerLink="/beers">Search beers</a></li>
       <li><a routerLink="/breweries">Search breweries</a></li>
+      <li><a routerLink="/beer-styles">Search beer styles</a></li>
       <li><a routerLink="/about">About</a></li>
     </ul>
   </div>
-  <div class="navbar-end flex-none gap-5">
+  <div class="navbar-end gap-5">
     <div class="form-control">
       <input
         type="text"
@@ -41,12 +43,11 @@
         class="input input-bordered w-24 md:w-auto" />
     </div>
     <div class="dropdown dropdown-end">
-      <div tabindex="0" role="button" class="avatar btn btn-circle btn-ghost">
-        <div class="w-10 rounded-full">
-          <img
-            alt="Tailwind CSS Navbar component"
-            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-        </div>
+      <div
+        tabindex="0"
+        role="button"
+        class="avatar btn btn-circle btn-ghost shadow-md">
+        <fa-icon [icon]="faUser"></fa-icon>
       </div>
       <ul
         tabindex="0"
