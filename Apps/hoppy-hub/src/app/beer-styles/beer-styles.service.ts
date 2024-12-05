@@ -45,4 +45,10 @@ export class BeerStylesService {
         })
       );
   }
+
+  getBeerStyleById(id: string): Observable<BeerStyle> {
+    return this.http.get<BeerStyle>(
+      `${environment.beerManagementApiUrl}/beerstyles/${id}`
+    );
+  }
 }
