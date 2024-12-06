@@ -21,6 +21,7 @@ export class SearchComponent implements OnDestroy {
 
   onSearch() {
     if (!this.searchQuery.trim()) {
+      this.results = null;
       return;
     }
 
