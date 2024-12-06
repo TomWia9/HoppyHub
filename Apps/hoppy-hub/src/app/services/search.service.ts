@@ -16,10 +16,10 @@ export class SearchService {
   searchGlobal(query: string): Observable<SearchResult> {
     return forkJoin({
       beers: this.beersService.getBeers(
-        new BeersParams({ searchQuery: query })
+        new BeersParams({ pageSize: 5, searchQuery: query })
       ),
       breweries: this.breweriesService.getBreweries(
-        new BreweriesParams({ searchQuery: query })
+        new BreweriesParams({ pageSize: 5, searchQuery: query })
       )
     }).pipe(
       map(({ beers, breweries }) => ({
