@@ -3,11 +3,12 @@ import { SearchService } from '../../services/search.service';
 import { SearchResult } from '../../shared/search-result.model';
 import { Subscription } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule],
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnDestroy {

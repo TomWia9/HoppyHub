@@ -16,7 +16,11 @@
       @if (results.beers.length > 0) {
         <ul class="menu mb-4 rounded-box bg-base-100">
           @for (beer of results.beers; track $index) {
-            <li class="p-2 hover:bg-base-300">{{ beer.name }}</li>
+            <a [routerLink]="['/beers', beer.id]">
+              <li class="p-2 hover:bg-base-300">
+                {{ beer.name }}
+              </li>
+            </a>
           }
         </ul>
       }
@@ -26,7 +30,9 @@
       @if (results.breweries.length > 0) {
         <ul class="menu rounded-box bg-base-100">
           @for (brewery of results.breweries; track $index) {
-            <li class="p-2 hover:bg-base-300">{{ brewery.name }}</li>
+            <a [routerLink]="['/breweries', brewery.id]">
+              <li class="p-2 hover:bg-base-300">{{ brewery.name }}</li>
+            </a>
           }
         </ul>
       }
