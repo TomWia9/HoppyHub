@@ -4,7 +4,7 @@
     type="text"
     class="input input-bordered w-24 md:w-auto"
     [(ngModel)]="searchQuery"
-    (keyup.enter)="onSearch()"
+    (input)="onSearch()"
     (focus)="openDropdown()"
     placeholder="Search" />
   @if (isDropdownOpen && results) {
