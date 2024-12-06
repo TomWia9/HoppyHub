@@ -5,8 +5,9 @@
     class="input input-bordered w-24 md:w-auto"
     [(ngModel)]="searchQuery"
     (keyup.enter)="onSearch()"
+    (focus)="openDropdown()"
     placeholder="Search" />
-  @if (results) {
+  @if (isDropdownOpen && results) {
     <div
       tabindex="0"
       class="menu dropdown-content absolute z-50 mt-14 w-64 rounded-box bg-base-200 p-4 shadow">
@@ -16,7 +17,7 @@
       @if (results.beers.length > 0) {
         <ul class="menu mb-4 rounded-box bg-base-100">
           @for (beer of results.beers; track $index) {
-            <a [routerLink]="['/beers', beer.id]">
+            <a [routerLink]="['/beers', beer.id]" (click)="closeDropdown()">
               <li class="p-2 hover:bg-base-300">
                 {{ beer.name }}
               </li>
@@ -30,7 +31,9 @@
       @if (results.breweries.length > 0) {
         <ul class="menu rounded-box bg-base-100">
           @for (brewery of results.breweries; track $index) {
-            <a [routerLink]="['/breweries', brewery.id]">
+            <a
+              [routerLink]="['/breweries', brewery.id]"
+              (click)="closeDropdown()">
               <li class="p-2 hover:bg-base-300">{{ brewery.name }}</li>
             </a>
           }

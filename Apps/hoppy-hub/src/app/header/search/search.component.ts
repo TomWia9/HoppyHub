@@ -17,6 +17,7 @@ export class SearchComponent implements OnDestroy {
 
   searchQuery: string = '';
   results: SearchResult | null = null;
+  isDropdownOpen = false;
 
   onSearch() {
     if (!this.searchQuery.trim()) {
@@ -27,8 +28,15 @@ export class SearchComponent implements OnDestroy {
       .searchGlobal(this.searchQuery)
       .subscribe((data: SearchResult) => {
         this.results = data;
-        console.log(this.results);
       });
+  }
+
+  openDropdown() {
+    this.isDropdownOpen = true;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
   }
 
   ngOnDestroy(): void {
