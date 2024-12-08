@@ -26,6 +26,8 @@
             <a [routerLink]="['/beers', beer.id]" (click)="closeDropdown()">
               <li class="p-2 hover:bg-base-300">
                 {{ beer.name }}
+                <br />
+                ({{ beer.brewery.name }})
               </li>
             </a>
           }
