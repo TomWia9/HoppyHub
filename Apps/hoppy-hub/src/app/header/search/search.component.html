@@ -1,12 +1,18 @@
 <div class="dropdown dropdown-end form-control">
-  <input
-    tabindex="0"
-    type="text"
-    class="input input-bordered w-24 md:w-auto"
-    [(ngModel)]="searchQuery"
-    (input)="onSearch()"
-    (focus)="openDropdown()"
-    placeholder="Search" />
+  <label class="input input-bordered flex items-center gap-2" tabindex="0">
+    <input
+      type="text"
+      class="w-14 grow sm:w-24 md:w-auto"
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+      (focus)="openDropdown()"
+      placeholder="Search" />
+    @if (searchQuery) {
+      <button class="hover:opacity-70" (click)="onSearchClear()">
+        <fa-icon [icon]="faX"></fa-icon>
+      </button>
+    }
+  </label>
   @if (isDropdownOpen && results) {
     <div
       tabindex="0"

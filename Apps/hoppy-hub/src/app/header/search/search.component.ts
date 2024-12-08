@@ -4,11 +4,13 @@ import { SearchResult } from '../../shared/search-result.model';
 import { Subscription } from 'rxjs';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, RouterModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterModule, FontAwesomeModule],
   templateUrl: './search.component.html'
 })
 export class SearchComponent implements OnDestroy {
@@ -18,6 +20,7 @@ export class SearchComponent implements OnDestroy {
   searchQuery: string = '';
   results: SearchResult | null = null;
   isDropdownOpen = false;
+  faX = faX;
 
   onSearch() {
     if (!this.searchQuery.trim()) {
@@ -32,12 +35,17 @@ export class SearchComponent implements OnDestroy {
       });
   }
 
-  openDropdown() {
+  openDropdown(): void {
     this.isDropdownOpen = true;
   }
 
-  closeDropdown() {
+  closeDropdown(): void {
     this.isDropdownOpen = false;
+  }
+
+  onSearchClear(): void {
+    this.searchQuery = '';
+    this.onSearch();
   }
 
   ngOnDestroy(): void {
