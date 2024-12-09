@@ -68,11 +68,7 @@ public class BeersFilteringHelper : FilteringHelperBase<Beer, GetBeersQuery>
         var searchQuery = request.SearchQuery.Trim().ToUpper();
 
         Expression<Func<Beer, bool>> searchDelegate =
-            x => (x.Name != null && x.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.Brewery != null && x.Brewery.Name != null && x.Brewery.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.BeerStyle != null && x.BeerStyle.Name != null &&
-                  x.BeerStyle.Name.ToUpper().Contains(searchQuery)) ||
-                 (x.Description != null && x.Description.ToUpper().Contains(searchQuery));
+            x => x.Name != null && x.Name.ToUpper().Contains(searchQuery);
 
         delegates.Add(searchDelegate);
 
