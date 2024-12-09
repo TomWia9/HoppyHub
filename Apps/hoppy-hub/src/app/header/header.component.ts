@@ -14,11 +14,12 @@ import {
 import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ModalModel } from '../shared/modal-model';
 import { ModalType } from '../shared/model-type';
+import { SearchComponent } from './search/search.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FontAwesomeModule],
+  imports: [CommonModule, RouterModule, FontAwesomeModule, SearchComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit, OnDestroy {

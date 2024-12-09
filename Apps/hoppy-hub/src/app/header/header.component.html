@@ -18,7 +18,10 @@
     </div>
     <a routerLink="/">
       <div class="flex items-center">
-        <img src="./../../assets/logo.png" alt="Logo" class="mr-2 h-16 w-16" />
+        <img
+          src="./../../assets/logo.png"
+          alt="Logo"
+          class="mr-2 hidden h-16 w-16 sm:flex" />
         <p class="btn btn-ghost text-xl">HoppyHub</p>
       </div>
     </a>
@@ -36,12 +39,7 @@
     </ul>
   </div>
   <div class="navbar-end gap-5">
-    <div class="form-control">
-      <input
-        type="text"
-        placeholder="Search"
-        class="input input-bordered w-24 md:w-auto" />
-    </div>
+    <app-search></app-search>
     <div class="dropdown dropdown-end">
       <div
         tabindex="0"
