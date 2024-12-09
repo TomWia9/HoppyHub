@@ -46,7 +46,23 @@
           }
         </ul>
       }
-      @if (results.breweries.length === 0 && results.beers.length === 0) {
+      @if (results.users.length !== 0 || results.users.length !== 0) {
+        <p class="text-md mb-2 font-bold">Users:</p>
+      }
+      @if (results.users.length > 0) {
+        <ul class="menu rounded-box bg-base-100">
+          @for (user of results.users; track $index) {
+            <a [routerLink]="['/users', user.id]" (click)="closeDropdown()">
+              <li class="p-2 hover:bg-base-300">{{ user.username }}</li>
+            </a>
+          }
+        </ul>
+      }
+      @if (
+        results.breweries.length === 0 &&
+        results.beers.length === 0 &&
+        results.users.length === 0
+      ) {
         <p class="text-md mb-2 font-bold">No results found</p>
       }
     </div>

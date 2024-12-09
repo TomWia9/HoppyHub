@@ -1,11 +1,14 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { User } from './user.model';
 import { environment } from '../../environments/environment';
 import { UpdateUserPasswordCommand } from './commands/update-user-password-command.model';
 import { UpdateUsernameCommand } from './commands/update-username-command.model';
 import { DeleteUserCommand } from './commands/delete-user-command.model';
+import { PagedList } from '../shared/paged-list';
+import { Pagination } from '../shared/pagination';
+import { UsersParams } from './users-params';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +20,31 @@ export class UsersService {
     return this.http.get<User>(
       `${environment.userManagementApiUrl}/users/${id}`
     );
+  }
+
+  getUsers(usersParams: UsersParams): Observable<PagedList<User>> {
+    const params: HttpParams = usersParams.getHttpParams();
+
+    return this.http
+      .get<User[]>(`${environment.userManagementApiUrl}/users`, {
+        observe: 'response',
+        params: params
+      })
+      .pipe(
+        map((response: HttpResponse<User[]>) => {
+          const pagination = response.headers.get('X-Pagination');
+          const paginationData: Pagination = JSON.parse(pagination!);
+
+          return new PagedList<User>(
+            response.body as User[],
+            paginationData.CurrentPage,
+            paginationData.TotalPages,
+            paginationData.TotalCount,
+            paginationData.HasPrevious,
+            paginationData.HasNext
+          );
+        })
+      );
   }
 
   UpdateUsername(

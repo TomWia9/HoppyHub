@@ -5,6 +5,8 @@ import { forkJoin, map, Observable } from 'rxjs';
 import { BeersParams } from '../beers/beers-params';
 import { BreweriesParams } from '../breweries/breweries-params';
 import { SearchResult } from '../shared/search-result.model';
+import { UsersService } from '../users/users.service';
+import { UsersParams } from '../users/users-params';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,7 @@ import { SearchResult } from '../shared/search-result.model';
 export class SearchService {
   private beersService: BeersService = inject(BeersService);
   private breweriesService: BreweriesService = inject(BreweriesService);
+  private usersService: UsersService = inject(UsersService);
 
   searchGlobal(query: string): Observable<SearchResult> {
     return forkJoin({
@@ -20,11 +23,15 @@ export class SearchService {
       ),
       breweries: this.breweriesService.getBreweries(
         new BreweriesParams({ pageSize: 5, searchQuery: query })
+      ),
+      users: this.usersService.getUsers(
+        new UsersParams({ pageSize: 5, searchQuery: query })
       )
     }).pipe(
-      map(({ beers, breweries }) => ({
+      map(({ beers, breweries, users }) => ({
         beers: beers.items,
-        breweries: breweries.items
+        breweries: breweries.items,
+        users: users.items
       }))
     );
   }
