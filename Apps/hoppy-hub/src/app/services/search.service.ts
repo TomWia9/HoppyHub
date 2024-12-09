@@ -25,7 +25,7 @@ export class SearchService {
         new BreweriesParams({ pageSize: 5, searchQuery: query })
       ),
       users: this.usersService.getUsers(
-        new UsersParams({ pageSize: 5, searchQuery: query })
+        new UsersParams({ pageSize: 5, searchQuery: query, role: 'user' })
       )
     }).pipe(
       map(({ beers, breweries, users }) => ({
