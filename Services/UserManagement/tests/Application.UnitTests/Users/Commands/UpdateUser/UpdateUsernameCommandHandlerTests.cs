@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
 using MassTransit;
 using Moq;
 using SharedEvents.Events;
@@ -9,10 +9,10 @@ using SharedUtilities.Interfaces;
 namespace Application.UnitTests.Users.Commands.UpdateUser;
 
 /// <summary>
-///     Unit tests for the <see cref="UpdateUserCommandHandler" /> class.
+///     Unit tests for the <see cref="UpdateUsernameCommandHandler" /> class.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class UpdateUserCommandHandlerTests
+public class UpdateUsernameCommandHandlerTests
 {
     /// <summary>
     ///     The current user service mock.
@@ -22,7 +22,7 @@ public class UpdateUserCommandHandlerTests
     /// <summary>
     ///     The handler.
     /// </summary>
-    private readonly UpdateUserCommandHandler _handler;
+    private readonly UpdateUsernameCommandHandler _handler;
 
     /// <summary>
     ///     The publish endpoint mock.
@@ -35,14 +35,14 @@ public class UpdateUserCommandHandlerTests
     private readonly Mock<IUsersService> _usersServiceMock;
 
     /// <summary>
-    ///     Setups UpdateUserCommandHandlerTests.
+    ///     Setups UpdateUsernameCommandHandlerTests.
     /// </summary>
-    public UpdateUserCommandHandlerTests()
+    public UpdateUsernameCommandHandlerTests()
     {
         _currentUserServiceMock = new Mock<ICurrentUserService>();
         _usersServiceMock = new Mock<IUsersService>();
         _publishEndpointMock = new Mock<IPublishEndpoint>();
-        _handler = new UpdateUserCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object,
+        _handler = new UpdateUsernameCommandHandler(_currentUserServiceMock.Object, _usersServiceMock.Object,
             _publishEndpointMock.Object);
     }
 
@@ -57,7 +57,7 @@ public class UpdateUserCommandHandlerTests
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(false);
 
-        var command = new UpdateUserCommand
+        var command = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid()
         };
@@ -67,7 +67,7 @@ public class UpdateUserCommandHandlerTests
 
         // Assert
         await action.Should().ThrowAsync<ForbiddenAccessException>();
-        _usersServiceMock.Verify(x => x.UpdateUserAsync(It.IsAny<UpdateUserCommand>()), Times.Never);
+        _usersServiceMock.Verify(x => x.UpdateUserAsync(It.IsAny<UpdateUsernameCommand>()), Times.Never);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class UpdateUserCommandHandlerTests
         _currentUserServiceMock.Setup(x => x.UserId).Returns(Guid.NewGuid());
         _currentUserServiceMock.Setup(x => x.AdministratorAccess).Returns(true);
 
-        var command = new UpdateUserCommand
+        var command = new UpdateUsernameCommand
         {
             UserId = Guid.NewGuid()
         };
@@ -106,7 +106,7 @@ public class UpdateUserCommandHandlerTests
         var currentUserId = Guid.NewGuid();
         _currentUserServiceMock.Setup(x => x.UserId).Returns(currentUserId);
 
-        var command = new UpdateUserCommand
+        var command = new UpdateUsernameCommand
         {
             UserId = currentUserId
         };

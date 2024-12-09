@@ -6,7 +6,6 @@ import {
   RouterOutlet
 } from '@angular/router';
 import { BeersTableComponent } from './beers-table/beers-table.component';
-import { BeerDetailsComponent } from './beer-details/beer-details.component';
 import { BeersFiltersModalComponent } from './beers-table/beers-table-filters/beers-filters-modal/beers-filters-modal.component';
 import { Subscription, filter } from 'rxjs';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +17,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   imports: [
     RouterOutlet,
     BeersTableComponent,
-    BeerDetailsComponent,
     BeersFiltersModalComponent,
     FontAwesomeModule
   ],

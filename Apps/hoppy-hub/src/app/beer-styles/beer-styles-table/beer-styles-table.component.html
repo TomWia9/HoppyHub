@@ -1,0 +1,51 @@
+<div #topSection>
+  @if (loading) {
+    <app-loading-spinner></app-loading-spinner>
+  } @else {
+    <app-beer-styles-table-filters
+      [params]="beerStylesParams"
+      [paginationData]="paginationData"></app-beer-styles-table-filters>
+    @if (error) {
+      <app-error-message [message]="error"></app-error-message>
+    } @else {
+      <div class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
+        <div class="overflow-x-auto">
+          <table class="table">
+            <thead>
+              <tr class="2xl:text-lg">
+                <th>Name</th>
+                <th>Country Of Origin</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (beerStyles && beerStyles.TotalCount > 0) {
+                @for (beerStyle of beerStyles.items; track beerStyle.id) {
+                  <tr
+                    class="hover cursor-pointer"
+                    [routerLink]="[beerStyle.id]"
+                    routerLinkActive="active">
+                    <td>
+                      <div>
+                        {{ beerStyle.name }}
+                      </div>
+                    </td>
+                    <td>
+                      <div>{{ beerStyle.countryOfOrigin }}</div>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="my-4">
+        <app-pagination
+          [params]="beerStylesParams"
+          [paginationData]="paginationData"
+          size="md"
+          (scrollTo)="scrollToTop()"></app-pagination>
+      </div>
+    }
+  }
+</div>

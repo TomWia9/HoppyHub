@@ -47,9 +47,11 @@
                       >
                     </td>
                     <td>
-                      <div>
-                        {{ beer.beerStyle.name }}
-                      </div>
+                      <a
+                        class="link-hover link font-bold"
+                        [routerLink]="['/beer-styles', beer.beerStyle.id]"
+                        >{{ beer.beerStyle.name }}</a
+                      >
                     </td>
                     <td>
                       <div>{{ beer.alcoholByVolume }}%</div>

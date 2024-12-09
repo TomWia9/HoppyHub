@@ -1,7 +1,8 @@
 ﻿using System.Linq.Expressions;
 using Application.Common.Interfaces;
 using Application.Users.Commands.DeleteUser;
-using Application.Users.Commands.UpdateUser;
+using Application.Users.Commands.UpdateUsername;
+using Application.Users.Commands.UpdateUserPassword;
 using Application.Users.Dtos;
 using Application.Users.Queries.GetUsers;
 using Infrastructure.Identity;
@@ -46,25 +47,9 @@ public class UsersService : IUsersService
     /// <param name="userId">The user id</param>
     public async Task<UserDto> GetUserAsync(Guid userId)
     {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
-
-        if (user is null)
-        {
-            throw new NotFoundException(nameof(ApplicationUser), userId);
-        }
+        var user = await GetUser(userId.ToString());
 
         return await MapUser(user);
-    }
-
-    /// <summary>
-    ///     Gets username by user id.
-    /// </summary>
-    /// <param name="userId">The user id</param>
-    public async Task<string?> GetUsernameAsync(Guid userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId.ToString());
-
-        return user?.UserName;
     }
 
     /// <summary>
@@ -107,14 +92,9 @@ public class UsersService : IUsersService
     ///     Updates user.
     /// </summary>
     /// <param name="request">Update user command</param>
-    public async Task UpdateUserAsync(UpdateUserCommand request)
+    public async Task UpdateUserAsync(UpdateUsernameCommand request)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-
-        if (user is null)
-        {
-            throw new NotFoundException(nameof(ApplicationUser), request.UserId);
-        }
+        var user = await GetUser(request.UserId.ToString());
 
         if (!string.IsNullOrWhiteSpace(request.Username))
         {
@@ -126,6 +106,15 @@ public class UsersService : IUsersService
                 throw new BadRequestException(string.Join(", ", updateUserResult.Errors.Select(x => x.Description)));
             }
         }
+    }
+
+    /// <summary>
+    ///     Changes user password.
+    /// </summary>
+    /// <param name="request">Update user password command</param>
+    public async Task ChangePasswordAsync(UpdateUserPasswordCommand request)
+    {
+        var user = await GetUser(request.UserId.ToString());
 
         if (!string.IsNullOrWhiteSpace(request.NewPassword))
         {
@@ -139,17 +128,24 @@ public class UsersService : IUsersService
     /// <param name="request">Delete user command</param>
     public async Task DeleteUserAsync(DeleteUserCommand request)
     {
-        var user = await _userManager.FindByIdAsync(request.UserId.ToString());
-
-        if (user is null)
-        {
-            throw new NotFoundException(nameof(ApplicationUser), request.UserId);
-        }
+        var user = await GetUser(request.UserId.ToString());
 
         if (!_currentUserService.AdministratorAccess && !await _userManager.CheckPasswordAsync(user, request.Password!))
             throw new BadRequestException("Provided password is incorrect");
 
         await _userManager.DeleteAsync(user);
+    }
+
+    private async Task<ApplicationUser> GetUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+
+        if (user is null)
+        {
+            throw new NotFoundException(nameof(ApplicationUser), userId);
+        }
+
+        return user;
     }
 
     /// <summary>
@@ -184,7 +180,7 @@ public class UsersService : IUsersService
                 }
             }
 
-            if (newPasswordErrors.Any())
+            if (newPasswordErrors.Count != 0)
             {
                 throw new BadRequestException(string.Join(", ", newPasswordErrors.Select(x => x)));
             }

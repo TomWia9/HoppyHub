@@ -11,14 +11,15 @@ import {
   AlertService,
   AlertType
 } from '../shared-components/alert/alert.service';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUser } from '@fortawesome/free-solid-svg-icons';
 import { ModalModel } from '../shared/modal-model';
 import { ModalType } from '../shared/model-type';
+import { SearchComponent } from './search/search.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FontAwesomeModule],
+  imports: [CommonModule, RouterModule, FontAwesomeModule, SearchComponent],
   templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit, OnDestroy {
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userSubscription!: Subscription;
   adminAccess: boolean = false;
   faBars = faBars;
+  faUser = faUser;
 
   ngOnInit(): void {
     this.userSubscription = this.authService.user.subscribe(

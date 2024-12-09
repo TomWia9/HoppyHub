@@ -14,7 +14,16 @@
             [routerLink]="['/breweries', beer.brewery.id]"
             >{{ beer.brewery.name }}</a
           >
-          <p class="my-1"><strong>Style:</strong> {{ beer.beerStyle.name }}</p>
+          <p class="my-1">
+            <strong>Style:</strong
+            ><a
+              class="text-md link-hover link link-info"
+              [routerLink]="['/beer-styles', beer.beerStyle.id]">
+              {{ beer.beerStyle.name }}</a
+            >
+          </p>
+
+          <!-- <p class="my-1"><strong>Style:</strong> {{ beer.beerStyle.name }}</p> -->
           <p>{{ beer.description }}</p>
         </div>
         <div class="w-1/4 text-right">
