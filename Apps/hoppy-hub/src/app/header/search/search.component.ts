@@ -1,8 +1,16 @@
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { SearchService } from '../../services/search.service';
 import { SearchResult } from '../../shared/search-result.model';
-import { Subscription } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  map,
+  Subscription,
+  switchMap,
+  tap
+} from 'rxjs';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
@@ -10,29 +18,33 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, RouterModule, FontAwesomeModule],
+  imports: [ReactiveFormsModule, RouterModule, FontAwesomeModule],
   templateUrl: './search.component.html'
 })
-export class SearchComponent implements OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy {
   private searchService: SearchService = inject(SearchService);
   private searchSubscription: Subscription = new Subscription();
 
-  searchQuery: string = '';
   results: SearchResult | null = null;
   isDropdownOpen = false;
   faX = faX;
+  searchForm = new FormControl<string>('');
 
-  onSearch() {
-    if (!this.searchQuery.trim()) {
-      this.results = null;
-      return;
-    }
-
-    this.searchSubscription = this.searchService
-      .searchGlobal(this.searchQuery)
-      .subscribe((data: SearchResult) => {
-        this.results = data;
-      });
+  ngOnInit(): void {
+    this.searchSubscription = this.searchForm.valueChanges
+      .pipe(
+        map(query => query || ''),
+        debounceTime(400),
+        distinctUntilChanged(),
+        tap(query => {
+          if (query.trim() === '') {
+            this.results = null;
+          }
+        }),
+        filter(query => query.trim() !== ''),
+        switchMap(query => this.searchService.searchGlobal(query as string))
+      )
+      .subscribe(data => (this.results = data));
   }
 
   openDropdown(): void {
@@ -44,8 +56,7 @@ export class SearchComponent implements OnDestroy {
   }
 
   onSearchClear(): void {
-    this.searchQuery = '';
-    this.onSearch();
+    this.searchForm.reset();
   }
 
   ngOnDestroy(): void {

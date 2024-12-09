@@ -3,11 +3,10 @@
     <input
       type="text"
       class="w-14 grow sm:w-24 md:w-auto"
-      [(ngModel)]="searchQuery"
-      (input)="onSearch()"
+      [formControl]="searchForm"
       (focus)="openDropdown()"
       placeholder="Search" />
-    @if (searchQuery) {
+    @if (searchForm.value) {
       <button class="hover:opacity-70" (click)="onSearchClear()">
         <fa-icon [icon]="faX"></fa-icon>
       </button>
