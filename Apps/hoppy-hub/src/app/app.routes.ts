@@ -10,6 +10,10 @@ import { AccountSettingsComponent } from './users/account-settings/account-setti
 import { AboutComponent } from './about/about.component';
 import { BeerStylesComponent } from './beer-styles/beer-styles.component';
 import { BeerStyleDetailsComponent } from './beer-styles/beer-style-details/beer-style-details.component';
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { authGuard } from './auth/auth-guard';
+import { BeerManagementComponent } from './admin-panel/beer-management/beer-management.component';
+import { Roles } from './auth/roles';
 
 export const routes: Routes = [
   {
@@ -38,6 +42,16 @@ export const routes: Routes = [
   {
     path: 'account-settings',
     component: AccountSettingsComponent
+  },
+  {
+    path: 'admin-panel',
+    component: AdminPanelComponent,
+    canActivate: [authGuard],
+    data: { roles: [Roles.Administrator] },
+    children: [
+      { path: '', redirectTo: 'beer-management', pathMatch: 'full' },
+      { path: 'beer-management', component: BeerManagementComponent }
+    ]
   },
   { path: 'about', component: AboutComponent },
   { path: 'not-found', component: NotFoundComponent },

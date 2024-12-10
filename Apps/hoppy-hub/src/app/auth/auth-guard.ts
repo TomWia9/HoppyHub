@@ -15,6 +15,7 @@ export const authGuard: CanActivateFn = (next: ActivatedRouteSnapshot) => {
     take(1),
     map(user => {
       const isAuthenticated = !!user;
+
       if (isAuthenticated) {
         if (
           (next.data['roles'] && user.role.includes(next.data['roles'][0])) ||

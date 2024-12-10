@@ -8,7 +8,11 @@
         tabindex="0"
         class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         @if (adminAccess) {
-          <li><a>Admin panel</a></li>
+          <li>
+            <a class="font-bold text-primary" routerLink="/admin-panel"
+              >Admin Panel</a
+            >
+          </li>
         }
         <li><a routerLink="/beers">Search beers</a></li>
         <li><a routerLink="/breweries">Search breweries</a></li>
@@ -30,7 +34,11 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       @if (adminAccess) {
-        <li><a>Admin panel</a></li>
+        <li>
+          <a class="font-bold text-primary" routerLink="/admin-panel"
+            >Admin Panel</a
+          >
+        </li>
       }
       <li><a routerLink="/beers">Search beers</a></li>
       <li><a routerLink="/breweries">Search breweries</a></li>
