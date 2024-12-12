@@ -1,0 +1,56 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
+      <div class="mask mask-squircle h-32 w-32">
+        <img src="{{ beer.imageUri }}" alt="Beer image" />
+      </div>
+      <div>
+        <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
+
+        <p class="my-4">{{ beer.description }}</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="grid grid-cols-2 place-items-center gap-4">
+      <div class="space-y-1">
+        <a
+          class="link-hover link link-accent"
+          [routerLink]="['/beer-styles', beer.beerStyle.id]"
+          >({{ beer.beerStyle.name }})</a
+        >
+        <p>
+          <strong>Brewery: </strong>
+          <a
+            class="link-hover link link-accent"
+            [routerLink]="['/breweries', beer.brewery.id]"
+            >{{ beer.brewery.name }}</a
+          >
+        </p>
+        <p><strong>Release date:</strong> {{ beer.releaseDate }}</p>
+      </div>
+
+      <div class="space-y-1">
+        <p><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
+        <p><strong>BLG:</strong> {{ beer.blg }}</p>
+        <p><strong>IBU:</strong> {{ beer.ibu }}</p>
+      </div>
+      <div class="space-y-1 sm:col-span-3">
+        <p><strong>Composition:</strong> {{ beer.composition }}</p>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="grid gap-4">
+      <!-- @if (beerEdited) {
+        <button class="btn btn-outline btn-success">Save beer</button>
+      } -->
+      <button class="btn btn-outline btn-error">Delete beer</button>
+    </div>
+  </div>
+}

@@ -14,6 +14,7 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { authGuard } from './auth/auth-guard';
 import { BeerManagementComponent } from './admin-panel/beer-management/beer-management.component';
 import { Roles } from './auth/roles';
+import { BeerEditComponent } from './admin-panel/beer-management/beer-edit/beer-edit.component';
 
 export const routes: Routes = [
   {
@@ -50,7 +51,11 @@ export const routes: Routes = [
     data: { roles: [Roles.Administrator] },
     children: [
       { path: '', redirectTo: 'beer-management', pathMatch: 'full' },
-      { path: 'beer-management', component: BeerManagementComponent }
+      {
+        path: 'beer-management',
+        component: BeerManagementComponent,
+        children: [{ path: ':id', component: BeerEditComponent }]
+      }
     ]
   },
   { path: 'about', component: AboutComponent },
