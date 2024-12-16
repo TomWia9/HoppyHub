@@ -55,11 +55,9 @@ export class BeersService {
   }
 
   CreateBeer(upsertBeerCommand: UpsertBeerCommand): Observable<Beer> {
-    const formData = this.buildFormData(upsertBeerCommand);
-
     return this.http.post<Beer>(
       `${environment.beerManagementApiUrl}/beers`,
-      formData
+      upsertBeerCommand
     );
   }
 
@@ -67,11 +65,9 @@ export class BeersService {
     beerId: string,
     upsertBeerCommand: UpsertBeerCommand
   ): Observable<void> {
-    const formData = this.buildFormData(upsertBeerCommand);
-
     return this.http.put<void>(
       `${environment.beerManagementApiUrl}/beers/${beerId}`,
-      formData
+      upsertBeerCommand
     );
   }
 
@@ -79,29 +75,5 @@ export class BeersService {
     return this.http.delete<void>(
       `${environment.beerManagementApiUrl}/beers/${beerId}`
     );
-  }
-
-  private buildFormData(upsertBeerCommand: UpsertBeerCommand): FormData {
-    const formData = new FormData();
-    if (upsertBeerCommand.id) {
-      formData.append('Id', upsertBeerCommand.id);
-    }
-    formData.append('Name', upsertBeerCommand.name);
-    formData.append('BreweryId', upsertBeerCommand.breweryId);
-    formData.append(
-      'AlcoholByVolume',
-      upsertBeerCommand.alcoholByVolume.toString()
-    );
-    formData.append('Description', upsertBeerCommand.description);
-    formData.append('Composition', upsertBeerCommand.composition);
-    formData.append('Blg', upsertBeerCommand.blg.toString());
-    formData.append('BeerStyleId', upsertBeerCommand.beerStyleId);
-    formData.append('Ibu', upsertBeerCommand.ibu.toString());
-    formData.append(
-      'releaseDate',
-      upsertBeerCommand.releaseDate.toDateString()
-    );
-
-    return formData;
   }
 }

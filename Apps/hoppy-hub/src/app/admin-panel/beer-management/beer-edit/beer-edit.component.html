@@ -1,56 +1,151 @@
-@if (loading) {
+@if (loading || beerStylesLoading || breweriesLoading) {
   <app-loading-spinner></app-loading-spinner>
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
-    <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
-      <div class="mask mask-squircle h-32 w-32">
-        <img src="{{ beer.imageUri }}" alt="Beer image" />
-      </div>
-      <div>
-        <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
+    <form [formGroup]="beerForm" (ngSubmit)="onBeerSave()">
+      <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
+        <div class="mask mask-squircle h-32 w-32">
+          <img src="{{ beer.imageUri }}" alt="Beer image" />
+        </div>
+        <div class="mr-4 w-full">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Name</span>
+            </div>
+            <input
+              type="text"
+              id="edit_beer_name"
+              formControlName="name"
+              class="input input-bordered" />
+          </label>
 
-        <p class="my-4">{{ beer.description }}</p>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="grid grid-cols-2 place-items-center gap-4">
-      <div class="space-y-1">
-        <a
-          class="link-hover link link-accent"
-          [routerLink]="['/beer-styles', beer.beerStyle.id]"
-          >({{ beer.beerStyle.name }})</a
-        >
-        <p>
-          <strong>Brewery: </strong>
-          <a
-            class="link-hover link link-accent"
-            [routerLink]="['/breweries', beer.brewery.id]"
-            >{{ beer.brewery.name }}</a
-          >
-        </p>
-        <p><strong>Release date:</strong> {{ beer.releaseDate }}</p>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Description</span>
+            </div>
+            <textarea
+              type="text"
+              id="edit_beer_description"
+              formControlName="description"
+              class="textarea textarea-bordered"></textarea>
+          </label>
+        </div>
       </div>
 
-      <div class="space-y-1">
-        <p><strong>ABV:</strong> {{ beer.alcoholByVolume }}%</p>
-        <p><strong>BLG:</strong> {{ beer.blg }}</p>
-        <p><strong>IBU:</strong> {{ beer.ibu }}</p>
-      </div>
-      <div class="space-y-1 sm:col-span-3">
-        <p><strong>Composition:</strong> {{ beer.composition }}</p>
-      </div>
-    </div>
+      <div class="divider"></div>
 
-    <div class="divider"></div>
-    <div class="grid gap-4">
-      <!-- @if (beerEdited) {
+      <div class="grid grid-cols-2 place-items-center gap-4">
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Beer Style</span>
+            </div>
+            <select
+              id="edit_beer_beer_style"
+              formControlName="beerStyleId"
+              class="select select-bordered">
+              <option [value]="beer.beerStyle.id" selected class="font-bold">
+                {{ beer.beerStyle.name }}
+              </option>
+              @for (beerStyle of beerStyles; track $index) {
+                <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Brewery</span>
+            </div>
+            <select
+              id="edit_beer_brewery"
+              formControlName="breweryId"
+              class="select select-bordered">
+              <option [value]="beer.brewery.id" selected class="font-bold">
+                {{ beer.brewery.name }}
+              </option>
+              @for (brewery of breweries; track $index) {
+                <option [value]="brewery.id">{{ brewery.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Release Date</span>
+            </div>
+            <input
+              type="date"
+              id="edit_beer_release_date"
+              formControlName="releaseDate"
+              class="input input-bordered" />
+          </label>
+        </div>
+
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">ABV (%)</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="edit_beer_abv"
+              formControlName="alcoholByVolume"
+              class="input input-bordered" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">BLG</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="edit_beer_blg"
+              formControlName="blg"
+              class="input input-bordered" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">IBU</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="1000"
+              step="1"
+              id="edit_beer_ibu"
+              formControlName="ibu"
+              class="input input-bordered" />
+          </label>
+        </div>
+        <div class="col-span-2 w-3/4 space-y-1 place-self-center">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Composition</span>
+            </div>
+            <textarea
+              type="text"
+              id="edit_beer_composition"
+              formControlName="composition"
+              class="textarea textarea-bordered"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="grid gap-4">
+        <!-- @if (beerEdited) {
+              <button class="btn btn-outline btn-success">Save beer</button>
+            } -->
         <button class="btn btn-outline btn-success">Save beer</button>
-      } -->
-      <button class="btn btn-outline btn-error">Delete beer</button>
-    </div>
+
+        <button class="btn btn-outline btn-error">Delete beer</button>
+      </div>
+    </form>
   </div>
 }
