@@ -141,27 +141,23 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   }
 
   onBeerSave(): void {
-    console.log(this.beerForm);
+    this.loading = true;
+    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
+    console.log(upsertBeerCommand);
 
-    if (this.beerForm.valid) {
-      this.loading = true;
-      const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
-      console.log(upsertBeerCommand);
-
-      upsertBeerCommand.id = this.beer.id;
-      this.updateBeerSubscription = this.beersService
-        .UpdateBeer(this.beer.id, upsertBeerCommand)
-        .subscribe({
-          next: () => {
-            this.getBeer();
-            this.alertService.openAlert(AlertType.Success, 'Beer updated');
-            this.loading = false;
-          },
-          error: error => {
-            this.handleError(error);
-          }
-        });
-    }
+    upsertBeerCommand.id = this.beer.id;
+    this.updateBeerSubscription = this.beersService
+      .UpdateBeer(this.beer.id, upsertBeerCommand)
+      .subscribe({
+        next: () => {
+          this.getBeer();
+          this.alertService.openAlert(AlertType.Success, 'Beer updated');
+          this.loading = false;
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
   }
 
   private handleError(error: HttpErrorResponse) {

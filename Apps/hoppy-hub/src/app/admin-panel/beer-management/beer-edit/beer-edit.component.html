@@ -139,11 +139,11 @@
 
       <div class="divider"></div>
       <div class="grid gap-4">
-        <!-- @if (beerEdited) {
-              <button class="btn btn-outline btn-success">Save beer</button>
-            } -->
-        <button class="btn btn-outline btn-success">Save beer</button>
-
+        <button
+          class="btn btn-outline btn-success"
+          [disabled]="beerForm.pristine">
+          Save beer
+        </button>
         <button class="btn btn-outline btn-error">Delete beer</button>
       </div>
     </form>
