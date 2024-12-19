@@ -30,6 +30,8 @@ services:
       - ASPNETCORE_URLS=http://*:5000
       - ConnectionStrings__BeerManagementDbConnection=Server=hoppyhub-sql-server;Database=BeerManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
       - TempBeerImageUri=https://hoppyhub.blob.core.windows.net/hoppyhub/Beers/temp.jpg
+      - ConnectionStrings__StorageAccountConnection=${STORAGE_ACCOUNT_CONNECTION}
+      - ContainerName=${CONTAINER_NAME}
     ports:
       - "5000:5000"
     depends_on:
@@ -46,8 +48,6 @@ services:
     environment:
       - ASPNETCORE_URLS=http://*:5001
       - ConnectionStrings__UserManagementDbConnection=Server=hoppyhub-sql-server;Database=UserManagement;User=sa;Password=HoppyHub123!;TrustServerCertificate=true
-      - ConnectionStrings__StorageAccountConnection=${STORAGE_ACCOUNT_CONNECTION}
-      - ContainerName=${CONTAINER_NAME}
     ports:
       - "5001:5001"
     depends_on:
