@@ -6,9 +6,32 @@
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <form [formGroup]="beerForm" (ngSubmit)="onBeerSave()">
       <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
-        <div class="mask mask-squircle h-32 w-32">
-          <img src="{{ beer.imageUri }}" alt="Beer image" />
+        <div>
+          <figure class="flex items-center justify-center">
+            <div class="mask mask-squircle h-52 w-52">
+              <img [src]="beer.imageUri" alt="Beer image" />
+            </div>
+          </figure>
+          <label class="form-control mb-6 w-full max-w-xs">
+            <div class="label">
+              <span class="label-text">Add Or Update Image</span>
+            </div>
+            <input
+              #fileInput
+              (change)="onFileSelected($event)"
+              type="file"
+              class="file-input file-input-bordered w-full" />
+          </label>
+          @if (!beer.tempImage) {
+            <button
+              type="button"
+              class="btn btn-outline btn-error my-4"
+              (click)="onRemoveImage()">
+              Remove image
+            </button>
+          }
         </div>
+
         <div class="mr-4 w-full">
           <label class="form-control">
             <div class="label">
@@ -141,7 +164,7 @@
       <div class="grid gap-4">
         <button
           class="btn btn-outline btn-success"
-          [disabled]="beerForm.pristine">
+          [disabled]="beerForm.pristine && !selectedImage">
           Save beer
         </button>
         <button class="btn btn-outline btn-error">Delete beer</button>

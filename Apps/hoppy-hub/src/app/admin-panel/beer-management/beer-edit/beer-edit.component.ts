@@ -1,4 +1,11 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -25,6 +32,7 @@ import {
   AlertService,
   AlertType
 } from '../../../shared-components/alert/alert.service';
+import { UpsertBeerImageCommand } from '../../../beers/upsert-beer-image-command.model';
 
 @Component({
   selector: 'app-beer-edit',
@@ -39,6 +47,8 @@ import {
   templateUrl: './beer-edit.component.html'
 })
 export class BeerEditComponent implements OnInit, OnDestroy {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+
   private route: ActivatedRoute = inject(ActivatedRoute);
   private beersService: BeersService = inject(BeersService);
   private beerStylesService = inject(BeerStylesService);
@@ -49,6 +59,8 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   private beerStylesSubscription!: Subscription;
   private breweriesSubscription!: Subscription;
   private updateBeerSubscription!: Subscription;
+  private upsertBeerImageSubscription!: Subscription;
+  private deleteBeerImageSubscription!: Subscription;
 
   beer!: Beer;
   error = '';
@@ -58,6 +70,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   beerForm!: FormGroup;
   beerStyles: BeerStyle[] = [];
   breweries: Brewery[] = [];
+  selectedImage: File | null = null;
 
   ngOnInit(): void {
     this.fetchAllBeerStyles();
@@ -85,6 +98,63 @@ export class BeerEditComponent implements OnInit, OnDestroy {
               this.loading = false;
             }
           });
+      });
+  }
+
+  onBeerSave(): void {
+    this.loading = true;
+    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
+
+    upsertBeerCommand.id = this.beer.id;
+    this.updateBeerSubscription = this.beersService
+      .UpdateBeer(this.beer.id, upsertBeerCommand)
+      .subscribe({
+        next: () => {
+          //TODO: Improve
+          if (this.selectedImage) {
+            this.upsertBeerImage();
+          }
+
+          this.getBeer();
+          this.alertService.openAlert(AlertType.Success, 'Beer updated');
+          this.loading = false;
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedImage = input.files[0];
+    }
+  }
+
+  onRemoveImage(): void {
+    this.selectedImage = null;
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
+    //TODO: Call api
+  }
+
+  private upsertBeerImage(): void {
+    this.loading = true;
+    const upsertBeerImageCommand = new UpsertBeerImageCommand(
+      this.beer.id,
+      this.selectedImage
+    );
+    this.upsertBeerImageSubscription = this.beersService
+      .UpsertBeerImage(this.beer.id, upsertBeerImageCommand)
+      .subscribe({
+        next: () => {
+          this.loading = false;
+        },
+        error: error => {
+          this.handleError(error);
+        }
       });
   }
 
@@ -136,26 +206,6 @@ export class BeerEditComponent implements OnInit, OnDestroy {
         error: () => {
           this.error = 'An error occurred while loading the breweries';
           this.breweriesLoading = false;
-        }
-      });
-  }
-
-  onBeerSave(): void {
-    this.loading = true;
-    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
-    console.log(upsertBeerCommand);
-
-    upsertBeerCommand.id = this.beer.id;
-    this.updateBeerSubscription = this.beersService
-      .UpdateBeer(this.beer.id, upsertBeerCommand)
-      .subscribe({
-        next: () => {
-          this.getBeer();
-          this.alertService.openAlert(AlertType.Success, 'Beer updated');
-          this.loading = false;
-        },
-        error: error => {
-          this.handleError(error);
         }
       });
   }
@@ -213,6 +263,12 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     }
     if (this.updateBeerSubscription) {
       this.updateBeerSubscription.unsubscribe();
+    }
+    if (this.upsertBeerImageSubscription) {
+      this.upsertBeerImageSubscription.unsubscribe();
+    }
+    if (this.deleteBeerImageSubscription) {
+      this.deleteBeerImageSubscription.unsubscribe();
     }
   }
 }

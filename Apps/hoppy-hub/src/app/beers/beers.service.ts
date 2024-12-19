@@ -83,13 +83,13 @@ export class BeersService {
     upsertBeerImageCommand: UpsertBeerImageCommand
   ): Observable<void> {
     const formData = new FormData();
-    formData.append('Id', upsertBeerImageCommand.beerId);
+    formData.append('BeerId', upsertBeerImageCommand.beerId);
     if (upsertBeerImageCommand.image) {
       formData.append('Image', upsertBeerImageCommand.image);
     }
 
     return this.http.post<void>(
-      `${environment.beerManagementApiUrl}/beers/${beerId}`,
+      `${environment.beerManagementApiUrl}/beers/${beerId}/upsertImage`,
       formData
     );
   }
