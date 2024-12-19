@@ -7,6 +7,7 @@ import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
 import { BeersParams } from './beers-params';
 import { UpsertBeerCommand } from './upsert-beer-command.model';
+import { UpsertBeerImageCommand } from './upsert-beer-image-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -74,6 +75,28 @@ export class BeersService {
   DeleteBeer(beerId: string): Observable<void> {
     return this.http.delete<void>(
       `${environment.beerManagementApiUrl}/beers/${beerId}`
+    );
+  }
+
+  UpsertBeerImage(
+    beerId: string,
+    upsertBeerImageCommand: UpsertBeerImageCommand
+  ): Observable<void> {
+    const formData = new FormData();
+    formData.append('Id', upsertBeerImageCommand.beerId);
+    if (upsertBeerImageCommand.image) {
+      formData.append('Image', upsertBeerImageCommand.image);
+    }
+
+    return this.http.post<void>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}`,
+      formData
+    );
+  }
+
+  DeleteBeerImage(beerId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}/deleteImage`
     );
   }
 }
