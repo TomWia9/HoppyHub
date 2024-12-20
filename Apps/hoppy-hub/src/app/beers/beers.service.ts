@@ -81,16 +81,17 @@ export class BeersService {
   UpsertBeerImage(
     beerId: string,
     upsertBeerImageCommand: UpsertBeerImageCommand
-  ): Observable<void> {
+  ): Observable<string> {
     const formData = new FormData();
     formData.append('BeerId', upsertBeerImageCommand.beerId);
     if (upsertBeerImageCommand.image) {
       formData.append('Image', upsertBeerImageCommand.image);
     }
 
-    return this.http.post<void>(
+    return this.http.post<string>(
       `${environment.beerManagementApiUrl}/beers/${beerId}/upsertImage`,
-      formData
+      formData,
+      { responseType: 'text' as 'json' }
     );
   }
 
