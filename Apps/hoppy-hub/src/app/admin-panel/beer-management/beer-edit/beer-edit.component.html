@@ -17,7 +17,11 @@
           }
           <label class="form-control mb-6 w-full max-w-xs">
             <div class="label">
-              <span class="label-text">Add Or Update Image</span>
+              @if (!beer.tempImage) {
+                <span class="label-text">Update Image</span>
+              } @else {
+                <span class="label-text">Add Image</span>
+              }
             </div>
             <input
               #fileInput
