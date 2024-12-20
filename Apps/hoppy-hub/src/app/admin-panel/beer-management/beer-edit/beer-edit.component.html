@@ -4,14 +4,17 @@
   <app-error-message [message]="error"></app-error-message>
 } @else {
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
-    <form [formGroup]="beerForm" (ngSubmit)="onBeerSave()">
+    <form [formGroup]="beerForm" (ngSubmit)="onFormSave()">
       <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
         <div>
           <figure class="flex items-center justify-center">
             <div class="mask mask-squircle h-52 w-52">
-              <img [src]="beer.imageUri" alt="Beer image" />
+              <img [src]="imageSource" alt="Beer image" />
             </div>
           </figure>
+          @if (beer.tempImage && !selectedImage) {
+            <p class="my-2">(Temp Image)</p>
+          }
           <label class="form-control mb-6 w-full max-w-xs">
             <div class="label">
               <span class="label-text">Add Or Update Image</span>

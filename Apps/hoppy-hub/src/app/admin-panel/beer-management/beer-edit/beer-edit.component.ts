@@ -71,6 +71,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   beerStyles: BeerStyle[] = [];
   breweries: Brewery[] = [];
   selectedImage: File | null = null;
+  imageSource: string = '';
 
   ngOnInit(): void {
     this.fetchAllBeerStyles();
@@ -88,6 +89,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (beer: Beer) => {
               this.beer = beer;
+              this.imageSource = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
               this.initForm(beer);
               this.error = '';
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -101,34 +103,21 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  onBeerSave(): void {
-    this.loading = true;
-    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
-
-    upsertBeerCommand.id = this.beer.id;
-    this.updateBeerSubscription = this.beersService
-      .UpdateBeer(this.beer.id, upsertBeerCommand)
-      .subscribe({
-        next: () => {
-          //TODO: Improve
-          if (this.selectedImage) {
-            this.upsertBeerImage();
-          }
-
-          this.getBeer();
-          this.alertService.openAlert(AlertType.Success, 'Beer updated');
-          this.loading = false;
-        },
-        error: error => {
-          this.handleError(error);
-        }
-      });
+  onFormSave(): void {
+    if (!this.beerForm.pristine) {
+      this.updateBeer();
+    }
+    if (this.selectedImage) {
+      this.upsertBeerImage();
+    }
   }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       this.selectedImage = input.files[0];
+      const imageUrl = URL.createObjectURL(this.selectedImage);
+      this.imageSource = imageUrl;
     }
   }
 
@@ -140,6 +129,25 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     //TODO: Call api
   }
 
+  private updateBeer(): void {
+    this.loading = true;
+    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
+    upsertBeerCommand.id = this.beer.id;
+
+    this.updateBeerSubscription = this.beersService
+      .UpdateBeer(this.beer.id, upsertBeerCommand)
+      .subscribe({
+        next: () => {
+          this.getBeer();
+          this.alertService.openAlert(AlertType.Success, 'Beer updated');
+          this.loading = false;
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
+  }
+
   private upsertBeerImage(): void {
     this.loading = true;
     const upsertBeerImageCommand = new UpsertBeerImageCommand(
@@ -149,7 +157,9 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     this.upsertBeerImageSubscription = this.beersService
       .UpsertBeerImage(this.beer.id, upsertBeerImageCommand)
       .subscribe({
-        next: () => {
+        next: (imageUri: string) => {
+          this.beer.tempImage = false;
+          this.imageSource = `${imageUri}?timestamp=${new Date().getTime()}`;
           this.loading = false;
         },
         error: error => {
@@ -269,6 +279,9 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     }
     if (this.deleteBeerImageSubscription) {
       this.deleteBeerImageSubscription.unsubscribe();
+    }
+    if (this.imageSource) {
+      URL.revokeObjectURL(this.imageSource);
     }
   }
 }
