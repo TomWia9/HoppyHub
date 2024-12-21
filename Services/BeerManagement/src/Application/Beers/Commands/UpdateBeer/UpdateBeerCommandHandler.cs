@@ -43,12 +43,12 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
     {
         if (!await _context.Breweries.AnyAsync(x => x.Id == request.BreweryId, cancellationToken))
         {
-            throw new NotFoundException(nameof(Brewery), request.BreweryId);
+            throw new NotFoundException(nameof(Brewery), request.BreweryId!);
         }
 
         if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
         {
-            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
+            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId!);
         }
 
         var entity = await _context.Beers.Include(x => x.Brewery)
@@ -60,8 +60,8 @@ public class UpdateBeerCommandHandler : IRequestHandler<UpdateBeerCommand>
         }
 
         entity.Name = request.Name;
-        entity.BreweryId = request.BreweryId;
-        entity.AlcoholByVolume = request.AlcoholByVolume;
+        entity.BreweryId = request.BreweryId!.Value;
+        entity.AlcoholByVolume = request.AlcoholByVolume!.Value;
         entity.Description = request.Description;
         entity.Composition = request.Composition;
         entity.Blg = request.Blg;
