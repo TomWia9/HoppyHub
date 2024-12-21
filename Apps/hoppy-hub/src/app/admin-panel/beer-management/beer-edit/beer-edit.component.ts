@@ -35,6 +35,11 @@ import {
 import { UpsertBeerImageCommand } from '../../../beers/upsert-beer-image-command.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faX } from '@fortawesome/free-solid-svg-icons';
+import { DeleteBeerModalComponent } from '../delete-beer-modal/delete-beer-modal.component';
+import { ModalService } from '../../../services/modal.service';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
+import { BeersParams } from '../../../beers/beers-params';
 
 @Component({
   selector: 'app-beer-edit',
@@ -45,7 +50,8 @@ import { faX } from '@fortawesome/free-solid-svg-icons';
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    DeleteBeerModalComponent
   ],
   templateUrl: './beer-edit.component.html'
 })
@@ -57,6 +63,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   private beerStylesService = inject(BeerStylesService);
   private breweriesService = inject(BreweriesService);
   private alertService = inject(AlertService);
+  private modalService = inject(ModalService);
   private routeSubscription!: Subscription;
   private beerSubscription!: Subscription;
   private beerStylesSubscription!: Subscription;
@@ -88,6 +95,14 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       const imageUrl = URL.createObjectURL(this.selectedImage);
       this.imageSource = imageUrl;
     }
+  }
+
+  onBeerDelete(): void {
+    this.modalService.openModal(
+      new ModalModel(ModalType.DeleteBeer, {
+        beerId: this.beer.id
+      })
+    );
   }
 
   onFormSave(): void {
@@ -132,11 +147,23 @@ export class BeerEditComponent implements OnInit, OnDestroy {
             'Changes saved successfully'
           );
           this.getBeer();
+          this.beerChanged();
         },
         error: error => {
           this.handleError(error);
         }
       });
+  }
+
+  beerChanged(): void {
+    this.beersService.paramsChanged.next(
+      new BeersParams({
+        pageSize: 10,
+        pageNumber: 1,
+        sortBy: 'releaseDate',
+        sortDirection: 1
+      })
+    );
   }
 
   private getBeer(): void {

@@ -3,6 +3,7 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
+  <app-delete-beer-modal (beerDeleted)="beerChanged()"></app-delete-beer-modal>
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <form [formGroup]="beerForm" (ngSubmit)="onFormSave()">
       <div class="mb-2 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
@@ -187,7 +188,10 @@
           [disabled]="beerForm.pristine && !selectedImage && !removeImage">
           Save beer
         </button>
-        <button type="button" class="btn btn-outline btn-error">
+        <button
+          type="button"
+          class="btn btn-outline btn-error"
+          (click)="onBeerDelete()">
           Delete beer
         </button>
       </div>

@@ -8,43 +8,43 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ModalService } from '../../services/modal.service';
+import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
+import { Subscription } from 'rxjs';
+import { ModalService } from '../../../services/modal.service';
 import {
   AlertService,
   AlertType
-} from '../../shared-components/alert/alert.service';
-import { OpinionsService } from '../opinions.service';
-import { Subscription } from 'rxjs';
-import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
-import { ModalModel } from '../../shared/modal-model';
-import { ModalType } from '../../shared/model-type';
-import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
+} from '../../../shared-components/alert/alert.service';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
+import { BeersService } from '../../../beers/beers.service';
 
 @Component({
-  selector: 'app-delete-opinion-modal',
+  selector: 'app-delete-beer-modal',
   standalone: true,
-  imports: [ErrorMessageComponent, LoadingSpinnerComponent],
-  templateUrl: './delete-opinion-modal.component.html'
+  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  templateUrl: './delete-beer-modal.component.html'
 })
-export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
-  @Output() opinionDeleted = new EventEmitter<void>();
-  @ViewChild('deleteOpinionModal') modalRef!: ElementRef;
+export class DeleteBeerModalComponent implements OnInit, OnDestroy {
+  @Output() beerDeleted = new EventEmitter<void>();
+  @ViewChild('deleteBeerModal') modalRef!: ElementRef;
 
   private modalService = inject(ModalService);
-  private opinionsService = inject(OpinionsService);
+  private beersService = inject(BeersService);
   private alertService: AlertService = inject(AlertService);
   private modalOppenedSubscription!: Subscription;
-  private deleteOpinionSubscription!: Subscription;
+  private deleteBeerSubscription!: Subscription;
 
   loading = true;
-  opinionId!: string;
+  beerId!: string;
   error = '';
 
   ngOnInit(): void {
     this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
       (modalModel: ModalModel) => {
         this.loading = true;
-        this.opinionId = modalModel.modalData['opinionId'] as string;
+        this.beerId = modalModel.modalData['beerId'] as string;
         this.onShowModal(modalModel);
         this.loading = false;
       }
@@ -58,12 +58,12 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.deleteOpinionSubscription = this.opinionsService
-      .DeleteOpinion(this.opinionId)
+    this.deleteBeerSubscription = this.beersService
+      .DeleteBeer(this.beerId)
       .subscribe({
         next: () => {
-          this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
-          this.opinionDeleted.emit();
+          this.alertService.openAlert(AlertType.Success, 'Beer deleted');
+          this.beerDeleted.emit();
         },
         error: error => {
           let errorMessage = null;
@@ -88,7 +88,7 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   private onShowModal(modalModel: ModalModel): void {
-    if (modalModel.modalType === ModalType.DeleteOpinion && this.modalRef) {
+    if (modalModel.modalType === ModalType.DeleteBeer && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
@@ -97,8 +97,8 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
     if (this.modalOppenedSubscription) {
       this.modalOppenedSubscription.unsubscribe();
     }
-    if (this.deleteOpinionSubscription) {
-      this.deleteOpinionSubscription.unsubscribe();
+    if (this.deleteBeerSubscription) {
+      this.deleteBeerSubscription.unsubscribe();
     }
   }
 }
