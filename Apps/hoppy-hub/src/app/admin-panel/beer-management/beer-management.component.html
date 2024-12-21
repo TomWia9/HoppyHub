@@ -4,10 +4,13 @@
     <app-beers-table></app-beers-table>
   </div>
   <div class="order-first my-4 xl:order-last">
-    <button class="btn btn-outline btn-primary mb-4 min-w-60">
+    <a
+      type="button"
+      class="btn btn-outline btn-primary mb-4 min-w-60"
+      routerLink="new">
       Add new beer
-    </button>
-    @if (!beerSelected) {
+    </a>
+    @if (!beerSelected && !newBeer) {
       <div role="alert" class="alert bg-neutral">
         <fa-icon [icon]="faInfoCircle"></fa-icon>
         <span>Select beer to manage.</span>

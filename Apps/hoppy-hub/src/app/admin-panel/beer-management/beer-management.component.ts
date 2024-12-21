@@ -10,6 +10,7 @@ import {
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Subscription, filter } from 'rxjs';
+import { NewBeerComponent } from './new-beer/new-beer.component';
 
 @Component({
   selector: 'app-beer-management',
@@ -24,6 +25,7 @@ import { Subscription, filter } from 'rxjs';
 })
 export class BeerManagementComponent implements OnInit, OnDestroy {
   beerSelected: boolean = false;
+  newBeer: boolean = false;
   routeSubscription!: Subscription;
   faInfoCircle = faInfoCircle;
 
@@ -44,11 +46,14 @@ export class BeerManagementComponent implements OnInit, OnDestroy {
     const childRoute = this.route.firstChild;
 
     if (childRoute) {
+      this.newBeer = childRoute.component === NewBeerComponent;
+
       childRoute.paramMap.subscribe(paramMap => {
         this.beerSelected = paramMap.has('id');
       });
     } else {
       this.beerSelected = false;
+      this.newBeer = false;
     }
   }
 

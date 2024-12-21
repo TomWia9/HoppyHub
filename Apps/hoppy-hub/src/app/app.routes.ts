@@ -15,6 +15,7 @@ import { authGuard } from './auth/auth-guard';
 import { BeerManagementComponent } from './admin-panel/beer-management/beer-management.component';
 import { Roles } from './auth/roles';
 import { BeerEditComponent } from './admin-panel/beer-management/beer-edit/beer-edit.component';
+import { NewBeerComponent } from './admin-panel/beer-management/new-beer/new-beer.component';
 
 export const routes: Routes = [
   {
@@ -54,7 +55,10 @@ export const routes: Routes = [
       {
         path: 'beer-management',
         component: BeerManagementComponent,
-        children: [{ path: ':id', component: BeerEditComponent }]
+        children: [
+          { path: 'new', component: NewBeerComponent },
+          { path: ':id', component: BeerEditComponent }
+        ]
       }
     ]
   },
