@@ -68,6 +68,9 @@ export class BeersTableComponent
         next: (beers: PagedList<Beer>) => {
           this.loading = true;
           this.beers = beers;
+          this.beers.items.forEach(beer => {
+            beer.imageUri = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
+          });
           this.paginationData = this.getPaginationData(beers);
           this.error = '';
           this.loading = false;
