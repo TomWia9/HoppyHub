@@ -10,7 +10,7 @@ import { LoadingSpinnerComponent } from '../../../shared-components/loading-spin
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Subscription, map } from 'rxjs';
+import { Observable, Subscription, finalize, forkJoin, map } from 'rxjs';
 import { Beer } from '../../../beers/beer.model';
 import { BeersService } from '../../../beers/beers.service';
 import {
@@ -33,6 +33,8 @@ import {
   AlertType
 } from '../../../shared-components/alert/alert.service';
 import { UpsertBeerImageCommand } from '../../../beers/upsert-beer-image-command.model';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-beer-edit',
@@ -42,7 +44,8 @@ import { UpsertBeerImageCommand } from '../../../beers/upsert-beer-image-command
     ErrorMessageComponent,
     RouterModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule
   ],
   templateUrl: './beer-edit.component.html'
 })
@@ -58,9 +61,6 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   private beerSubscription!: Subscription;
   private beerStylesSubscription!: Subscription;
   private breweriesSubscription!: Subscription;
-  private updateBeerSubscription!: Subscription;
-  private upsertBeerImageSubscription!: Subscription;
-  private deleteBeerImageSubscription!: Subscription;
 
   beer!: Beer;
   error = '';
@@ -72,6 +72,8 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   breweries: Brewery[] = [];
   selectedImage: File | null = null;
   imageSource: string = '';
+  removeImage: boolean = false;
+  faX = faX;
 
   ngOnInit(): void {
     this.fetchAllBeerStyles();
@@ -79,7 +81,65 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     this.getBeer();
   }
 
-  getBeer(): void {
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedImage = input.files[0];
+      const imageUrl = URL.createObjectURL(this.selectedImage);
+      this.imageSource = imageUrl;
+    }
+  }
+
+  onFormSave(): void {
+    this.loading = true;
+    const operations: Observable<void | string>[] = [];
+
+    if (!this.beerForm.pristine) {
+      const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
+      upsertBeerCommand.id = this.beer.id;
+      operations.push(
+        this.beersService.UpdateBeer(this.beer.id, upsertBeerCommand)
+      );
+    }
+
+    if (this.selectedImage) {
+      const upsertBeerImageCommand = new UpsertBeerImageCommand(
+        this.beer.id,
+        this.selectedImage
+      );
+      operations.push(
+        this.beersService.UpsertBeerImage(this.beer.id, upsertBeerImageCommand)
+      );
+    }
+
+    if (this.removeImage) {
+      console.log('operation: DeleteBeerImage');
+      operations.push(this.beersService.DeleteBeerImage(this.beer.id));
+      this.removeImage = false;
+    }
+
+    if (operations.length === 0) {
+      this.loading = false;
+      return;
+    }
+
+    forkJoin(operations)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => {
+          this.alertService.openAlert(
+            AlertType.Success,
+            'Changes saved successfully'
+          );
+          this.getBeer();
+        },
+        error: error => {
+          this.handleError(error);
+        }
+      });
+  }
+
+  private getBeer(): void {
     this.loading = true;
     this.routeSubscription = this.route.paramMap
       .pipe(map(params => params.get('id')))
@@ -100,71 +160,6 @@ export class BeerEditComponent implements OnInit, OnDestroy {
               this.loading = false;
             }
           });
-      });
-  }
-
-  onFormSave(): void {
-    if (!this.beerForm.pristine) {
-      this.updateBeer();
-    }
-    if (this.selectedImage) {
-      this.upsertBeerImage();
-    }
-  }
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files) {
-      this.selectedImage = input.files[0];
-      const imageUrl = URL.createObjectURL(this.selectedImage);
-      this.imageSource = imageUrl;
-    }
-  }
-
-  onRemoveImage(): void {
-    this.selectedImage = null;
-    if (this.fileInput) {
-      this.fileInput.nativeElement.value = '';
-    }
-    //TODO: Call api
-  }
-
-  private updateBeer(): void {
-    this.loading = true;
-    const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
-    upsertBeerCommand.id = this.beer.id;
-
-    this.updateBeerSubscription = this.beersService
-      .UpdateBeer(this.beer.id, upsertBeerCommand)
-      .subscribe({
-        next: () => {
-          this.getBeer();
-          this.alertService.openAlert(AlertType.Success, 'Beer updated');
-          this.loading = false;
-        },
-        error: error => {
-          this.handleError(error);
-        }
-      });
-  }
-
-  private upsertBeerImage(): void {
-    this.loading = true;
-    const upsertBeerImageCommand = new UpsertBeerImageCommand(
-      this.beer.id,
-      this.selectedImage
-    );
-    this.upsertBeerImageSubscription = this.beersService
-      .UpsertBeerImage(this.beer.id, upsertBeerImageCommand)
-      .subscribe({
-        next: (imageUri: string) => {
-          this.beer.tempImage = false;
-          this.imageSource = `${imageUri}?timestamp=${new Date().getTime()}`;
-          this.loading = false;
-        },
-        error: error => {
-          this.handleError(error);
-        }
       });
   }
 
@@ -270,15 +265,6 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     }
     if (this.breweriesSubscription) {
       this.breweriesSubscription.unsubscribe();
-    }
-    if (this.updateBeerSubscription) {
-      this.updateBeerSubscription.unsubscribe();
-    }
-    if (this.upsertBeerImageSubscription) {
-      this.upsertBeerImageSubscription.unsubscribe();
-    }
-    if (this.deleteBeerImageSubscription) {
-      this.deleteBeerImageSubscription.unsubscribe();
     }
     if (this.imageSource) {
       URL.revokeObjectURL(this.imageSource);

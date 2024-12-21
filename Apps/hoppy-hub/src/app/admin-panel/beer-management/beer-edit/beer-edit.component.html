@@ -5,37 +5,49 @@
 } @else {
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <form [formGroup]="beerForm" (ngSubmit)="onFormSave()">
-      <div class="mb-6 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
+      <div class="mb-2 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
         <div>
           <figure class="flex items-center justify-center">
-            <div class="mask mask-squircle h-52 w-52">
+            <div class="mask mask-squircle h-36 w-36">
               <img [src]="imageSource" alt="Beer image" />
             </div>
           </figure>
+
           @if (beer.tempImage && !selectedImage) {
             <p class="my-2">(Temp Image)</p>
           }
-          <label class="form-control mb-6 w-full max-w-xs">
-            <div class="label">
-              @if (!beer.tempImage) {
-                <span class="label-text">Update Image</span>
-              } @else {
-                <span class="label-text">Add Image</span>
-              }
-            </div>
-            <input
-              #fileInput
-              (change)="onFileSelected($event)"
-              type="file"
-              class="file-input file-input-bordered w-full" />
-          </label>
+          @if (!removeImage) {
+            <label class="form-control mb-2 w-full max-w-xs">
+              <div class="label">
+                @if (!beer.tempImage) {
+                  <span class="label-text">Update Image</span>
+                } @else {
+                  <span class="label-text">Add Image</span>
+                }
+              </div>
+
+              <input
+                #fileInput
+                (change)="onFileSelected($event)"
+                type="file"
+                class="file-input file-input-bordered w-full" />
+            </label>
+          }
+
           @if (!beer.tempImage) {
-            <button
-              type="button"
-              class="btn btn-outline btn-error my-4"
-              (click)="onRemoveImage()">
-              Remove image
-            </button>
+            <div class="my-6 mb-2 flex place-content-center items-center gap-4">
+              <label
+                for="removeImageToggle"
+                class="cursor-pointer"
+                [ngClass]="{ 'text-error': removeImage }"
+                >Remove Image</label
+              >
+              <input
+                id="removeImageToggle"
+                type="checkbox"
+                class="toggle toggle-error"
+                (change)="removeImage = !removeImage" />
+            </div>
           }
         </div>
 
@@ -170,11 +182,14 @@
       <div class="divider"></div>
       <div class="grid gap-4">
         <button
+          type="submit"
           class="btn btn-outline btn-success"
-          [disabled]="beerForm.pristine && !selectedImage">
+          [disabled]="beerForm.pristine && !selectedImage && !removeImage">
           Save beer
         </button>
-        <button class="btn btn-outline btn-error">Delete beer</button>
+        <button type="button" class="btn btn-outline btn-error">
+          Delete beer
+        </button>
       </div>
     </form>
   </div>
