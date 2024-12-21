@@ -66,6 +66,8 @@ export class NewBeerComponent implements OnInit, OnDestroy {
   beerStyles: BeerStyle[] = [];
   breweries: Brewery[] = [];
   createdBeer: Beer | null = null;
+  selectedImage: File | null = null;
+  imageSource: string = '';
 
   ngOnInit(): void {
     this.initForm();
@@ -78,6 +80,7 @@ export class NewBeerComponent implements OnInit, OnDestroy {
 
     if (!this.newBeerForm.pristine) {
       const upsertBeerCommand = this.newBeerForm.value as UpsertBeerCommand;
+      console.log(upsertBeerCommand);
 
       this.newBeerSubscription = this.beersService
         .createBeer(upsertBeerCommand)
@@ -107,6 +110,15 @@ export class NewBeerComponent implements OnInit, OnDestroy {
         sortDirection: 1
       })
     );
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files) {
+      this.selectedImage = input.files[0];
+      const imageUrl = URL.createObjectURL(this.selectedImage);
+      this.imageSource = imageUrl;
+    }
   }
 
   private fetchAllBeerStyles(
@@ -181,19 +193,20 @@ export class NewBeerComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
+  //TODO: Fix default values
   private initForm(): void {
     this.newBeerForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2)]),
       description: new FormControl('', Validators.maxLength(500)),
       beerStyleId: new FormControl('', Validators.required),
       breweryId: new FormControl('', Validators.required),
-      releaseDate: new FormControl(new Date(), Validators.required),
-      alcoholByVolume: new FormControl('', [
+      releaseDate: new FormControl(null, Validators.required),
+      alcoholByVolume: new FormControl(null, [
         Validators.min(0),
         Validators.max(100)
       ]),
-      blg: new FormControl('', [Validators.min(0), Validators.max(100)]),
-      ibu: new FormControl('', [Validators.min(0), Validators.max(120)]),
+      blg: new FormControl(null, [Validators.min(0), Validators.max(100)]),
+      ibu: new FormControl(null, [Validators.min(0), Validators.max(120)]),
       composition: new FormControl('', Validators.maxLength(1000))
     });
   }
@@ -210,6 +223,9 @@ export class NewBeerComponent implements OnInit, OnDestroy {
     }
     if (this.newBeerSubscription) {
       this.newBeerSubscription.unsubscribe();
+    }
+    if (this.imageSource) {
+      URL.revokeObjectURL(this.imageSource);
     }
   }
 }
