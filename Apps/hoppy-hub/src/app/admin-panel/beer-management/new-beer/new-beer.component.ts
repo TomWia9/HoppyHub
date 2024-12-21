@@ -80,7 +80,7 @@ export class NewBeerComponent implements OnInit, OnDestroy {
       const upsertBeerCommand = this.newBeerForm.value as UpsertBeerCommand;
 
       this.newBeerSubscription = this.beersService
-        .CreateBeer(upsertBeerCommand)
+        .createBeer(upsertBeerCommand)
         .subscribe({
           next: (beer: Beer) => {
             this.createdBeer = beer;

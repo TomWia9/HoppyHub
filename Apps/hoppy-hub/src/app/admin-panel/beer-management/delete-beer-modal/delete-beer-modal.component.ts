@@ -59,7 +59,7 @@ export class DeleteBeerModalComponent implements OnInit, OnDestroy {
 
   onDelete(): void {
     this.deleteBeerSubscription = this.beersService
-      .DeleteBeer(this.beerId)
+      .deleteBeer(this.beerId)
       .subscribe({
         next: () => {
           this.alertService.openAlert(AlertType.Success, 'Beer deleted');

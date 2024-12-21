@@ -113,7 +113,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       const upsertBeerCommand = this.beerForm.value as UpsertBeerCommand;
       upsertBeerCommand.id = this.beer.id;
       operations.push(
-        this.beersService.UpdateBeer(this.beer.id, upsertBeerCommand)
+        this.beersService.updateBeer(this.beer.id, upsertBeerCommand)
       );
     }
 
@@ -123,13 +123,13 @@ export class BeerEditComponent implements OnInit, OnDestroy {
         this.selectedImage
       );
       operations.push(
-        this.beersService.UpsertBeerImage(this.beer.id, upsertBeerImageCommand)
+        this.beersService.upsertBeerImage(this.beer.id, upsertBeerImageCommand)
       );
     }
 
     if (this.removeImage) {
       console.log('operation: DeleteBeerImage');
-      operations.push(this.beersService.DeleteBeerImage(this.beer.id));
+      operations.push(this.beersService.deleteBeerImage(this.beer.id));
       this.removeImage = false;
     }
 

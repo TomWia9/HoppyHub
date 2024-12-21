@@ -55,14 +55,14 @@ export class BeersService {
       );
   }
 
-  CreateBeer(upsertBeerCommand: UpsertBeerCommand): Observable<Beer> {
+  createBeer(upsertBeerCommand: UpsertBeerCommand): Observable<Beer> {
     return this.http.post<Beer>(
       `${environment.beerManagementApiUrl}/beers`,
       upsertBeerCommand
     );
   }
 
-  UpdateBeer(
+  updateBeer(
     beerId: string,
     upsertBeerCommand: UpsertBeerCommand
   ): Observable<void> {
@@ -72,13 +72,13 @@ export class BeersService {
     );
   }
 
-  DeleteBeer(beerId: string): Observable<void> {
+  deleteBeer(beerId: string): Observable<void> {
     return this.http.delete<void>(
       `${environment.beerManagementApiUrl}/beers/${beerId}`
     );
   }
 
-  UpsertBeerImage(
+  upsertBeerImage(
     beerId: string,
     upsertBeerImageCommand: UpsertBeerImageCommand
   ): Observable<string> {
@@ -95,7 +95,7 @@ export class BeersService {
     );
   }
 
-  DeleteBeerImage(beerId: string): Observable<void> {
+  deleteBeerImage(beerId: string): Observable<void> {
     return this.http.delete<void>(
       `${environment.beerManagementApiUrl}/beers/${beerId}/deleteImage`
     );
