@@ -60,10 +60,10 @@ export class BeerEditComponent implements OnInit, OnDestroy {
 
   private route: ActivatedRoute = inject(ActivatedRoute);
   private beersService: BeersService = inject(BeersService);
-  private beerStylesService = inject(BeerStylesService);
-  private breweriesService = inject(BreweriesService);
-  private alertService = inject(AlertService);
-  private modalService = inject(ModalService);
+  private beerStylesService: BeerStylesService = inject(BeerStylesService);
+  private breweriesService: BreweriesService = inject(BreweriesService);
+  private alertService: AlertService = inject(AlertService);
+  private modalService: ModalService = inject(ModalService);
   private routeSubscription!: Subscription;
   private beerSubscription!: Subscription;
   private beerStylesSubscription!: Subscription;
@@ -194,6 +194,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     pageNumber: number = 1,
     allBeerStyles: BeerStyle[] = []
   ): void {
+    this.beerStylesLoading = true;
     this.beerStylesSubscription = this.beerStylesService
       .getBeerStyles(
         new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
@@ -220,6 +221,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
     pageNumber: number = 1,
     allBreweries: Brewery[] = []
   ): void {
+    this.breweriesLoading = true;
     this.breweriesSubscription = this.breweriesService
       .getBreweries(
         new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
