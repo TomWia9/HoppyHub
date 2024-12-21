@@ -19,7 +19,7 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { finalize, map, of, Subscription, switchMap } from 'rxjs';
 import { BeerStyle } from '../../../beer-styles/beer-style.model';
 import { BeerStylesParams } from '../../../beer-styles/beer-styles-params';
 import { BeersParams } from '../../../beers/beers-params';
@@ -32,7 +32,7 @@ import { PagedList } from '../../../shared/paged-list';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { CommonModule } from '@angular/common';
-import { Beer } from '../../../beers/beer.model';
+import { UpsertBeerImageCommand } from '../../../beers/upsert-beer-image-command.model';
 
 @Component({
   selector: 'app-new-beer',
@@ -65,7 +65,6 @@ export class NewBeerComponent implements OnInit, OnDestroy {
   newBeerForm!: FormGroup;
   beerStyles: BeerStyle[] = [];
   breweries: Brewery[] = [];
-  createdBeer: Beer | null = null;
   selectedImage: File | null = null;
   imageSource: string = '';
 
@@ -77,22 +76,38 @@ export class NewBeerComponent implements OnInit, OnDestroy {
 
   onFormSave(): void {
     this.loading = true;
+    const upsertBeerCommand = this.newBeerForm.value as UpsertBeerCommand;
 
     if (!this.newBeerForm.pristine) {
-      const upsertBeerCommand = this.newBeerForm.value as UpsertBeerCommand;
-      console.log(upsertBeerCommand);
-
-      this.newBeerSubscription = this.beersService
+      this.beersService
         .createBeer(upsertBeerCommand)
-        .subscribe({
-          next: (beer: Beer) => {
-            this.createdBeer = beer;
+        .pipe(
+          switchMap(beer => {
+            if (this.selectedImage) {
+              const upsertBeerImageCommand = new UpsertBeerImageCommand(
+                beer.id,
+                this.selectedImage
+              );
+              return this.beersService
+                .upsertBeerImage(beer.id, upsertBeerImageCommand)
+                .pipe(map(() => beer));
+            }
+            return of(beer);
+          }),
+          finalize(() => {
             this.loading = false;
+          })
+        )
+        .subscribe({
+          next: () => {
             this.alertService.openAlert(
               AlertType.Success,
               'Beer created successfully'
             );
             this.beerChanged();
+            this.newBeerForm.reset();
+            this.selectedImage = null;
+            this.imageSource = '';
           },
           error: error => {
             this.handleError(error);
@@ -193,13 +208,12 @@ export class NewBeerComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  //TODO: Fix default values
   private initForm(): void {
     this.newBeerForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2)]),
       description: new FormControl('', Validators.maxLength(500)),
-      beerStyleId: new FormControl('', Validators.required),
-      breweryId: new FormControl('', Validators.required),
+      beerStyleId: new FormControl(null, Validators.required),
+      breweryId: new FormControl(null, Validators.required),
       releaseDate: new FormControl(null, Validators.required),
       alcoholByVolume: new FormControl(null, [
         Validators.min(0),

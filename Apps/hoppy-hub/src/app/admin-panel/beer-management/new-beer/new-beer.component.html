@@ -125,30 +125,28 @@
       </div>
 
       <div class="divider"></div>
-      @if (!createdBeer) {
-        <button
-          type="submit"
-          class="btn btn-outline btn-success"
-          [disabled]="newBeerForm.pristine">
-          Save beer
-        </button>
-      } @else {
-        <div>
-          <p class="my-2 text-xl font-bold">Add Image</p>
-          <input
-            #fileInput
-            (change)="onFileSelected($event)"
-            type="file"
-            class="file-input file-input-bordered file-input-primary mb-6 mt-2" />
-          @if (imageSource) {
-            <figure class="flex items-center justify-center">
-              <div class="mask mask-squircle h-36 w-36">
-                <img [src]="imageSource" alt="Beer image" />
-              </div>
-            </figure>
-          }
-        </div>
+
+      <p class="my-2 text-lg font-bold">Add Image</p>
+      <input
+        #fileInput
+        (change)="onFileSelected($event)"
+        type="file"
+        class="file-input file-input-bordered file-input-primary mb-6 mt-2" />
+      @if (imageSource) {
+        <figure class="flex items-center justify-center">
+          <div class="mask mask-squircle h-36 w-36">
+            <img [src]="imageSource" alt="Beer image" />
+          </div>
+        </figure>
       }
+
+      <div class="divider"></div>
+      <button
+        type="submit"
+        class="btn btn-outline btn-success w-full"
+        [disabled]="newBeerForm.pristine">
+        Save beer
+      </button>
     </form>
   </div>
 }
