@@ -129,6 +129,7 @@
       <p class="my-2 text-lg font-bold">Add Image</p>
       <input
         #fileInput
+        accept=".jpg,.png,image/jpeg,image/png"
         (change)="onFileSelected($event)"
         type="file"
         class="file-input file-input-bordered file-input-primary mb-6 mt-2" />

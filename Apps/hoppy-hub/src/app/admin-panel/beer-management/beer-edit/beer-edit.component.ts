@@ -90,7 +90,18 @@ export class BeerEditComponent implements OnInit, OnDestroy {
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
+
     if (input.files) {
+      const allowedTypes = ['image/jpeg', 'image/png'];
+      if (!allowedTypes.includes(input.files[0].type)) {
+        this.alertService.openAlert(
+          AlertType.Error,
+          'Only jpg and png files are allowed'
+        );
+        input.value = '';
+        this.selectedImage = null;
+        return;
+      }
       this.selectedImage = input.files[0];
       const imageUrl = URL.createObjectURL(this.selectedImage);
       this.imageSource = imageUrl;
