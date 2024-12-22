@@ -8,7 +8,7 @@ import {
   faCircleCheck,
   faCircleInfo,
   faExclamation,
-  faXmark
+  faCircleExclamation
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -43,7 +43,7 @@ export class AlertComponent implements OnInit, OnDestroy {
         break;
       case AlertType.Error:
         this.alertClass = 'alert-error';
-        this.icon = faXmark;
+        this.icon = faCircleExclamation;
         break;
       case AlertType.Warning:
         this.alertClass = 'alert-warning';
