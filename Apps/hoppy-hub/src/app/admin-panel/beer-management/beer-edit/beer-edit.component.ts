@@ -10,7 +10,18 @@ import { LoadingSpinnerComponent } from '../../../shared-components/loading-spin
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, Subscription, finalize, forkJoin, map } from 'rxjs';
+import {
+  Observable,
+  Subject,
+  finalize,
+  forkJoin,
+  map,
+  mergeAll,
+  of,
+  switchMap,
+  takeUntil,
+  tap
+} from 'rxjs';
 import { Beer } from '../../../beers/beer.model';
 import { BeersService } from '../../../beers/beers.service';
 import {
@@ -22,7 +33,6 @@ import {
 import { BeerStyle } from '../../../beer-styles/beer-style.model';
 import { BeerStylesService } from '../../../beer-styles/beer-styles.service';
 import { BeerStylesParams } from '../../../beer-styles/beer-styles-params';
-import { PagedList } from '../../../shared/paged-list';
 import { BreweriesService } from '../../../breweries/breweries.service';
 import { BreweriesParams } from '../../../breweries/breweries-params';
 import { Brewery } from '../../../breweries/brewery.model';
@@ -65,10 +75,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   private breweriesService: BreweriesService = inject(BreweriesService);
   private alertService: AlertService = inject(AlertService);
   private modalService: ModalService = inject(ModalService);
-  private routeSubscription!: Subscription;
-  private beerSubscription!: Subscription;
-  private beerStylesSubscription!: Subscription;
-  private breweriesSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   beer!: Beer;
   error = '';
@@ -185,80 +192,108 @@ export class BeerEditComponent implements OnInit, OnDestroy {
 
   private getBeer(): void {
     this.loading = true;
-    this.routeSubscription = this.route.paramMap
-      .pipe(map(params => params.get('id')))
-      .subscribe(beerId => {
-        this.beerSubscription = this.beersService
-          .getBeerById(beerId as string)
-          .subscribe({
-            next: (beer: Beer) => {
-              this.beer = beer;
-              this.imageSource = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
-              this.initForm(beer);
-              this.error = '';
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              this.loading = false;
-            },
-            error: () => {
-              this.error = 'An error occurred while loading the beer';
-              this.loading = false;
-            }
-          });
-      });
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        map(params => params.get('id')),
+        switchMap(beerId =>
+          this.beersService.getBeerById(beerId as string).pipe(
+            tap({
+              next: (beer: Beer) => {
+                this.beer = beer;
+                this.imageSource = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
+                this.initForm(beer);
+                this.error = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                this.loading = false;
+              },
+              error: () => {
+                this.error = 'An error occurred while loading the beer';
+                this.loading = false;
+              }
+            })
+          )
+        )
+      )
+      .subscribe();
   }
 
-  private fetchAllBeerStyles(
-    pageNumber: number = 1,
-    allBeerStyles: BeerStyle[] = []
-  ): void {
+  private fetchAllBeerStyles() {
     this.beerStylesLoading = true;
-    this.beerStylesSubscription = this.beerStylesService
-      .getBeerStyles(
-        new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (beerStyles: PagedList<BeerStyle>) => {
-          allBeerStyles.push(...beerStyles.items);
-          if (beerStyles.HasNext) {
-            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
-          } else {
-            this.beerStyles = allBeerStyles;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: BeerStyle[] = []
+    ): Observable<BeerStyle[]> => {
+      return this.beerStylesService
+        .getBeerStyles(new BeerStylesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: styles => {
+            this.beerStyles = styles;
             this.error = '';
             this.beerStylesLoading = false;
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the beer styles';
+            this.beerStylesLoading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the beer styles';
-          this.beerStylesLoading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
-  private fetchAllBreweries(
-    pageNumber: number = 1,
-    allBreweries: Brewery[] = []
-  ): void {
+  private fetchAllBreweries() {
     this.breweriesLoading = true;
-    this.breweriesSubscription = this.breweriesService
-      .getBreweries(
-        new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (breweries: PagedList<Brewery>) => {
-          allBreweries.push(...breweries.items);
-          if (breweries.HasNext) {
-            this.fetchAllBreweries(pageNumber + 1, allBreweries);
-          } else {
-            this.breweries = allBreweries;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: Brewery[] = []
+    ): Observable<Brewery[]> => {
+      return this.breweriesService
+        .getBreweries(new BreweriesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: breweries => {
+            this.breweries = breweries;
             this.error = '';
             this.breweriesLoading = false;
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the breweries';
+            this.breweriesLoading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the breweries';
-          this.breweriesLoading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -300,20 +335,10 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.beerSubscription) {
-      this.beerSubscription.unsubscribe();
-    }
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-    if (this.beerStylesSubscription) {
-      this.beerStylesSubscription.unsubscribe();
-    }
-    if (this.breweriesSubscription) {
-      this.breweriesSubscription.unsubscribe();
-    }
     if (this.imageSource) {
       URL.revokeObjectURL(this.imageSource);
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

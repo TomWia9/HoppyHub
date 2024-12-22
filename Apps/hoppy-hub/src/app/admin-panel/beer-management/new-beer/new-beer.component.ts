@@ -19,7 +19,17 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { finalize, map, of, Subscription, switchMap } from 'rxjs';
+import {
+  finalize,
+  map,
+  mergeAll,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap
+} from 'rxjs';
 import { BeerStyle } from '../../../beer-styles/beer-style.model';
 import { BeerStylesParams } from '../../../beer-styles/beer-styles-params';
 import { BeersParams } from '../../../beers/beers-params';
@@ -28,7 +38,6 @@ import { UpsertBeerCommand } from '../../../beers/upsert-beer-command.model';
 import { BreweriesParams } from '../../../breweries/breweries-params';
 import { BreweriesService } from '../../../breweries/breweries.service';
 import { Brewery } from '../../../breweries/brewery.model';
-import { PagedList } from '../../../shared/paged-list';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { CommonModule } from '@angular/common';
@@ -53,10 +62,7 @@ export class NewBeerComponent implements OnInit, OnDestroy {
   private beerStylesService: BeerStylesService = inject(BeerStylesService);
   private breweriesService: BreweriesService = inject(BreweriesService);
   private alertService: AlertService = inject(AlertService);
-  private routeSubscription!: Subscription;
-  private beerStylesSubscription!: Subscription;
-  private breweriesSubscription!: Subscription;
-  private newBeerSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   error = '';
   loading = false;
@@ -148,58 +154,82 @@ export class NewBeerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private fetchAllBeerStyles(
-    pageNumber: number = 1,
-    allBeerStyles: BeerStyle[] = []
-  ): void {
+  private fetchAllBeerStyles() {
     this.beerStylesLoading = true;
-    this.beerStylesSubscription = this.beerStylesService
-      .getBeerStyles(
-        new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (beerStyles: PagedList<BeerStyle>) => {
-          allBeerStyles.push(...beerStyles.items);
-          if (beerStyles.HasNext) {
-            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
-          } else {
-            this.beerStyles = allBeerStyles;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: BeerStyle[] = []
+    ): Observable<BeerStyle[]> => {
+      return this.beerStylesService
+        .getBeerStyles(new BeerStylesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: styles => {
+            this.beerStyles = styles;
             this.error = '';
             this.beerStylesLoading = false;
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the beer styles';
+            this.beerStylesLoading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the beer styles';
-          this.beerStylesLoading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
-  private fetchAllBreweries(
-    pageNumber: number = 1,
-    allBreweries: Brewery[] = []
-  ): void {
+  private fetchAllBreweries() {
     this.breweriesLoading = true;
-    this.breweriesSubscription = this.breweriesService
-      .getBreweries(
-        new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (breweries: PagedList<Brewery>) => {
-          allBreweries.push(...breweries.items);
-          if (breweries.HasNext) {
-            this.fetchAllBreweries(pageNumber + 1, allBreweries);
-          } else {
-            this.breweries = allBreweries;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: Brewery[] = []
+    ): Observable<Brewery[]> => {
+      return this.breweriesService
+        .getBreweries(new BreweriesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: breweries => {
+            this.breweries = breweries;
             this.error = '';
             this.breweriesLoading = false;
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the breweries';
+            this.breweriesLoading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the breweries';
-          this.breweriesLoading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -238,20 +268,10 @@ export class NewBeerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-    if (this.beerStylesSubscription) {
-      this.beerStylesSubscription.unsubscribe();
-    }
-    if (this.breweriesSubscription) {
-      this.breweriesSubscription.unsubscribe();
-    }
-    if (this.newBeerSubscription) {
-      this.newBeerSubscription.unsubscribe();
-    }
     if (this.imageSource) {
       URL.revokeObjectURL(this.imageSource);
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
