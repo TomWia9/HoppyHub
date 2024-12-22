@@ -6,9 +6,10 @@ import { Alert } from './alert.model';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faCircleCheck,
+  faCircleExclamation,
   faCircleInfo,
   faExclamation,
-  faCircleExclamation
+  faX
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -26,6 +27,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   showAlert: boolean = false;
   alertOpenedSubscription!: Subscription;
   icon = faCircleCheck;
+  faX = faX;
 
   ngOnInit(): void {
     this.alertOpenedSubscription = this.alertService.alertOpened.subscribe(
