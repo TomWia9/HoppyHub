@@ -1,0 +1,201 @@
+@if (loading || beerStylesLoading || breweriesLoading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <app-delete-beer-modal (beerDeleted)="beerDeleted()"></app-delete-beer-modal>
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <form [formGroup]="beerForm" (ngSubmit)="onFormSave()">
+      <div class="mb-2 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
+        <div>
+          <figure class="flex items-center justify-center">
+            <div class="mask mask-squircle h-36 w-36">
+              <img [src]="imageSource" alt="Beer image" />
+            </div>
+          </figure>
+
+          @if (beer.tempImage && !selectedImage) {
+            <p class="my-2">(Temp Image)</p>
+          }
+          @if (!removeImage) {
+            <label class="form-control mb-2 w-full max-w-xs">
+              <div class="label">
+                @if (!beer.tempImage) {
+                  <span class="label-text">Update Image</span>
+                } @else {
+                  <span class="label-text">Add Image</span>
+                }
+              </div>
+
+              <input
+                #fileInput
+                accept=".jpg,.png,image/jpeg,image/png"
+                (change)="onFileSelected($event)"
+                type="file"
+                class="file-input file-input-bordered file-input-primary w-full" />
+            </label>
+          }
+
+          @if (!beer.tempImage) {
+            <div class="my-6 mb-2 flex place-content-center items-center gap-4">
+              <label
+                for="removeImageToggle"
+                class="cursor-pointer"
+                [ngClass]="{ 'text-error': removeImage }"
+                >Remove Image</label
+              >
+              <input
+                id="removeImageToggle"
+                type="checkbox"
+                class="toggle toggle-error"
+                (change)="removeImage = !removeImage" />
+            </div>
+          }
+        </div>
+
+        <div class="mr-4 w-full">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Name</span>
+            </div>
+            <input
+              type="text"
+              id="edit_beer_name"
+              formControlName="name"
+              class="input input-bordered input-primary" />
+          </label>
+
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Description</span>
+            </div>
+            <textarea
+              type="text"
+              id="edit_beer_description"
+              formControlName="description"
+              class="textarea textarea-bordered textarea-primary"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="grid grid-cols-2 place-items-center gap-4">
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Beer Style</span>
+            </div>
+            <select
+              id="edit_beer_beer_style"
+              formControlName="beerStyleId"
+              class="select select-bordered select-primary">
+              <option [value]="beer.beerStyle.id" selected class="font-bold">
+                {{ beer.beerStyle.name }}
+              </option>
+              @for (beerStyle of beerStyles; track $index) {
+                <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Brewery</span>
+            </div>
+            <select
+              id="edit_beer_brewery"
+              formControlName="breweryId"
+              class="select select-bordered select-primary">
+              <option [value]="beer.brewery.id" selected class="font-bold">
+                {{ beer.brewery.name }}
+              </option>
+              @for (brewery of breweries; track $index) {
+                <option [value]="brewery.id">{{ brewery.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Release Date</span>
+            </div>
+            <input
+              type="date"
+              id="edit_beer_release_date"
+              formControlName="releaseDate"
+              class="input input-bordered input-primary" />
+          </label>
+        </div>
+
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">ABV (%)</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="edit_beer_abv"
+              formControlName="alcoholByVolume"
+              class="input input-bordered input-primary" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">BLG</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="edit_beer_blg"
+              formControlName="blg"
+              class="input input-bordered input-primary" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">IBU</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="1000"
+              step="1"
+              id="edit_beer_ibu"
+              formControlName="ibu"
+              class="input input-bordered input-primary" />
+          </label>
+        </div>
+        <div class="col-span-2 w-3/4 space-y-1 place-self-center">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Composition</span>
+            </div>
+            <textarea
+              type="text"
+              id="edit_beer_composition"
+              formControlName="composition"
+              class="textarea textarea-bordered textarea-primary"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="grid gap-4">
+        <button
+          type="submit"
+          class="btn btn-outline btn-success"
+          [disabled]="beerForm.pristine && !selectedImage && !removeImage">
+          Save beer
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline btn-error"
+          (click)="onBeerDelete()">
+          Delete beer
+        </button>
+      </div>
+    </form>
+  </div>
+}

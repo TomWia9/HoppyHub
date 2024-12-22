@@ -170,7 +170,7 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
           }
         },
         error: () => {
-          this.error = 'An error occurred while loading the breweries';
+          this.error = 'An error occurred while loading the beer styles';
           this.loading = false;
         }
       });

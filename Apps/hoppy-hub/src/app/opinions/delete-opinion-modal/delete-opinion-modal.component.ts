@@ -58,27 +58,32 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.opinionsService.DeleteOpinion(this.opinionId).subscribe({
-      next: () => {
-        this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
-        this.opinionDeleted.emit();
-      },
-      error: error => {
-        let errorMessage = null;
+    this.deleteOpinionSubscription = this.opinionsService
+      .DeleteOpinion(this.opinionId)
+      .subscribe({
+        next: () => {
+          this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
+          this.opinionDeleted.emit();
+        },
+        error: error => {
+          let errorMessage = null;
 
-        if (error.error) {
-          const firstKey = Object.keys(error.error?.errors)[0] ?? null;
-          const firstValueArray = error.error?.errors[firstKey] as string[];
-          errorMessage = firstValueArray[0];
-        }
+          if (error.error) {
+            const firstKey = Object.keys(error.error?.errors)[0] ?? null;
+            const firstValueArray = error.error?.errors[firstKey] as string[];
+            errorMessage = firstValueArray[0];
+          }
 
-        if (!errorMessage) {
-          this.alertService.openAlert(AlertType.Error, 'Something went wrong');
-        } else {
-          this.alertService.openAlert(AlertType.Error, errorMessage);
+          if (!errorMessage) {
+            this.alertService.openAlert(
+              AlertType.Error,
+              'Something went wrong'
+            );
+          } else {
+            this.alertService.openAlert(AlertType.Error, errorMessage);
+          }
         }
-      }
-    });
+      });
     this.onModalHide();
   }
 

@@ -15,6 +15,7 @@ export class Beer {
     public ibu: number,
     public releaseDate: Date,
     public imageUri: string,
+    public tempImage: boolean,
     public opinionsCount: number,
     public favoritesCount: number
   ) {}

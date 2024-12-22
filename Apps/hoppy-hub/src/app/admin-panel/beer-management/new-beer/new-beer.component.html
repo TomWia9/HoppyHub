@@ -1,0 +1,153 @@
+@if (loading || beerStylesLoading || breweriesLoading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <form [formGroup]="newBeerForm" (ngSubmit)="onFormSave()">
+      <div class="my-2 grid place-items-center gap-4">
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Name</span>
+          </div>
+          <input
+            type="text"
+            id="new_beer_name"
+            formControlName="name"
+            class="input input-bordered input-primary" />
+        </label>
+
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Description</span>
+          </div>
+          <textarea
+            type="text"
+            id="new_beer_description"
+            formControlName="description"
+            class="textarea textarea-bordered textarea-primary"></textarea>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-2 place-items-center gap-4">
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Beer Style</span>
+            </div>
+            <select
+              id="new_beer_beer_style"
+              formControlName="beerStyleId"
+              class="select select-bordered select-primary">
+              @for (beerStyle of beerStyles; track $index) {
+                <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Brewery</span>
+            </div>
+            <select
+              id="new_beer_brewery"
+              formControlName="breweryId"
+              class="select select-bordered select-primary">
+              @for (brewery of breweries; track $index) {
+                <option [value]="brewery.id">{{ brewery.name }}</option>
+              }
+            </select>
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">Release Date</span>
+            </div>
+            <input
+              type="date"
+              id="new_beer_release_date"
+              formControlName="releaseDate"
+              class="input input-bordered input-primary" />
+          </label>
+        </div>
+
+        <div class="w-2/3 space-y-1">
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">ABV (%)</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="new_beer_abv"
+              formControlName="alcoholByVolume"
+              class="input input-bordered input-primary" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">BLG</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              step="0.1"
+              id="new_beer_blg"
+              formControlName="blg"
+              class="input input-bordered input-primary" />
+          </label>
+          <label class="form-control">
+            <div class="label">
+              <span class="label-text">IBU</span>
+            </div>
+            <input
+              type="number"
+              min="0"
+              max="1000"
+              step="1"
+              id="new_beer_ibu"
+              formControlName="ibu"
+              class="input input-bordered input-primary" />
+          </label>
+        </div>
+        <div class="col-span-2 w-3/4 space-y-1 place-self-center">
+          <label class="form-control w-full">
+            <div class="label">
+              <span class="label-text">Composition</span>
+            </div>
+            <textarea
+              type="text"
+              id="new_beer_composition"
+              formControlName="composition"
+              class="textarea textarea-bordered textarea-primary"></textarea>
+          </label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <p class="my-2 text-lg font-bold">Add Image</p>
+      <input
+        #fileInput
+        accept=".jpg,.png,image/jpeg,image/png"
+        (change)="onFileSelected($event)"
+        type="file"
+        class="file-input file-input-bordered file-input-primary mb-6 mt-2" />
+      @if (imageSource) {
+        <figure class="flex items-center justify-center">
+          <div class="mask mask-squircle h-36 w-36">
+            <img [src]="imageSource" alt="Beer image" />
+          </div>
+        </figure>
+      }
+
+      <div class="divider"></div>
+      <button
+        type="submit"
+        class="btn btn-outline btn-success w-full"
+        [disabled]="newBeerForm.pristine">
+        Save beer
+      </button>
+    </form>
+  </div>
+}

@@ -49,7 +49,7 @@ public class BaseBeerCommandValidatorTests
     {
         var command = new TestBaseBeerCommand
         {
-            BreweryId = Guid.Empty
+            BreweryId = null
         };
 
         // Act
@@ -244,7 +244,7 @@ public class BaseBeerCommandValidatorTests
         // Arrange
         var command = new TestBaseBeerCommand
         {
-            BeerStyleId = Guid.Empty
+            BeerStyleId = null
         };
 
         // Act

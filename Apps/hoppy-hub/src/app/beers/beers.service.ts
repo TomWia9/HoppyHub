@@ -6,6 +6,8 @@ import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
 import { BeersParams } from './beers-params';
+import { UpsertBeerCommand } from './upsert-beer-command.model';
+import { UpsertBeerImageCommand } from './upsert-beer-image-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,5 +53,51 @@ export class BeersService {
           );
         })
       );
+  }
+
+  createBeer(upsertBeerCommand: UpsertBeerCommand): Observable<Beer> {
+    return this.http.post<Beer>(
+      `${environment.beerManagementApiUrl}/beers`,
+      upsertBeerCommand
+    );
+  }
+
+  updateBeer(
+    beerId: string,
+    upsertBeerCommand: UpsertBeerCommand
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}`,
+      upsertBeerCommand
+    );
+  }
+
+  deleteBeer(beerId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}`
+    );
+  }
+
+  upsertBeerImage(
+    beerId: string,
+    upsertBeerImageCommand: UpsertBeerImageCommand
+  ): Observable<string> {
+    const formData = new FormData();
+    formData.append('BeerId', upsertBeerImageCommand.beerId);
+    if (upsertBeerImageCommand.image) {
+      formData.append('Image', upsertBeerImageCommand.image);
+    }
+
+    return this.http.post<string>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}/upsertImage`,
+      formData,
+      { responseType: 'text' as 'json' }
+    );
+  }
+
+  deleteBeerImage(beerId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.beerManagementApiUrl}/beers/${beerId}/deleteImage`
+    );
   }
 }

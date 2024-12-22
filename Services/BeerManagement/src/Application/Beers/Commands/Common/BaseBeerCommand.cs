@@ -13,12 +13,12 @@ public abstract record BaseBeerCommand
     /// <summary>
     ///     The brewery id.
     /// </summary>
-    public Guid BreweryId { get; init; }
+    public Guid? BreweryId { get; init; }
 
     /// <summary>
     ///     The alcohol by volume.
     /// </summary>
-    public double AlcoholByVolume { get; init; }
+    public double? AlcoholByVolume { get; init; }
 
     /// <summary>
     ///     The beer description.
@@ -38,7 +38,7 @@ public abstract record BaseBeerCommand
     /// <summary>
     ///     The beer style id.
     /// </summary>
-    public Guid BeerStyleId { get; init; }
+    public Guid? BeerStyleId { get; init; }
 
     /// <summary>
     ///     The International Bitterness Units.
