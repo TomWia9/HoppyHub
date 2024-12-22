@@ -104,7 +104,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       if (!allowedTypes.includes(input.files[0].type)) {
         this.alertService.openAlert(
           AlertType.Error,
-          'Only jpg and png files are allowed'
+          'Only JPG and PNG files are allowed.'
         );
         input.value = '';
         this.selectedImage = null;
