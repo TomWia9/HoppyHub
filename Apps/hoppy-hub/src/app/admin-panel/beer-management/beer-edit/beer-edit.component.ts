@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, Subscription, finalize, forkJoin, map } from 'rxjs';
 import { Beer } from '../../../beers/beer.model';
@@ -59,6 +59,7 @@ export class BeerEditComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
   private beersService: BeersService = inject(BeersService);
   private beerStylesService: BeerStylesService = inject(BeerStylesService);
   private breweriesService: BreweriesService = inject(BreweriesService);
@@ -175,6 +176,11 @@ export class BeerEditComponent implements OnInit, OnDestroy {
         sortDirection: 1
       })
     );
+  }
+
+  beerDeleted(): void {
+    this.beerChanged();
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   private getBeer(): void {

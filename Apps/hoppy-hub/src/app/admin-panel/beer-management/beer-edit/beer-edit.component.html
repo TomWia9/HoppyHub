@@ -3,7 +3,7 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <app-delete-beer-modal (beerDeleted)="beerChanged()"></app-delete-beer-modal>
+  <app-delete-beer-modal (beerDeleted)="beerDeleted()"></app-delete-beer-modal>
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <form [formGroup]="beerForm" (ngSubmit)="onFormSave()">
       <div class="mb-2 mt-2 grid place-items-center gap-4 sm:grid-cols-2">
