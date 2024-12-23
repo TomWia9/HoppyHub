@@ -33,7 +33,10 @@ export class BreweriesTableFiltersComponent implements OnInit {
   }
 
   onSearch(): void {
-    if (this.searchForm.value.search) {
+    if (
+      this.breweriesService.paramsChanged.value.searchQuery !==
+      this.searchForm.value.search
+    ) {
       this.params = new BreweriesParams({
         pageSize: 25,
         pageNumber: 1,

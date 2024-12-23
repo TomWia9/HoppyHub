@@ -7,7 +7,7 @@ import {
   ViewChild,
   inject
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import {
   FormControl,
   FormGroup,
@@ -35,16 +35,19 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
+  private destroy$ = new Subject<void>();
 
-  modalOpenedSubscription!: Subscription;
   loginForm!: FormGroup;
 
   ngOnInit(): void {
-    this.modalOpenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.showModal(modalModel);
-      }
-    );
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.showModal(modalModel);
+        })
+      )
+      .subscribe();
     this.loginForm = new FormGroup({
       email: new FormControl('', [
         Validators.email,
@@ -59,26 +62,30 @@ export class LoginModalComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       this.authService
         .login(this.loginForm.value.email, this.loginForm.value.password)
-        .subscribe({
-          next: () => {
-            this.onFormReset();
-            this.alertService.openAlert(
-              AlertType.Success,
-              'Logged in successfully'
-            );
-          },
-          error: error => {
-            const errorMessage = error.error.errors[0];
-
-            if (!errorMessage) {
+        .pipe(
+          takeUntil(this.destroy$),
+          tap({
+            next: () => {
+              this.onFormReset();
               this.alertService.openAlert(
-                AlertType.Error,
-                'Something went wrong'
+                AlertType.Success,
+                'Logged in successfully'
               );
+            },
+            error: error => {
+              const errorMessage = error.error.errors[0];
+
+              if (!errorMessage) {
+                this.alertService.openAlert(
+                  AlertType.Error,
+                  'Something went wrong'
+                );
+              }
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-            this.alertService.openAlert(AlertType.Error, errorMessage);
-          }
-        });
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -101,8 +108,7 @@ export class LoginModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.modalOpenedSubscription) {
-      this.modalOpenedSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

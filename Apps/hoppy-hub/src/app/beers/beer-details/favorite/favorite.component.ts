@@ -11,7 +11,7 @@ import { AuthUser } from '../../../auth/auth-user.model';
 import { Beer } from '../../beer.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { Subscription, map, take, tap } from 'rxjs';
+import { Subject, map, take, takeUntil, tap } from 'rxjs';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { ModalService } from '../../../services/modal.service';
@@ -37,12 +37,10 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
   private favoritesService: FavoritesService = inject(FavoritesService);
   private alertService: AlertService = inject(AlertService);
   private modalService: ModalService = inject(ModalService);
+  private destroy$ = new Subject<void>();
 
   loading = true;
   favorite = false;
-  createFavoriteSubscription!: Subscription;
-  deleteFavoriteSubscription!: Subscription;
-  getUserFavoritesSubsciption!: Subscription;
   faStar = faStar;
 
   ngOnChanges(): void {
@@ -54,40 +52,52 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
       this.modalService.openModal(new ModalModel(ModalType.Login));
     } else if (!this.favorite) {
       this.loading = true;
-      this.createFavoriteSubscription = this.favoritesService
+      this.favoritesService
         .createFavorite(this.beer.id)
-        .subscribe({
-          next: () => {
-            this.favoritesCountChanged.emit();
-            this.favorite = true;
-            this.alertService.openAlert(
-              AlertType.Success,
-              'Successfully added to favorites'
-            );
-            this.loading = false;
-          },
-          error: error => {
-            this.handleError(error);
-          }
-        });
+        .pipe(
+          takeUntil(this.destroy$),
+          tap({
+            next: () => {
+              this.favoritesCountChanged.emit();
+              this.favorite = true;
+              this.alertService.openAlert(
+                AlertType.Success,
+                'Successfully added to favorites'
+              );
+            },
+            error: error => {
+              this.handleError(error);
+            },
+            complete: () => {
+              this.loading = false;
+            }
+          })
+        )
+        .subscribe();
     } else {
       this.loading = true;
-      this.deleteFavoriteSubscription = this.favoritesService
+      this.favoritesService
         .deleteFavorite(this.beer.id)
-        .subscribe({
-          next: () => {
-            this.favoritesCountChanged.emit();
-            this.favorite = false;
-            this.alertService.openAlert(
-              AlertType.Success,
-              'Successfully removed from favorites'
-            );
-            this.loading = false;
-          },
-          error: error => {
-            this.handleError(error);
-          }
-        });
+        .pipe(
+          takeUntil(this.destroy$),
+          tap({
+            next: () => {
+              this.favoritesCountChanged.emit();
+              this.favorite = false;
+              this.alertService.openAlert(
+                AlertType.Success,
+                'Successfully removed from favorites'
+              );
+            },
+            error: error => {
+              this.handleError(error);
+            },
+            complete: () => {
+              this.loading = false;
+            }
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -97,7 +107,7 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
       this.favorite = false;
       this.loading = false;
     } else {
-      this.getUserFavoritesSubsciption = this.favoritesService
+      this.favoritesService
         .getFavorites(
           new FavoritesParams({
             pageSize: 10,
@@ -132,19 +142,10 @@ export class FavoriteComponent implements OnDestroy, OnChanges {
     } else {
       this.alertService.openAlert(AlertType.Error, errorMessage);
     }
-
-    this.loading = false;
   }
 
   ngOnDestroy(): void {
-    if (this.createFavoriteSubscription) {
-      this.createFavoriteSubscription.unsubscribe();
-    }
-    if (this.deleteFavoriteSubscription) {
-      this.deleteFavoriteSubscription.unsubscribe();
-    }
-    if (this.getUserFavoritesSubsciption) {
-      this.getUserFavoritesSubsciption.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

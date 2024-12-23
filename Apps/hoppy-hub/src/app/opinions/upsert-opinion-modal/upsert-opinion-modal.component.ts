@@ -16,7 +16,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { UpsertOpinionCommand } from '../upsert-opinion-command.model';
@@ -48,8 +48,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
   private alertService: AlertService = inject(AlertService);
-  private modalOppenedSubscription!: Subscription;
-  private addOpinionSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   beer!: Beer;
   existingOpinion: Opinion | null = null;
@@ -63,25 +62,28 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   selectedImage: File | null = null;
 
   ngOnInit(): void {
-    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.loading = true;
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.loading = true;
 
-        if (modalModel.modalData['beer']) {
-          this.beer = modalModel.modalData['beer'] as Beer;
-        }
-        this.existingOpinion = modalModel.modalData['opinion'] as Opinion;
+          if (modalModel.modalData['beer']) {
+            this.beer = modalModel.modalData['beer'] as Beer;
+          }
+          this.existingOpinion = modalModel.modalData['opinion'] as Opinion;
 
-        this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
-        this.opinionForm = this.existingOpinion
-          ? this.getExistingOpinionForm()
-          : this.getOpinionForm();
-        this.setShowImage();
+          this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
+          this.opinionForm = this.existingOpinion
+            ? this.getExistingOpinionForm()
+            : this.getOpinionForm();
+          this.setShowImage();
 
-        this.onShowModal(modalModel);
-        this.loading = false;
-      }
-    );
+          this.onShowModal(modalModel);
+          this.loading = false;
+        })
+      )
+      .subscribe();
   }
 
   onModalHide(): void {
@@ -112,30 +114,50 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
           !this.selectedImage && !this.showImage ? true : false;
         this.opinionsService
           .UpdateOpinion(this.existingOpinion.id, upsertOpinionCommand)
-          .subscribe({
-            next: () => {
-              this.opinionForm.reset();
-              this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
-              this.alertService.openAlert(AlertType.Success, 'Opinion updated');
-              this.opinionUpserted.emit();
-              this.loading = false;
-            },
-            error: error => {
-              this.handleError(error);
-            }
-          });
+          .pipe(
+            takeUntil(this.destroy$),
+            tap({
+              next: () => {
+                this.opinionForm.reset();
+                this.imageUri = `${this.existingOpinion?.imageUri}?timestamp=${new Date().getTime()}`;
+                this.alertService.openAlert(
+                  AlertType.Success,
+                  'Opinion updated'
+                );
+                this.opinionUpserted.emit();
+              },
+              error: error => {
+                this.handleError(error);
+              },
+              complete: () => {
+                this.loading = false;
+              }
+            })
+          )
+          .subscribe();
       } else {
-        this.opinionsService.CreateOpinion(upsertOpinionCommand).subscribe({
-          next: () => {
-            this.opinionForm.reset();
-            this.alertService.openAlert(AlertType.Success, 'Opinion created');
-            this.opinionUpserted.emit();
-            this.loading = false;
-          },
-          error: error => {
-            this.handleError(error);
-          }
-        });
+        this.opinionsService
+          .CreateOpinion(upsertOpinionCommand)
+          .pipe(
+            takeUntil(this.destroy$),
+            tap({
+              next: () => {
+                this.opinionForm.reset();
+                this.alertService.openAlert(
+                  AlertType.Success,
+                  'Opinion created'
+                );
+                this.opinionUpserted.emit();
+              },
+              error: error => {
+                this.handleError(error);
+              },
+              complete: () => {
+                this.loading = false;
+              }
+            })
+          )
+          .subscribe();
       }
     }
 
@@ -146,6 +168,13 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
+      const allowedTypes = ['image/jpeg', 'image/png'];
+
+      if (!allowedTypes.includes(input.files[0].type)) {
+        input.value = '';
+        this.selectedImage = null;
+        return;
+      }
       this.selectedImage = input.files[0];
     }
   }
@@ -201,8 +230,6 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
     } else {
       this.alertService.openAlert(AlertType.Error, errorMessage);
     }
-
-    this.loading = false;
   }
 
   private setShowImage(): void {
@@ -214,11 +241,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.modalOppenedSubscription) {
-      this.modalOppenedSubscription.unsubscribe();
-    }
-    if (this.addOpinionSubscription) {
-      this.addOpinionSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

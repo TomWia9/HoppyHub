@@ -14,12 +14,11 @@ import {
   FormsModule,
   Validators
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { map, mergeAll, Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from '../../../../services/modal.service';
 import { BeersService } from '../../../beers.service';
 import { Brewery } from '../../../../breweries/brewery.model';
 import { BreweriesService } from '../../../../breweries/breweries.service';
-import { PagedList } from '../../../../shared/paged-list';
 import { BreweriesParams } from '../../../../breweries/breweries-params';
 import { LoadingSpinnerComponent } from '../../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../../shared-components/error-message/error-message.component';
@@ -50,23 +49,25 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
   private beersService = inject(BeersService);
   private breweriesService = inject(BreweriesService);
   private beerStylesService = inject(BeerStylesService);
+  private destroy$ = new Subject<void>();
 
   beersFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
   beerStyles: BeerStyle[] = [];
   error = '';
   loading = true;
-  modalOppenedSubscription!: Subscription;
-  getBreweriesSubscription!: Subscription;
-  getBeerStylesSubscription!: Subscription;
+
   sortOptions = BeersParams.sortOptions;
 
   ngOnInit(): void {
-    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.onShowModal(modalModel);
-      }
-    );
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.onShowModal(modalModel);
+        })
+      )
+      .subscribe();
 
     this.fetchAllBreweries();
     this.fetchAllBeerStyles();
@@ -122,64 +123,84 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
     this.beersFiltersForm.reset();
   }
 
-  private fetchAllBreweries(
-    pageNumber: number = 1,
-    allBreweries: Brewery[] = []
-  ): void {
-    this.getBreweriesSubscription = this.breweriesService
-      .getBreweries(
-        new BreweriesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (breweries: PagedList<Brewery>) => {
-          this.loading = true;
-          allBreweries.push(...breweries.items);
-          if (breweries.HasNext) {
-            this.fetchAllBreweries(pageNumber + 1, allBreweries);
-          } else {
-            this.breweries = allBreweries;
+  private fetchAllBreweries() {
+    this.loading = true;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: Brewery[] = []
+    ): Observable<Brewery[]> => {
+      return this.breweriesService
+        .getBreweries(new BreweriesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: breweries => {
+            this.breweries = breweries;
             this.error = '';
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the breweries';
+          },
+          complete: () => {
             this.loading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the breweries';
-          this.loading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
-  private fetchAllBeerStyles(
-    pageNumber: number = 1,
-    allBeerStyles: BeerStyle[] = []
-  ): void {
-    this.getBeerStylesSubscription = this.beerStylesService
-      .getBeerStyles(
-        new BeerStylesParams({ pageSize: 50, pageNumber: pageNumber })
-      )
-      .subscribe({
-        next: (beerStyles: PagedList<BeerStyle>) => {
-          this.loading = true;
-          allBeerStyles.push(...beerStyles.items);
-          if (beerStyles.HasNext) {
-            this.fetchAllBeerStyles(pageNumber + 1, allBeerStyles);
-          } else {
-            this.beerStyles = allBeerStyles;
+  private fetchAllBeerStyles() {
+    this.loading = true;
+
+    const fetchPage = (
+      pageNumber: number,
+      accumulator: BeerStyle[] = []
+    ): Observable<BeerStyle[]> => {
+      return this.beerStylesService
+        .getBeerStyles(new BeerStylesParams({ pageSize: 50, pageNumber }))
+        .pipe(
+          map(response => {
+            const newAccumulator = [...accumulator, ...response.items];
+            if (response.HasNext) {
+              return fetchPage(pageNumber + 1, newAccumulator);
+            }
+            return of(newAccumulator);
+          }),
+          mergeAll()
+        );
+    };
+
+    fetchPage(1)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: styles => {
+            this.beerStyles = styles;
             this.error = '';
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the beer styles';
+          },
+          complete: () => {
             this.loading = false;
           }
-        },
-        error: () => {
-          this.error = 'An error occurred while loading the beer styles';
-          this.loading = false;
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.modalOppenedSubscription.unsubscribe();
-    this.getBreweriesSubscription.unsubscribe();
-    this.getBeerStylesSubscription.unsubscribe();
+        })
+      )
+      .subscribe();
   }
 
   private getBeerFiltersForm(): FormGroup {
@@ -293,5 +314,10 @@ export class BeersFiltersModalComponent implements OnInit, OnDestroy {
       sortBy: new FormControl(0),
       sortDirection: new FormControl(0)
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

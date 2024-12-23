@@ -5,7 +5,7 @@ import { BreweriesService } from '../breweries.service';
 import { BreweriesParams } from '../breweries-params';
 import { Brewery } from '../brewery.model';
 import { PagedList } from '../../shared/paged-list';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { PaginationComponent } from '../../shared-components/pagination/pagination.component';
 import { Pagination } from '../../shared/pagination';
 import { BreweriesTableFiltersComponent } from './breweries-table-filters/breweries-table-filters.component';
@@ -29,6 +29,7 @@ export class BreweriesTableComponent
   implements OnInit, OnDestroy
 {
   private breweriesService: BreweriesService = inject(BreweriesService);
+  private destroy$ = new Subject<void>();
 
   breweriesParams = new BreweriesParams({
     pageSize: 25,
@@ -40,51 +41,51 @@ export class BreweriesTableComponent
   paginationData!: Pagination;
   error = '';
   loading = true;
-  breweriesParamsSubscription!: Subscription;
-  getBreweriesSubscription!: Subscription;
 
   ngOnInit(): void {
-    this.breweriesParamsSubscription =
-      this.breweriesService.paramsChanged.subscribe(
-        (params: BreweriesParams) => {
+    this.breweriesService.paramsChanged
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((params: BreweriesParams) => {
           this.breweriesParams = params;
           this.getBreweries();
-        }
-      );
+        })
+      )
+      .subscribe();
   }
 
   private getBreweries(): void {
-    this.getBreweriesSubscription = this.breweriesService
+    this.loading = true;
+    this.breweriesService
       .getBreweries(this.breweriesParams)
-      .subscribe({
-        next: (breweries: PagedList<Brewery>) => {
-          this.loading = true;
-          this.breweries = breweries;
-          this.paginationData = this.getPaginationData(breweries);
-          this.error = '';
-          this.loading = false;
-        },
-        error: error => {
-          this.error = 'An error occurred while loading the breweries';
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: (breweries: PagedList<Brewery>) => {
+            this.breweries = breweries;
+            this.paginationData = this.getPaginationData(breweries);
+            this.error = '';
+          },
+          error: error => {
+            this.error = 'An error occurred while loading the breweries';
 
-          if (error.error && error.error.errors) {
-            const errorMessage = this.getValidationErrorMessage(
-              error.error.errors
-            );
-            this.error += errorMessage;
+            if (error.error && error.error.errors) {
+              const errorMessage = this.getValidationErrorMessage(
+                error.error.errors
+              );
+              this.error += errorMessage;
+            }
+          },
+          complete: () => {
+            this.loading = false;
           }
-
-          this.loading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    if (this.getBreweriesSubscription) {
-      this.getBreweriesSubscription.unsubscribe();
-    }
-    if (this.breweriesParamsSubscription) {
-      this.breweriesParamsSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

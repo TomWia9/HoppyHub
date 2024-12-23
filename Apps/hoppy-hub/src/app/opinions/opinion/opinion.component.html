@@ -33,8 +33,10 @@
       }">
       @if (opinion.imageUri) {
         <div class="flex justify-center">
-          <figure class="mt-4 flex h-48 w-48 justify-center">
-            <img src="{{ opinion.imageUri }}" alt="beer image" />
+          <figure class="mt-4 flex justify-center">
+            <div class="mask mask-squircle h-48 w-48">
+              <img src="{{ opinion.imageUri }}" alt="beer image" />
+            </div>
           </figure>
         </div>
       }

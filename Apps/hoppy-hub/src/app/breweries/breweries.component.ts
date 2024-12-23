@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { BreweriesTableComponent } from './breweries-table/breweries-table.component';
-import { BreweryDetailsComponent } from './brewery-details/brewery-details.component';
 import { BreweriesFiltersModalComponent } from './breweries-table/breweries-table-filters/breweries-filters-modal/breweries-filters-modal.component';
 import {
   ActivatedRoute,
@@ -19,7 +18,6 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
   imports: [
     RouterOutlet,
     BreweriesTableComponent,
-    BreweryDetailsComponent,
     BreweriesFiltersModalComponent,
     FontAwesomeModule
   ]
