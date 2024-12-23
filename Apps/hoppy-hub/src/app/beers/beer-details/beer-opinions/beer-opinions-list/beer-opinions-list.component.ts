@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { OpinionsService } from '../../../../opinions/opinions.service';
 import { DataHelper } from '../../../../shared/data-helper';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { Opinion } from '../../../../opinions/opinion.model';
 import { OpinionsParams } from '../../../../opinions/opinions-params';
 import { PagedList } from '../../../../shared/paged-list';
@@ -38,11 +38,10 @@ export class BeerOpinionsListComponent
   @Input({ required: true }) beer!: Beer;
   @ViewChild('#showOpinionsButton') showOpinionsButton!: ElementRef;
   private opinionsService: OpinionsService = inject(OpinionsService);
+  private destroy$ = new Subject<void>();
 
   sortOptions = OpinionsParams.sortOptions;
 
-  opinionsParamsSubscription!: Subscription;
-  getOpinionsSubscription!: Subscription;
   selectedSortOptionIndex: number = 0;
   opinionsParams = new OpinionsParams({
     pageSize: 10,
@@ -95,14 +94,16 @@ export class BeerOpinionsListComponent
     if (this.showOpinions) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else if (!this.opinions) {
-      this.opinionsParamsSubscription =
-        this.opinionsService.paramsChanged.subscribe(
-          (params: OpinionsParams) => {
+      this.opinionsService.paramsChanged
+        .pipe(
+          takeUntil(this.destroy$),
+          tap((params: OpinionsParams) => {
             this.opinionsParams = params;
             this.opinionsParams.beerId = this.beer.id;
             this.getOpinions();
-          }
-        );
+          })
+        )
+        .subscribe();
     }
     this.showOpinions = !this.showOpinions;
   }
@@ -119,37 +120,37 @@ export class BeerOpinionsListComponent
   }
 
   private getOpinions(): void {
-    this.getOpinionsSubscription = this.opinionsService
+    this.opinionsService
       .getOpinions(this.opinionsParams)
-      .subscribe({
-        next: (opinions: PagedList<Opinion>) => {
-          this.opinionsLoading = true;
-          this.opinions = opinions;
-          this.paginationData = this.getPaginationData(opinions);
-          this.error = '';
-          this.opinionsLoading = false;
-        },
-        error: error => {
-          this.error = 'An error occurred while loading the opinions';
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: (opinions: PagedList<Opinion>) => {
+            this.opinionsLoading = true;
+            this.opinions = opinions;
+            this.paginationData = this.getPaginationData(opinions);
+            this.error = '';
+            this.opinionsLoading = false;
+          },
+          error: error => {
+            this.error = 'An error occurred while loading the opinions';
 
-          if (error.error && error.error.errors) {
-            const errorMessage = this.getValidationErrorMessage(
-              error.error.errors
-            );
-            this.error += errorMessage;
+            if (error.error && error.error.errors) {
+              const errorMessage = this.getValidationErrorMessage(
+                error.error.errors
+              );
+              this.error += errorMessage;
+            }
+
+            this.opinionsLoading = false;
           }
-
-          this.opinionsLoading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    if (this.getOpinionsSubscription) {
-      this.getOpinionsSubscription.unsubscribe();
-    }
-    if (this.opinionsParamsSubscription) {
-      this.opinionsParamsSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

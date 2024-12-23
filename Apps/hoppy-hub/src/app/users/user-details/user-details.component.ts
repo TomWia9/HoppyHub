@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { map, Subscription } from 'rxjs';
+import { map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../user.model';
 import { UsersService } from '../users.service';
@@ -9,7 +9,6 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { UserOpinionsComponent } from './user-opinions/user-opinions.component';
 import { UserFavoritesComponent } from './user-favorites/user-favorites.component';
 import { AuthService } from '../../auth/auth.service';
-import { AuthUser } from '../../auth/auth-user.model';
 
 @Component({
   selector: 'app-user-details',
@@ -27,9 +26,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   private route: ActivatedRoute = inject(ActivatedRoute);
   private usersService: UsersService = inject(UsersService);
   private authService: AuthService = inject(AuthService);
-  private routeSubscription!: Subscription;
-  private userSubscription!: Subscription;
-  private authUserSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   user!: User;
   accountOwner: boolean = false;
@@ -37,39 +34,37 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   loading = true;
 
   ngOnInit(): void {
-    this.routeSubscription = this.route.paramMap
-      .pipe(map(params => params.get('id')))
-      .subscribe(userId => {
-        this.userSubscription = this.usersService
-          .getUserById(userId as string)
-          .subscribe({
-            next: (user: User) => {
-              this.user = user;
-              this.error = '';
-              this.authUserSubscription = this.authService.user.subscribe(
-                (user: AuthUser | null) => {
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        map(params => params.get('id')),
+        switchMap(userId =>
+          this.usersService.getUserById(userId as string).pipe(
+            tap({
+              next: (user: User) => {
+                this.user = user;
+                this.error = '';
+              },
+              error: () => {
+                this.error = 'An error occurred while loading the user';
+              }
+            }),
+            switchMap(() =>
+              this.authService.user.pipe(
+                tap(user => {
                   this.accountOwner = this.user.id === user?.id;
                   this.loading = false;
-                }
-              );
-            },
-            error: () => {
-              this.error = 'An error occurred while loading the user';
-              this.loading = false;
-            }
-          });
-      });
+                })
+              )
+            )
+          )
+        )
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.authUserSubscription) {
-      this.authUserSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -9,7 +9,7 @@ import {
 import { BeersService } from '../beers.service';
 import { Beer } from '../beer.model';
 import { PagedList } from '../../shared/paged-list';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { BeersParams } from '../beers-params';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
@@ -37,6 +37,7 @@ export class BeersTableComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   private beersService: BeersService = inject(BeersService);
+  private destroy$ = new Subject<void>();
 
   beersParams = new BeersParams({
     pageSize: 10,
@@ -48,46 +49,52 @@ export class BeersTableComponent
   paginationData!: Pagination;
   error = '';
   loading = true;
-  beersParamsSubscription!: Subscription;
-  getBeersSubscription!: Subscription;
 
   ngOnInit(): void {
     this.beersService.paramsChanged.next(this.beersParams);
-    this.beersParamsSubscription = this.beersService.paramsChanged.subscribe(
-      (params: BeersParams) => {
-        this.beersParams = params;
-        this.getBeers();
-      }
-    );
+    this.beersService.paramsChanged
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((params: BeersParams) => {
+          this.beersParams = params;
+          this.getBeers();
+        })
+      )
+      .subscribe();
   }
 
   private getBeers(): void {
-    this.getBeersSubscription = this.beersService
+    this.loading = true;
+
+    this.beersService
       .getBeers(this.beersParams)
-      .subscribe({
-        next: (beers: PagedList<Beer>) => {
-          this.loading = true;
-          this.beers = beers;
-          this.beers.items.forEach(beer => {
-            beer.imageUri = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
-          });
-          this.paginationData = this.getPaginationData(beers);
-          this.error = '';
-          this.loading = false;
-        },
-        error: error => {
-          this.error = 'An error occurred while loading the beers';
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: (beers: PagedList<Beer>) => {
+            this.beers = beers;
+            this.beers.items.forEach(beer => {
+              beer.imageUri = `${beer.imageUri}?timestamp=${new Date().getTime()}`;
+            });
+            this.paginationData = this.getPaginationData(beers);
+            this.error = '';
+          },
+          error: error => {
+            this.error = 'An error occurred while loading the beers';
 
-          if (error.error && error.error.errors) {
-            const errorMessage = this.getValidationErrorMessage(
-              error.error.errors
-            );
-            this.error += errorMessage;
+            if (error.error && error.error.errors) {
+              const errorMessage = this.getValidationErrorMessage(
+                error.error.errors
+              );
+              this.error += errorMessage;
+            }
+          },
+          complete: () => {
+            this.loading = false;
           }
-
-          this.loading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   scrollToTop(): void {
@@ -102,11 +109,7 @@ export class BeersTableComponent
   }
 
   ngOnDestroy(): void {
-    if (this.getBeersSubscription) {
-      this.getBeersSubscription.unsubscribe();
-    }
-    if (this.beersParamsSubscription) {
-      this.beersParamsSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

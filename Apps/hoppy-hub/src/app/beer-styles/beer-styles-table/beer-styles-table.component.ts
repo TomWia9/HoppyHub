@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { PagedList } from '../../shared/paged-list';
 import { Pagination } from '../../shared/pagination';
 import { BeerStylesService } from '../beer-styles.service';
@@ -37,8 +37,7 @@ export class BeerStylesTableComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   private beerStylesService: BeerStylesService = inject(BeerStylesService);
-  private beerStylesParamsSubscription!: Subscription;
-  private getBeerStylesSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   beerStylesParams = new BeerStylesParams({
     pageSize: 15,
@@ -51,39 +50,46 @@ export class BeerStylesTableComponent
 
   ngOnInit(): void {
     this.beerStylesService.paramsChanged.next(this.beerStylesParams);
-    this.beerStylesParamsSubscription =
-      this.beerStylesService.paramsChanged.subscribe(
-        (params: BeerStylesParams) => {
+    this.beerStylesService.paramsChanged
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((params: BeerStylesParams) => {
           this.beerStylesParams = params;
           this.getBeerStyles();
-        }
-      );
+        })
+      )
+      .subscribe();
   }
 
   private getBeerStyles(): void {
-    this.getBeerStylesSubscription = this.beerStylesService
+    this.loading = true;
+
+    this.beerStylesService
       .getBeerStyles(this.beerStylesParams)
-      .subscribe({
-        next: (beerStyles: PagedList<BeerStyle>) => {
-          this.loading = true;
-          this.beerStyles = beerStyles;
-          this.paginationData = this.getPaginationData(beerStyles);
-          this.error = '';
-          this.loading = false;
-        },
-        error: error => {
-          this.error = 'An error occurred while loading the beer styles';
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: (beerStyles: PagedList<BeerStyle>) => {
+            this.beerStyles = beerStyles;
+            this.paginationData = this.getPaginationData(beerStyles);
+            this.error = '';
+          },
+          error: error => {
+            this.error = 'An error occurred while loading the beer styles';
 
-          if (error.error && error.error.errors) {
-            const errorMessage = this.getValidationErrorMessage(
-              error.error.errors
-            );
-            this.error += errorMessage;
+            if (error.error && error.error.errors) {
+              const errorMessage = this.getValidationErrorMessage(
+                error.error.errors
+              );
+              this.error += errorMessage;
+            }
+          },
+          complete: () => {
+            this.loading = false;
           }
-
-          this.loading = false;
-        }
-      });
+        })
+      )
+      .subscribe();
   }
 
   scrollToTop(): void {
@@ -98,11 +104,7 @@ export class BeerStylesTableComponent
   }
 
   ngOnDestroy(): void {
-    if (this.beerStylesParamsSubscription) {
-      this.beerStylesParamsSubscription.unsubscribe();
-    }
-    if (this.getBeerStylesSubscription) {
-      this.getBeerStylesSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

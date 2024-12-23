@@ -3,14 +3,13 @@ import {
   EventEmitter,
   inject,
   Input,
-  OnDestroy,
   Output,
   OnChanges
 } from '@angular/core';
 import { OpinionsService } from '../../../opinions/opinions.service';
 import { OpinionsParams } from '../../../opinions/opinions-params';
 import { Opinion } from '../../../opinions/opinion.model';
-import { map, Subscription, take, tap } from 'rxjs';
+import { map, take, tap } from 'rxjs';
 import { Beer } from '../../beer.model';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +35,7 @@ import { ModalType } from '../../../shared/model-type';
   ],
   templateUrl: './beer-opinions.component.html'
 })
-export class BeerOpinionsComponent implements OnDestroy, OnChanges {
+export class BeerOpinionsComponent implements OnChanges {
   @Input({ required: true }) beer!: Beer;
   @Input({ required: true }) user!: AuthUser | null;
   @Output() opinionsCountChanged = new EventEmitter<void>();
@@ -44,7 +43,6 @@ export class BeerOpinionsComponent implements OnDestroy, OnChanges {
   private opinionsService: OpinionsService = inject(OpinionsService);
   private modalService: ModalService = inject(ModalService);
 
-  getUserOpinionsSubscription!: Subscription;
   existingOpinionloading = true;
   existingOpinion: Opinion | null = null;
 
@@ -87,7 +85,7 @@ export class BeerOpinionsComponent implements OnDestroy, OnChanges {
       this.existingOpinion = null;
       this.existingOpinionloading = false;
     } else {
-      this.getUserOpinionsSubscription = this.opinionsService
+      this.opinionsService
         .getOpinions(
           new OpinionsParams({
             pageSize: 1,
@@ -105,12 +103,6 @@ export class BeerOpinionsComponent implements OnDestroy, OnChanges {
           })
         )
         .subscribe();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.getUserOpinionsSubscription) {
-      this.getUserOpinionsSubscription.unsubscribe();
     }
   }
 }

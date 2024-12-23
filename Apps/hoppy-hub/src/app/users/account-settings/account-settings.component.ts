@@ -1,8 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 import { UsersService } from '../users.service';
-import { Subscription } from 'rxjs';
-import { AuthUser } from '../../auth/auth-user.model';
 import { User } from '../user.model';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
@@ -25,6 +23,7 @@ import {
 import { HttpErrorResponse } from '@angular/common/http';
 import { UpdateUserPasswordCommand } from '../commands/update-user-password-command.model';
 import { DeleteAccountModalComponent } from './delete-account-modal/delete-account-modal.component';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-account-settings',
@@ -43,10 +42,7 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   private usersService: UsersService = inject(UsersService);
   private modalService: ModalService = inject(ModalService);
   private alertService: AlertService = inject(AlertService);
-  private userSubscription!: Subscription;
-  private updateUsernameSubscription!: Subscription;
-  private updateUserPasswordSubscription!: Subscription;
-  private authUserSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   loading: boolean = true;
   error: string = '';
@@ -77,41 +73,53 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     const updateUsernameCommand = this.updateUsernameForm
       .value as UpdateUsernameCommand;
     updateUsernameCommand.userId = this.user!.id;
-    this.updateUsernameSubscription = this.usersService
+    this.usersService
       .UpdateUsername(this.user!.id, updateUsernameCommand)
-      .subscribe({
-        next: () => {
-          this.updateUsernameForm.reset();
-          this.alertService.openAlert(AlertType.Success, 'Username changed');
-          this.loading = false;
-          this.getUser();
-        },
-        error: error => {
-          this.handleError(error);
-        }
-      });
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: () => {
+            this.updateUsernameForm.reset();
+            this.alertService.openAlert(AlertType.Success, 'Username changed');
+            this.getUser();
+          },
+          error: error => {
+            this.handleError(error);
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        })
+      )
+      .subscribe();
   }
 
   changePassword(): void {
     const updateUserPasswordCommand = this.passwordForm
       .value as UpdateUserPasswordCommand;
     updateUserPasswordCommand.userId = this.user!.id;
-    this.updateUserPasswordSubscription = this.usersService
+    this.usersService
       .UpdateUserPassword(this.user!.id, updateUserPasswordCommand)
-      .subscribe({
-        next: () => {
-          this.alertService.openAlert(
-            AlertType.Success,
-            'The password has been changed, please log in again.'
-          );
-          this.loading = false;
-          this.passwordForm.reset();
-          this.authService.logout();
-        },
-        error: error => {
-          this.handleError(error);
-        }
-      });
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: () => {
+            this.alertService.openAlert(
+              AlertType.Success,
+              'The password has been changed, please log in again.'
+            );
+            this.passwordForm.reset();
+            this.authService.logout();
+          },
+          error: error => {
+            this.handleError(error);
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        })
+      )
+      .subscribe();
   }
 
   deleteAccount(): void {
@@ -125,32 +133,35 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
   }
 
   private getUser(): void {
-    this.authUserSubscription = this.authService.user.subscribe(
-      (user: AuthUser | null) => {
-        if (!user) {
-          this.modalService.openModal(new ModalModel(ModalType.Login));
-        } else {
-          this.userSubscription = this.usersService
-            .getUserById(user?.id as string)
-            .subscribe({
-              next: (user: User) => {
-                this.user = user;
-                this.updateUsernameForm.controls['userName'].setValue(
-                  this.user?.username
-                );
-                this.error = '';
-                this.loading = false;
-              },
-              error: () => {
-                this.error = 'An error occurred while loading the user';
-                this.loading = false;
-              }
-            });
-        }
-
-        this.loading = false;
-      }
-    );
+    this.authService.user
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(user => {
+          if (!user) {
+            this.modalService.openModal(new ModalModel(ModalType.Login));
+            return '';
+          } else {
+            return this.usersService.getUserById(user?.id as string).pipe(
+              tap({
+                next: user => {
+                  this.user = user;
+                  this.updateUsernameForm.controls['userName'].setValue(
+                    user?.username
+                  );
+                  this.error = '';
+                },
+                error: () => {
+                  this.error = 'An error occurred while loading the user';
+                },
+                complete: () => {
+                  this.loading = false;
+                }
+              })
+            );
+          }
+        })
+      )
+      .subscribe();
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -169,22 +180,10 @@ export class AccountSettingsComponent implements OnInit, OnDestroy {
     } else {
       this.alertService.openAlert(AlertType.Error, errorMessage);
     }
-
-    this.loading = false;
   }
 
   ngOnDestroy(): void {
-    if (this.authUserSubscription) {
-      this.authUserSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-    if (this.updateUsernameSubscription) {
-      this.updateUsernameSubscription.unsubscribe();
-    }
-    if (this.updateUserPasswordSubscription) {
-      this.updateUserPasswordSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

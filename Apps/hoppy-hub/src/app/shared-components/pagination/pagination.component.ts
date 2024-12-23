@@ -74,7 +74,6 @@ export class PaginationComponent implements OnInit {
       this.breweriesService.paramsChanged.next(this.params);
     }
     if (this.params instanceof BeerStylesParams) {
-      console.log(this.params);
       this.beerStylesService.paramsChanged.next(this.params);
     }
     if (this.params instanceof OpinionsParams) {

@@ -38,7 +38,6 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
   breweriesFiltersForm!: FormGroup;
   breweries: Brewery[] = [];
   error = '';
-  getBreweriesSubscription!: Subscription;
   modalOppenedSubscription!: Subscription;
   sortOptions = BreweriesParams.sortOptions;
   currentYear = new Date().getFullYear();
@@ -119,8 +118,8 @@ export class BreweriesFiltersModalComponent implements OnInit, OnDestroy {
           )
         ]
       ),
-      sortBy: new FormControl(''),
-      sortDirection: new FormControl('')
+      sortBy: new FormControl(0),
+      sortDirection: new FormControl(0)
     });
   }
 }

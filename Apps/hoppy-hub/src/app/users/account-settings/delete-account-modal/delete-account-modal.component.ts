@@ -7,7 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { UsersService } from '../../users.service';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from '../../../services/modal.service';
 import {
   AlertService,
@@ -46,8 +46,7 @@ export class DeleteAccountModalComponent implements OnInit, OnDestroy {
   private usersService = inject(UsersService);
   private alertService: AlertService = inject(AlertService);
   private authService: AuthService = inject(AuthService);
-  private modalOppenedSubscription!: Subscription;
-  private deleteAccountSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   passwordForm!: FormGroup;
   loading = true;
@@ -55,14 +54,17 @@ export class DeleteAccountModalComponent implements OnInit, OnDestroy {
   error = '';
 
   ngOnInit(): void {
-    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.loading = true;
-        this.userId = modalModel.modalData['userId'] as string;
-        this.onShowModal(modalModel);
-        this.loading = false;
-      }
-    );
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.loading = true;
+          this.userId = modalModel.modalData['userId'] as string;
+          this.onShowModal(modalModel);
+          this.loading = false;
+        })
+      )
+      .subscribe();
 
     this.passwordForm = new FormGroup({
       password: new FormControl('', [Validators.required])
@@ -78,17 +80,24 @@ export class DeleteAccountModalComponent implements OnInit, OnDestroy {
   onDelete(): void {
     const deleteUserCommand = this.passwordForm.value as DeleteUserCommand;
     deleteUserCommand.userId = this.userId;
-    this.usersService.DeleteAccount(this.userId, deleteUserCommand).subscribe({
-      next: () => {
-        this.alertService.openAlert(AlertType.Success, 'Account deleted');
-        this.authService.logout();
-        this.passwordForm.reset();
-      },
-      error: error => {
-        this.handleError(error);
-        this.passwordForm.reset();
-      }
-    });
+    this.usersService
+      .DeleteAccount(this.userId, deleteUserCommand)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: () => {
+            this.alertService.openAlert(AlertType.Success, 'Account deleted');
+            this.authService.logout();
+          },
+          error: error => {
+            this.handleError(error);
+          },
+          complete: () => {
+            this.passwordForm.reset();
+          }
+        })
+      )
+      .subscribe();
     this.onModalHide();
   }
 
@@ -119,11 +128,7 @@ export class DeleteAccountModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.modalOppenedSubscription) {
-      this.modalOppenedSubscription.unsubscribe();
-    }
-    if (this.deleteAccountSubscription) {
-      this.deleteAccountSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

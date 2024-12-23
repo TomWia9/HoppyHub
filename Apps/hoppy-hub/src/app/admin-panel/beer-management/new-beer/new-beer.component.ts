@@ -182,10 +182,11 @@ export class NewBeerComponent implements OnInit, OnDestroy {
           next: styles => {
             this.beerStyles = styles;
             this.error = '';
-            this.beerStylesLoading = false;
           },
           error: () => {
             this.error = 'An error occurred while loading the beer styles';
+          },
+          complete: () => {
             this.beerStylesLoading = false;
           }
         })
@@ -225,6 +226,9 @@ export class NewBeerComponent implements OnInit, OnDestroy {
           },
           error: () => {
             this.error = 'An error occurred while loading the breweries';
+            this.breweriesLoading = false;
+          },
+          complete: () => {
             this.breweriesLoading = false;
           }
         })

@@ -63,12 +63,12 @@
     <app-favorite
       [beer]="beer"
       [user]="user"
-      (favoritesCountChanged)="getBeer()"
+      (favoritesCountChanged)="refreshBeer()"
       >></app-favorite
     >
     <app-beer-opinions
       [beer]="beer"
       [user]="user"
-      (opinionsCountChanged)="getBeer()"></app-beer-opinions>
+      (opinionsCountChanged)="refreshBeer()"></app-beer-opinions>
   </div>
 }
