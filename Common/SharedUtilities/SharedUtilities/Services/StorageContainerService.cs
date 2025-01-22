@@ -33,6 +33,7 @@ public class StorageContainerService : IStorageContainerService
 
         var blobServiceClient = new BlobServiceClient(storageAccountConnectionString);
         _blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+        _blobContainerClient.CreateIfNotExists();
     }
 
     /// <summary>
