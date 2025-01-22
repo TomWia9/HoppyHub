@@ -144,10 +144,10 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       operations.push(
         this.beersService.upsertBeerImage(this.beer.id, upsertBeerImageCommand)
       );
+      this.selectedImage = null;
     }
 
     if (this.removeImage) {
-      console.log('operation: DeleteBeerImage');
       operations.push(this.beersService.deleteBeerImage(this.beer.id));
       this.removeImage = false;
     }
