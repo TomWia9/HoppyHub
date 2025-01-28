@@ -60,7 +60,7 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
 
   onDelete(): void {
     this.opinionsService
-      .DeleteOpinion(this.opinionId)
+      .deleteOpinion(this.opinionId)
       .pipe(
         takeUntil(this.destroy$),
         tap({

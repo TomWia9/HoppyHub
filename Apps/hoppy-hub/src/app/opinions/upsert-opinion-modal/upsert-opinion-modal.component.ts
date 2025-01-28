@@ -113,7 +113,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
         upsertOpinionCommand.deleteImage =
           !this.selectedImage && !this.showImage ? true : false;
         this.opinionsService
-          .UpdateOpinion(this.existingOpinion.id, upsertOpinionCommand)
+          .updateOpinion(this.existingOpinion.id, upsertOpinionCommand)
           .pipe(
             takeUntil(this.destroy$),
             tap({
@@ -137,7 +137,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
           .subscribe();
       } else {
         this.opinionsService
-          .CreateOpinion(upsertOpinionCommand)
+          .createOpinion(upsertOpinionCommand)
           .pipe(
             takeUntil(this.destroy$),
             tap({
