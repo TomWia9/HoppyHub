@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
 import { BreweriesParams } from './breweries-params';
+import { UpsertBreweryCommand } from './upsert-brewery-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,5 +53,30 @@ export class BreweriesService {
           );
         })
       );
+  }
+
+  createBrewery(
+    upsertBreweryCommand: UpsertBreweryCommand
+  ): Observable<Brewery> {
+    return this.http.post<Brewery>(
+      `${environment.beerManagementApiUrl}/breweries`,
+      upsertBreweryCommand
+    );
+  }
+
+  updateBrewery(
+    breweryId: string,
+    upsertBreweryCommand: UpsertBreweryCommand
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${environment.beerManagementApiUrl}/breweries/${breweryId}`,
+      upsertBreweryCommand
+    );
+  }
+
+  deleteBrewery(breweryId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.beerManagementApiUrl}/breweries/${breweryId}`
+    );
   }
 }
