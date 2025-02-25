@@ -6,5 +6,6 @@ export enum ModalType {
   UpsertOpinion,
   DeleteOpinion,
   DeleteAccount,
-  DeleteBeer
+  DeleteBeer,
+  DeleteBrewery
 }

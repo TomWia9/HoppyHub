@@ -4,7 +4,7 @@
   <app-error-message [message]="error"></app-error-message>
 } @else {
   <app-delete-brewery-modal
-    (beerDeleted)="breweryDeleted()"></app-delete-brewery-modal>
+    (breweryDeleted)="breweryDeleted()"></app-delete-brewery-modal>
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <form [formGroup]="breweryForm" (ngSubmit)="onFormSave()">
       <div class="my-2 grid place-items-center gap-4">

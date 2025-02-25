@@ -17,8 +17,8 @@ import {
   AlertService,
   AlertType
 } from '../../../shared-components/alert/alert.service';
-// import { ModalModel } from '../../../shared/modal-model';
-// import { ModalType } from '../../../shared/model-type';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 import { DeleteBreweryModalComponent } from '../delete-brewery-modal/delete-brewery-modal.component';
@@ -46,18 +46,17 @@ export class EditBreweryComponent implements OnInit, OnDestroy {
   error = '';
   loading = true;
   breweryForm!: FormGroup;
-  // faX = faX;
 
   ngOnInit(): void {
     this.getBrewery();
   }
 
   onBreweryDelete(): void {
-    // this.modalService.openModal(
-    //   new ModalModel(ModalType.DeleteBrewery, {
-    //     breweryId: this.brewery.id
-    //   })
-    // );
+    this.modalService.openModal(
+      new ModalModel(ModalType.DeleteBrewery, {
+        breweryId: this.brewery.id
+      })
+    );
   }
 
   onFormSave(): void {
