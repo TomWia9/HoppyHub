@@ -84,32 +84,18 @@ export class BeerStyleDetailsComponent
               }
             })
           )
-        )
-      )
-      .subscribe();
+        ),
+        switchMap(beerStyle => {
+          this.beersParams.beerStyleId = beerStyle.id;
 
-    this.beersService.paramsChanged
-      .pipe(
-        takeUntil(this.destroy$),
-        tap(params => (this.beersParams = params)),
-        tap(() => (this.beerStyleBeersLoading = true)),
-        switchMap(params =>
-          this.beersService.getBeers(params).pipe(
-            tap({
-              next: (beers: PagedList<Beer>) => {
-                this.beers = beers;
-                this.paginationData = this.getPaginationData(beers);
-                this.error = '';
-              },
-              error: () => {
-                this.error = 'An error occurred while loading the beers';
-              },
-              complete: () => {
-                this.beerStyleBeersLoading = false;
-              }
+          return this.beersService.paramsChanged.pipe(
+            tap((params: BeersParams) => {
+              this.beersParams = params;
+              this.beersParams.beerStyleId = beerStyle.id;
+              this.getBeerStyleBeers();
             })
-          )
-        )
+          );
+        })
       )
       .subscribe();
   }
@@ -128,11 +114,32 @@ export class BeerStyleDetailsComponent
     }
   }
 
+  private getBeerStyleBeers(): void {
+    this.beersService
+      .getBeers(this.beersParams)
+      .pipe(
+        tap({
+          next: (beers: PagedList<Beer>) => {
+            this.beers = beers;
+            this.paginationData = this.getPaginationData(beers);
+            this.error = '';
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the beers';
+          },
+          complete: () => {
+            this.beerStyleBeersLoading = false;
+          }
+        })
+      )
+      .subscribe();
+  }
+
   private refreshBeerStyleBeers(beerStyleId: string): void {
     this.beersParams.beerStyleId = beerStyleId;
     this.beersParams.pageNumber = 1;
     this.beersParams.searchQuery = '';
-    this.beersParams.sortBy = 'ReleaseDate';
+    this.beersParams.sortBy = 'opinionsCount';
     this.beersParams.sortDirection = 1;
     this.beersService.paramsChanged.next(this.beersParams);
   }
