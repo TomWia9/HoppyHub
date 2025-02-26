@@ -55,7 +55,6 @@ export class BreweriesTableComponent
   }
 
   private getBreweries(): void {
-    this.loading = true;
     this.breweriesService
       .getBreweries(this.breweriesParams)
       .pipe(

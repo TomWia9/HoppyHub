@@ -62,8 +62,6 @@ export class BeerStylesTableComponent
   }
 
   private getBeerStyles(): void {
-    this.loading = true;
-
     this.beerStylesService
       .getBeerStyles(this.beerStylesParams)
       .pipe(

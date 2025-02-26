@@ -73,7 +73,6 @@ export class UserOpinionsComponent
           this.opinionsParams = params;
           this.opinionsParams.userId = this.user.id;
         }),
-        tap(() => (this.loading = true)),
         switchMap(() =>
           this.opinionsService.getOpinions(this.opinionsParams).pipe(
             switchMap((opinions: PagedList<Opinion>) => {
