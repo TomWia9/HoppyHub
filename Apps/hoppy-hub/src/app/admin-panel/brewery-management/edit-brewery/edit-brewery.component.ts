@@ -114,8 +114,8 @@ export class EditBreweryComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         map(params => params.get('id')),
-        switchMap(beerId =>
-          this.breweriesService.getBreweryById(beerId as string).pipe(
+        switchMap(breweryId =>
+          this.breweriesService.getBreweryById(breweryId as string).pipe(
             tap({
               next: (brewery: Brewery) => {
                 this.brewery = brewery;
