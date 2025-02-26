@@ -66,7 +66,6 @@ export class UserFavoritesComponent
           this.favoriteBeersParams = params;
           this.favoriteBeersParams.userId = this.user.id;
         }),
-        tap(() => (this.loading = true)),
         switchMap(() =>
           this.favoritesService.getFavorites(this.favoriteBeersParams).pipe(
             switchMap((favoriteBeers: PagedList<Beer>) => {
