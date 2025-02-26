@@ -57,7 +57,7 @@ export class BeerStylesService {
     upsertBeerStyleCommand: UpsertBeerStyleCommand
   ): Observable<BeerStyle> {
     return this.http.post<BeerStyle>(
-      `${environment.beerManagementApiUrl}/beer-styles`,
+      `${environment.beerManagementApiUrl}/beerstyles`,
       upsertBeerStyleCommand
     );
   }
@@ -67,14 +67,14 @@ export class BeerStylesService {
     upsertBeerStyleCommand: UpsertBeerStyleCommand
   ): Observable<void> {
     return this.http.put<void>(
-      `${environment.beerManagementApiUrl}/beer-styles/${beerStyleId}`,
+      `${environment.beerManagementApiUrl}/beerstyles/${beerStyleId}`,
       upsertBeerStyleCommand
     );
   }
 
   deleteBeerStyle(beerStyleId: string): Observable<void> {
     return this.http.delete<void>(
-      `${environment.beerManagementApiUrl}/beer-styles/${beerStyleId}`
+      `${environment.beerManagementApiUrl}/beerstyles/${beerStyleId}`
     );
   }
 }
