@@ -1,1 +1,21 @@
-<p>beer-style-management works!</p>
+<section class="grid grid-cols-1 gap-x-20 text-center xl:grid-cols-2">
+  <div class="order-last my-4 xl:order-first">
+    <app-beer-styles-table></app-beer-styles-table>
+  </div>
+  <div class="order-first my-4 xl:order-last">
+    <a
+      type="button"
+      class="btn btn-outline btn-success mb-4 min-w-60"
+      routerLink="new">
+      Add new beer style
+    </a>
+    @if (!beerStyleSelected && !newBeerStyle) {
+      <div role="alert" class="alert bg-neutral">
+        <fa-icon [icon]="faInfoCircle"></fa-icon>
+        <span>Select beer style to manage.</span>
+      </div>
+    }
+
+    <router-outlet></router-outlet>
+  </div>
+</section>
