@@ -56,7 +56,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
               'An error occurred while loading the user favorites count';
           },
           complete: () => {
-            console.log('complete');
             this.loading = false;
           }
         })
@@ -78,7 +77,6 @@ export class UserInfoComponent implements OnInit, OnDestroy {
               'An error occurred while loading the user beers rated count';
           },
           complete: () => {
-            console.log('complete');
             this.loading = false;
           }
         })
