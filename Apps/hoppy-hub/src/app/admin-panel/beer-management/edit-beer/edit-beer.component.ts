@@ -321,7 +321,7 @@ export class EditBeerComponent implements OnInit, OnDestroy {
         Validators.minLength(2)
       ]),
       description: new FormControl(beer.description, Validators.maxLength(500)),
-      beerStyleId: new FormControl(beer.beerStyle.id, Validators.required),
+      beerStyleId: new FormControl(beer.beerStyle?.id, Validators.required),
       breweryId: new FormControl(beer.brewery.id, Validators.required),
       releaseDate: new FormControl(beer.releaseDate, Validators.required),
       alcoholByVolume: new FormControl(beer.alcoholByVolume, [
