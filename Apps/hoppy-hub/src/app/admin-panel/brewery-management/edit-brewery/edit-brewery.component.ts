@@ -157,7 +157,7 @@ export class EditBreweryComponent implements OnInit, OnDestroy {
     this.breweryForm = new FormGroup({
       name: new FormControl(brewery.name, [
         Validators.required,
-        Validators.minLength(500)
+        Validators.maxLength(500)
       ]),
       description: new FormControl(
         brewery.description,
