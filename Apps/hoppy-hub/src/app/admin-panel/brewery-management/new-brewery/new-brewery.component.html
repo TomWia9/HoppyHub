@@ -1,0 +1,131 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <form [formGroup]="newBreweryForm" (ngSubmit)="onFormSave()">
+      <div class="my-2 grid place-items-center gap-4">
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Name</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_name"
+            formControlName="name"
+            class="input input-bordered input-primary" />
+        </label>
+
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Description</span>
+          </div>
+          <textarea
+            type="text"
+            id="new_brewery_description"
+            formControlName="description"
+            class="textarea textarea-bordered textarea-primary"></textarea>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2">
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Foundation Year</span>
+          </div>
+          <input
+            type="number"
+            id="new_brewery_foundation_year"
+            formControlName="foundationYear"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control col-span-2">
+          <div class="label">
+            <span class="label-text">Website URL</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_website_url"
+            formControlName="websiteUrl"
+            class="input input-bordered input-primary" />
+        </label>
+      </div>
+
+      <div class="divider"></div>
+      <p class="text-left">Brewery Address:</p>
+
+      <div class="my-2 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Country</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_country"
+            formControlName="country"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">State</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_state"
+            formControlName="state"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">City</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_city"
+            formControlName="city"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Postcode</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_postcode"
+            formControlName="postcode"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Street</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_street"
+            formControlName="street"
+            class="input input-bordered input-primary" />
+        </label>
+        <label class="form-control">
+          <div class="label">
+            <span class="label-text">Number</span>
+          </div>
+          <input
+            type="text"
+            id="new_brewery_number"
+            formControlName="number"
+            class="input input-bordered input-primary" />
+        </label>
+      </div>
+
+      <div class="divider"></div>
+
+      <button
+        type="submit"
+        class="btn btn-outline btn-success w-full"
+        [disabled]="newBreweryForm.pristine">
+        Save brewery
+      </button>
+    </form>
+  </div>
+}

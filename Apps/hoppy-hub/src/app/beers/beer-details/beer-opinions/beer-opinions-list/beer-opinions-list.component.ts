@@ -64,32 +64,6 @@ export class BeerOpinionsListComponent
     this.opinionsService.paramsChanged.next(this.opinionsParams);
   }
 
-  onSort(): void {
-    this.opinionsParams.pageNumber = 1;
-    this.opinionsParams.sortBy =
-      this.sortOptions[this.selectedSortOptionIndex].value;
-    this.opinionsParams.sortDirection =
-      this.sortOptions[this.selectedSortOptionIndex].direction;
-    this.opinionsService.paramsChanged.next(this.opinionsParams);
-  }
-
-  onFiltersClear(): void {
-    this.selectedSortOptionIndex = 0;
-    this.opinionsParams = new OpinionsParams({
-      pageSize: 10,
-      pageNumber: 1,
-      sortBy: 'created',
-      sortDirection: 1
-    });
-
-    if (
-      JSON.stringify(this.opinionsService.paramsChanged.value) !=
-      JSON.stringify(this.opinionsParams)
-    ) {
-      this.opinionsService.paramsChanged.next(this.opinionsParams);
-    }
-  }
-
   toggleOpinions(): void {
     if (this.showOpinions) {
       window.scrollTo({ top: 0, behavior: 'smooth' });

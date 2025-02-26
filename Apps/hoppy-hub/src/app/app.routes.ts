@@ -14,8 +14,11 @@ import { AdminPanelComponent } from './admin-panel/admin-panel.component';
 import { authGuard } from './auth/auth-guard';
 import { BeerManagementComponent } from './admin-panel/beer-management/beer-management.component';
 import { Roles } from './auth/roles';
-import { BeerEditComponent } from './admin-panel/beer-management/beer-edit/beer-edit.component';
 import { NewBeerComponent } from './admin-panel/beer-management/new-beer/new-beer.component';
+import { EditBeerComponent } from './admin-panel/beer-management/edit-beer/edit-beer.component';
+import { BreweryManagementComponent } from './admin-panel/brewery-management/brewery-management.component';
+import { NewBreweryComponent } from './admin-panel/brewery-management/new-brewery/new-brewery.component';
+import { EditBreweryComponent } from './admin-panel/brewery-management/edit-brewery/edit-brewery.component';
 
 export const routes: Routes = [
   {
@@ -57,7 +60,15 @@ export const routes: Routes = [
         component: BeerManagementComponent,
         children: [
           { path: 'new', component: NewBeerComponent },
-          { path: ':id', component: BeerEditComponent }
+          { path: ':id', component: EditBeerComponent }
+        ]
+      },
+      {
+        path: 'brewery-management',
+        component: BreweryManagementComponent,
+        children: [
+          { path: 'new', component: NewBreweryComponent },
+          { path: ':id', component: EditBreweryComponent }
         ]
       }
     ]

@@ -52,7 +52,7 @@ import { ModalType } from '../../../shared/model-type';
 import { BeersParams } from '../../../beers/beers-params';
 
 @Component({
-  selector: 'app-beer-edit',
+  selector: 'app-edit-beer',
   standalone: true,
   imports: [
     LoadingSpinnerComponent,
@@ -63,9 +63,9 @@ import { BeersParams } from '../../../beers/beers-params';
     FontAwesomeModule,
     DeleteBeerModalComponent
   ],
-  templateUrl: './beer-edit.component.html'
+  templateUrl: './edit-beer.component.html'
 })
-export class BeerEditComponent implements OnInit, OnDestroy {
+export class EditBeerComponent implements OnInit, OnDestroy {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   private route: ActivatedRoute = inject(ActivatedRoute);
@@ -144,10 +144,10 @@ export class BeerEditComponent implements OnInit, OnDestroy {
       operations.push(
         this.beersService.upsertBeerImage(this.beer.id, upsertBeerImageCommand)
       );
+      this.selectedImage = null;
     }
 
     if (this.removeImage) {
-      console.log('operation: DeleteBeerImage');
       operations.push(this.beersService.deleteBeerImage(this.beer.id));
       this.removeImage = false;
     }

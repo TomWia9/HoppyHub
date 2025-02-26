@@ -8,35 +8,35 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { ModalService } from '../../services/modal.service';
+import { BreweriesService } from '../../../breweries/breweries.service';
+import { Subject, takeUntil, tap, finalize } from 'rxjs';
+import { ModalService } from '../../../services/modal.service';
 import {
   AlertService,
   AlertType
-} from '../../shared-components/alert/alert.service';
-import { OpinionsService } from '../opinions.service';
-import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
-import { ModalModel } from '../../shared/modal-model';
-import { ModalType } from '../../shared/model-type';
-import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
-import { Subject, takeUntil, tap } from 'rxjs';
+} from '../../../shared-components/alert/alert.service';
+import { ModalModel } from '../../../shared/modal-model';
+import { ModalType } from '../../../shared/model-type';
+import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
+import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
 
 @Component({
-  selector: 'app-delete-opinion-modal',
+  selector: 'app-delete-brewery-modal',
   standalone: true,
-  imports: [ErrorMessageComponent, LoadingSpinnerComponent],
-  templateUrl: './delete-opinion-modal.component.html'
+  imports: [LoadingSpinnerComponent, ErrorMessageComponent],
+  templateUrl: './delete-brewery-modal.component.html'
 })
-export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
-  @Output() opinionDeleted = new EventEmitter<void>();
-  @ViewChild('deleteOpinionModal') modalRef!: ElementRef;
+export class DeleteBreweryModalComponent implements OnInit, OnDestroy {
+  @Output() breweryDeleted = new EventEmitter<void>();
+  @ViewChild('deleteBreweryModal') modalRef!: ElementRef;
 
   private modalService = inject(ModalService);
-  private opinionsService = inject(OpinionsService);
+  private breweriesService = inject(BreweriesService);
   private alertService: AlertService = inject(AlertService);
   private destroy$ = new Subject<void>();
 
   loading = true;
-  opinionId!: string;
+  brewreyId!: string;
   error = '';
 
   ngOnInit(): void {
@@ -44,7 +44,8 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         tap((modalModel: ModalModel) => {
-          this.opinionId = modalModel.modalData['opinionId'] as string;
+          this.loading = true;
+          this.brewreyId = modalModel.modalData['breweryId'] as string;
           this.onShowModal(modalModel);
           this.loading = false;
         })
@@ -59,14 +60,14 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.opinionsService
-      .deleteOpinion(this.opinionId)
+    this.breweriesService
+      .deleteBrewery(this.brewreyId)
       .pipe(
         takeUntil(this.destroy$),
         tap({
           next: () => {
-            this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
-            this.opinionDeleted.emit();
+            this.alertService.openAlert(AlertType.Success, 'Brewery deleted');
+            this.breweryDeleted.emit();
           },
           error: error => {
             let errorMessage = null;
@@ -86,15 +87,15 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
               this.alertService.openAlert(AlertType.Error, errorMessage);
             }
           }
-        })
+        }),
+        finalize(() => this.onModalHide())
       )
       .subscribe();
-
     this.onModalHide();
   }
 
   private onShowModal(modalModel: ModalModel): void {
-    if (modalModel.modalType === ModalType.DeleteOpinion && this.modalRef) {
+    if (modalModel.modalType === ModalType.DeleteBrewery && this.modalRef) {
       (this.modalRef.nativeElement as HTMLDialogElement).showModal();
     }
   }
