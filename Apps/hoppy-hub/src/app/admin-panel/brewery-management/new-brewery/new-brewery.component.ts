@@ -109,7 +109,7 @@ export class NewBreweryComponent implements OnInit, OnDestroy {
     this.newBreweryForm = new FormGroup({
       name: new FormControl('', [
         Validators.required,
-        Validators.minLength(500)
+        Validators.maxLength(500)
       ]),
       description: new FormControl('', Validators.maxLength(5000)),
       foundationYear: new FormControl(

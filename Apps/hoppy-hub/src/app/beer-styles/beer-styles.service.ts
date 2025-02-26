@@ -6,6 +6,7 @@ import { PagedList } from '../shared/paged-list';
 import { Pagination } from '../shared/pagination';
 import { BeerStylesParams } from './beer-styles-params';
 import { BeerStyle } from './beer-style.model';
+import { UpsertBeerStyleCommand } from './upsert-beer-style-command.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,31 @@ export class BeerStylesService {
   getBeerStyleById(id: string): Observable<BeerStyle> {
     return this.http.get<BeerStyle>(
       `${environment.beerManagementApiUrl}/beerstyles/${id}`
+    );
+  }
+
+  createBeerStyle(
+    upsertBeerStyleCommand: UpsertBeerStyleCommand
+  ): Observable<BeerStyle> {
+    return this.http.post<BeerStyle>(
+      `${environment.beerManagementApiUrl}/beerstyles`,
+      upsertBeerStyleCommand
+    );
+  }
+
+  updateBeerStyle(
+    beerStyleId: string,
+    upsertBeerStyleCommand: UpsertBeerStyleCommand
+  ): Observable<void> {
+    return this.http.put<void>(
+      `${environment.beerManagementApiUrl}/beerstyles/${beerStyleId}`,
+      upsertBeerStyleCommand
+    );
+  }
+
+  deleteBeerStyle(beerStyleId: string): Observable<void> {
+    return this.http.delete<void>(
+      `${environment.beerManagementApiUrl}/beerstyles/${beerStyleId}`
     );
   }
 }

@@ -10,11 +10,15 @@
       </div>
       <div>
         <h1 class="mb-2 text-xl font-bold sm:text-3xl">{{ beer.name }}</h1>
-        <a
-          class="link-hover link link-accent"
-          [routerLink]="['/beer-styles', beer.beerStyle.id]"
-          >({{ beer.beerStyle.name }})</a
-        >
+        @if (beer.beerStyle) {
+          <a
+            class="link-hover link link-accent"
+            [routerLink]="['/beer-styles', beer.beerStyle.id]"
+            >({{ beer.beerStyle.name }})</a
+          >
+        } @else {
+          <p>({{ 'Beer style undefined' }})</p>
+        }
         <p class="my-4">{{ beer.description }}</p>
       </div>
     </div>

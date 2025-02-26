@@ -11,7 +11,7 @@ export class Beer {
     public composition: string,
     public blg: number,
     public rating: number,
-    public beerStyle: BeerStyle,
+    public beerStyle: BeerStyle | undefined,
     public ibu: number,
     public releaseDate: Date,
     public imageUri: string,

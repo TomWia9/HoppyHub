@@ -90,8 +90,8 @@
               id="edit_beer_beer_style"
               formControlName="beerStyleId"
               class="select select-bordered select-primary">
-              <option [value]="beer.beerStyle.id" selected class="font-bold">
-                {{ beer.beerStyle.name }}
+              <option [value]="beer.beerStyle?.id" selected class="font-bold">
+                {{ beer.beerStyle?.name }}
               </option>
               @for (beerStyle of beerStyles; track $index) {
                 <option [value]="beerStyle.id">{{ beerStyle.name }}</option>
