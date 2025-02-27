@@ -4,9 +4,9 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  @if (opinionBeerPairs && opinionBeerPairs.length > 0) {
-    @for (pair of opinionBeerPairs; track $index) {
-      <app-opinion [beer]="pair.beer" [opinion]="pair.opinion"></app-opinion>
+  @if (opinions && opinions.length > 0) {
+    @for (opinion of opinions; track $index) {
+      <app-opinion [opinion]="opinion"></app-opinion>
     }
   }
 }
