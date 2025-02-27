@@ -5,8 +5,10 @@
   <app-error-message [message]="error"></app-error-message>
 } @else {
   @if (opinions && opinions.length > 0) {
-    @for (opinion of opinions; track $index) {
-      <app-opinion [opinion]="opinion"></app-opinion>
-    }
+    <div>
+      @for (opinion of opinions; track $index) {
+        <app-opinion [opinion]="opinion"></app-opinion>
+      }
+    </div>
   }
 }
