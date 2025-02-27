@@ -36,7 +36,7 @@ export class BeerOpinionsListComponent
   implements OnChanges, OnDestroy
 {
   @Input({ required: true }) beer!: Beer;
-  @ViewChild('#showOpinionsButton') showOpinionsButton!: ElementRef;
+  @ViewChild('showOpinionsButton') showOpinionsButton!: ElementRef;
   private opinionsService: OpinionsService = inject(OpinionsService);
   private destroy$ = new Subject<void>();
 

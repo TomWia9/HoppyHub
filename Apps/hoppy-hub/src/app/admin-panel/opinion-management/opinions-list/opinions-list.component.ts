@@ -18,6 +18,8 @@ import { Pagination } from '../../../shared/pagination';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
+import { DeleteOpinionModalComponent } from '../../../opinions/delete-opinion-modal/delete-opinion-modal.component';
+import { UpsertOpinionModalComponent } from '../../../opinions/upsert-opinion-modal/upsert-opinion-modal.component';
 
 @Component({
   selector: 'app-opinions-list',
@@ -26,7 +28,9 @@ import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
     OpinionsListFiltersComponent,
     LoadingSpinnerComponent,
     PaginationComponent,
-    OpinionComponent
+    OpinionComponent,
+    DeleteOpinionModalComponent,
+    UpsertOpinionModalComponent
   ],
   templateUrl: './opinions-list.component.html'
 })
@@ -34,7 +38,7 @@ export class OpinionsListComponent
   extends DataHelper
   implements OnInit, OnChanges, OnDestroy
 {
-  @ViewChild('#topOfList') topOfList!: ElementRef;
+  @ViewChild('topOfList') topOfList!: ElementRef;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
   private destroy$ = new Subject<void>();
@@ -87,7 +91,6 @@ export class OpinionsListComponent
         takeUntil(this.destroy$),
         tap({
           next: (opinions: PagedList<Opinion>) => {
-            this.opinionsLoading = true;
             this.opinions = opinions;
             this.paginationData = this.getPaginationData(opinions);
             this.error = '';
