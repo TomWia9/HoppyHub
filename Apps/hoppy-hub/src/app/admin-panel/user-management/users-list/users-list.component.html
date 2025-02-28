@@ -1,9 +1,9 @@
 @if (loading) {
   <app-loading-spinner></app-loading-spinner>
 } @else {
-  <!-- <app-users-list-filters
-      [params]="usersParams"
-      [paginationData]="paginationData"></app-users-list-filters> -->
+  <app-users-list-filters
+    [params]="usersParams"
+    [paginationData]="paginationData"></app-users-list-filters>
   @if (error) {
     <app-error-message [message]="error"></app-error-message>
   } @else {
