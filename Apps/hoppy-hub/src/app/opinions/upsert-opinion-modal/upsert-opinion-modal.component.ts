@@ -209,7 +209,7 @@ export class UpsertOpinionModalComponent implements OnInit, OnDestroy {
         this.existingOpinion?.rating,
         Validators.required
       ),
-      comment: new FormControl(this.existingOpinion?.comment, {
+      comment: new FormControl(this.existingOpinion?.comment ?? '', {
         nonNullable: true,
         validators: [Validators.maxLength(1000)]
       })
