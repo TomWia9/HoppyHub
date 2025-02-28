@@ -1,1 +1,15 @@
-<p>user-management works!</p>
+<section class="grid grid-cols-1 gap-x-20 text-center xl:grid-cols-2">
+  <div class="order-last my-4 xl:order-first">
+    <app-users-list></app-users-list>
+  </div>
+  <div class="order-first my-4 xl:order-last">
+    @if (!userSelected) {
+      <div role="alert" class="alert bg-neutral">
+        <fa-icon [icon]="faInfoCircle"></fa-icon>
+        <span>Select user to manage.</span>
+      </div>
+    }
+
+    <router-outlet></router-outlet>
+  </div>
+</section>
