@@ -77,13 +77,9 @@ export class OpinionsListFiltersComponent {
       this.opinionsService.paramsChanged.value.searchQuery !==
       this.searchForm.value.search
     ) {
-      this.opinionsParams = new OpinionsParams({
-        pageSize: 10,
-        pageNumber: 1,
-        sortBy: 'created',
-        sortDirection: 1,
-        searchQuery: this.searchForm.value.search
-      });
+      this.opinionsParams.searchQuery = this.searchForm.value.search;
+      this.opinionsParams.pageSize = 10;
+      this.opinionsParams.pageNumber = 1;
       this.opinionsService.paramsChanged.next(this.opinionsParams);
     }
   }
@@ -92,6 +88,7 @@ export class OpinionsListFiltersComponent {
     this.searchForm.reset();
     this.onlyOpinionsWithImages = false;
     this.onlyOpinionsWithComments = false;
+    this.selectedSortOptionIndex = 0;
     this.opinionsParams = new OpinionsParams({
       pageSize: 10,
       pageNumber: 1,
