@@ -22,26 +22,30 @@
   </div>
 
   <div class="form-control">
-    <label class="label flex cursor-pointer justify-center">
-      <span class="label-text mx-2">Opinions with comments</span>
-      <input
-        type="checkbox"
-        class="toggle toggle-primary mx-2"
-        [checked]="onlyOpinionsWithComments"
-        [(ngModel)]="onlyOpinionsWithComments"
-        (change)="onShowOnlyOpinionsWithComments()" />
-    </label>
+    <div class="flex justify-center">
+      <label class="label cursor-pointer">
+        <span class="label-text mx-2">Opinions with comments</span>
+        <input
+          type="checkbox"
+          class="toggle toggle-primary mx-2"
+          [checked]="onlyOpinionsWithComments"
+          [(ngModel)]="onlyOpinionsWithComments"
+          (change)="onShowOnlyOpinionsWithComments()" />
+      </label>
+    </div>
   </div>
 
   <div class="form-control">
-    <label class="label flex cursor-pointer justify-center">
-      <span class="label-text mx-2">Opinions with images</span>
-      <input
-        type="checkbox"
-        class="toggle toggle-primary mx-2"
-        [checked]="onlyOpinionsWithImages"
-        [(ngModel)]="onlyOpinionsWithImages"
-        (change)="onShowOnlyOpinionsWithImages()" />
-    </label>
+    <div class="flex justify-center">
+      <label class="label cursor-pointer">
+        <span class="label-text mx-2">Opinions with images</span>
+        <input
+          type="checkbox"
+          class="toggle toggle-primary mx-2"
+          [checked]="onlyOpinionsWithImages"
+          [(ngModel)]="onlyOpinionsWithImages"
+          (change)="onShowOnlyOpinionsWithImages()" />
+      </label>
+    </div>
   </div>
 </div>
