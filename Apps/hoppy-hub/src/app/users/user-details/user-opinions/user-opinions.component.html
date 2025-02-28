@@ -12,15 +12,14 @@
       [opinionsParams]="opinionsParams"
       [paginationData]="paginationData"></app-user-opinions-filters>
 
-    @for (pair of opinionBeerPairs; track $index) {
+    @for (opinion of opinions; track $index) {
       <app-opinion
-        [beer]="pair.beer"
-        [opinion]="pair.opinion"
+        [opinion]="opinion"
         [showUsername]="false"
-        [editMode]="accountOwner"></app-opinion>
+        [editMode]="editAccess"></app-opinion>
     }
 
-    @if (opinionBeerPairs && opinionBeerPairs.length > 0) {
+    @if (opinions && opinions.length > 0) {
       <div class="my-2">
         <app-pagination
           [params]="opinionsParams"

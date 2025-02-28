@@ -40,7 +40,7 @@ export class UserFavoritesComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
-  @Input({ required: true }) accountOwner: boolean = false;
+  @Input({ required: true }) editAccess: boolean = false;
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private beersService: BeersService = inject(BeersService);

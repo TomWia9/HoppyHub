@@ -22,6 +22,7 @@ import { EditBreweryComponent } from './admin-panel/brewery-management/edit-brew
 import { BeerStyleManagementComponent } from './admin-panel/beer-style-management/beer-style-management.component';
 import { NewBeerStyleComponent } from './admin-panel/beer-style-management/new-beer-style/new-beer-style.component';
 import { EditBeerStyleComponent } from './admin-panel/beer-style-management/edit-beer-style/edit-beer-style.component';
+import { OpinionManagementComponent } from './admin-panel/opinion-management/opinion-management.component';
 
 export const routes: Routes = [
   {
@@ -81,6 +82,10 @@ export const routes: Routes = [
           { path: 'new', component: NewBeerStyleComponent },
           { path: ':id', component: EditBeerStyleComponent }
         ]
+      },
+      {
+        path: 'opinion-management',
+        component: OpinionManagementComponent
       }
     ]
   },

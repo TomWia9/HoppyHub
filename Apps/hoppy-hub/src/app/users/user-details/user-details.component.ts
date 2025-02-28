@@ -9,6 +9,7 @@ import { ErrorMessageComponent } from '../../shared-components/error-message/err
 import { UserOpinionsComponent } from './user-opinions/user-opinions.component';
 import { UserFavoritesComponent } from './user-favorites/user-favorites.component';
 import { AuthService } from '../../auth/auth.service';
+import { Roles } from '../../auth/roles';
 
 @Component({
   selector: 'app-user-details',
@@ -29,7 +30,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   user!: User;
-  accountOwner: boolean = false;
+  editAccess: boolean = false;
   error = '';
   loading = true;
 
@@ -52,7 +53,9 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
             switchMap(() =>
               this.authService.user.pipe(
                 tap(user => {
-                  this.accountOwner = this.user.id === user?.id;
+                  this.editAccess =
+                    this.user.id === user?.id ||
+                    user?.role === Roles.Administrator;
                   this.loading = false;
                 })
               )

@@ -17,8 +17,10 @@ import { Pagination } from '../../../../shared/pagination';
 import { PaginationComponent } from '../../../../shared-components/pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
 import { OpinionComponent } from '../../../../opinions/opinion/opinion.component';
-import { Beer } from '../../../beer.model';
 import { BeerOpinionsListFiltersComponent } from './beer-opinions-list-filters/beer-opinions-list-filters.component';
+import { Beer } from '../../../beer.model';
+import { AuthUser } from '../../../../auth/auth-user.model';
+import { Roles } from '../../../../auth/roles';
 
 @Component({
   selector: 'app-beer-opinions-list',
@@ -36,13 +38,12 @@ export class BeerOpinionsListComponent
   implements OnChanges, OnDestroy
 {
   @Input({ required: true }) beer!: Beer;
-  @ViewChild('#showOpinionsButton') showOpinionsButton!: ElementRef;
+  @Input({ required: true }) user!: AuthUser | null;
+
+  @ViewChild('showOpinionsButton') showOpinionsButton!: ElementRef;
   private opinionsService: OpinionsService = inject(OpinionsService);
   private destroy$ = new Subject<void>();
 
-  sortOptions = OpinionsParams.sortOptions;
-
-  selectedSortOptionIndex: number = 0;
   opinionsParams = new OpinionsParams({
     pageSize: 10,
     pageNumber: 1,
@@ -54,6 +55,10 @@ export class BeerOpinionsListComponent
   error = '';
   opinionsLoading = true;
   showOpinions = false;
+
+  get adminAccess(): boolean {
+    return this.user != null && this.user.role === Roles.Administrator;
+  }
 
   ngOnChanges(): void {
     this.refreshOpinions();

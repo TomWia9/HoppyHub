@@ -1,12 +1,28 @@
-<div class="mb-2 mt-8 grid sm:grid-cols-2 sm:space-y-4">
-  <div class="sm:flex sm:items-end sm:justify-center">
+<div class="mb-2 mt-8 grid md:grid-cols-3 md:space-y-4">
+  <div class="md:flex md:items-end md:justify-center">
     <app-pagination
       [params]="opinionsParams"
       [paginationData]="paginationData"
       size="sm"></app-pagination>
   </div>
 
-  <div class="mb-2 mt-4 sm:mb-auto sm:mt-auto">
+  <div class="mt-4 md:mt-auto">
+    <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+      <div class="join">
+        <input
+          type="text"
+          id="opinions_filters_search"
+          formControlName="search"
+          class="input input-sm join-item input-bordered w-40"
+          placeholder="Search opinions..." />
+        <button class="btn btn-primary join-item btn-sm rounded-r-full">
+          Search
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="mb-2 mt-4 md:mb-auto md:mt-auto">
     <div class="tooltip tooltip-top" data-tip="Sort by...">
       <select
         class="select select-bordered select-sm w-56"
@@ -47,5 +63,13 @@
           (change)="onShowOnlyOpinionsWithImages()" />
       </label>
     </div>
+  </div>
+
+  <div class="tooltip tooltip-top" data-tip="Clear the filters">
+    <button
+      class="btn btn-outline btn-primary join-item btn-sm"
+      (click)="onFiltersClear()">
+      <fa-icon [icon]="faX"></fa-icon>
+    </button>
   </div>
 </div>

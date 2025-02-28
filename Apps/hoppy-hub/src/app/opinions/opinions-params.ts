@@ -85,6 +85,16 @@ export class OpinionsParams implements Params {
       value: 'Created',
       direction: 0
     },
+    {
+      label: 'Last Modified (New to Old)',
+      value: 'LastModified',
+      direction: 1
+    },
+    {
+      label: 'Last Modified (Old to New)',
+      value: 'LastModified',
+      direction: 0
+    },
     { label: 'Rating (High to Low)', value: 'Rating', direction: 1 },
     { label: 'Rating (Low to High)', value: 'Rating', direction: 0 }
   ];

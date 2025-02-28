@@ -18,7 +18,9 @@ export class BeerOpinionsListFiltersComponent {
   private opinionsService: OpinionsService = inject(OpinionsService);
 
   selectedSortOptionIndex: number = 0;
-  sortOptions = OpinionsParams.sortOptions;
+  sortOptions = OpinionsParams.sortOptions.filter(
+    option => option.value !== 'LastModified'
+  );
   onlyOpinionsWithImages: boolean = false;
   onlyOpinionsWithComments: boolean = false;
 

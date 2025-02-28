@@ -21,7 +21,8 @@
     <app-opinion
       [beer]="beer"
       [opinion]="opinion"
-      [showBeerName]="false"></app-opinion>
+      [showBeerName]="false"
+      [editMode]="adminAccess"></app-opinion>
   }
 
   @if (opinions && opinions.items.length > 0) {
