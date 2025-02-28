@@ -59,7 +59,9 @@ public class OpinionsFilteringHelper : FilteringHelperBase<Opinion, GetOpinionsQ
         var searchQuery = request.SearchQuery.Trim().ToUpper();
 
         Expression<Func<Opinion, bool>> searchDelegate =
-            x => x.Beer != null && x.Beer.Name != null && x.Beer.Name.ToUpper().Contains(searchQuery);
+            x => (x.Beer != null && x.Beer.Name != null && x.Beer.Name.ToUpper().Contains(searchQuery)) ||
+                 (x.User != null && !string.IsNullOrEmpty(x.User.Username) &&
+                  x.User.Username.ToUpper().Contains(searchQuery));
 
         delegates.Add(searchDelegate);
 
