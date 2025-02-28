@@ -19,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 import { OpinionComponent } from '../../../../opinions/opinion/opinion.component';
 import { BeerOpinionsListFiltersComponent } from './beer-opinions-list-filters/beer-opinions-list-filters.component';
 import { Beer } from '../../../beer.model';
+import { AuthUser } from '../../../../auth/auth-user.model';
+import { Roles } from '../../../../auth/roles';
 
 @Component({
   selector: 'app-beer-opinions-list',
@@ -36,6 +38,8 @@ export class BeerOpinionsListComponent
   implements OnChanges, OnDestroy
 {
   @Input({ required: true }) beer!: Beer;
+  @Input({ required: true }) user!: AuthUser | null;
+
   @ViewChild('showOpinionsButton') showOpinionsButton!: ElementRef;
   private opinionsService: OpinionsService = inject(OpinionsService);
   private destroy$ = new Subject<void>();
@@ -51,6 +55,10 @@ export class BeerOpinionsListComponent
   error = '';
   opinionsLoading = true;
   showOpinions = false;
+
+  get adminAccess(): boolean {
+    return this.user != null && this.user.role === Roles.Administrator;
+  }
 
   ngOnChanges(): void {
     this.refreshOpinions();

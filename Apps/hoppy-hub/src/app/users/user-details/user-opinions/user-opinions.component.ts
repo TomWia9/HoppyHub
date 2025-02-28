@@ -18,7 +18,6 @@ import { Pagination } from '../../../shared/pagination';
 import { PaginationComponent } from '../../../shared-components/pagination/pagination.component';
 import { FormsModule } from '@angular/forms';
 import { OpinionComponent } from '../../../opinions/opinion/opinion.component';
-import { BeersService } from '../../../beers/beers.service';
 import { UserOpinionsFiltersComponent } from './user-opinions-filters/user-opinions-filters.component';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
@@ -46,10 +45,9 @@ export class UserOpinionsComponent
 {
   @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
-  @Input({ required: true }) accountOwner: boolean = false;
+  @Input({ required: true }) editAccess: boolean = false;
 
   private opinionsService: OpinionsService = inject(OpinionsService);
-  private beersService: BeersService = inject(BeersService);
   private destroy$ = new Subject<void>();
 
   opinionsParams = new OpinionsParams({
