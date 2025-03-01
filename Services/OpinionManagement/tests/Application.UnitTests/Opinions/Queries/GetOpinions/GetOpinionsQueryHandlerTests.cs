@@ -65,19 +65,19 @@ public class GetOpinionsQueryHandlerTests
             {
                 Id = Guid.NewGuid(), Rating = 4, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
-                User = new User { Id = userId, Username = username }
+                User = new User { Id = userId, Username = username, Deleted = false }
             },
             new()
             {
                 Id = Guid.NewGuid(), Rating = 6, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
-                User = new User { Id = userId, Username = username }
+                User = new User { Id = userId, Username = username, Deleted = false }
             },
             new()
             {
                 Id = Guid.NewGuid(), Rating = 8, Comment = "Sample comment", BeerId = Guid.NewGuid(),
                 CreatedBy = userId, Created = DateTime.Now, LastModified = DateTime.Now,
-                User = new User { Id = userId, Username = username }
+                User = new User { Id = userId, Username = username, Deleted = true }
             }
         };
         var expectedResult = PaginatedList<OpinionDto>.Create(opinions.Select(x => new OpinionDto
@@ -89,7 +89,8 @@ public class GetOpinionsQueryHandlerTests
             CreatedBy = x.CreatedBy,
             Created = x.Created,
             LastModified = x.LastModified,
-            Username = x.User?.Username
+            Username = x.User?.Username,
+            UserDeleted = x.User?.Deleted ?? false
         }), 1, 10);
 
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();

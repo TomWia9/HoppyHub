@@ -40,14 +40,16 @@ public class GetOpinionQueryHandlerTests
     /// <summary>
     ///     Tests that Handle method returns OpinionDto with Username when Id is valid and CreatedBy is not null.
     /// </summary>
-    [Fact]
-    public async Task Handle_ShouldReturnOpinionDtoWithUsername_WhenIdIsValidAndCreatedByIsNotNull()
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public async Task Handle_ShouldReturnOpinionDtoWithUsername_WhenIdIsValidAndCreatedByIsNotNull(bool userDeleted)
     {
         // Arrange
         const string username = "testUser";
         var opinionId = Guid.NewGuid();
         var opinion = new Opinion
-            { Id = opinionId, Rating = 8, CreatedBy = Guid.NewGuid(), User = new User { Username = username } };
+            { Id = opinionId, Rating = 8, CreatedBy = Guid.NewGuid(), User = new User { Username = username, Deleted = userDeleted} };
         var opinions = new List<Opinion> { opinion };
         var opinionsDbSetMock = opinions.AsQueryable().BuildMockDbSet();
         var query = new GetOpinionQuery { Id = opinionId };
@@ -62,8 +64,9 @@ public class GetOpinionQueryHandlerTests
         result.Id.Should().Be(opinion.Id);
         result.Rating.Should().Be(opinion.Rating);
         result.Username.Should().Be(username);
+        result.UserDeleted.Should().Be(userDeleted);
     }
-
+    
     /// <summary>
     ///     Tests that Handle method returns OpinionDto without Username when Id is valid and CreatedBy is null.
     /// </summary>
