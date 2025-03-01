@@ -23,7 +23,11 @@
         }
         @if (beer && showUsername) {
           <a
-            class="link-hover link link-primary align-top"
+            [class]="
+              opinion.userDeleted
+                ? 'align-top text-primary '
+                : 'link-hover link link-primary align-top'
+            "
             [routerLink]="
               opinion.userDeleted ? null : ['/users', opinion.createdBy]
             "
