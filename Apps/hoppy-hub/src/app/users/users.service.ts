@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { User } from './user.model';
 import { environment } from '../../environments/environment';
 import { UpdateUserPasswordCommand } from './commands/update-user-password-command.model';
@@ -15,6 +15,15 @@ import { UsersParams } from './users-params';
 })
 export class UsersService {
   private http: HttpClient = inject(HttpClient);
+
+  paramsChanged = new BehaviorSubject<UsersParams>(
+    new UsersParams({
+      pageSize: 15,
+      pageNumber: 1,
+      sortBy: 'Created',
+      sortDirection: 1
+    })
+  );
 
   getUserById(id: string): Observable<User> {
     return this.http.get<User>(

@@ -1,0 +1,58 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <app-users-list-filters
+    [params]="usersParams"
+    [paginationData]="paginationData"></app-users-list-filters>
+  @if (error) {
+    <app-error-message [message]="error"></app-error-message>
+  } @else {
+    <div class="rounded-lg bg-neutral p-6 text-neutral-content shadow-md">
+      <div class="overflow-x-auto">
+        <table class="table table-xs lg:table-lg">
+          <thead>
+            <tr class="2xl:text-lg">
+              <th>Email</th>
+              <th>Username</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (users && users.TotalCount > 0) {
+              @for (user of users.items; track user.id) {
+                <tr
+                  [class]="
+                    user.role === 'Administrator'
+                      ? 'btn-disabled opacity-50'
+                      : 'hover cursor-pointer'
+                  "
+                  [routerLink]="
+                    user.role === 'Administrator' ? null : [user.id]
+                  "
+                  routerLinkActive="active">
+                  <td>
+                    <div>{{ user.email }}</div>
+                  </td>
+                  <td>
+                    <div>
+                      {{ user.username }}
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{ user.created | date: 'dd/MM/yyyy' }}</div>
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="my-4">
+      <app-pagination
+        [params]="usersParams"
+        [paginationData]="paginationData"
+        size="md"></app-pagination>
+    </div>
+  }
+}

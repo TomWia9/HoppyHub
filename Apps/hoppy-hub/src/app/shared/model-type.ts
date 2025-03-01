@@ -8,5 +8,6 @@ export enum ModalType {
   DeleteAccount,
   DeleteBeer,
   DeleteBrewery,
-  DeleteBeerStyle
+  DeleteBeerStyle,
+  DeleteUser
 }

@@ -1,0 +1,62 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <app-delete-user-modal (userDeleted)="userDeleted()"></app-delete-user-modal>
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <div class="grid place-content-center sm:place-content-stretch">
+      <form [formGroup]="usernameForm" (ngSubmit)="editUsername()" class="my-4">
+        <p class="text-xl">Edit Username</p>
+        <label class="form-control w-full place-self-center md:max-w-3xl">
+          <div class="label">
+            <span class="label-text">Username:</span>
+          </div>
+          <input
+            type="text"
+            formControlName="userName"
+            class="input input-bordered input-primary"
+            placeholder="Enter new username" />
+        </label>
+        <button
+          type="submit"
+          class="btn btn-primary my-4"
+          [disabled]="usernameForm.pristine">
+          Update Username
+        </button>
+      </form>
+
+      <div class="divider"></div>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="editPassword()" class="my-4">
+        <p class="text-xl">Edit Password</p>
+        <label class="form-control w-full place-self-center md:max-w-3xl">
+          <div class="label">
+            <span class="label-text">Password:</span>
+          </div>
+          <input
+            type="password"
+            formControlName="newPassword"
+            class="input input-bordered"
+            placeholder="Enter new password" />
+        </label>
+        <button
+          type="submit"
+          class="btn btn-primary my-4"
+          [disabled]="passwordForm.pristine">
+          Update Password
+        </button>
+      </form>
+
+      <div class="divider"></div>
+
+      <div class="my-4">
+        <button
+          (click)="onUserDelete()"
+          class="btn btn-outline btn-error min-w-72">
+          Delete user
+        </button>
+      </div>
+    </div>
+  </div>
+}
