@@ -24,8 +24,10 @@
         @if (beer && showUsername) {
           <a
             class="link-hover link link-primary align-top"
-            [routerLink]="['/users', opinion.createdBy]"
-            >{{ opinion.username }}</a
+            [routerLink]="
+              opinion.userDeleted ? null : ['/users', opinion.createdBy]
+            "
+            >{{ getFormattedUsername() }}</a
           >
         }
       </div>
