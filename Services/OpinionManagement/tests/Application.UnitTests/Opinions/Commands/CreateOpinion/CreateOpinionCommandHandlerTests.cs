@@ -88,11 +88,13 @@ public class CreateOpinionCommandHandlerTests
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = imageUri,
-            Username = username
+            Username = username,
+            UserDeleted = false
         };
         var user = new User
         {
-            Username = username
+            Username = username,
+            Deleted = false
         };
         var beer = new Beer
         {
@@ -145,7 +147,8 @@ public class CreateOpinionCommandHandlerTests
         };
         var user = new User
         {
-            Username = username
+            Username = username,
+            Deleted = false
         };
         var expectedOpinionDto = new OpinionDto
         {
@@ -153,7 +156,8 @@ public class CreateOpinionCommandHandlerTests
             Rating = request.Rating,
             Comment = request.Comment,
             ImageUri = null,
-            Username = username
+            Username = username,
+            UserDeleted = false
         };
         var beer = new Beer { Id = beerId };
         var opinions = Enumerable.Empty<Opinion>();

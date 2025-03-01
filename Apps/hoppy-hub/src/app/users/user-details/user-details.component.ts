@@ -48,6 +48,7 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
               },
               error: () => {
                 this.error = 'An error occurred while loading the user';
+                this.loading = false;
               }
             }),
             switchMap(() =>

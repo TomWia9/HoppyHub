@@ -7,6 +7,7 @@ export class Opinion {
     public beerId: string,
     public createdBy: string,
     public username: string,
+    public userDeleted: boolean,
     public created: Date,
     public lastModified: Date
   ) {}

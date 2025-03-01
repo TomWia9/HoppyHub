@@ -64,6 +64,10 @@ export class OpinionComponent implements OnInit, OnDestroy {
     return Array(10 - rating).fill(0);
   }
 
+  getFormattedUsername(): string {
+    return this.opinion.userDeleted ? '[Deleted User]' : this.opinion.username;
+  }
+
   onUpsertOpinionModalOpen(): void {
     if (this.editMode) {
       this.modalService.openModal(

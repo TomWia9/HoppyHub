@@ -45,6 +45,11 @@ public record OpinionDto : IMapFrom<Opinion>
     public string? Username { get; set; }
 
     /// <summary>
+    ///     Indicates whether user is deleted.
+    /// </summary>
+    public bool UserDeleted { get; set; }
+
+    /// <summary>
     ///     Date of creation.
     /// </summary>
     public DateTimeOffset? Created { get; init; }
@@ -61,6 +66,7 @@ public record OpinionDto : IMapFrom<Opinion>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Opinion, OpinionDto>()
-            .ForMember(x => x.Username, opt => opt.MapFrom(x => x.User!.Username));
+            .ForMember(x => x.Username, opt => opt.MapFrom(x => x.User!.Username))
+            .ForMember(x => x.UserDeleted, opt => opt.MapFrom(x => x.User!.Deleted));
     }
 }
