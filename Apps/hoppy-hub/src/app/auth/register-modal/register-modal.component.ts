@@ -13,7 +13,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { ModalService } from '../../services/modal.service';
 import { CustomValidators } from '../../shared/custom-validators';
 import { AuthService } from '../auth.service';
@@ -36,16 +36,20 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private authService = inject(AuthService);
   private alertService = inject(AlertService);
+  private destroy$ = new Subject<void>();
 
-  modalOppenedSubscription!: Subscription;
   registerForm!: FormGroup;
 
   ngOnInit(): void {
-    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.showModal(modalModel);
-      }
-    );
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.showModal(modalModel);
+        })
+      )
+      .subscribe();
+
     this.registerForm = new FormGroup({
       email: new FormControl('', [
         Validators.email,
@@ -85,25 +89,29 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
           this.registerForm.value.username,
           this.registerForm.value.passwords.password
         )
-        .subscribe({
-          next: () => {
-            this.onFormReset();
-            this.alertService.openAlert(
-              AlertType.Success,
-              'Successfully registered'
-            );
-          },
-          error: error => {
-            let errorMessage = 'Something went wrong';
+        .pipe(
+          takeUntil(this.destroy$),
+          tap({
+            next: () => {
+              this.onFormReset();
+              this.alertService.openAlert(
+                AlertType.Success,
+                'Successfully registered'
+              );
+            },
+            error: error => {
+              let errorMessage = 'Something went wrong';
 
-            if (error.error && error.error.errors) {
-              errorMessage = this.getErrorMessage(error.error.errors);
+              if (error.error && error.error.errors) {
+                errorMessage = this.getErrorMessage(error.error.errors);
+              }
+              console.log(errorMessage);
+
+              this.alertService.openAlert(AlertType.Error, errorMessage);
             }
-            console.log(errorMessage);
-
-            this.alertService.openAlert(AlertType.Error, errorMessage);
-          }
-        });
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -132,6 +140,7 @@ export class RegisterModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.modalOppenedSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

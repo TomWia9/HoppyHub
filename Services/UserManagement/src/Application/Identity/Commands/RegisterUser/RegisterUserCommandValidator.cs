@@ -15,6 +15,7 @@ public class RegisterUserCommandValidator : BaseIdentityCommandValidator<Registe
     {
         RuleFor(x => x.Username)
             .NotEmpty()
-            .MaximumLength(256);
+            .MinimumLength(3)
+            .MaximumLength(20);
     }
 }

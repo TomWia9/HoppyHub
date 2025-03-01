@@ -1,0 +1,31 @@
+<app-upsert-opinion-modal
+  (opinionUpserted)="refreshOpinions()"></app-upsert-opinion-modal>
+<app-delete-opinion-modal
+  (opinionDeleted)="refreshOpinions()"></app-delete-opinion-modal>
+
+@if (opinionsLoading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else {
+  <app-opinions-list-filters
+    [opinionsParams]="opinionsParams"
+    [paginationData]="paginationData"></app-opinions-list-filters>
+  <div #topOfList class="container mx-auto mb-6 rounded-lg p-4">
+    <div class="grid gap-4 xl:grid-cols-2">
+      @for (opinion of opinions?.items; track opinion.id) {
+        <app-opinion [opinion]="opinion" [editMode]="true"></app-opinion>
+      }
+    </div>
+  </div>
+
+  @if (opinions && opinions.items.length > 0) {
+    <div class="my-2">
+      <app-pagination
+        (scrollTo)="scrollToTop()"
+        [params]="opinionsParams"
+        [paginationData]="paginationData"
+        size="md"></app-pagination>
+    </div>
+  } @else {
+    <p class="my-4 text-xl">There is no opinions for selected filters</p>
+  }
+}

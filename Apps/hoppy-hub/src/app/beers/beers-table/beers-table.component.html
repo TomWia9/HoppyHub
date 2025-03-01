@@ -47,11 +47,15 @@
                       >
                     </td>
                     <td>
-                      <a
-                        class="link-hover link font-bold"
-                        [routerLink]="['/beer-styles', beer.beerStyle.id]"
-                        >{{ beer.beerStyle.name }}</a
-                      >
+                      @if (beer.beerStyle) {
+                        <a
+                          class="link-hover link font-bold"
+                          [routerLink]="['/beer-styles', beer.beerStyle.id]"
+                          >{{ beer.beerStyle.name }}</a
+                        >
+                      } @else {
+                        Undefined
+                      }
                     </td>
                     <td>
                       <div>{{ beer.alcoholByVolume }}%</div>

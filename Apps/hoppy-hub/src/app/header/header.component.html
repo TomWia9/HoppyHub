@@ -8,12 +8,33 @@
         tabindex="0"
         class="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow">
         @if (adminAccess) {
-          <li><a>Admin panel</a></li>
+          <li>
+            <a
+              class="font-bold"
+              routerLink="/admin-panel"
+              routerLinkActive="text-primary"
+              >Admin Panel</a
+            >
+          </li>
         }
-        <li><a routerLink="/beers">Search beers</a></li>
-        <li><a routerLink="/breweries">Search breweries</a></li>
-        <li><a routerLink="/beer-styles">Search beer styles</a></li>
-        <li><a routerLink="/about">About</a></li>
+        <li>
+          <a routerLink="/beers" routerLinkActive="text-primary"
+            >Search beers</a
+          >
+        </li>
+        <li>
+          <a routerLink="/breweries" routerLinkActive="text-primary"
+            >Search breweries</a
+          >
+        </li>
+        <li>
+          <a routerLink="/beer-styles" routerLinkActive="text-primary"
+            >Search beer styles</a
+          >
+        </li>
+        <li>
+          <a routerLink="/about" routerLinkActive="text-primary">About</a>
+        </li>
       </ul>
     </div>
     <a routerLink="/">
@@ -30,12 +51,29 @@
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
       @if (adminAccess) {
-        <li><a>Admin panel</a></li>
+        <li>
+          <a
+            class="font-bold"
+            routerLink="/admin-panel"
+            routerLinkActive="text-primary"
+            >Admin Panel</a
+          >
+        </li>
       }
-      <li><a routerLink="/beers">Search beers</a></li>
-      <li><a routerLink="/breweries">Search breweries</a></li>
-      <li><a routerLink="/beer-styles">Search beer styles</a></li>
-      <li><a routerLink="/about">About</a></li>
+      <li>
+        <a routerLink="/beers" routerLinkActive="text-primary">Search beers</a>
+      </li>
+      <li>
+        <a routerLink="/breweries" routerLinkActive="text-primary"
+          >Search breweries</a
+        >
+      </li>
+      <li>
+        <a routerLink="/beer-styles" routerLinkActive="text-primary"
+          >Search beer styles</a
+        >
+      </li>
+      <li><a routerLink="/about" routerLinkActive="text-primary">About</a></li>
     </ul>
   </div>
   <div class="navbar-end gap-5">

@@ -3,14 +3,14 @@ import {
   ElementRef,
   inject,
   Input,
-  OnChanges,
   OnDestroy,
+  OnInit,
   ViewChild
 } from '@angular/core';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { Beer } from '../../../beers/beer.model';
-import { Subscription, switchMap, forkJoin, of } from 'rxjs';
+import { switchMap, forkJoin, of, Subject, takeUntil, tap } from 'rxjs';
 import { BeersService } from '../../../beers/beers.service';
 import { DataHelper } from '../../../shared/data-helper';
 import { PagedList } from '../../../shared/paged-list';
@@ -36,16 +36,15 @@ import { ErrorMessageComponent } from '../../../shared-components/error-message/
 })
 export class UserFavoritesComponent
   extends DataHelper
-  implements OnChanges, OnDestroy
+  implements OnInit, OnDestroy
 {
   @ViewChild('topSection') topSection!: ElementRef;
   @Input({ required: true }) user!: User;
-  @Input({ required: true }) accountOwner: boolean = false;
+  @Input({ required: true }) editAccess: boolean = false;
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private beersService: BeersService = inject(BeersService);
-  private favoriteBeersParamsSubscription!: Subscription;
-  private getFavoriteBeersSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   favoriteBeersParams = new FavoritesParams({
     pageSize: 6,
@@ -58,25 +57,54 @@ export class UserFavoritesComponent
   error = '';
   loading = true;
 
-  ngOnChanges(): void {
+  ngOnInit(): void {
     this.refreshFavoriteBeers();
+    this.favoritesService.paramsChanged
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(params => {
+          this.favoriteBeersParams = params;
+          this.favoriteBeersParams.userId = this.user.id;
+        }),
+        switchMap(() =>
+          this.favoritesService.getFavorites(this.favoriteBeersParams).pipe(
+            switchMap((favoriteBeers: PagedList<Beer>) => {
+              this.paginationData = this.getPaginationData(favoriteBeers);
+
+              if (favoriteBeers.items.length === 0) {
+                return of([]);
+              }
+
+              return forkJoin(
+                favoriteBeers.items.map(favoriteBeer =>
+                  this.beersService.getBeerById(favoriteBeer.id)
+                )
+              );
+            })
+          )
+        ),
+        tap({
+          next: (favoriteBeers: Beer[]) => {
+            this.favoriteBeers = favoriteBeers;
+            this.error = '';
+            this.loading = false;
+          },
+          error: error => {
+            this.error =
+              'An error occurred while loading the user favorite beers';
+            if (error.error?.errors) {
+              this.error += this.getValidationErrorMessage(error.error.errors);
+            }
+            this.loading = false;
+          }
+        })
+      )
+      .subscribe();
   }
 
   refreshFavoriteBeers(): void {
-    if (this.favoriteBeersParamsSubscription) {
-      this.favoriteBeersParamsSubscription.unsubscribe();
-    }
-
     this.favoriteBeersParams.userId = this.user.id;
     this.favoritesService.paramsChanged.next(this.favoriteBeersParams);
-    this.favoriteBeersParamsSubscription =
-      this.favoritesService.paramsChanged.subscribe(
-        (params: FavoritesParams) => {
-          this.favoriteBeersParams = params;
-          this.favoriteBeersParams.userId = this.user.id;
-          this.getUserFavoriteBeers();
-        }
-      );
   }
 
   scrollToTop(): void {
@@ -90,53 +118,8 @@ export class UserFavoritesComponent
     });
   }
 
-  private getUserFavoriteBeers(): void {
-    this.getFavoriteBeersSubscription = this.favoritesService
-      .getFavorites(this.favoriteBeersParams)
-      .pipe(
-        switchMap((favoriteBeers: PagedList<Beer>) => {
-          const beerRequests = favoriteBeers.items.map(favoriteBeer =>
-            this.beersService.getBeerById(favoriteBeer.id)
-          );
-
-          this.paginationData = this.getPaginationData(favoriteBeers);
-
-          if (favoriteBeers.items.length === 0) {
-            return of([]);
-          }
-
-          return forkJoin(beerRequests);
-        })
-      )
-      .subscribe({
-        next: (favoriteBeers: Beer[]) => {
-          this.loading = true;
-          this.favoriteBeers = favoriteBeers;
-          this.error = '';
-          this.loading = false;
-        },
-        error: error => {
-          this.error =
-            'An error occurred while loading the user favorite beers';
-
-          if (error.error && error.error.errors) {
-            const errorMessage = this.getValidationErrorMessage(
-              error.error.errors
-            );
-            this.error += errorMessage;
-          }
-
-          this.loading = false;
-        }
-      });
-  }
-
   ngOnDestroy(): void {
-    if (this.favoriteBeersParamsSubscription) {
-      this.favoriteBeersParamsSubscription.unsubscribe();
-    }
-    if (this.getFavoriteBeersSubscription) {
-      this.getFavoriteBeersSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

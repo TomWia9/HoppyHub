@@ -31,9 +31,7 @@ public class RegisterUserCommandValidatorTests
         // Arrange
         var command = new RegisterUserCommand
         {
-            Email = "email",
-            Username = "",
-            Password = "password"
+            Username = ""
         };
 
         // Act
@@ -50,13 +48,26 @@ public class RegisterUserCommandValidatorTests
     public void RegisterUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsGreaterThanMaximum()
     {
         // Arrange
-        var username = string.Join("", Enumerable.Repeat("a", 257));
         var command = new RegisterUserCommand
         {
-            Email = "email",
-            Username = username,
-            Password = "password"
+            Username = new string('a', 21)
         };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Username);
+    }
+
+    /// <summary>
+    ///     Tests that validation should have error for username when username length is less than minimum.
+    /// </summary>
+    [Fact]
+    public void RegisterUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsLessThanMinimum()
+    {
+        // Arrange
+        var command = new RegisterUserCommand { Username = new string('a', 2) };
 
         // Act
         var result = _validator.TestValidate(command);

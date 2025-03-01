@@ -15,12 +15,16 @@
             >{{ beer.brewery.name }}</a
           >
           <p class="my-1">
-            <strong>Style:</strong
-            ><a
-              class="text-md link-hover link link-info"
-              [routerLink]="['/beer-styles', beer.beerStyle.id]">
-              {{ beer.beerStyle.name }}</a
-            >
+            <strong>Style:</strong>
+            @if (beer.beerStyle) {
+              <a
+                class="text-md link-hover link link-info"
+                [routerLink]="['/beer-styles', beer.beerStyle.id]">
+                {{ beer.beerStyle.name }}</a
+              >
+            } @else {
+              <span class="text-info"> Undefined </span>
+            }
           </p>
 
           <!-- <p class="my-1"><strong>Style:</strong> {{ beer.beerStyle.name }}</p> -->

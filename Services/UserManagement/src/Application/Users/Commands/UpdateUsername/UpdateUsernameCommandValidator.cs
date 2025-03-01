@@ -13,6 +13,8 @@ public class UpdateUsernameCommandValidator : AbstractValidator<UpdateUsernameCo
     public UpdateUsernameCommandValidator()
     {
         RuleFor(x => x.Username)
-            .MaximumLength(256);
+            .NotEmpty()
+            .MinimumLength(3)
+            .MaximumLength(20);
     }
 }

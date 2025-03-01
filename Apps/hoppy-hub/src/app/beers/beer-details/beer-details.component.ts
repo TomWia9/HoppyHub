@@ -1,6 +1,6 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Subject, map, switchMap, takeUntil, tap } from 'rxjs';
 import { Beer } from '../beer.model';
 import { BeersService } from '../beers.service';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
@@ -25,17 +25,15 @@ import { FavoriteComponent } from './favorite/favorite.component';
   templateUrl: './beer-details.component.html'
 })
 export class BeerDetailsComponent implements OnInit, OnDestroy {
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private beersService: BeersService = inject(BeersService);
+  private authService: AuthService = inject(AuthService);
+  private destroy$ = new Subject<void>();
+
   beer!: Beer;
   error = '';
   loading = true;
   user: AuthUser | null = null;
-  routeSubscription!: Subscription;
-  beerSubscription!: Subscription;
-  userSubscription!: Subscription;
-
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private beersService: BeersService = inject(BeersService);
-  private authService: AuthService = inject(AuthService);
 
   ngOnInit(): void {
     this.getBeer();
@@ -43,40 +41,58 @@ export class BeerDetailsComponent implements OnInit, OnDestroy {
 
   getBeer(): void {
     this.loading = true;
-    this.routeSubscription = this.route.paramMap
-      .pipe(map(params => params.get('id')))
-      .subscribe(beerId => {
-        this.beerSubscription = this.beersService
-          .getBeerById(beerId as string)
-          .subscribe({
-            next: (beer: Beer) => {
-              this.beer = beer;
-              this.error = '';
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-              this.userSubscription = this.authService.user.subscribe(
-                (user: AuthUser | null) => {
+
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        map(params => params.get('id')),
+        switchMap(beerId =>
+          this.beersService.getBeerById(beerId as string).pipe(
+            tap({
+              next: (beer: Beer) => {
+                this.beer = beer;
+                this.error = '';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              },
+              error: () => {
+                this.error = 'An error occurred while loading the beer';
+              }
+            }),
+            switchMap(() =>
+              this.authService.user.pipe(
+                tap(user => {
                   this.user = user;
                   this.loading = false;
-                }
-              );
-            },
-            error: () => {
-              this.error = 'An error occurred while loading the beer';
-              this.loading = false;
-            }
-          });
-      });
+                })
+              )
+            )
+          )
+        )
+      )
+      .subscribe();
+  }
+
+  refreshBeer(): void {
+    this.beersService
+      .getBeerById(this.beer.id)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: (beer: Beer) => {
+            this.beer = beer;
+            this.error = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          },
+          error: () => {
+            this.error = 'An error occurred while loading the beer';
+          }
+        })
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {
-    if (this.beerSubscription) {
-      this.beerSubscription.unsubscribe();
-    }
-    if (this.routeSubscription) {
-      this.routeSubscription.unsubscribe();
-    }
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

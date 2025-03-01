@@ -72,7 +72,8 @@ public class GetBeersQueryHandlerTests
             Id = x.Id,
             Name = x.Name,
             AlcoholByVolume = x.AlcoholByVolume,
-            ImageUri = x.BeerImage?.ImageUri
+            ImageUri = x.BeerImage?.ImageUri,
+            TempImage = true
         }), 1, 10);
 
         var beersDbSetMock = beers.AsQueryable().BuildMockDbSet();
@@ -142,7 +143,8 @@ public class GetBeersQueryHandlerTests
                 Id = x.Id,
                 Name = x.Name,
                 ReleaseDate = x.ReleaseDate,
-                ImageUri = x.BeerImage?.ImageUri
+                ImageUri = x.BeerImage?.ImageUri,
+                TempImage = x.BeerImage!.TempImage
             }), 1, 10);
 
         var allBeersDbSetMock = allBeers.AsQueryable().BuildMockDbSet();

@@ -63,19 +63,19 @@ public class CreateBeerCommandHandler : IRequestHandler<CreateBeerCommand, BeerD
 
         if (beerBrewery is null)
         {
-            throw new NotFoundException(nameof(Brewery), request.BreweryId);
+            throw new NotFoundException(nameof(Brewery), request.BreweryId!);
         }
 
         if (!await _context.BeerStyles.AnyAsync(x => x.Id == request.BeerStyleId, cancellationToken))
         {
-            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId);
+            throw new NotFoundException(nameof(BeerStyle), request.BeerStyleId!);
         }
 
         var entity = new Beer
         {
             Name = request.Name,
-            BreweryId = request.BreweryId,
-            AlcoholByVolume = request.AlcoholByVolume,
+            BreweryId = request.BreweryId!.Value,
+            AlcoholByVolume = request.AlcoholByVolume!.Value,
             Description = request.Description,
             Composition = request.Composition,
             Blg = request.Blg,

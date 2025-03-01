@@ -7,7 +7,6 @@ import { LoginModalComponent } from './auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from './auth/register-modal/register-modal.component';
 import { AlertComponent } from './shared-components/alert/alert.component';
 import { AuthService } from './auth/auth.service';
-import { NotFoundComponent } from './not-found/not-found.component';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -21,8 +20,7 @@ import { environment } from '../environments/environment';
     FooterComponent,
     LoginModalComponent,
     RegisterModalComponent,
-    AlertComponent,
-    NotFoundComponent
+    AlertComponent
   ]
 })
 export class AppComponent implements OnInit {

@@ -10,7 +10,7 @@
         <p class="font-bold text-accent">{{ beer.brewery.name }}</p>
       }
       <h2 class="card-title font-bold">{{ beer.name }}</h2>
-      <p class="mb-2">({{ beer.beerStyle.name }})</p>
+      <p class="mb-2">({{ beer.beerStyle?.name ?? 'Beer style undefined' }})</p>
       <p>{{ beer.description }}</p>
 
       <div class="flex flex-row space-x-6 font-light">

@@ -48,7 +48,7 @@ export class OpinionsService {
       );
   }
 
-  CreateOpinion(
+  createOpinion(
     upsertOpinionCommand: UpsertOpinionCommand
   ): Observable<Opinion> {
     const formData = this.buildFormData(upsertOpinionCommand);
@@ -59,7 +59,7 @@ export class OpinionsService {
     );
   }
 
-  UpdateOpinion(
+  updateOpinion(
     opinionId: string,
     upsertOpinionCommand: UpsertOpinionCommand
   ): Observable<void> {
@@ -71,7 +71,7 @@ export class OpinionsService {
     );
   }
 
-  DeleteOpinion(opinionId: string): Observable<void> {
+  deleteOpinion(opinionId: string): Observable<void> {
     return this.http.delete<void>(
       `${environment.opinionManagementApiUrl}/opinions/${opinionId}`
     );

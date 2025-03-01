@@ -12,7 +12,6 @@
       <div class="col-span-2 justify-self-center sm:w-3/4">
         <p class="text-xl">Your opinion:</p>
         <app-opinion
-          [beer]="beer"
           [opinion]="existingOpinion"
           [showBeerName]="false"></app-opinion>
       </div>
@@ -34,5 +33,5 @@
       </button>
     }
   </div>
-  <app-beer-opinions-list [beer]="beer"></app-beer-opinions-list>
+  <app-beer-opinions-list [beer]="beer" [user]="user"></app-beer-opinions-list>
 }

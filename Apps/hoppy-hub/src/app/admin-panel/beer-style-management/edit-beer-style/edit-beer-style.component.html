@@ -1,0 +1,62 @@
+@if (loading) {
+  <app-loading-spinner></app-loading-spinner>
+} @else if (error) {
+  <app-error-message [message]="error"></app-error-message>
+} @else {
+  <app-delete-beer-style-modal
+    (beerStyleDeleted)="beerStyleDeleted()"></app-delete-beer-style-modal>
+  <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
+    <form [formGroup]="beerStyleForm" (ngSubmit)="onFormSave()">
+      <div class="my-2 grid place-items-center gap-4">
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Name</span>
+          </div>
+          <input
+            type="text"
+            id="edit_beer_style_name"
+            formControlName="name"
+            class="input input-bordered input-primary" />
+        </label>
+
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Description</span>
+          </div>
+          <textarea
+            type="text"
+            id="edit_beer_style_description"
+            formControlName="description"
+            class="textarea textarea-bordered textarea-primary"></textarea>
+        </label>
+
+        <label class="form-control w-full">
+          <div class="label">
+            <span class="label-text">Country of origin</span>
+          </div>
+          <input
+            type="text"
+            id="edit_beer_style_country_of_origin"
+            formControlName="countryOfOrigin"
+            class="input input-bordered input-primary" />
+        </label>
+      </div>
+
+      <div class="divider"></div>
+      <div class="grid gap-4">
+        <button
+          type="submit"
+          class="btn btn-outline btn-success"
+          [disabled]="beerStyleForm.pristine">
+          Save beer style
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline btn-error"
+          (click)="onBeerStyleDelete()">
+          Delete beer style
+        </button>
+      </div>
+    </form>
+  </div>
+}

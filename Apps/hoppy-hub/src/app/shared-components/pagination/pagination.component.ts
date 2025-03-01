@@ -18,6 +18,8 @@ import { FavoritesParams } from '../../favorites/favorites-params';
 import { FavoritesService } from '../../favorites/favorites.service';
 import { BeerStylesService } from '../../beer-styles/beer-styles.service';
 import { BeerStylesParams } from '../../beer-styles/beer-styles-params';
+import { UsersParams } from '../../users/users-params';
+import { UsersService } from '../../users/users.service';
 
 @Component({
   selector: 'app-pagination',
@@ -31,7 +33,8 @@ export class PaginationComponent implements OnInit {
     | BreweriesParams
     | BeerStylesParams
     | OpinionsParams
-    | FavoritesParams;
+    | FavoritesParams
+    | UsersParams;
   @Input({ required: true }) paginationData!: Pagination;
   @Input() size: string = 'lg';
   @Output() scrollTo = new EventEmitter<void>();
@@ -43,6 +46,7 @@ export class PaginationComponent implements OnInit {
   private beerStylesService: BeerStylesService = inject(BeerStylesService);
   private opinionsService: OpinionsService = inject(OpinionsService);
   private favoritesService: FavoritesService = inject(FavoritesService);
+  private usersService: UsersService = inject(UsersService);
 
   ngOnInit(): void {
     switch (this.size) {
@@ -74,7 +78,6 @@ export class PaginationComponent implements OnInit {
       this.breweriesService.paramsChanged.next(this.params);
     }
     if (this.params instanceof BeerStylesParams) {
-      console.log(this.params);
       this.beerStylesService.paramsChanged.next(this.params);
     }
     if (this.params instanceof OpinionsParams) {
@@ -82,6 +85,9 @@ export class PaginationComponent implements OnInit {
     }
     if (this.params instanceof FavoritesParams) {
       this.favoritesService.paramsChanged.next(this.params);
+    }
+    if (this.params instanceof UsersParams) {
+      this.usersService.paramsChanged.next(this.params);
     }
   }
 }

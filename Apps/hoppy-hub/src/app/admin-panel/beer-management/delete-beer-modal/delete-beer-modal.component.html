@@ -1,0 +1,37 @@
+<dialog #deleteBeerModal class="modal modal-middle">
+  <div class="modal-box w-11/12 max-w-xl">
+    <form method="dialog">
+      <button
+        class="btn btn-circle btn-ghost btn-sm absolute right-2 top-2"
+        (click)="onModalHide()">
+        ✕
+      </button>
+    </form>
+    @if (loading) {
+      <app-loading-spinner></app-loading-spinner>
+    } @else if (error) {
+      <app-error-message [message]="error"></app-error-message>
+    } @else {
+      <h3 class="my-2 text-2xl font-bold">
+        Are you sure that you want to delete the beer?
+      </h3>
+      <div class="mt-2 grid place-items-center sm:grid-cols-2">
+        <button
+          type="button"
+          class="btn btn-error my-2 w-48"
+          (click)="onDelete()">
+          Delete beer
+        </button>
+        <button
+          type="button"
+          class="btn btn-neutral my-2 w-48"
+          (click)="onModalHide()">
+          Cancel
+        </button>
+      </div>
+    }
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button (click)="onModalHide()">close</button>
+  </form>
+</dialog>

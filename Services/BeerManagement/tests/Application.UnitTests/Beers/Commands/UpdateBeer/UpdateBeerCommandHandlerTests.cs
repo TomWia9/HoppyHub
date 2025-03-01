@@ -78,7 +78,8 @@ public class UpdateBeerCommandHandlerTests
             Name = "New Name",
             BreweryId = breweryId,
             BeerStyleId = beerStyleId,
-            ReleaseDate = DateOnly.FromDateTime(DateTime.Now)
+            ReleaseDate = DateOnly.FromDateTime(DateTime.Now),
+            AlcoholByVolume = 5
         };
 
         // Act
@@ -86,7 +87,7 @@ public class UpdateBeerCommandHandlerTests
 
         // Assert
         existingBeer.Name.Should().Be(command.Name);
-        existingBeer.BreweryId.Should().Be(command.BreweryId);
+        existingBeer.BreweryId.Should().Be(command.BreweryId.Value);
         existingBeer.BeerStyleId.Should().Be(command.BeerStyleId);
         existingBeer.ReleaseDate.Should().Be(command.ReleaseDate);
         _contextMock.Verify(x => x.SaveChangesAsync(CancellationToken.None), Times.Once);

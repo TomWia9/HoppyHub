@@ -70,6 +70,11 @@ public record BeerDto : IMapFrom<Beer>
     ///     The beer image uri.
     /// </summary>
     public string? ImageUri { get; set; }
+    
+    /// <summary>
+    ///     Indicates whether beer image is temp.
+    /// </summary>
+    public bool TempImage { get; set; }
 
     /// <summary>
     ///     The beer opinions count.
@@ -88,6 +93,7 @@ public record BeerDto : IMapFrom<Beer>
     public void Mapping(Profile profile)
     {
         profile.CreateMap<Beer, BeerDto>()
-            .ForMember(x => x.ImageUri, opt => opt.MapFrom(x => x.BeerImage!.ImageUri));
+            .ForMember(x => x.ImageUri, opt => opt.MapFrom(x => x.BeerImage!.ImageUri))
+            .ForMember(x => x.TempImage, opt => opt.MapFrom(x => x.BeerImage!.TempImage));
     }
 }

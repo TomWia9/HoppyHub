@@ -1,5 +1,5 @@
 import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 import { FavoritesService } from '../../../favorites/favorites.service';
 import { FavoritesParams } from '../../../favorites/favorites-params';
 import { PagedList } from '../../../shared/paged-list';
@@ -31,8 +31,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
 
   private favoritesService: FavoritesService = inject(FavoritesService);
   private opinionsService: OpinionsService = inject(OpinionsService);
-  private favoritesSubscription!: Subscription;
-  private opinionsSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   userFavoritesCount: number = 0;
   userBeersRatedCount: number = 0;
@@ -42,41 +41,51 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   faHeart = faHeart;
 
   ngOnInit(): void {
-    this.favoritesSubscription = this.favoritesService
+    this.favoritesService
       .getFavorites(new FavoritesParams({ userId: this.user.id }))
-      .subscribe({
-        next: (favoritesList: PagedList<Beer>) => {
-          this.userFavoritesCount = favoritesList.TotalCount;
-          this.error = '';
-          this.loading = false;
-        },
-        error: () => {
-          this.error =
-            'An error occurred while loading the user favorites count';
-          this.loading = false;
-        }
-      });
-    this.opinionsSubscription = this.opinionsService
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.loading = true)),
+        tap({
+          next: (favoritesList: PagedList<Beer>) => {
+            this.userFavoritesCount = favoritesList.TotalCount;
+            this.error = '';
+          },
+          error: () => {
+            this.error =
+              'An error occurred while loading the user favorites count';
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        })
+      )
+      .subscribe();
+
+    this.opinionsService
       .getOpinions(new OpinionsParams({ userId: this.user.id }))
-      .subscribe({
-        next: (opinionsList: PagedList<Opinion>) => {
-          this.userBeersRatedCount = opinionsList.TotalCount;
-          this.error = '';
-          this.loading = false;
-        },
-        error: () => {
-          this.error =
-            'An error occurred while loading the user beers rated count';
-          this.loading = false;
-        }
-      });
+      .pipe(
+        takeUntil(this.destroy$),
+        tap(() => (this.loading = true)),
+        tap({
+          next: (opinionsList: PagedList<Opinion>) => {
+            this.userBeersRatedCount = opinionsList.TotalCount;
+            this.error = '';
+          },
+          error: () => {
+            this.error =
+              'An error occurred while loading the user beers rated count';
+          },
+          complete: () => {
+            this.loading = false;
+          }
+        })
+      )
+      .subscribe();
   }
+
   ngOnDestroy(): void {
-    if (this.favoritesSubscription) {
-      this.favoritesSubscription.unsubscribe();
-    }
-    if (this.opinionsSubscription) {
-      this.opinionsSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

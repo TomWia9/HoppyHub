@@ -14,11 +14,11 @@ import {
   AlertType
 } from '../../shared-components/alert/alert.service';
 import { OpinionsService } from '../opinions.service';
-import { Subscription } from 'rxjs';
 import { ErrorMessageComponent } from '../../shared-components/error-message/error-message.component';
 import { ModalModel } from '../../shared/modal-model';
 import { ModalType } from '../../shared/model-type';
 import { LoadingSpinnerComponent } from '../../shared-components/loading-spinner/loading-spinner.component';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-delete-opinion-modal',
@@ -33,22 +33,23 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   private modalService = inject(ModalService);
   private opinionsService = inject(OpinionsService);
   private alertService: AlertService = inject(AlertService);
-  private modalOppenedSubscription!: Subscription;
-  private deleteOpinionSubscription!: Subscription;
+  private destroy$ = new Subject<void>();
 
   loading = true;
   opinionId!: string;
   error = '';
 
   ngOnInit(): void {
-    this.modalOppenedSubscription = this.modalService.modalOpened.subscribe(
-      (modalModel: ModalModel) => {
-        this.loading = true;
-        this.opinionId = modalModel.modalData['opinionId'] as string;
-        this.onShowModal(modalModel);
-        this.loading = false;
-      }
-    );
+    this.modalService.modalOpened
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((modalModel: ModalModel) => {
+          this.opinionId = modalModel.modalData['opinionId'] as string;
+          this.onShowModal(modalModel);
+          this.loading = false;
+        })
+      )
+      .subscribe();
   }
 
   onModalHide(): void {
@@ -58,27 +59,37 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   onDelete(): void {
-    this.opinionsService.DeleteOpinion(this.opinionId).subscribe({
-      next: () => {
-        this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
-        this.opinionDeleted.emit();
-      },
-      error: error => {
-        let errorMessage = null;
+    this.opinionsService
+      .deleteOpinion(this.opinionId)
+      .pipe(
+        takeUntil(this.destroy$),
+        tap({
+          next: () => {
+            this.alertService.openAlert(AlertType.Success, 'Opinion deleted');
+            this.opinionDeleted.emit();
+          },
+          error: error => {
+            let errorMessage = null;
 
-        if (error.error) {
-          const firstKey = Object.keys(error.error?.errors)[0] ?? null;
-          const firstValueArray = error.error?.errors[firstKey] as string[];
-          errorMessage = firstValueArray[0];
-        }
+            if (error.error) {
+              const firstKey = Object.keys(error.error?.errors)[0] ?? null;
+              const firstValueArray = error.error?.errors[firstKey] as string[];
+              errorMessage = firstValueArray[0];
+            }
 
-        if (!errorMessage) {
-          this.alertService.openAlert(AlertType.Error, 'Something went wrong');
-        } else {
-          this.alertService.openAlert(AlertType.Error, errorMessage);
-        }
-      }
-    });
+            if (!errorMessage) {
+              this.alertService.openAlert(
+                AlertType.Error,
+                'Something went wrong'
+              );
+            } else {
+              this.alertService.openAlert(AlertType.Error, errorMessage);
+            }
+          }
+        })
+      )
+      .subscribe();
+
     this.onModalHide();
   }
 
@@ -89,11 +100,7 @@ export class DeleteOpinionModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.modalOppenedSubscription) {
-      this.modalOppenedSubscription.unsubscribe();
-    }
-    if (this.deleteOpinionSubscription) {
-      this.deleteOpinionSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
