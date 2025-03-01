@@ -45,7 +45,39 @@ public class UpdateUsernameCommandValidatorTests
     public void UpdateUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsGreaterThanMaximum()
     {
         // Arrange
-        var command = new UpdateUsernameCommand { Username = new string('a', 257) };
+        var command = new UpdateUsernameCommand { Username = new string('a', 21) };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Username);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for username when username length is less than minimum.
+    /// </summary>
+    [Fact]
+    public void UpdateUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameLengthIsLessThanMinimum()
+    {
+        // Arrange
+        var command = new UpdateUsernameCommand { Username = new string('a', 2) };
+
+        // Act
+        var result = _validator.TestValidate(command);
+
+        // Assert
+        result.ShouldHaveValidationErrorFor(x => x.Username);
+    }
+    
+    /// <summary>
+    ///     Tests that validation should have error for username when username is empty.
+    /// </summary>
+    [Fact]
+    public void UpdateUserCommand_ShouldHaveValidationErrorForUsername_WhenUsernameIsEmpty()
+    {
+        // Arrange
+        var command = new UpdateUsernameCommand { Username = "" };
 
         // Act
         var result = _validator.TestValidate(command);
