@@ -3,8 +3,7 @@
 } @else if (error) {
   <app-error-message [message]="error"></app-error-message>
 } @else {
-  <!-- <app-delete-user-modal
-      (userDeleted)="userDeleted()"></app-delete-user-modal> -->
+  <app-delete-user-modal (userDeleted)="userDeleted()"></app-delete-user-modal>
   <div class="container mx-auto mb-6 rounded-lg bg-neutral p-4 shadow-md">
     <div class="grid place-content-center sm:place-content-stretch">
       <form [formGroup]="usernameForm" (ngSubmit)="editUsername()" class="my-4">

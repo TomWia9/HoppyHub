@@ -23,6 +23,7 @@ import { UpdateUsernameCommand } from '../../../users/commands/update-username-c
 import { CustomValidators } from '../../../shared/custom-validators';
 import { LoadingSpinnerComponent } from '../../../shared-components/loading-spinner/loading-spinner.component';
 import { ErrorMessageComponent } from '../../../shared-components/error-message/error-message.component';
+import { DeleteUserModalComponent } from '../delete-user-modal/delete-user-modal.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -30,7 +31,8 @@ import { ErrorMessageComponent } from '../../../shared-components/error-message/
   imports: [
     LoadingSpinnerComponent,
     ErrorMessageComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DeleteUserModalComponent
   ],
   templateUrl: './edit-user.component.html'
 })
