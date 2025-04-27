@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Api.Filters;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using FluentValidation.AspNetCore;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
 using Microsoft.OpenApi.Models;
@@ -26,6 +27,7 @@ public static class ConfigureServices
         services.AddHttpContextAccessor();
         services.AddFluentValidationClientsideAdapters();
         services.AddFluentValidationRulesToSwagger();
+        services.AddOpenTelemetry().UseAzureMonitor();
         services.AddCors(options =>
         {
             options.AddPolicy("UIApp", builder =>
