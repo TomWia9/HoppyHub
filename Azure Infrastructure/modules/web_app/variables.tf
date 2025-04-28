@@ -28,6 +28,11 @@ variable "app_url_secret_name" {
   description = "App url secret name"
 }
 
+variable "app_insights_connection_string" {
+  type        = string
+  description = "App insights connection string"
+}
+
 variable "app_publish_profile_secret_name" {
   type        = string
   description = "App publish profile secret name"

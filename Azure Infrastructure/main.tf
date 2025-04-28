@@ -4,6 +4,7 @@ locals {
   storage_account_name     = "${var.master_name}sa"
   blob_container_name      = "${var.master_name}container"
   service_bus_name         = "${var.master_name}servicebus"
+  app_insights_name        = "${var.master_name}appinsights"
   sql_server_name          = "${var.master_name}sqlserver"
   app_service_plan_name    = "${var.master_name}asp"
   web_app_name             = "HoppyHub"
@@ -96,6 +97,14 @@ resource "azurerm_servicebus_namespace" "service_bus" {
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   sku                 = "Standard"
+}
+
+#App Insights
+resource "azurerm_application_insights" "app_insights" {
+  name                = local.app_insights_name
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  application_type    = "web"
 }
 
 #Sql Server, databases
@@ -202,6 +211,7 @@ module "user_management_app" {
   location                        = azurerm_resource_group.rg.location
   service_plan_id                 = azurerm_service_plan.app_service_plan.id
   app_url_secret_name             = "${local.user_management_name}ApiUrl"
+  app_insights_connection_string  = azurerm_application_insights.app_insights.connection_string
   app_publish_profile_secret_name = "AZURE_${upper(local.user_management_name)}_PUBLISH_PROFILE"
   key_vault_id                    = azurerm_key_vault.key_vault.id
   key_vault_name                  = azurerm_key_vault.key_vault.name
@@ -214,6 +224,7 @@ module "beer_management_app" {
   location                        = azurerm_resource_group.rg.location
   service_plan_id                 = azurerm_service_plan.app_service_plan.id
   app_url_secret_name             = "${local.beer_management_name}ApiUrl"
+  app_insights_connection_string  = azurerm_application_insights.app_insights.connection_string
   app_publish_profile_secret_name = "AZURE_${upper(local.beer_management_name)}_PUBLISH_PROFILE"
   key_vault_id                    = azurerm_key_vault.key_vault.id
   key_vault_name                  = azurerm_key_vault.key_vault.name
@@ -226,6 +237,7 @@ module "opinion_management_app" {
   location                        = azurerm_resource_group.rg.location
   service_plan_id                 = azurerm_service_plan.app_service_plan.id
   app_url_secret_name             = "${local.opinion_management_name}ApiUrl"
+  app_insights_connection_string  = azurerm_application_insights.app_insights.connection_string
   app_publish_profile_secret_name = "AZURE_${upper(local.opinion_management_name)}_PUBLISH_PROFILE"
   key_vault_id                    = azurerm_key_vault.key_vault.id
   key_vault_name                  = azurerm_key_vault.key_vault.name
@@ -238,6 +250,7 @@ module "favorite_management_app" {
   location                        = azurerm_resource_group.rg.location
   service_plan_id                 = azurerm_service_plan.app_service_plan.id
   app_url_secret_name             = "${local.favorite_management_name}ApiUrl"
+  app_insights_connection_string  = azurerm_application_insights.app_insights.connection_string
   app_publish_profile_secret_name = "AZURE_${upper(local.favorite_management_name)}_PUBLISH_PROFILE"
   key_vault_id                    = azurerm_key_vault.key_vault.id
   key_vault_name                  = azurerm_key_vault.key_vault.name
@@ -271,6 +284,11 @@ resource "azurerm_key_vault_secret" "kv_secret_container_name" {
 resource "azurerm_key_vault_secret" "kv_secret_service_bus_connection_string" {
   name         = "ConnectionStrings--AzureServiceBusConnection"
   value        = azurerm_servicebus_namespace.service_bus.default_primary_connection_string
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_app_insights_connection_string" {
+  name         = "AzureMonitor--ConnectionString"
+  value        = azurerm_application_insights.app_insights.connection_string
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 resource "azurerm_key_vault_secret" "kv_secret_sql_server_name" {
