@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Services;
 
@@ -28,9 +30,10 @@ public class ConfigureServicesTests
         {
             new KeyValuePair<string, string>("UIAppUrl", "https://test.com"),
         }!).Build();
-        
+        Mock<IWebHostEnvironment> webHostEnvironmentMock = new();
+
         _services = new ServiceCollection();
-        _services.AddApiServices(configuration);
+        _services.AddApiServices(configuration, webHostEnvironmentMock.Object);
     }
 
     /// <summary>
@@ -56,7 +59,7 @@ public class ConfigureServicesTests
                                         x.ImplementationType == typeof(HttpContextAccessor) &&
                                         x.Lifetime == ServiceLifetime.Singleton);
     }
-    
+
     /// <summary>
     ///     Tests that the AddApiServices method adds cors.
     /// </summary>
@@ -69,12 +72,12 @@ public class ConfigureServicesTests
         var serviceProvider = _services.BuildServiceProvider();
         var corsOptions = serviceProvider.GetRequiredService<IOptions<CorsOptions>>().Value;
         var angularAppPolicy = corsOptions.GetPolicy("UIApp");
-        
+
         angularAppPolicy.Should().NotBeNull();
         angularAppPolicy!.Origins.Count.Should().Be(1);
         angularAppPolicy.AllowAnyHeader.Should().BeTrue();
         angularAppPolicy.AllowAnyMethod.Should().BeTrue();
         angularAppPolicy.ExposedHeaders.Should().Contain("X-Pagination");
-        angularAppPolicy.ExposedHeaders.Count.Should().Be(1);       
+        angularAppPolicy.ExposedHeaders.Count.Should().Be(1);
     }
 }

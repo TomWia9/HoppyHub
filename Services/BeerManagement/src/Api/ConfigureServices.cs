@@ -19,15 +19,22 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
-    public static void AddApiServices(this IServiceCollection services, IConfiguration configuration)
+    /// <param name="environment">The environment</param>
+    public static void AddApiServices(this IServiceCollection services, IConfiguration configuration,
+        IWebHostEnvironment environment)
     {
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddControllers(options => { options.Filters.Add<ApiExceptionFilterAttribute>(); });
         services.AddEndpointsApiExplorer();
         services.AddHttpContextAccessor();
         services.AddFluentValidationClientsideAdapters();
-        services.AddFluentValidationRulesToSwagger(); 
-        services.AddOpenTelemetry().UseAzureMonitor();
+        services.AddFluentValidationRulesToSwagger();
+        
+        if (!environment.IsDevelopment())
+        {
+            services.AddOpenTelemetry().UseAzureMonitor();
+        }
+
         services.AddCors(options =>
         {
             options.AddPolicy("UIApp", builder =>

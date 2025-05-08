@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 using SharedUtilities.Interfaces;
 using SharedUtilities.Services;
 
@@ -28,8 +30,10 @@ public class ConfigureServicesTests
         {
             new KeyValuePair<string, string>("UIAppUrl", "https://test.com"),
         }!).Build();
+        Mock<IWebHostEnvironment> webHostEnvironmentMock = new();
+
         _services = new ServiceCollection();
-        _services.AddApiServices(configuration);
+        _services.AddApiServices(configuration, webHostEnvironmentMock.Object);
     }
 
     /// <summary>

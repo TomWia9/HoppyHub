@@ -6,6 +6,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,8 +29,9 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
+    /// <param name="environment">The environment</param>
     public static void AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("OpinionManagementDbConnection"),
@@ -43,7 +45,7 @@ public static class ConfigureServices
         {
             x.AddConsumers(Assembly.GetAssembly(typeof(IAssemblyMarker)));
 
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+            if (environment.IsDevelopment())
             {
                 x.UsingRabbitMq((context, cfg) =>
                 {
