@@ -101,6 +101,8 @@ Set these appsettings values in all solutions:
 
 - **RabbitMQ:Password** - RabbitMQ password (default: guest)
 
+- **AzureMonitor:ConnectionString** - Azure Monitor connection string
+
 Initialize databases data using **Scripts\RestoreDatabases.ps1** script.\
 You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.
 
@@ -111,7 +113,7 @@ Build and run UI App (`ng serve -o` in Apps\hoppy-hub directory)
 
 Make sure you have **Docker** installed on your machine.\
 Open docker-compose.yml file.
-Set proper **TempBeerImageUri**, **ConnectionStrings\_\_StorageAccountConnection** and **ContainerName** environment variables.\
+Set proper **TempBeerImageUri**, **ConnectionStrings\_\_StorageAccountConnection** and **AzureMonitor\_\_ConnectionString** environment variables.\
 Execute `docker compose up` command in root directory.\
 Initialize databases data using **Scripts\RestoreDatabases.ps1** script with -docker flag.\
 You can specify **@ImageUri** varaibles in **Scripts\SQLScripts\OpinionManagement_Opinions.sql** and **Scripts\SQLScripts\BeerManagement_Beers.sql** first.
