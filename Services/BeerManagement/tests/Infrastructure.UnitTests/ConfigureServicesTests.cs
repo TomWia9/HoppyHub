@@ -2,8 +2,10 @@
 using Infrastructure.Common;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Interceptors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using SharedUtilities.Interfaces;
 
 namespace Infrastructure.UnitTests;
@@ -25,9 +27,10 @@ public class ConfigureServicesTests
     public ConfigureServicesTests()
     {
         IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
+        Mock<IWebHostEnvironment> webHostEnvironmentMock = new();
 
         _services = new ServiceCollection();
-        _services.AddInfrastructureServices(configuration);
+        _services.AddInfrastructureServices(configuration, webHostEnvironmentMock.Object);
     }
 
     /// <summary>
@@ -41,7 +44,7 @@ public class ConfigureServicesTests
         _services.Should().Contain(s => s.ImplementationType == typeof(ApplicationDbContext));
         _services.Should().Contain(s => s.Lifetime == ServiceLifetime.Scoped);
     }
-    
+
     /// <summary>
     ///     Tests that the AddInfrastructureServices method adds the StorageContainerService to the service collection.
     /// </summary>
