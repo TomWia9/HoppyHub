@@ -3,10 +3,12 @@ using Infrastructure.Common;
 using Infrastructure.Identity;
 using Infrastructure.Persistence;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Moq;
 
 namespace Infrastructure.UnitTests;
 
@@ -28,7 +30,9 @@ public class ConfigureServicesTests
     {
         IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection().Build();
         _services = new ServiceCollection();
-        _services.AddInfrastructureServices(configuration);
+        Mock<IWebHostEnvironment> webHostEnvironmentMock = new();
+
+        _services.AddInfrastructureServices(configuration, webHostEnvironmentMock.Object);
     }
 
     /// <summary>

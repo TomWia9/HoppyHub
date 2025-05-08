@@ -6,6 +6,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Services;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,8 +27,9 @@ public static class ConfigureServices
     /// </summary>
     /// <param name="services">The services</param>
     /// <param name="configuration">The configuration</param>
+    /// <param name="environment">The environment</param>
     public static void AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("UserManagementDbConnection"),
@@ -35,7 +37,7 @@ public static class ConfigureServices
 
         services.AddMassTransit(x =>
         {
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+            if (environment.IsDevelopment())
             {
                 x.UsingRabbitMq((_, cfg) =>
                 {
