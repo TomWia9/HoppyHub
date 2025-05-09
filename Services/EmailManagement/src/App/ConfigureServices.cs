@@ -36,7 +36,7 @@ public static class ConfigureServices
                     });
 
                     cfg.ConfigureEndpoints(context,
-                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "BeerManagement"));
+                        endpointNameFormatter: new DefaultEndpointNameFormatter(prefix: "EmailManagement"));
                     cfg.UseConsumeFilter(typeof(MessageValidationFilter<>), context);
                 });
             }
