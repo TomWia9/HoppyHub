@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using App.Interfaces;
+using App.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using MassTransit;
 using Serilog;
@@ -55,5 +57,7 @@ public static class ConfigureServices
         {
             services.AddOpenTelemetry().UseAzureMonitor();
         }
+
+        services.AddSingleton<IEmailSender, EmailSender>();
     }
 }

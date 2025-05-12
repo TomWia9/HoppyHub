@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using App.Interfaces;
+using MassTransit;
 using SharedEvents.Events;
 
 namespace App.EventConsumers;
@@ -9,6 +10,20 @@ namespace App.EventConsumers;
 public class EmailSentConsumer : IConsumer<EmailSent>
 {
     /// <summary>
+    ///     The email sender.
+    /// </summary>
+    private readonly IEmailSender _emailSender;
+
+    /// <summary>
+    ///     Initializes EmailSentConsumer.
+    /// </summary>
+    /// <param name="emailSender">The email sender.</param>
+    public EmailSentConsumer(IEmailSender emailSender)
+    {
+        _emailSender = emailSender;
+    }
+
+    /// <summary>
     ///     Consumes BeerOpinionChanged event.
     /// </summary>
     /// <param name="context">The consume context</param>
@@ -16,6 +31,6 @@ public class EmailSentConsumer : IConsumer<EmailSent>
     {
         var message = context.Message;
 
-        //TODO: Send email 
+        await _emailSender.SendEmailAsync(message);
     }
 }
