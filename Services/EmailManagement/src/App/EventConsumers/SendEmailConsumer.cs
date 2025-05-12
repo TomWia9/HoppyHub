@@ -5,9 +5,9 @@ using SharedEvents.Events;
 namespace App.EventConsumers;
 
 /// <summary>
-///     EmailSent consumer.
+///     SendEmail consumer.
 /// </summary>
-public class EmailSentConsumer : IConsumer<EmailSent>
+public class SendEmailConsumer : IConsumer<SendEmailRequested>
 {
     /// <summary>
     ///     The email sender.
@@ -18,16 +18,16 @@ public class EmailSentConsumer : IConsumer<EmailSent>
     ///     Initializes EmailSentConsumer.
     /// </summary>
     /// <param name="emailSender">The email sender.</param>
-    public EmailSentConsumer(IEmailSender emailSender)
+    public SendEmailConsumer(IEmailSender emailSender)
     {
         _emailSender = emailSender;
     }
 
     /// <summary>
-    ///     Consumes BeerOpinionChanged event.
+    ///     Consumes SendEmailRequested event.
     /// </summary>
     /// <param name="context">The consume context</param>
-    public async Task Consume(ConsumeContext<EmailSent> context)
+    public async Task Consume(ConsumeContext<SendEmailRequested> context)
     {
         var message = context.Message;
 

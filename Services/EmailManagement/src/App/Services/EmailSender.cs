@@ -16,32 +16,37 @@ public class EmailSender : IEmailSender
     private readonly EmailClient _emailClient;
 
     /// <summary>
+    ///     The email sender.
+    /// </summary>
+    private readonly string? _sender;
+
+    /// <summary>
     ///     Initializes EmailSender.
     /// </summary>
     public EmailSender(IConfiguration config)
     {
         _emailClient = new EmailClient(config["CommunicationServices:ConnectionString"]);
+        _sender = config["CommunicationServices:EmailSender"];
     }
 
-    public async Task SendEmailAsync(EmailSent emailSentEvent)
+    public async Task SendEmailAsync(SendEmailRequested sendEmailRequestedEvent)
     {
         //Dev purpose
-        var sender = ""; //have to be connected domain in azure
-        emailSentEvent = new EmailSent
+        sendEmailRequestedEvent = new SendEmailRequested
         {
             Subject = "EmailManagement",
             Content =
                 "<html><body><h1>Quick send email test</h1><br/><h4>This email message is sent from Azure Communication Service Email.</h4><p>This mail was sent using .NET SDK!!</p></body></html>",
-            Receiver = ""
+            Recipient = ""
         };
         //
 
-        var emailContent = new EmailContent(emailSentEvent.Subject)
+        var emailContent = new EmailContent(sendEmailRequestedEvent.Subject)
         {
-            Html = emailSentEvent.Content
+            Html = sendEmailRequestedEvent.Content
         };
-        var emailRecipients = new EmailRecipients(new[] { new EmailAddress(emailSentEvent.Receiver) });
-        var emailMessage = new EmailMessage(sender, emailRecipients, emailContent);
+        var emailRecipients = new EmailRecipients(new[] { new EmailAddress(sendEmailRequestedEvent.Recipient) });
+        var emailMessage = new EmailMessage(_sender, emailRecipients, emailContent);
 
         await _emailClient.SendAsync(WaitUntil.Completed, emailMessage);
     }

@@ -1,14 +1,14 @@
 ﻿namespace SharedEvents.Events;
 
 /// <summary>
-///     The email sent event.
+///     The send email requested event.
 /// </summary>
-public record EmailSent
+public record SendEmailRequested
 {
     /// <summary>
-    ///     The receiver.
+    ///     The recipient.
     /// </summary>
-    public string? Receiver { get; init; }
+    public string? Recipient { get; init; }
 
     /// <summary>
     ///     The subject.
