@@ -35,10 +35,10 @@ public class EmailSender : IEmailSender
         _sender = config["CommunicationServices:EmailSender"];
     }
 
-    public async Task SendEmailAsync(SendEmailRequested sendEmailRequestedEvent)
+    public async Task SendEmailAsync(EmailRequested emailRequestedEvent)
     {
         //Dev purpose
-        sendEmailRequestedEvent = new SendEmailRequested
+        emailRequestedEvent = new EmailRequested
         {
             Subject = "EmailManagement",
             Content =
@@ -47,11 +47,11 @@ public class EmailSender : IEmailSender
         };
         //
 
-        var emailContent = new EmailContent(sendEmailRequestedEvent.Subject)
+        var emailContent = new EmailContent(emailRequestedEvent.Subject)
         {
-            Html = sendEmailRequestedEvent.Content
+            Html = emailRequestedEvent.Content
         };
-        var emailRecipients = new EmailRecipients(new[] { new EmailAddress(sendEmailRequestedEvent.Recipient) });
+        var emailRecipients = new EmailRecipients(new[] { new EmailAddress(emailRequestedEvent.Recipient) });
         var emailMessage = new EmailMessage(_sender, emailRecipients, emailContent);
 
         try

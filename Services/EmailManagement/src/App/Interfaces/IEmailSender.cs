@@ -10,6 +10,6 @@ public interface IEmailSender
     /// <summary>
     ///     Sends email async.
     /// </summary>
-    /// <param name="sendEmailRequestedEvent">The emailSent event.</param>
-    Task SendEmailAsync(SendEmailRequested sendEmailRequestedEvent);
+    /// <param name="emailRequestedEvent">The EmailRequested event.</param>
+    Task SendEmailAsync(EmailRequested emailRequestedEvent);
 }

@@ -1,9 +1,9 @@
 ﻿namespace SharedEvents.Events;
 
 /// <summary>
-///     The send email requested event.
+///     The email requested event.
 /// </summary>
-public record SendEmailRequested
+public record EmailRequested
 {
     /// <summary>
     ///     The recipient.
