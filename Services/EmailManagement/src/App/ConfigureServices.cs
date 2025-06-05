@@ -2,8 +2,10 @@
 using App.Interfaces;
 using App.Services;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
+using FluentValidation;
 using MassTransit;
 using Serilog;
+using SharedUtilities;
 using SharedUtilities.Filters;
 
 namespace App;
@@ -53,6 +55,8 @@ public static class ConfigureServices
                 });
             }
         });
+        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(SharedUtilitiesAssemblyMarker)));
         if (!environment.IsDevelopment())
         {
             services.AddOpenTelemetry().UseAzureMonitor();
