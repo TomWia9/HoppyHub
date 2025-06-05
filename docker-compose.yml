@@ -19,6 +19,21 @@ services:
       RABBITMQ_DEFAULT_USER: "rabbituser"
       RABBITMQ_DEFAULT_PASS: "rabbituser"
 
+  email-management:
+    container_name: email-management
+    build:
+      context: .
+      dockerfile: ./Services/EmailManagement/Dockerfile
+    env_file:
+      - ./Config/.env
+    environment:
+      - CommunicationServices__ConnectionString=${COMMUNICATION_SERVICES_CONNECTION}
+      - CommunicationServices__EmailSender=${EMAIL_SENDER}
+    ports:
+      - "5004:5004"
+    depends_on:
+      - rabbitmq
+
   beer-management:
     container_name: beer-management
     build:
