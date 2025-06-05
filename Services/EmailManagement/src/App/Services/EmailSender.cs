@@ -37,16 +37,6 @@ public class EmailSender : IEmailSender
 
     public async Task SendEmailAsync(EmailRequested emailRequestedEvent)
     {
-        //Dev purpose
-        emailRequestedEvent = new EmailRequested
-        {
-            Subject = "EmailManagement",
-            Content =
-                "<html><body><h1>Quick send email test</h1><br/><h4>This email message is sent from Azure Communication Service Email.</h4><p>This mail was sent using .NET SDK!!</p></body></html>",
-            Recipient = ""
-        };
-        //
-
         var emailContent = new EmailContent(emailRequestedEvent.Subject)
         {
             Html = emailRequestedEvent.Content
