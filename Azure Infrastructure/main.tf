@@ -1,17 +1,20 @@
 locals {
-  resource_group_name      = "${var.master_name}rg"
-  key_vault_name           = "${var.master_name}kv"
-  storage_account_name     = "${var.master_name}sa"
-  blob_container_name      = "${var.master_name}container"
-  service_bus_name         = "${var.master_name}servicebus"
-  app_insights_name        = "${var.master_name}appinsights"
-  sql_server_name          = "${var.master_name}sqlserver"
-  app_service_plan_name    = "${var.master_name}asp"
-  web_app_name             = "HoppyHub"
-  user_management_name     = "UserManagement"
-  beer_management_name     = "BeerManagement"
-  opinion_management_name  = "OpinionManagement"
-  favorite_management_name = "FavoriteManagement"
+  resource_group_name              = "${var.master_name}rg"
+  key_vault_name                   = "${var.master_name}kv"
+  storage_account_name             = "${var.master_name}sa"
+  blob_container_name              = "${var.master_name}container"
+  service_bus_name                 = "${var.master_name}servicebus"
+  app_insights_name                = "${var.master_name}appinsights"
+  sql_server_name                  = "${var.master_name}sqlserver"
+  app_service_plan_name            = "${var.master_name}asp"
+  communication_service_name       = "${var.master_name}communicationservice"
+  email_communication_service_name = "${var.master_name}emailcommunicationservice"
+  web_app_name                     = "HoppyHub"
+  user_management_name             = "UserManagement"
+  beer_management_name             = "BeerManagement"
+  opinion_management_name          = "OpinionManagement"
+  favorite_management_name         = "FavoriteManagement"
+  email_management_name            = "EmailManagement"
 }
 
 #Resource Group
@@ -256,6 +259,27 @@ module "favorite_management_app" {
   key_vault_name                  = azurerm_key_vault.key_vault.name
 }
 
+#Azure communication service, Email communication service and domain
+resource "azurerm_communication_service" "communication_service" {
+  name                = local.communication_service_name
+  resource_group_name = azurerm_resource_group.rg.name
+  data_location       = var.data_location
+}
+resource "azurerm_email_communication_service" "email_communication_service" {
+  name                = local.email_communication_service_name
+  resource_group_name = azurerm_resource_group.rg.name
+  data_location       = var.data_location
+}
+resource "azurerm_email_communication_service_domain" "domain" {
+  name              = "AzureManagedDomain"
+  email_service_id  = azurerm_email_communication_service.email_communication_service.id
+  domain_management = "AzureManaged"
+}
+resource "azurerm_communication_service_email_domain_association" "domain_association" {
+  communication_service_id = azurerm_communication_service.communication_service.id
+  email_service_domain_id  = azurerm_email_communication_service_domain.domain.id
+}
+
 #Key Vault and GitHub secrets
 resource "random_password" "random_jwt" {
   length  = 32
@@ -309,6 +333,16 @@ resource "azurerm_key_vault_secret" "kv_secret_sql_server_password" {
 resource "azurerm_key_vault_secret" "kv_secret_ui_app_url" {
   name         = "UIAppUrl"
   value        = "https://${azurerm_static_web_app.ui_static_web_app.default_host_name}"
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_communication_service_connection_string" {
+  name         = "CommunicationServices--ConnectionString"
+  value        = azurerm_communication_service.communication_service.primary_connection_string
+  key_vault_id = azurerm_key_vault.key_vault.id
+}
+resource "azurerm_key_vault_secret" "kv_secret_mail_from_sender_domain" {
+  name         = "CommunicationServices--EmailSender"
+  value        = "DoNotReply@${azurerm_email_communication_service_domain.domain.from_sender_domain}"
   key_vault_id = azurerm_key_vault.key_vault.id
 }
 resource "github_actions_secret" "gh_secret_static_web_app_api_key" {
